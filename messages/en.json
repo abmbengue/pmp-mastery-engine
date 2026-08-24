@@ -21,6 +21,58 @@
     "previousLesson": "Previous lesson",
     "continueLearning": "Continue learning"
   },
+  "nav": {
+    "home": "Home",
+    "academies": "Academies",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "login": "Login",
+    "register": "Register"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "loginSubtitle": "Access your personal learning dashboard.",
+    "registerTitle": "Create your account",
+    "registerSubtitle": "Create an account to save your progress and resume later.",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "loginButton": "Login",
+    "registerButton": "Create account",
+    "invalidCredentials": "Invalid email or password.",
+    "emailExists": "An account already exists for this email.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordWeak": "Password must be at least 8 characters and include uppercase, lowercase, and a number.",
+    "genericError": "Something went wrong. Please try again.",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "registerLink": "Register",
+    "loginLink": "Login"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "settings": "Settings",
+    "logout": "Logout",
+    "globalProgress": "Global progress",
+    "learningTime": "Learning time",
+    "streak": "Streak",
+    "recentScores": "Latest score",
+    "continueLearning": "Continue learning",
+    "lessonsComplete": "lessons complete",
+    "openCourse": "Open course",
+    "weakAreas": "Weak areas",
+    "masteredAreas": "Mastered areas",
+    "noneYet": "Nothing yet"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your personal preferences.",
+    "backToDashboard": "Back to dashboard",
+    "email": "Email",
+    "language": "Language",
+    "save": "Save preferences"
+  },
   "player": {
     "phase": "Phase",
     "of": "of",

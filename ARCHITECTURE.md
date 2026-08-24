@@ -68,9 +68,16 @@ AiTutorPort (interface)
 
 The port accepts context (lesson, concept, user level, locale) and action type. The learning engine does not depend on any specific AI provider.
 
-## Auth (Prepared, Not Fully Implemented)
+## Auth (Implemented in Phase 3)
 
-V1 uses a demo user (`demo@pla.local`) for quiz submission. Auth types are defined in `src/modules/auth/`. Full Auth.js integration is planned for Phase 3.
+The platform now uses **Auth.js v5** with a **Credentials** provider and Prisma-backed user records. Passwords are hashed with `bcryptjs` and are never exposed to the client. Session resolution happens server-side through `auth()` helpers in `src/modules/auth/session.ts`.
+
+Current scope:
+- Register / login / logout
+- JWT-backed persistent sessions
+- Protected dashboard, settings, lesson progression APIs
+- Per-user locale persistence (`User.locale`)
+- Test-only seeded demo account (`demo@pla.local`) kept for regression support
 
 ## Video (Prepared, Placeholder Only)
 
@@ -89,11 +96,11 @@ All PMP-related content is **original**. No PMBOK content is reproduced. The sch
 5. **Modular monolith** — single Next.js app with clear module boundaries
 6. **Extensible content types** — new types added via enum + Zod schema
 
-## What Is NOT Implemented (Phase 0+1)
+## What Is NOT Implemented (after Phase 3)
 
-- Full authentication (Auth.js)
-- Dashboard UI
-- Learning engine UI (lesson player phases)
+- Social/OAuth authentication
+- Password reset / email verification
+- Admin/CMS authentication roles
 - Adaptive quiz system
 - Simulators
 - Real AI Tutor

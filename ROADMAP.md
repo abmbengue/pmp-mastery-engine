@@ -26,25 +26,25 @@
 - [x] Essential tests (unit, integration, E2E smoke)
 - [x] Minimal UI for E2E path
 
-## Next — Phase 2 (Learning Engine)
+### Phase 2 — Learning Engine
+- [x] Lesson player with phase navigation (LEARN → PRACTICE → TEST → REVIEW → MASTER)
+- [x] Complete learning flow: start lesson → complete → update progress
+- [x] Quiz UI with supported question types
+- [x] Flashcard interaction
+- [x] Exercise completion
+- [x] Video placeholder display
+- [x] Progress persistence on lesson completion
+- [x] Extended unit tests + Playwright journeys
 
-- [ ] Lesson player with phase navigation (LEARN → PRACTICE → TEST → REVIEW → MASTER)
-- [ ] Complete learning flow: start lesson → complete → update progress
-- [ ] Quiz UI with all question types rendered properly
-- [ ] Flashcard interaction
-- [ ] Exercise submission (basic)
-- [ ] Video placeholder display
-- [ ] Progress persistence on lesson completion
-- [ ] Unit tests for full learning flow
-
-## Phase 3 — Auth + Dashboard
-
-- [ ] Auth.js integration (email/password or magic link)
-- [ ] User registration / login
-- [ ] Dashboard UI: global progress, active courses, next lesson
-- [ ] Weak / mastered concepts display
-- [ ] Learning time and streak display
-- [ ] Settings page (locale preference)
+### Phase 3 — Auth + Dashboard
+- [x] Auth.js v5 credentials authentication
+- [x] User registration / login / logout
+- [x] Dashboard UI: global progress, active courses
+- [x] Weak / mastered concepts display
+- [x] Learning time and streak display
+- [x] Settings page (locale preference)
+- [x] Protected progression / quiz APIs
+- [x] User data isolation tests
 
 ## Phase 4 — UI Polish + Content Expansion
 
@@ -72,11 +72,10 @@
 - [ ] OAuth providers
 - [ ] Mobile-responsive PWA or native app
 
-## Known Limitations (Phase 0+1)
+## Known Limitations (after Phase 3)
 
-- No real authentication — demo user only
-- No dashboard UI
-- No lesson player phases UI
+- No password reset / email verification
+- No role-based access control
 - Video items are placeholders only
 - AI Tutor returns stub messages
 - 6 academies have no content (PLANNED status)

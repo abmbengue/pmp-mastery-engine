@@ -3,15 +3,13 @@ import { notFound } from "next/navigation";
 import { findLessonBySlug, localizeLesson, localizeModule } from "@/data/repositories/lesson-repository";
 import { findNextLesson } from "@/data/repositories/navigation-repository";
 import { getLessonSession } from "@/modules/learning-engine/lesson-session-service";
-import { findUserByEmail } from "@/data/repositories/user-repository";
+import { requireSession } from "@/modules/auth/session";
 import type { Locale } from "@/shared/types/locale";
 import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import type { LessonItem } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import { LessonPlayer } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import type { QuizQuestion } from "@/app/[locale]/components/lesson-player/TestPhase";
 import { Link } from "@/modules/localization/navigation";
-
-const DEMO_EMAIL = "demo@pla.local";
 
 export default async function LessonPage({
   params,
@@ -38,17 +36,14 @@ export default async function LessonPage({
   const loc = locale as Locale;
   const { title, description } = localizeLesson(lesson, loc);
 
-  // Load session state for demo user
-  const user = await findUserByEmail(DEMO_EMAIL);
+  const session = await requireSession(locale);
   let initialPhase: LessonPhase = "LEARN";
   let initialQuizScore: number | null = null;
 
-  if (user) {
-    const session = await getLessonSession(user.id, lesson.id);
-    if (!session.isCompleted) {
-      initialPhase = session.currentPhase;
-      initialQuizScore = session.quizScore;
-    }
+  const lessonSession = await getLessonSession(session.user.id, lesson.id);
+  if (!lessonSession.isCompleted) {
+    initialPhase = lessonSession.currentPhase;
+    initialQuizScore = lessonSession.quizScore;
   }
 
   // Next lesson navigation
@@ -112,7 +107,6 @@ export default async function LessonPage({
         courseSlug={courseSlug}
         moduleSlug={moduleSlug}
         lessonSlug={lessonSlug}
-        lessonId={lesson.id}
         title={title}
         description={description}
         estimatedMinutes={lesson.estimatedMinutes}
@@ -120,7 +114,6 @@ export default async function LessonPage({
         initialPhase={initialPhase}
         initialQuizScore={initialQuizScore}
         nextLesson={nextLesson}
-        userEmail={DEMO_EMAIL}
         labels={{
           player: {
             phase: tp("phase"),

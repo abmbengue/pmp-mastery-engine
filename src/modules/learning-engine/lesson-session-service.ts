@@ -1,5 +1,5 @@
 import prisma from "@/data/prisma-client";
-import { startLesson, completeLesson, getLessonProgress, getCourseProgress, updateConceptMastery } from "./progress-service";
+import { completeLesson, getLessonProgress, getCourseProgress, updateConceptMastery } from "./progress-service";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import type { LessonPhase } from "./lesson-phases";
 
@@ -59,12 +59,35 @@ export async function saveLessonPhase(
   quizScore?: number,
   masteryLevel?: string
 ) {
-  await startLesson(userId, lessonId);
+  const existing = await getLessonProgress(userId, lessonId);
+
+  if (!existing) {
+    await prisma.lessonProgress.create({
+      data: {
+        userId,
+        lessonId,
+        status: "IN_PROGRESS",
+        startedAt: new Date(),
+        timeSpentSec,
+        metadata: {
+          currentPhase: phase,
+          quizScore: quizScore ?? null,
+          masteryLevel: masteryLevel ?? null,
+        },
+      },
+    });
+    return;
+  }
+
   await prisma.lessonProgress.update({
     where: { userId_lessonId: { userId, lessonId } },
     data: {
       timeSpentSec,
-      metadata: { currentPhase: phase, quizScore: quizScore ?? null, masteryLevel: masteryLevel ?? null },
+      metadata: {
+        currentPhase: phase,
+        quizScore: quizScore ?? null,
+        masteryLevel: masteryLevel ?? null,
+      },
     },
   });
 }

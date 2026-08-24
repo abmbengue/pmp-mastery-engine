@@ -13,13 +13,22 @@ export async function createUser(data: {
   email: string;
   name: string;
   locale?: Locale;
+  passwordHash?: string;
 }) {
   return prisma.user.create({
     data: {
       email: data.email,
       name: data.name,
+      passwordHash: data.passwordHash,
       locale: data.locale === "en" ? "EN" : "FR",
     },
+  });
+}
+
+export async function updateUserLocale(userId: string, locale: Locale) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { locale: locale === "en" ? "EN" : "FR" },
   });
 }
 
@@ -29,6 +38,21 @@ export async function enrollUserInCourse(userId: string, courseId: string) {
     create: { userId, courseId },
     update: {},
   });
+}
+
+export async function enrollUserInActiveV1Courses(userId: string) {
+  const activeCourses = await prisma.course.findMany({
+    where: {
+      academy: {
+        slug: { in: ["personal-finance", "pmp-project-management"] },
+        status: "ACTIVE",
+      },
+    },
+    select: { id: true },
+  });
+
+  await Promise.all(activeCourses.map((course) => enrollUserInCourse(userId, course.id)));
+  return activeCourses.length;
 }
 
 export async function findEnrollment(userId: string, courseId: string) {
@@ -46,9 +70,42 @@ export async function findUserEnrollments(userId: string) {
           academy: true,
           modules: {
             include: { lessons: true },
+            orderBy: { sortOrder: "asc" },
           },
         },
       },
     },
+    orderBy: { enrolledAt: "asc" },
   });
+}
+
+export async function findUserRecentScores(userId: string, limit = 5) {
+  return prisma.quizAttempt.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    include: {
+      question: {
+        include: { skill: true },
+      },
+    },
+  });
+}
+
+export async function findUserDashboardData(userId: string) {
+  const [user, enrollments, masteries, recentScores, streak] = await Promise.all([
+    prisma.user.findUnique({ where: { id: userId } }),
+    findUserEnrollments(userId),
+    prisma.conceptMastery.findMany({ where: { userId }, include: { skill: true } }),
+    findUserRecentScores(userId),
+    prisma.learningStreak.findUnique({ where: { userId } }),
+  ]);
+
+  return {
+    user,
+    enrollments,
+    masteries,
+    recentScores,
+    streak,
+  };
 }

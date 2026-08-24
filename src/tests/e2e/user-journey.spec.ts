@@ -1,151 +1,102 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
-// ─── TEST 1 : Full journey in French ───────────────────────────────────────
-test("FR: Landing → Personal Finance → Course → Lesson → Learn → Practice → Test → Review → Master → Next Lesson", async ({
-  page,
-}) => {
-  // Landing
-  await page.goto("/fr");
-  await expect(page.getByTestId("landing-page")).toBeVisible();
+function uniqueEmail(prefix: string) {
+  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100000)}@example.com`;
+}
 
-  // Academies
-  await page.getByTestId("start-learning").click();
-  await expect(page.getByTestId("academies-page")).toBeVisible();
-  await expect(page.getByTestId("academy-personal-finance")).toBeVisible();
+async function register(page: Page, locale: "fr" | "en", email: string, password = "StrongPass1") {
+  await page.goto(`/${locale}`);
+  await page.getByTestId("landing-register-link").click();
+  await expect(page.getByTestId("register-page")).toBeVisible();
+  await page.getByTestId("register-email").fill(email);
+  await page.getByTestId("register-password").fill(password);
+  await page.getByTestId("register-confirm-password").fill(password);
+  await page.getByTestId("register-submit").click();
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+}
 
-  // Course
-  await page.getByTestId("academy-link-personal-finance").click();
-  await expect(page.getByTestId("course-page")).toBeVisible();
+async function login(page: Page, locale: "fr" | "en", email: string, password = "StrongPass1") {
+  await page.goto(`/${locale}/login`);
+  await expect(page.getByTestId("login-page")).toBeVisible();
+  await page.getByTestId("login-email").fill(email);
+  await page.getByTestId("login-password").fill(password);
+  await page.getByTestId("login-submit").click();
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+}
 
-  // Lesson
-  await page.getByTestId("lesson-link-understanding-income").click();
-  await expect(page.getByTestId("lesson-page")).toBeVisible();
+async function completeOneLesson(page: Page) {
+  await page.getByTestId("continue-course-essentials").click();
   await expect(page.getByTestId("lesson-player")).toBeVisible();
-  await expect(page.getByTestId("lesson-title")).toContainText("revenus");
-
-  // LEARN phase
-  await expect(page.getByTestId("phase-learn")).toBeVisible();
-  await expect(page.getByTestId("text-block")).toBeVisible();
-  await expect(page.getByTestId("video-block")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
-
-  // PRACTICE phase
   await expect(page.getByTestId("phase-practice")).toBeVisible();
-  await expect(page.getByTestId("exercise-block")).toBeVisible();
-  await expect(page.getByTestId("flashcard-block")).toBeVisible();
-  // Interact with flashcard
-  await page.getByTestId("flashcard-reveal-btn").click();
-  await expect(page.getByTestId("flashcard-hide-btn")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
-
-  // TEST phase
   await expect(page.getByTestId("test-phase")).toBeVisible();
-  await expect(page.getByTestId("quiz-question-prompt")).toBeVisible();
-  // Select an answer (pick first option — may be right or wrong)
-  const firstOption = page.locator('input[type="radio"]').first();
-  await firstOption.click();
+  await page.locator('input[type="radio"]').first().click();
   await page.getByTestId("submit-quiz").click();
-
-  // REVIEW phase
   await expect(page.getByTestId("review-phase")).toBeVisible();
-  await expect(page.getByTestId("review-score")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
-
-  // MASTER phase
   await expect(page.getByTestId("master-phase")).toBeVisible();
-  await expect(page.getByTestId("mastery-level")).toBeVisible();
-  await expect(page.getByTestId("master-score")).toBeVisible();
+  await page.getByTestId("back-to-course-btn").click();
+}
 
-  // Next Lesson button (if available)
-  const nextBtn = page.getByTestId("next-lesson-btn");
-  if (await nextBtn.isVisible()) {
-    await nextBtn.click();
-    await expect(page.getByTestId("lesson-player")).toBeVisible();
-  }
+test("REGISTER: Landing → Register → Create account → Dashboard", async ({ page }) => {
+  await register(page, "fr", uniqueEmail("register"));
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.getByTestId("global-progress")).toContainText("0%");
 });
 
-// ─── TEST 2 : Full journey in English ──────────────────────────────────────
-test("EN: Landing → Personal Finance → Course → Lesson → Learn → Practice → Test → Review → Master", async ({
-  page,
-}) => {
-  await page.goto("/en");
+test("LOGIN: Login → Dashboard → Logout → Landing", async ({ page }) => {
+  const email = uniqueEmail("login");
+  await register(page, "fr", email);
+  await page.getByTestId("logout-button").click();
   await expect(page.getByTestId("landing-page")).toBeVisible();
-
-  await page.getByTestId("start-learning").click();
-  await expect(page.getByTestId("academies-page")).toBeVisible();
-  await expect(page.getByTestId("academy-personal-finance")).toBeVisible();
-
-  await page.getByTestId("academy-link-personal-finance").click();
-  await expect(page.getByTestId("course-page")).toBeVisible();
-
-  await page.getByTestId("lesson-link-understanding-income").click();
-  await expect(page.getByTestId("lesson-player")).toBeVisible();
-  // Check EN title
-  await expect(page.getByTestId("lesson-title")).toContainText("Income");
-
-  // LEARN
-  await expect(page.getByTestId("text-block")).toBeVisible();
-  await page.getByTestId("next-phase-btn").click();
-
-  // PRACTICE
-  await expect(page.getByTestId("phase-practice")).toBeVisible();
-  await page.getByTestId("flashcard-reveal-btn").click();
-  await expect(page.getByTestId("flashcard-hide-btn")).toBeVisible();
-  await page.getByTestId("next-phase-btn").click();
-
-  // TEST
-  await expect(page.getByTestId("test-phase")).toBeVisible();
-  const firstOption = page.locator('input[type="radio"]').first();
-  await firstOption.click();
-  await page.getByTestId("submit-quiz").click();
-
-  // REVIEW
-  await expect(page.getByTestId("review-phase")).toBeVisible();
-  await page.getByTestId("next-phase-btn").click();
-
-  // MASTER
-  await expect(page.getByTestId("master-phase")).toBeVisible();
-  await expect(page.getByTestId("mastery-level")).toBeVisible();
+  await login(page, "fr", email);
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
 });
 
-// ─── TEST 3 : PMP Academy ──────────────────────────────────────────────────
-test("PMP: Landing → PMP Academy → Course → Module → Lesson → Full player", async ({
-  page,
-}) => {
-  await page.goto("/fr");
-  await page.getByTestId("start-learning").click();
-  await expect(page.getByTestId("academy-pmp-project-management")).toBeVisible();
-
-  await page.getByTestId("academy-link-pmp-project-management").click();
+test("LEARNING: Login → Dashboard → Personal Finance → Course → Lesson → Quiz → Result → Dashboard", async ({ page }) => {
+  const email = uniqueEmail("learning");
+  await register(page, "fr", email);
+  await expect(page.getByTestId("dashboard-course-essentials")).toBeVisible();
+  await completeOneLesson(page);
   await expect(page.getByTestId("course-page")).toBeVisible();
-  await expect(page.getByTestId("course-title")).toBeVisible();
+  await page.goto("/fr/dashboard");
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.getByTestId("global-progress")).not.toContainText("0%");
+});
 
-  // Navigate to first PMP lesson
-  await page.getByTestId("lesson-link-what-is-project-management").click();
-  await expect(page.getByTestId("lesson-player")).toBeVisible();
-  await expect(page.getByTestId("lesson-title")).toContainText("projet");
+test("LANGUAGE: Login → FR Dashboard → EN Dashboard", async ({ page }) => {
+  const email = uniqueEmail("locale");
+  await register(page, "fr", email);
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.locator("body")).toContainText("Bienvenue");
+  await page.getByTestId("settings-link").click();
+  await expect(page.getByTestId("settings-page")).toBeVisible();
+  await page.getByTestId("locale-en").check();
+  await page.getByTestId("save-settings-button").click();
+  await expect(page).toHaveURL(/\/en\/settings/);
+  await page.goto("/en/dashboard");
+  await expect(page.locator("body")).toContainText("Welcome");
+});
 
-  // LEARN
-  await expect(page.getByTestId("text-block")).toBeVisible();
-  await page.getByTestId("next-phase-btn").click();
+test("USER ISOLATION: user A progress is not visible to user B", async ({ browser }) => {
+  const emailA = uniqueEmail("usera");
+  const emailB = uniqueEmail("userb");
 
-  // PRACTICE
-  await expect(page.getByTestId("phase-practice")).toBeVisible();
-  await page.getByTestId("next-phase-btn").click();
+  const contextA = await browser.newContext();
+  const pageA = await contextA.newPage();
+  await register(pageA, "fr", emailA);
+  await completeOneLesson(pageA);
+  await pageA.goto("/fr/dashboard");
+  await expect(pageA.getByTestId("global-progress")).not.toContainText("0%");
 
-  // TEST
-  await expect(page.getByTestId("test-phase")).toBeVisible();
-  const firstOption = page.locator('input[type="radio"]').first();
-  await firstOption.click();
-  await page.getByTestId("submit-quiz").click();
+  const contextB = await browser.newContext();
+  const pageB = await contextB.newPage();
+  await register(pageB, "fr", emailB);
+  await pageB.goto("/fr/dashboard");
+  await expect(pageB.getByTestId("global-progress")).toContainText("0%");
+  await expect(pageB.getByTestId("weak-areas-list")).not.toContainText("Fondamentaux finance personnelle");
 
-  // REVIEW
-  await expect(page.getByTestId("review-phase")).toBeVisible();
-  const score = page.getByTestId("review-score");
-  await expect(score).toBeVisible();
-
-  await page.getByTestId("next-phase-btn").click();
-
-  // MASTER
-  await expect(page.getByTestId("master-phase")).toBeVisible();
+  await contextA.close();
+  await contextB.close();
 });

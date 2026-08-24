@@ -4,7 +4,7 @@ Bilingual (FR/EN) professional learning platform built with a generic pedagogica
 
 ## Status
 
-**Phase 0 + Phase 1 complete.** Foundation, database schema, seed content, repositories, and essential tests are in place. UI is minimal (enough for E2E smoke test). Learning engine UI, dashboard, and full auth are **not yet implemented** (Phase 2+).
+**Phase 0 + Phase 3 complete.** The platform now includes the pedagogical engine, real multi-user authentication with Auth.js v5 credentials, a personal dashboard, settings, protected APIs, and user-isolated progression.
 
 ## Stack
 
@@ -12,6 +12,7 @@ Bilingual (FR/EN) professional learning platform built with a generic pedagogica
 - Tailwind CSS 4
 - PostgreSQL + Prisma
 - next-intl (FR/EN)
+- Auth.js v5 (credentials) + bcryptjs
 - Vitest (unit/integration) + Playwright (E2E)
 
 ## Prerequisites
@@ -67,9 +68,9 @@ src/
     learning-engine/ # Progression, mastery
     assessment-engine/ # Quiz scoring
     localization/   # i18n routing
-    auth/           # Auth types (stub)
+    auth/           # Auth.js, password hashing, session helpers
     ai-tutor/       # AiTutorPort + NoopAiTutor
-    dashboard/      # Dashboard stub
+    dashboard/      # Dashboard aggregation
   shared/           # Shared types, utils
   data/             # Prisma client, repositories
   tests/            # Vitest + Playwright tests
@@ -89,7 +90,9 @@ docs/               # See ARCHITECTURE.md, etc.
 ## Demo User
 
 - Email: `demo@pla.local`
-- Used for quiz submission in V1
+- Password: `Demo123!`
+- Test-only account for automated regression checks
+- Never used as the default identity for real users
 
 ## Documentation
 

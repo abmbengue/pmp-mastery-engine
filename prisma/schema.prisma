@@ -203,6 +203,7 @@ model User {
   id               String           @id @default(cuid())
   email            String           @unique
   name             String
+  passwordHash     String?
   locale           Locale           @default(FR)
   enrollments      Enrollment[]
   lessonProgress   LessonProgress[]

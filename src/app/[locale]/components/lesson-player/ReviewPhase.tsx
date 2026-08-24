@@ -1,12 +1,9 @@
 "use client";
 
 import type { QuizResult } from "./TestPhase";
-import type { Locale } from "@/shared/types/locale";
-
 interface ReviewPhaseProps {
   score: number;
   results: QuizResult[];
-  locale: Locale;
   labels: {
     title: string;
     yourScore: string;
@@ -20,7 +17,7 @@ interface ReviewPhaseProps {
   };
 }
 
-export function ReviewPhase({ score, results, locale: _locale, labels }: ReviewPhaseProps) {
+export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
   const correct = results.filter((r) => r.isCorrect);
   const wrong = results.filter((r) => !r.isCorrect);
 

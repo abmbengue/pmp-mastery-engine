@@ -19,7 +19,7 @@ npm run test:e2e:install  # first time only
 npm run test:e2e
 ```
 
-## Test Coverage (Phase 0+1)
+## Test Coverage (Phase 0+Phase 3)
 
 ### Unit Tests
 
@@ -41,7 +41,7 @@ npm run test:e2e
 
 | File | Covers |
 |---|---|
-| `e2e/user-journey.spec.ts` | Landing → Academies → Course → Lesson → Quiz → Result |
+| `e2e/user-journey.spec.ts` | Register, login/logout, learning flow, locale switch, user isolation |
 
 ## Prerequisites for Integration Tests
 
@@ -69,3 +69,12 @@ When modifying scoring or progression logic:
 1. Run full test suite
 2. Verify integration test scores unchanged
 3. Add new test case for any bug fix
+
+
+### Phase 3 additions
+
+| File | Covers |
+|---|---|
+| `auth-password.test.ts` | registration validation, hashing, password verification |
+| `auth-integration.test.ts` | locale persistence, V1 auto-enrollment, user data isolation |
+| `api-authorization.test.ts` | protected API routes return 401 when unauthenticated |

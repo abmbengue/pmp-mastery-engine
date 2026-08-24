@@ -21,6 +21,58 @@
     "previousLesson": "Leçon précédente",
     "continueLearning": "Continuer l'apprentissage"
   },
+  "nav": {
+    "home": "Accueil",
+    "academies": "Académies",
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "login": "Connexion",
+    "register": "Inscription"
+  },
+  "auth": {
+    "loginTitle": "Connexion",
+    "loginSubtitle": "Accédez à votre tableau de bord personnel.",
+    "registerTitle": "Créer votre compte",
+    "registerSubtitle": "Créez un compte pour sauvegarder votre progression et reprendre plus tard.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "loginButton": "Se connecter",
+    "registerButton": "Créer mon compte",
+    "invalidCredentials": "Email ou mot de passe invalide.",
+    "emailExists": "Un compte existe déjà avec cet email.",
+    "invalidEmail": "Veuillez saisir une adresse email valide.",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "passwordWeak": "Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre.",
+    "genericError": "Une erreur est survenue. Veuillez réessayer.",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "registerLink": "S'inscrire",
+    "loginLink": "Se connecter"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "globalProgress": "Progression globale",
+    "learningTime": "Temps d'apprentissage",
+    "streak": "Série",
+    "recentScores": "Dernier score",
+    "continueLearning": "Continuer l'apprentissage",
+    "lessonsComplete": "leçons terminées",
+    "openCourse": "Ouvrir le cours",
+    "weakAreas": "Points faibles",
+    "masteredAreas": "Compétences maîtrisées",
+    "noneYet": "Aucune donnée pour le moment"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez vos préférences personnelles.",
+    "backToDashboard": "Retour au tableau de bord",
+    "email": "Email",
+    "language": "Langue",
+    "save": "Enregistrer les préférences"
+  },
   "player": {
     "phase": "Phase",
     "of": "sur",

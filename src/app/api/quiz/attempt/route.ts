@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { findUserByEmail } from "@/data/repositories/user-repository";
-import { recordQuizAttempt } from "@/modules/assessment-engine/scoring-service";
-import { computeQuizScore } from "@/modules/assessment-engine/scoring-service";
+import { auth } from "@/auth";
+import { recordQuizAttempt, computeQuizScore } from "@/modules/assessment-engine/scoring-service";
 import prisma from "@/data/prisma-client";
 
 const bodySchema = z.object({
-  userEmail: z.string().email(),
   learningItemId: z.string(),
   answers: z.array(
     z.object({
@@ -17,25 +15,26 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const raw = await request.json();
   const parsed = bodySchema.safeParse(raw);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
-  const { userEmail, learningItemId, answers } = parsed.data;
-
-  const user = await findUserByEmail(userEmail);
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  const { learningItemId, answers } = parsed.data;
 
   const results = await Promise.all(
     answers.map(async (a) => {
       const { validation } = await recordQuizAttempt(
-        user.id,
+        session.user.id,
         a.questionId,
         a.selectedOptionIds,
         learningItemId
       );
-      // Fetch options for explanation
       const question = await prisma.question.findUnique({
         where: { id: a.questionId },
         include: { answerOptions: { orderBy: { sortOrder: "asc" } }, skill: true },
@@ -51,7 +50,9 @@ export async function POST(request: Request) {
     })
   );
 
-  const overallScore = computeQuizScore(results.map((r) => ({ isCorrect: r.isCorrect, score: r.score, correctOptionIds: r.correctOptionIds })));
+  const overallScore = computeQuizScore(
+    results.map((r) => ({ isCorrect: r.isCorrect, score: r.score, correctOptionIds: r.correctOptionIds }))
+  );
 
   return NextResponse.json({ score: overallScore, results });
 }

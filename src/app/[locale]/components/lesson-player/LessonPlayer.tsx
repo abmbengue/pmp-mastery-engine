@@ -28,7 +28,6 @@ export interface LessonPlayerProps {
   courseSlug: string;
   moduleSlug: string;
   lessonSlug: string;
-  lessonId: string;
   title: string;
   description: string;
   estimatedMinutes: number | null;
@@ -36,7 +35,6 @@ export interface LessonPlayerProps {
   initialPhase: LessonPhase;
   initialQuizScore: number | null;
   nextLesson: { slug: string; moduleSlug: string } | null;
-  userEmail: string;
   labels: {
     player: {
       phase: string;
@@ -64,7 +62,6 @@ export function LessonPlayer({
   courseSlug,
   moduleSlug,
   lessonSlug,
-  lessonId: _lessonId,
   title,
   description,
   estimatedMinutes,
@@ -72,7 +69,6 @@ export function LessonPlayer({
   initialPhase,
   initialQuizScore,
   nextLesson,
-  userEmail,
   labels,
 }: LessonPlayerProps) {
   const router = useRouter();
@@ -99,7 +95,6 @@ export function LessonPlayer({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            userEmail,
             academySlug,
             courseSlug,
             moduleSlug,
@@ -114,7 +109,7 @@ export function LessonPlayer({
         // Non-blocking — progress save failure should not stop learning
       }
     },
-    [userEmail, academySlug, courseSlug, moduleSlug, lessonSlug]
+    [academySlug, courseSlug, moduleSlug, lessonSlug]
   );
 
   // Finish lesson on server
@@ -125,7 +120,6 @@ export function LessonPlayer({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            userEmail,
             academySlug,
             courseSlug,
             moduleSlug,
@@ -140,7 +134,7 @@ export function LessonPlayer({
         // Non-blocking
       }
     },
-    [userEmail, academySlug, courseSlug, moduleSlug, lessonSlug]
+    [academySlug, courseSlug, moduleSlug, lessonSlug]
   );
 
   // Submit quiz answers
@@ -152,7 +146,7 @@ export function LessonPlayer({
       const res = await fetch("/api/quiz/attempt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userEmail, learningItemId: quizItem.id, answers }),
+        body: JSON.stringify({ learningItemId: quizItem.id, answers }),
       });
       const data = await res.json();
       const score: number = data.score;
@@ -199,7 +193,7 @@ export function LessonPlayer({
       await saveProgress("REVIEW", score, level);
       setCurrentPhase("REVIEW");
     },
-    [items, userEmail, locale, saveProgress]
+    [items, locale, saveProgress]
   );
 
   async function handleNextPhase() {
@@ -326,7 +320,6 @@ export function LessonPlayer({
           <ReviewPhase
             score={quizScore ?? 0}
             results={quizResults}
-            locale={locale}
             labels={{
               title: pl.review.title,
               yourScore: pl.review.yourScore,

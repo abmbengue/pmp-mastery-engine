@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { prisma } from "./seed/client";
 import { seedPersonalFinance } from "./seed/personal-finance";
 import { seedPmp } from "./seed/pmp";
@@ -83,12 +84,14 @@ async function main() {
   const pf = await seedPersonalFinance(prisma);
   const pmp = await seedPmp(prisma);
 
-  // Demo user for testing
+  // Demo user for tests only (never used as default real identity)
+  const demoUserPasswordHash = await bcrypt.hash("Demo123!", 12);
   const demoUser = await prisma.user.create({
     data: {
       email: "demo@pla.local",
       name: "Demo User",
       locale: "FR",
+      passwordHash: demoUserPasswordHash,
     },
   });
 

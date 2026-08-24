@@ -2,12 +2,10 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { findCourseBySlug, localizeCourse } from "@/data/repositories/course-repository";
 import { localizeLesson, localizeModule } from "@/data/repositories/lesson-repository";
 import { getCourseProgress } from "@/modules/learning-engine/progress-service";
-import { findUserByEmail } from "@/data/repositories/user-repository";
+import { getCurrentSession } from "@/modules/auth/session";
 import { Link } from "@/modules/localization/navigation";
 import type { Locale } from "@/shared/types/locale";
 import { notFound } from "next/navigation";
-
-const DEMO_EMAIL = "demo@pla.local";
 
 export default async function CoursePage({
   params,
@@ -23,9 +21,8 @@ export default async function CoursePage({
   const loc = locale as Locale;
   const { title, description } = localizeCourse(course, loc);
 
-  // Load course progress for demo user
-  const user = await findUserByEmail(DEMO_EMAIL);
-  const progress = user ? await getCourseProgress(user.id, course.id) : null;
+  const session = await getCurrentSession();
+  const progress = session?.user?.id ? await getCourseProgress(session.user.id, course.id) : null;
 
   return (
     <section data-testid="course-page">
