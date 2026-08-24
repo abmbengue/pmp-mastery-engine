@@ -71,23 +71,24 @@
 - [x] AI_TUTOR.md documentation
 - [x] Unit + API + E2E coverage (mock provider)
 
-## Phase 6 — Production / Advanced Learning
+## Phase 6 — Financial Pedagogical Simulators
 
-- [ ] Personal Finance simulators
-- [ ] Corporate Finance simulators
-- [ ] PMP mock exams
-- [ ] Real short video hosting
+- [x] SimulationEngine + pure calculation functions
+- [x] Personal Finance: Compound Interest, Budget, Debt Repayment
+- [x] Corporate Finance: Valuation Multiples, DCF Basics
+- [x] BASE / UPSIDE / DOWNSIDE scenarios + sensitivity
+- [x] SIMULATION LearningItem payload + seed
+- [x] Progress save + AI Tutor “Explain this result”
+- [x] FR/EN, SIMULATORS.md, unit + E2E tests
+
+## Phase 7 — Advanced Learning / Production Prep
+
+- [ ] PMP mock exams / situational simulator
 - [ ] Adaptive learning enhancements
+- [ ] Real short video hosting
 - [ ] Payment / subscription
 - [ ] CMS / admin
 - [ ] OAuth providers
-
-## Known Limitations (after Phase 5)
-
-- Real OpenAI calls only when `AI_PROVIDER=openai` + `AI_API_KEY` are set
-- AI Tutor has no persistent chat history
-- Short videos remain placeholders (completion is tracked)
-- No simulators / mock exams / payments / CMS yet
 
 - 6 academies have no content (PLANNED status)
 - No admin/CMS for content management

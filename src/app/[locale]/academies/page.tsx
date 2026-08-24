@@ -12,6 +12,7 @@ export default async function AcademiesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("app");
+  const ts = await getTranslations("simulators");
   const academies = await findAllAcademies();
   const loc = locale as Locale;
 
@@ -50,6 +51,15 @@ export default async function AcademiesPage({
                   >
                     {t("viewShorts")}
                   </Link>
+                  {(academy.slug === "personal-finance" || academy.slug === "corporate-finance") && (
+                    <Link
+                      href={`/academies/${academy.slug}/simulators`}
+                      className="text-sm text-gray-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      data-testid={`academy-simulators-${academy.slug}`}
+                    >
+                      {ts("viewSimulators")}
+                    </Link>
+                  )}
                 </div>
               )}
             </li>

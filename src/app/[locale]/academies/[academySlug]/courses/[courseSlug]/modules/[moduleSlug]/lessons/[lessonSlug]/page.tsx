@@ -25,9 +25,10 @@ export default async function LessonPage({
   const { locale, academySlug, courseSlug, moduleSlug, lessonSlug } = await params;
   setRequestLocale(locale);
 
-  const [t, tp] = await Promise.all([
+  const [t, tp, ts] = await Promise.all([
     getTranslations("app"),
     getTranslations("player"),
+    getTranslations("simulators"),
   ]);
 
   const lesson = await findLessonBySlug(academySlug, courseSlug, moduleSlug, lessonSlug);
@@ -183,6 +184,35 @@ export default async function LessonPage({
               unavailable: tp("aiTutor.unavailable"),
               loading: tp("aiTutor.loading"),
               response: tp("aiTutor.response"),
+            },
+            simulators: {
+              educationalNotice: ts("educationalNotice"),
+              whatIsThis: ts("whatIsThis"),
+              howItWorks: ts("howItWorks"),
+              whatToNotice: ts("whatToNotice"),
+              scenarios: ts("scenarios"),
+              base: ts("base"),
+              upside: ts("upside"),
+              downside: ts("downside"),
+              custom: ts("custom"),
+              results: ts("results"),
+              sensitivity: ts("sensitivity"),
+              markCompleted: ts("markCompleted"),
+              completed: ts("completed"),
+              explainResult: ts("explainResult"),
+              explaining: ts("explaining"),
+              explainError: ts("explainError"),
+              contributions: ts("contributions"),
+              growth: ts("growth"),
+              finalValue: ts("finalValue"),
+              compareScenarios: ts("compareScenarios"),
+              scenarioA: ts("scenarioA"),
+              scenarioB: ts("scenarioB"),
+              interestSaved: ts("interestSaved"),
+              timeSaved: ts("timeSaved"),
+              months: ts("months"),
+              invalidInput: ts("invalidInput"),
+              steps: ts("steps"),
             },
           },
           app: {

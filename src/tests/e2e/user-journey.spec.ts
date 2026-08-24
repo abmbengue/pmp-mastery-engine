@@ -204,3 +204,62 @@ test("PHASE5 TEST4: Shorts → Mark completed → progress updated", async ({ pa
   await page.getByTestId("mark-short-completed").click();
   await expect(page.getByTestId("short-completed-badge")).toBeVisible({ timeout: 10_000 });
 });
+
+test("PHASE6 TEST1: Compound Interest simulator", async ({ page }) => {
+  const email = uniqueEmail("p6-ci");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/simulators/COMPOUND_INTEREST");
+  await expect(page.getByTestId("simulator-COMPOUND_INTEREST")).toBeVisible();
+  await page.getByTestId("sim-input-annualRatePercent").fill("8");
+  await expect(page.getByTestId("final-value")).toBeVisible();
+  await expect(page.getByTestId("sensitivity-table")).toBeVisible();
+});
+
+test("PHASE6 TEST2: Budget simulator scenario", async ({ page }) => {
+  const email = uniqueEmail("p6-budget");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/simulators/BUDGET");
+  await expect(page.getByTestId("simulator-BUDGET")).toBeVisible();
+  await page.getByTestId("scenario-UPSIDE").click();
+  await expect(page.getByTestId("budget-savings-rate")).toBeVisible();
+});
+
+test("PHASE6 TEST3: Debt compare scenarios", async ({ page }) => {
+  const email = uniqueEmail("p6-debt");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/simulators/DEBT_REPAYMENT");
+  await expect(page.getByTestId("debt-comparison")).toBeVisible();
+  await expect(page.getByTestId("interest-saved")).toBeVisible();
+});
+
+test("PHASE6 TEST4: Valuation Multiples", async ({ page }) => {
+  const email = uniqueEmail("p6-mult");
+  await register(page, "en", email);
+  await page.goto("/en/academies/corporate-finance/simulators/VALUATION_MULTIPLES");
+  await expect(page.getByTestId("enterprise-value")).toBeVisible();
+  await expect(page.getByTestId("equity-value")).toBeVisible();
+});
+
+test("PHASE6 TEST5: DCF sensitivity", async ({ page }) => {
+  const email = uniqueEmail("p6-dcf");
+  await register(page, "en", email);
+  await page.goto("/en/academies/corporate-finance/simulators/DCF_BASICS");
+  await expect(page.getByTestId("dcf-ev")).toBeVisible();
+  await expect(page.getByTestId("sensitivity-table")).toBeVisible();
+});
+
+test("PHASE6 TEST6: FR simulator", async ({ page }) => {
+  const email = uniqueEmail("p6-fr");
+  await register(page, "fr", email);
+  await page.goto("/fr/academies/personal-finance/simulators/COMPOUND_INTEREST");
+  await expect(page.getByTestId("simulator-page")).toBeVisible();
+  await expect(page.locator("body")).toContainText("Intérêt composé");
+});
+
+test("PHASE6 TEST7: EN simulator", async ({ page }) => {
+  const email = uniqueEmail("p6-en");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/simulators/BUDGET");
+  await expect(page.getByTestId("simulator-page")).toBeVisible();
+  await expect(page.locator("body")).toContainText("Budget");
+});

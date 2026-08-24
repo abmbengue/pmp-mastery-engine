@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { simulationTypeSchema } from "@/modules/simulation-engine/types";
 
 /** Text block content stored in LearningItem.payload */
 export const textPayloadSchema = z.object({
@@ -71,14 +72,23 @@ export const quizPayloadSchema = z.object({
   instructionsEn: z.string().optional(),
 });
 
-/** Future SIMULATION items — architecture only */
+/** SIMULATION learning item — links a lesson to a pedagogical simulator */
 export const simulationPayloadSchema = z.object({
+  simulationType: simulationTypeSchema,
   titleFr: z.string(),
   titleEn: z.string(),
-  descriptionFr: z.string().optional(),
-  descriptionEn: z.string().optional(),
-  isPlaceholder: z.boolean().default(true),
-  simulatorKey: z.string().optional(),
+  descriptionFr: z.string(),
+  descriptionEn: z.string(),
+  difficulty: contentDifficultySchema.default("BEGINNER"),
+  estimatedMinutes: z.number().int().positive().max(60).default(8),
+  configuration: z.record(z.string(), z.unknown()).optional().default({}),
+  isPlaceholder: z.boolean().default(false),
+  whatIsThisFr: z.string().optional(),
+  whatIsThisEn: z.string().optional(),
+  howItWorksFr: z.string().optional(),
+  howItWorksEn: z.string().optional(),
+  whatToNoticeFr: z.string().optional(),
+  whatToNoticeEn: z.string().optional(),
 });
 
 /** Future ASSESSMENT / mock exam items — architecture only */

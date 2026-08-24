@@ -76,14 +76,16 @@ describe("content payload validation", () => {
     expect(() => videoPayloadSchema.parse({ titleFr: "x", titleEn: "y" })).toThrow();
   });
 
-  it("validates simulation and assessment placeholders", () => {
+  it("validates simulation and assessment payloads", () => {
     expect(
       simulationPayloadSchema.parse({
+        simulationType: "COMPOUND_INTEREST",
         titleFr: "Sim",
         titleEn: "Sim",
-        isPlaceholder: true,
-      }).isPlaceholder
-    ).toBe(true);
+        descriptionFr: "d",
+        descriptionEn: "d",
+      }).simulationType
+    ).toBe("COMPOUND_INTEREST");
     expect(
       assessmentPayloadSchema.parse({
         titleFr: "Exam",
@@ -97,8 +99,11 @@ describe("content payload validation", () => {
     expect(validateLearningItemPayload("TEXT", { bodyFr: "FR", bodyEn: "EN" }).bodyFr).toBe("FR");
     expect(
       validateLearningItemPayload("SIMULATION", {
+        simulationType: "BUDGET",
         titleFr: "S",
         titleEn: "S",
+        descriptionFr: "d",
+        descriptionEn: "d",
       }).titleEn
     ).toBe("S");
     expect(

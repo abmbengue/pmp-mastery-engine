@@ -49,6 +49,10 @@ export interface AiTutorContext {
   learningItemType?: string;
   userLevel?: "beginner" | "intermediate" | "advanced";
   question?: AiTutorQuestionContext;
+  /** Optional pedagogical simulation snapshot (no PII / bank data) */
+  simulationType?: string;
+  simulationScenario?: string;
+  simulationSummary?: string;
   /** Legacy field used by early stubs */
   conceptSlug?: string;
   recentAnswer?: {

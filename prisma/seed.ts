@@ -3,6 +3,7 @@ import { prisma } from "./seed/client";
 import { seedPersonalFinance } from "./seed/personal-finance";
 import { seedPmp } from "./seed/pmp";
 import { seedCorporateFinance } from "./seed/corporate-finance";
+import { seedSimulationItems } from "./seed/simulations";
 
 const PLANNED_ACADEMIES = [
   {
@@ -78,6 +79,7 @@ async function main() {
   const pf = await seedPersonalFinance(prisma);
   const pmp = await seedPmp(prisma);
   const cf = await seedCorporateFinance(prisma);
+  await seedSimulationItems(prisma);
 
   // Demo user for tests only (never used as default real identity)
   const demoUserPasswordHash = await bcrypt.hash("Demo123!", 12);

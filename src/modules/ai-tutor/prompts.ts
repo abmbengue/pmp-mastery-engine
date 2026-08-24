@@ -86,6 +86,11 @@ export function buildAiTutorPrompts(
   if (ctx.lessonDescription) lines.push(`- Lesson summary: ${ctx.lessonDescription}`);
   if (ctx.skillTitle) lines.push(`- Skill: ${ctx.skillTitle}`);
   if (ctx.learningItemType) lines.push(`- Item type: ${ctx.learningItemType}`);
+  if (ctx.simulationType) {
+    lines.push(`- Simulation: ${ctx.simulationType}`);
+    if (ctx.simulationScenario) lines.push(`- Scenario: ${ctx.simulationScenario}`);
+    if (ctx.simulationSummary) lines.push(`- Result summary: ${ctx.simulationSummary}`);
+  }
 
   if (ctx.question) {
     lines.push(locale === "fr" ? "- Question :" : "- Question:");

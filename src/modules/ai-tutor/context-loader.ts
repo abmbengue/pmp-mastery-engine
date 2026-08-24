@@ -14,6 +14,9 @@ export const aiTutorApiBodySchema = z.object({
   questionId: z.string().min(1).max(120).optional(),
   selectedOptionIds: z.array(z.string().min(1).max(120)).max(10).optional(),
   userMessage: z.string().max(500).optional(),
+  simulationType: z.string().max(80).optional(),
+  simulationScenario: z.string().max(40).optional(),
+  simulationSummary: z.string().max(800).optional(),
 });
 
 export type AiTutorApiBody = z.infer<typeof aiTutorApiBodySchema>;
@@ -137,6 +140,13 @@ export async function loadAiTutorContext(
       }
     }
   }
+
+  if (body.simulationType) {
+    context.simulationType = body.simulationType;
+    context.learningItemType = "SIMULATION";
+  }
+  if (body.simulationScenario) context.simulationScenario = body.simulationScenario;
+  if (body.simulationSummary) context.simulationSummary = body.simulationSummary;
 
   return context;
 }

@@ -89,4 +89,18 @@ describe("API authorization", () => {
     );
     expect(response.status).toBe(401);
   });
+
+  it("rejects unauthorized simulation completion requests", async () => {
+    const { auth } = await import("@/auth");
+    vi.mocked(auth).mockResolvedValue(null);
+    const { POST } = await import("@/app/api/simulation/complete/route");
+    const response = await POST(
+      new Request("http://localhost/api/simulation/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ simulationType: "BUDGET", scenarioId: "BASE" }),
+      })
+    );
+    expect(response.status).toBe(401);
+  });
 });

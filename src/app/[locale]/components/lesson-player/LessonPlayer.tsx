@@ -15,11 +15,13 @@ import { ReviewPhase } from "./ReviewPhase";
 import { MasterPhase } from "./MasterPhase";
 import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
 import type { AiTutorPanelLabels } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
-import type { TextPayload, VideoPayload, ExercisePayload, FlashcardPayload } from "@/shared/types/content-payloads";
+import type { TextPayload, VideoPayload, ExercisePayload, FlashcardPayload, SimulationPayload } from "@/shared/types/content-payloads";
+import { SimulatorWorkbench } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
+import type { SimulatorLabels } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
 
 export interface LessonItem {
   id: string;
-  type: "TEXT" | "VIDEO" | "EXERCISE" | "QUIZ" | "FLASHCARD";
+  type: "TEXT" | "VIDEO" | "EXERCISE" | "QUIZ" | "FLASHCARD" | "SIMULATION";
   payload: unknown;
   questions: QuizQuestion[];
 }
@@ -54,6 +56,7 @@ export interface LessonPlayerProps {
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
       master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string };
       aiTutor: AiTutorPanelLabels;
+      simulators: SimulatorLabels;
     };
     app: { correct: string; incorrect: string; backToCourse: string };
   };
@@ -245,6 +248,7 @@ export function LessonPlayer({
   const videoItem = items.find((i) => i.type === "VIDEO");
   const exerciseItem = items.find((i) => i.type === "EXERCISE");
   const flashcardItem = items.find((i) => i.type === "FLASHCARD");
+  const simulationItem = items.find((i) => i.type === "SIMULATION");
   const quizItem = items.find((i) => i.type === "QUIZ");
 
   return (
@@ -314,6 +318,16 @@ export function LessonPlayer({
                 locale={locale}
                 labels={{ reveal: pl.practice.flashcardReveal, hide: pl.practice.flashcardHide, front: pl.practice.front, back: pl.practice.back }}
               />
+            )}
+            {simulationItem && (
+              <div data-testid="lesson-simulation">
+                <SimulatorWorkbench
+                  type={(simulationItem.payload as SimulationPayload).simulationType}
+                  locale={locale}
+                  labels={pl.simulators}
+                  embedded
+                />
+              </div>
             )}
           </div>
         )}
