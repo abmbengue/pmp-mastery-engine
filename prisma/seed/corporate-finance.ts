@@ -11,9 +11,9 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
       titleFr: "Finance d'entreprise",
       titleEn: "Corporate Finance",
       descriptionFr:
-        "États financiers, BFR, valorisation, DCF et bases M&A — contenu pédagogique (pas une valorisation professionnelle).",
+        "États financiers, financement, valorisation, décisions d'investissement et M&A — contenu pédagogique (pas une valorisation professionnelle).",
       descriptionEn:
-        "Statements, working capital, valuation, DCF, and M&A basics — educational (not a professional valuation).",
+        "Statements, financing, valuation, investment decisions, and M&A — educational (not a professional valuation).",
       status: "ACTIVE",
       sortOrder: 2,
     },
@@ -22,9 +22,9 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
       titleFr: "Finance d'entreprise",
       titleEn: "Corporate Finance",
       descriptionFr:
-        "États financiers, BFR, valorisation, DCF et bases M&A — contenu pédagogique (pas une valorisation professionnelle).",
+        "États financiers, financement, valorisation, décisions d'investissement et M&A — contenu pédagogique (pas une valorisation professionnelle).",
       descriptionEn:
-        "Statements, working capital, valuation, DCF, and M&A basics — educational (not a professional valuation).",
+        "Statements, financing, valuation, investment decisions, and M&A — educational (not a professional valuation).",
     },
   });
 
@@ -36,16 +36,20 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
       slug: "cf-essentials",
       titleFr: "Essentiels de la finance d'entreprise",
       titleEn: "Corporate Finance Essentials",
-      descriptionFr: "Parcours micro-learning : états financiers, BFR, valorisation, DCF, M&A.",
-      descriptionEn: "Micro-learning path: statements, WC, valuation, DCF, M&A.",
+      descriptionFr:
+        "Parcours micro-learning : fondements, financement, valorisation, investissement et M&A.",
+      descriptionEn:
+        "Micro-learning path: foundations, financing, valuation, investment, and M&A.",
       sortOrder: 0,
       estimatedMinutes: totalMinutes,
     },
     update: {
       titleFr: "Essentiels de la finance d'entreprise",
       titleEn: "Corporate Finance Essentials",
-      descriptionFr: "Parcours micro-learning : états financiers, BFR, valorisation, DCF, M&A.",
-      descriptionEn: "Micro-learning path: statements, WC, valuation, DCF, M&A.",
+      descriptionFr:
+        "Parcours micro-learning : fondements, financement, valorisation, investissement et M&A.",
+      descriptionEn:
+        "Micro-learning path: foundations, financing, valuation, investment, and M&A.",
       estimatedMinutes: totalMinutes,
     },
   });
@@ -64,6 +68,8 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
   await skillId("cf-capital-structure", "Structure du capital", "Capital structure");
   await skillId("cf-working-capital", "Besoin en fonds de roulement", "Working capital");
   await skillId("cf-ma", "Bases M&A", "M&A basics");
+  await skillId("cf-investment", "Décisions d'investissement", "Investment decisions");
+  await skillId("cf-advanced", "Finance d'entreprise avancée", "Advanced corporate finance");
 
   for (const mod of CF_MODULES) {
     const moduleLessons = CF_LESSONS.filter((l) => l.moduleSlug === mod.slug);

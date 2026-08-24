@@ -113,7 +113,7 @@ describe("Phase 10 content catalogs FR/EN", () => {
   });
 
   it("expands corporate finance catalogs", () => {
-    expect(CF_LESSONS.length).toBeGreaterThanOrEqual(25);
+    expect(CF_LESSONS.length).toBeGreaterThanOrEqual(50);
     expect(CF_LESSONS.some((l) => l.slug === "wacc-basics")).toBe(true);
     expect(CF_LESSONS.some((l) => l.slug === "accretion-dilution")).toBe(true);
   });
