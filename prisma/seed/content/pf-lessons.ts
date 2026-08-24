@@ -5,6 +5,7 @@
  */
 
 import type { CompactLesson } from "./compact";
+import { applyPfQualityUpgrades } from "./pf-quality-upgrades";
 import { PF_FOUNDATIONS_LESSONS } from "./pf-foundations";
 import { PF_DEBT_LESSONS } from "./pf-debt";
 import { PF_INVESTING_LESSONS } from "./pf-investing";
@@ -41,9 +42,9 @@ export const PF_MODULES = [
   },
 ] as const;
 
-export const PF_LESSONS: CompactLesson[] = [
+export const PF_LESSONS: CompactLesson[] = applyPfQualityUpgrades([
   ...PF_FOUNDATIONS_LESSONS,
   ...PF_DEBT_LESSONS,
   ...PF_INVESTING_LESSONS,
   ...PF_WEALTH_LESSONS,
-];
+]);
