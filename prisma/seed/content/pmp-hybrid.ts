@@ -57,17 +57,18 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "Helios: legal requires a PCI compliance milestone. Which zone stays predictive? Which agile?",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr:
-        "L'approche hybride combine typiquement planification structurée et exécution agile.",
-      promptEn:
-        "The hybrid approach typically combines structured planning and agile execution.",
-      explanationCorrectFr:
-        "Vrai — le hybride adapte la méthode aux composantes.",
-      explanationCorrectEn:
-        "True — hybrid adapts method to components.",
-      difficulty: 1,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      type: "SINGLE_CHOICE",
+      promptFr: "Helios Connect : infra PCI en prédictif, portail API en agile. Pourquoi hybride ?",
+      promptEn: "Helios Connect: PCI infra predictive, API portal agile. Why hybrid?",
+      explanationCorrectFr: "L'incertitude n'est pas uniforme — tailoring mature par composante.",
+      explanationCorrectEn: "Uncertainty is not uniform — mature tailoring per component.",
+      difficulty: 2,
+      options: [
+        opt("Parce que l'équipe ne maîtrise pas Scrum", "Because the team cannot do Scrum", false, "Hybride n'est pas un échec agile.", "Hybrid is not failed agile."),
+        opt("Parce que contraintes réglementaires et exploration UX coexistent", "Because regulatory constraints and UX exploration coexist", true),
+        opt("Pour éviter toute documentation", "To avoid all documentation", false, "Le hybride conserve souvent des artefacts PMO là où requis.", "Hybrid often keeps PMO artifacts where required."),
+        opt("Pour supprimer les jalons", "To remove all milestones", false, "L'infra prédictive garde des jalons — le portail des sprints.", "Predictive infra keeps milestones — portal keeps sprints."),
+      ],
     }),
     questions: [
       q({
@@ -452,13 +453,18 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "Helios wants to drop formal minutes on portal side. Which PMO artifact to keep for PCI audit?",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr: "Le tailoring adapte les processus au contexte du projet.",
-      promptEn: "Tailoring adapts processes to the project context.",
-      explanationCorrectFr: "Vrai — pas de méthode universelle.",
-      explanationCorrectEn: "True — no universal method.",
-      difficulty: 1,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      type: "SINGLE_CHOICE",
+      promptFr: "Helios veut supprimer les PV formels côté portail agile. Bonne pratique tailoring ?",
+      promptEn: "Helios wants to drop formal minutes on the agile portal side. Good tailoring practice?",
+      explanationCorrectFr: "Documenter explicitement ce qui est simplifié et ce qui reste pour l'audit PCI.",
+      explanationCorrectEn: "Explicitly document what is simplified and what remains for PCI audit.",
+      difficulty: 2,
+      options: [
+        opt("Supprimer sans trace pour aller plus vite", "Remove without trace to go faster", false, "Tailoring implicite crée des surprises d'audit.", "Implicit tailoring creates audit surprises."),
+        opt("Documenter artefacts conservés vs simplifiés", "Document kept vs simplified artifacts", true),
+        opt("Copier le PMO d'un programme régulé à l'identique", "Copy a regulated program PMO exactly", false, "One-size-fits-all ignore le contexte équipe produit.", "One-size-fits-all ignores product team context."),
+        opt("Abandonner toute gouvernance", "Abandon all governance", false, "Tailoring adapte — ne supprime pas la gouvernance nécessaire.", "Tailoring adapts — does not remove needed governance."),
+      ],
     }),
   }),
 

@@ -120,13 +120,18 @@ export const PMP_BUSINESS_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "Helios Health: marketing wants to store data outside the EU. Constraint or risk? Action?",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr: "Une contrainte légale est typiquement non négociable.",
-      promptEn: "A legal constraint is typically non-negotiable.",
-      explanationCorrectFr: "Vrai. La conformité légale ne peut généralement pas être ignorée.",
-      explanationCorrectEn: "True. Legal compliance generally cannot be ignored.",
-      difficulty: 1,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      type: "SINGLE_CHOICE",
+      promptFr: "Helios Health : stockage hors UE demandé par le marketing. Première action ?",
+      promptEn: "Helios Health: marketing requests storage outside the EU. First action?",
+      explanationCorrectFr: "Traiter la conformité RGPD/HDS comme contrainte non négociable — analyser avant toute décision.",
+      explanationCorrectEn: "Treat GDPR/HDS compliance as a non-negotiable constraint — analyze before any decision.",
+      difficulty: 2,
+      options: [
+        opt("Accepter pour accélérer la mise sur le marché", "Accept to speed time to market", false, "Ignorer une contrainte légale crée un risque majeur de refonte.", "Ignoring a legal constraint creates major rework risk."),
+        opt("Analyser l'impact conformité et escalader si nécessaire", "Analyze compliance impact and escalate if needed", true),
+        opt("Reporter à la fin du projet", "Defer to end of project", false, "Reporter la conformité multiplie le coût de correction.", "Deferring compliance multiplies correction cost."),
+        opt("Classer comme risque faible sans analyse", "Classify as low risk without analysis", false, "Une contrainte légale n'est pas un risque incertain.", "A legal constraint is not an uncertain risk."),
+      ],
     }),
   }),
 

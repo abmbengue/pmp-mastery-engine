@@ -16,7 +16,7 @@ describe("Phase 12 pedagogical content quality", () => {
   it("enriches PF/CF/PMP lesson bodies with structured micro-learning sections", () => {
     expect(PF_LESSONS.length).toBeGreaterThanOrEqual(45);
     expect(CF_LESSONS.length).toBeGreaterThanOrEqual(50);
-    expect(PMP_LESSONS.length).toBeGreaterThanOrEqual(38);
+    expect(PMP_LESSONS.length).toBeGreaterThanOrEqual(70);
 
     for (const l of [...PF_LESSONS, ...CF_LESSONS, ...PMP_LESSONS]) {
       expect(l.textBodyFr).toContain("Objectif");

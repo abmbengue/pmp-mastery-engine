@@ -385,15 +385,18 @@ export const PMP_AGILE_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "A director requests an unprioritized feature. Draft the PO response in 3 points (value, order, alternative).",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr:
-        "Le Product Owner définit principalement le « quoi » et le « pourquoi », pas le « comment » technique.",
-      promptEn:
-        "The Product Owner mainly defines “what” and “why”, not technical “how”.",
-      explanationCorrectFr: "Vrai. L'équipe choisit l'implémentation.",
-      explanationCorrectEn: "True. The team chooses implementation.",
+      type: "SINGLE_CHOICE",
+      promptFr: "Un directeur demande une refonte complète du moteur de recherche au sprint 3. Réponse PO appropriée ?",
+      promptEn: "A director requests a full search engine rewrite in sprint 3. Appropriate PO response?",
+      explanationCorrectFr: "Refuser ou reporter avec justification valeur — le PO définit quoi/pourquoi, pas le comment technique.",
+      explanationCorrectEn: "Reject or defer with value rationale — PO defines what/why, not technical how.",
       difficulty: 2,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      options: [
+        opt("Assigner immédiatement la tâche au dev senior", "Immediately assign the task to the senior dev", false, "Assigner des tâches techniques = micro-management du PO.", "Assigning technical tasks = PO micromanagement."),
+        opt("Reporter avec justification valeur et proposer alternative plus petite", "Defer with value rationale and propose smaller alternative", true),
+        opt("Accepter sans discussion pour satisfaire le directeur", "Accept without discussion to satisfy the director", false, "Céder sans priorisation dégrade le sprint goal.", "Yielding without prioritization harms the sprint goal."),
+        opt("Définir l'architecture technique du moteur", "Define the search engine technical architecture", false, "Le « comment » appartient à l'équipe.", "The “how” belongs to the team."),
+      ],
     }),
   }),
 
@@ -586,15 +589,18 @@ export const PMP_AGILE_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "A story is “code OK” but untested. Is it Done? Justify using DoD vs acceptance criteria.",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr:
-        "La Definition of Done s'applique à chaque élément de l'incrément, pas seulement au projet entier.",
-      promptEn:
-        "The Definition of Done applies to each increment item, not only the whole project.",
-      explanationCorrectFr: "Vrai — c'est la barre qualité par story/livraison.",
-      explanationCorrectEn: "True — it is the quality bar per story/delivery.",
-      difficulty: 1,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      type: "SINGLE_CHOICE",
+      promptFr: "Story FlowMart « code OK » mais sans tests ni staging. Statut Done ?",
+      promptEn: "FlowMart story “code OK” but no tests or staging. Done status?",
+      explanationCorrectFr: "Non — la DoD exige tests, staging et validation PO pour chaque item de l'incrément.",
+      explanationCorrectEn: "No — DoD requires tests, staging, and PO validation for each increment item.",
+      difficulty: 2,
+      options: [
+        opt("Oui, le dev a terminé", "Yes, dev is finished", false, "« Dev terminé » ≠ Done selon la DoD.", "“Dev finished” ≠ Done per DoD."),
+        opt("Non, la DoD n'est pas satisfaite", "No, DoD is not met", true),
+        opt("Oui, si le PO est pressé", "Yes, if the PO is rushed", false, "La DoD ne se négocie pas story par story sous pression.", "DoD is not negotiated per story under pressure."),
+        opt("Oui, les tests viendront plus tard", "Yes, tests will come later", false, "Reporter les tests crée de la dette et viole la DoD.", "Deferring tests creates debt and violates DoD."),
+      ],
     }),
   }),
 
@@ -720,13 +726,18 @@ export const PMP_AGILE_LESSONS: PmpLesson[] = [
     exercisePromptEn:
       "Write a SMART action from a FlowMart retro (pair review).",
     question: q({
-      type: "TRUE_FALSE",
-      promptFr: "Les actions de rétrospective doivent être concrètes et suivies.",
-      promptEn: "Retrospective actions should be concrete and tracked.",
-      explanationCorrectFr: "Vrai — sinon le comportement ne change pas.",
-      explanationCorrectEn: "True — otherwise behavior does not change.",
-      difficulty: 1,
-      options: [opt("Vrai", "True", true), opt("Faux", "False", false)],
+      type: "SINGLE_CHOICE",
+      promptFr: "Retro FlowMart : action « pair review obligatoire » sans owner ni date. Problème ?",
+      promptEn: "FlowMart retro: “mandatory pair review” action with no owner or date. Problem?",
+      explanationCorrectFr: "Sans owner et suivi, l'action ne changera pas le comportement.",
+      explanationCorrectEn: "Without owner and follow-up, the action will not change behavior.",
+      difficulty: 2,
+      options: [
+        opt("Aucun — l'intention suffit", "None — intent is enough", false, "Les bonnes intentions sans suivi ne changent pas les habitudes.", "Good intentions without follow-up do not change habits."),
+        opt("L'action n'est pas concrète ni suivie", "The action is not concrete or tracked", true),
+        opt("Il faut attendre le prochain trimestre", "Wait until next quarter", false, "Reporter le suivi reproduit le même problème au sprint suivant.", "Deferring follow-up repeats the problem next sprint."),
+        opt("Le sponsor doit imposer la solution", "The sponsor must impose the solution", false, "La retro est un espace d'équipe — pas command-and-control.", "Retro is a team space — not command-and-control."),
+      ],
     }),
   }),
 

@@ -54,6 +54,16 @@ export const PMP_SITUATIONAL_LESSONS: PmpLesson[] = [
       "Appliquez O-U-I-C-A-V-A à une vignette scope creep de votre entraînement. Quelle étape sautez-vous le plus souvent ?",
     exercisePromptEn:
       "Apply O-U-I-C-A-V-A to a scope creep vignette from your practice. Which step do you skip most often?",
+    situation: {
+      scenarioFr:
+        "Vous lisez une question d'examen : un directeur commercial exige une feature mid-sprint alors que l'équipe est engagée sur le sprint goal. Quatre options proposent d'agir immédiatement, d'escalader, ou de collaborer.",
+      scenarioEn:
+        "You read an exam question: a sales director demands a feature mid-sprint while the team is committed to the sprint goal. Four options suggest acting immediately, escalating, or collaborating.",
+      bestActionFr:
+        "Parcourir OBSERVE → UNDERSTAND → IDENTIFY → COLLABORATE avant de choisir ACT — méthode PLA propriétaire.",
+      bestActionEn:
+        "Walk OBSERVE → UNDERSTAND → IDENTIFY → COLLABORATE before choosing ACT — proprietary PLA method.",
+    },
     question: q({
       type: "SINGLE_CHOICE",
       promptFr: "Quelle étape PLA précède typiquement la « meilleure première action » ?",
@@ -870,7 +880,7 @@ export const PMP_SITUATIONAL_LESSONS: PmpLesson[] = [
       "Assemble people, process, business, and situational thinking on long vignettes — advanced level.",
     moduleSlug: MOD,
     sortOrder: 11,
-    estimatedMinutes: 14,
+    estimatedMinutes: 12,
     difficulty: "ADVANCED",
     skillSlug: "pmp-situational-thinking",
     learningObjective: "DECIDE",

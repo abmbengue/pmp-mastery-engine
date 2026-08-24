@@ -119,11 +119,11 @@ describe("Phase 10 content catalogs FR/EN", () => {
   });
 
   it("expands original PMP content including situational cases", () => {
-    expect(PMP_LESSONS.length).toBeGreaterThanOrEqual(30);
+    expect(PMP_LESSONS.length).toBeGreaterThanOrEqual(70);
     const situational = PMP_LESSONS.filter(
       (l) => l.moduleSlug === "situational-thinking"
     );
-    expect(situational.length).toBeGreaterThanOrEqual(4);
+    expect(situational.length).toBeGreaterThanOrEqual(10);
     for (const s of situational) {
       expect(s.situation?.scenarioEn).toBeTruthy();
       expect(s.situation?.bestActionFr).toBeTruthy();
