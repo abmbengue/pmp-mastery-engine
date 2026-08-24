@@ -24,6 +24,18 @@ async function login(page: Page, locale: "fr" | "en", email: string, password = 
   await expect(page.getByTestId("dashboard-page")).toBeVisible();
 }
 
+async function answerAllQuizQuestions(page: Page, pick: "first" | "last" = "first") {
+  const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
+  const n = await fieldsets.count();
+  for (let i = 0; i < n; i++) {
+    const inputs = fieldsets.nth(i).locator('input[type="radio"], input[type="checkbox"]');
+    const count = await inputs.count();
+    if (count === 0) continue;
+    const idx = pick === "last" ? count - 1 : 0;
+    await inputs.nth(idx).click();
+  }
+}
+
 async function completeOneLesson(page: Page) {
   await page.getByTestId("continue-course-essentials").click();
   await expect(page.getByTestId("lesson-player")).toBeVisible();
@@ -31,7 +43,7 @@ async function completeOneLesson(page: Page) {
   await expect(page.getByTestId("phase-practice")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
   await expect(page.getByTestId("test-phase")).toBeVisible();
-  await page.locator('input[type="radio"]').first().click();
+  await answerAllQuizQuestions(page, "first");
   await page.getByTestId("submit-quiz").click();
   await expect(page.getByTestId("review-phase")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
@@ -168,9 +180,7 @@ test("PHASE5 TEST2: Wrong answer → Review → Explain my mistake", async ({ pa
   await expect(page.getByTestId("phase-practice")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
   await expect(page.getByTestId("test-phase")).toBeVisible();
-  const radios = page.locator('input[type="radio"]');
-  const count = await radios.count();
-  await radios.nth(Math.max(0, count - 1)).click();
+  await answerAllQuizQuestions(page, "last");
   await page.getByTestId("submit-quiz").click();
   await expect(page.getByTestId("review-phase")).toBeVisible();
   const mistakeBtn = page.getByTestId("ai-tutor-mistake").first();
