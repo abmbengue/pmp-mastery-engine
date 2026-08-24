@@ -4,6 +4,9 @@ import {
   getShortById,
   listShortsByAcademy,
 } from "@/modules/learning-engine/short-learning-service";
+import { isShortCompletedForUser } from "@/modules/learning-engine/short-progress-service";
+import { requireSession } from "@/modules/auth/session";
+import { MarkShortCompletedButton } from "@/app/[locale]/components/shorts/MarkShortCompletedButton";
 import { Link } from "@/modules/localization/navigation";
 import type { Locale } from "@/shared/types/locale";
 
@@ -18,9 +21,11 @@ export default async function ShortWatchPage({
   const ta = await getTranslations("app");
   const loc = locale as Locale;
 
+  const session = await requireSession(locale);
   const short = await getShortById(shortId, loc);
   if (!short || short.academySlug !== academySlug) notFound();
 
+  const completed = await isShortCompletedForUser(session.user.id, shortId);
   const allShorts = await listShortsByAcademy(academySlug, loc);
   const idx = allShorts.findIndex((s) => s.id === shortId);
   const nextShort = idx >= 0 && idx < allShorts.length - 1 ? allShorts[idx + 1] : null;
@@ -81,17 +86,17 @@ export default async function ShortWatchPage({
         <p className="mt-1 text-xs text-gray-500">{t("placeholder")}</p>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <button
-          type="button"
-          className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          data-testid="mark-short-completed"
-          disabled
-          aria-disabled="true"
-          title={t("placeholder")}
-        >
-          {t("markCompleted")}
-        </button>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-start">
+        <MarkShortCompletedButton
+          shortId={short.id}
+          academySlug={academySlug}
+          initiallyCompleted={completed}
+          labels={{
+            markCompleted: t("markCompleted"),
+            completed: t("completed"),
+            error: t("completeError"),
+          }}
+        />
         {nextShort && (
           <Link
             href={`/academies/${academySlug}/shorts/${nextShort.id}`}

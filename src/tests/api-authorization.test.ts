@@ -61,4 +61,32 @@ describe("API authorization", () => {
     const response = await POST(request);
     expect(response.status).toBe(401);
   });
+
+  it("rejects unauthorized AI tutor requests", async () => {
+    const { auth } = await import("@/auth");
+    vi.mocked(auth).mockResolvedValue(null);
+    const { POST } = await import("@/app/api/ai-tutor/route");
+    const response = await POST(
+      new Request("http://localhost/api/ai-tutor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "EXPLAIN", locale: "en" }),
+      })
+    );
+    expect(response.status).toBe(401);
+  });
+
+  it("rejects unauthorized short completion requests", async () => {
+    const { auth } = await import("@/auth");
+    vi.mocked(auth).mockResolvedValue(null);
+    const { POST } = await import("@/app/api/shorts/complete/route");
+    const response = await POST(
+      new Request("http://localhost/api/shorts/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ shortId: "x", academySlug: "personal-finance" }),
+      })
+    );
+    expect(response.status).toBe(401);
+  });
 });

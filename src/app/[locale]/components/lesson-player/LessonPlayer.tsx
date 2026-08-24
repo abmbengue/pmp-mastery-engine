@@ -13,6 +13,8 @@ import { TestPhase } from "./TestPhase";
 import type { QuizQuestion, QuizResult } from "./TestPhase";
 import { ReviewPhase } from "./ReviewPhase";
 import { MasterPhase } from "./MasterPhase";
+import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
+import type { AiTutorPanelLabels } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
 import type { TextPayload, VideoPayload, ExercisePayload, FlashcardPayload } from "@/shared/types/content-payloads";
 
 export interface LessonItem {
@@ -51,6 +53,7 @@ export interface LessonPlayerProps {
       test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
       master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string };
+      aiTutor: AiTutorPanelLabels;
     };
     app: { correct: string; incorrect: string; backToCourse: string };
   };
@@ -283,6 +286,16 @@ export function LessonPlayer({
                 }}
               />
             )}
+            <AiTutorPanel
+              context={{
+                locale,
+                academySlug,
+                courseSlug,
+                moduleSlug,
+                lessonSlug,
+              }}
+              labels={pl.aiTutor}
+            />
           </div>
         )}
 
@@ -324,6 +337,11 @@ export function LessonPlayer({
           <ReviewPhase
             score={quizScore ?? 0}
             results={quizResults}
+            locale={locale}
+            academySlug={academySlug}
+            courseSlug={courseSlug}
+            moduleSlug={moduleSlug}
+            lessonSlug={lessonSlug}
             labels={{
               title: pl.review.title,
               yourScore: pl.review.yourScore,
@@ -335,6 +353,7 @@ export function LessonPlayer({
               correct: pl.test.correct,
               incorrect: pl.test.incorrect,
             }}
+            aiTutorLabels={pl.aiTutor}
           />
         )}
 

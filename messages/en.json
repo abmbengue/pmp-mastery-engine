@@ -100,13 +100,18 @@
     "lastActivity": "Last activity",
     "noContinue": "Start a course from Quick access to begin.",
     "courseComplete": "Course complete",
-    "days": "days"
+    "days": "days",
+    "recommendedForYou": "Recommended for you",
+    "recommendedWhy": "Why?",
+    "noRecommendation": "No recommendation yet. Start a lesson to get personalized suggestions."
   },
   "shorts": {
     "title": "Short Learning",
     "subtitle": "Short educational videos — about 3 minutes max.",
     "watch": "Watch",
     "markCompleted": "Mark completed",
+    "completed": "Completed",
+    "completeError": "Could not save short progress. Please try again.",
     "nextShort": "Next short",
     "placeholder": "Video playback will be available in a future update.",
     "duration": "Duration",
@@ -172,6 +177,19 @@
       "explanation": "Explanation",
       "askAiTutor": "Ask AI Tutor",
       "aiTutorSoon": "The AI Tutor will be available soon."
+    },
+    "aiTutor": {
+      "title": "AI Tutor",
+      "needHelp": "Need help?",
+      "explainConcept": "Explain this concept",
+      "giveHint": "Give me a hint",
+      "explainMistake": "Explain my mistake",
+      "teachConcept": "Teach me the concept",
+      "ask": "Ask AI Tutor",
+      "placeholder": "Optional question for the tutor…",
+      "unavailable": "AI Tutor is temporarily unavailable.",
+      "loading": "Thinking…",
+      "response": "Tutor response"
     },
     "master": {
       "title": "Final result",

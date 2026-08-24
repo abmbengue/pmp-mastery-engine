@@ -146,3 +146,60 @@ test("PHASE4 TEST5: FR → Dashboard → EN → Dashboard", async ({ page }) => 
   await expect(page.getByTestId("dashboard-page")).toBeVisible();
   await expect(page.getByTestId("continue-learning-section")).toContainText("Continue");
 });
+
+test("PHASE5 TEST1: Login → Lesson → Ask AI Tutor → response", async ({ page }) => {
+  const email = uniqueEmail("p5-ai");
+  await register(page, "en", email);
+  await page.getByTestId("continue-learning-btn").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+  await expect(page.getByTestId("ai-tutor-panel")).toBeVisible();
+  await page.getByTestId("ask-ai-tutor").click();
+  await page.getByTestId("ai-tutor-explain").click();
+  await expect(page.getByTestId("ai-tutor-response")).toBeVisible({ timeout: 15_000 });
+});
+
+test("PHASE5 TEST2: Wrong answer → Review → Explain my mistake", async ({ page }) => {
+  const email = uniqueEmail("p5-wrong");
+  await register(page, "en", email);
+  await page.getByTestId("continue-learning-btn").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+  await page.getByTestId("next-phase-btn").click();
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("test-phase")).toBeVisible();
+  // Pick last radio — often incorrect for single-choice demos; if correct, still can open tutor
+  const radios = page.locator('input[type="radio"]');
+  const count = await radios.count();
+  await radios.nth(Math.max(0, count - 1)).click();
+  await page.getByTestId("submit-quiz").click();
+  await expect(page.getByTestId("review-phase")).toBeVisible();
+  const mistakeBtn = page.getByTestId("ai-tutor-mistake").first();
+  if (await mistakeBtn.count()) {
+    await page.getByTestId("ask-ai-tutor").first().click();
+    await mistakeBtn.click();
+  } else {
+    await page.getByTestId("ask-ai-tutor").first().click();
+    await page.getByTestId("ai-tutor-explain").first().click();
+  }
+  await expect(page.getByTestId("ai-tutor-response").first()).toBeVisible({ timeout: 15_000 });
+});
+
+test("PHASE5 TEST3: Dashboard → Recommendation → Lesson", async ({ page }) => {
+  const email = uniqueEmail("p5-reco");
+  await register(page, "en", email);
+  await expect(page.getByTestId("recommended-section")).toBeVisible();
+  await expect(page.getByTestId("recommended-card")).toBeVisible();
+  await page.getByTestId("recommended-open").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+});
+
+test("PHASE5 TEST4: Shorts → Mark completed → progress updated", async ({ page }) => {
+  const email = uniqueEmail("p5-short");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/shorts");
+  await expect(page.getByTestId("shorts-page")).toBeVisible();
+  const firstShort = page.locator('[data-testid^="short-card-"]').first();
+  await firstShort.click();
+  await expect(page.getByTestId("short-watch-page")).toBeVisible();
+  await page.getByTestId("mark-short-completed").click();
+  await expect(page.getByTestId("short-completed-badge")).toBeVisible({ timeout: 10_000 });
+});

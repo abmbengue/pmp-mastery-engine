@@ -1,9 +1,17 @@
 "use client";
 
 import type { QuizResult } from "./TestPhase";
+import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
+import type { AiTutorPanelLabels } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
+
 interface ReviewPhaseProps {
   score: number;
   results: QuizResult[];
+  locale: "fr" | "en";
+  academySlug: string;
+  courseSlug: string;
+  moduleSlug: string;
+  lessonSlug: string;
   labels: {
     title: string;
     yourScore: string;
@@ -15,9 +23,20 @@ interface ReviewPhaseProps {
     correct: string;
     incorrect: string;
   };
+  aiTutorLabels: AiTutorPanelLabels;
 }
 
-export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
+export function ReviewPhase({
+  score,
+  results,
+  locale,
+  academySlug,
+  courseSlug,
+  moduleSlug,
+  lessonSlug,
+  labels,
+  aiTutorLabels,
+}: ReviewPhaseProps) {
   const correct = results.filter((r) => r.isCorrect);
   const wrong = results.filter((r) => !r.isCorrect);
 
@@ -26,7 +45,6 @@ export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
 
   return (
     <div className="space-y-6" data-testid="review-phase">
-      {/* Score */}
       <div className="rounded-lg border bg-white p-5 text-center">
         <p className="mb-1 text-sm text-gray-500">{labels.yourScore}</p>
         <p className={`text-5xl font-bold ${scoreColor}`} data-testid="review-score">
@@ -34,7 +52,6 @@ export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
         </p>
       </div>
 
-      {/* Correct answers */}
       {correct.length > 0 && (
         <section>
           <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-700">
@@ -57,7 +74,6 @@ export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
         </section>
       )}
 
-      {/* Wrong answers */}
       {wrong.length > 0 && (
         <section>
           <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-700">
@@ -94,22 +110,42 @@ export function ReviewPhase({ score, results, labels }: ReviewPhaseProps) {
                     <p className="text-xs text-gray-600">{r.question.explanationCorrect}</p>
                   </div>
 
-                  {/* AI Tutor stub */}
-                  <button
-                    type="button"
-                    title={labels.aiTutorSoon}
-                    className="mt-2 text-xs text-blue-500 hover:underline focus:outline-none focus:ring-1 focus:ring-blue-400 rounded disabled:opacity-50"
-                    disabled
-                    data-testid="ask-ai-tutor"
-                  >
-                    🤖 {labels.askAiTutor}
-                  </button>
+                  <div className="mt-3">
+                    <AiTutorPanel
+                      testId={`ai-tutor-panel-wrong-${r.questionId}`}
+                      context={{
+                        locale,
+                        academySlug,
+                        courseSlug,
+                        moduleSlug,
+                        lessonSlug,
+                        questionId: r.questionId,
+                        selectedOptionIds: r.selectedOptionIds,
+                        showMistakeAction: true,
+                      }}
+                      labels={aiTutorLabels}
+                    />
+                  </div>
                 </div>
               );
             })}
           </div>
         </section>
       )}
+
+      <AiTutorPanel
+        context={{
+          locale,
+          academySlug,
+          courseSlug,
+          moduleSlug,
+          lessonSlug,
+          questionId: results[0]?.questionId,
+          selectedOptionIds: results[0]?.selectedOptionIds,
+          showMistakeAction: wrong.length > 0,
+        }}
+        labels={aiTutorLabels}
+      />
     </div>
   );
 }

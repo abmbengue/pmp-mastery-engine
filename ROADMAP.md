@@ -61,32 +61,34 @@
 - [x] FR/EN for new surfaces
 - [x] Expanded unit + E2E coverage
 
-## Phase 5 — Advanced Features
+## Phase 5 — AI Tutor + Recommendations
 
-- [ ] AI Tutor (real LLM integration)
-- [ ] Adaptive quiz system
-- [ ] Simulators (Personal Finance)
-- [ ] Mock exams (PMP)
-- [ ] Recommendation engine ("Review this concept", "Next lesson")
-- [ ] CMS / admin panel for content management
+- [x] AiTutorPort → AiTutorService → providers (noop / mock / openai-compatible)
+- [x] `/api/ai-tutor` with session + Zod + minimal context
+- [x] AiTutorPanel (HINT / EXPLAIN / TEACH / EXPLAIN_MISTAKE)
+- [x] Deterministic `recommendNextLearning` + Dashboard Recommended for You
+- [x] Short Mark completed via LessonProgress metadata
+- [x] AI_TUTOR.md documentation
+- [x] Unit + API + E2E coverage (mock provider)
 
-## Phase 6 — Production
+## Phase 6 — Production / Advanced Learning
 
-- [ ] CI/CD pipeline
-- [ ] Production PostgreSQL (managed)
-- [ ] Video hosting integration
+- [ ] Personal Finance simulators
+- [ ] Corporate Finance simulators
+- [ ] PMP mock exams
+- [ ] Real short video hosting
+- [ ] Adaptive learning enhancements
 - [ ] Payment / subscription
+- [ ] CMS / admin
 - [ ] OAuth providers
-- [ ] Mobile-responsive PWA or native app
 
-## Known Limitations (after Phase 4)
+## Known Limitations (after Phase 5)
 
-- No password reset / email verification
-- No role-based access control
-- Video / Short items are placeholders only (no hosting provider)
-- AI Tutor returns stub messages
-- Mark Short completed is UI-ready but deferred for full progress wiring
-- No CMS / payment / simulators / full mock exams
+- Real OpenAI calls only when `AI_PROVIDER=openai` + `AI_API_KEY` are set
+- AI Tutor has no persistent chat history
+- Short videos remain placeholders (completion is tracked)
+- No simulators / mock exams / payments / CMS yet
+
 - 6 academies have no content (PLANNED status)
 - No admin/CMS for content management
 - No CI/CD configured

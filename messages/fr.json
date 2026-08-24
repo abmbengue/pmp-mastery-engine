@@ -100,13 +100,18 @@
     "lastActivity": "Dernière activité",
     "noContinue": "Commencez un cours via Accès rapide.",
     "courseComplete": "Cours terminé",
-    "days": "jours"
+    "days": "jours",
+    "recommendedForYou": "Recommandé pour vous",
+    "recommendedWhy": "Pourquoi ?",
+    "noRecommendation": "Pas encore de recommandation. Commencez une leçon pour obtenir des suggestions."
   },
   "shorts": {
     "title": "Short Learning",
     "subtitle": "Vidéos pédagogiques courtes — environ 3 minutes maximum.",
     "watch": "Regarder",
     "markCompleted": "Marquer comme terminé",
+    "completed": "Terminé",
+    "completeError": "Impossible d'enregistrer la progression du short. Réessayez.",
     "nextShort": "Short suivant",
     "placeholder": "La lecture vidéo sera disponible dans une prochaine mise à jour.",
     "duration": "Durée",
@@ -172,6 +177,19 @@
       "explanation": "Explication",
       "askAiTutor": "Demander au tuteur IA",
       "aiTutorSoon": "Le tuteur IA sera disponible prochainement."
+    },
+    "aiTutor": {
+      "title": "Tuteur IA",
+      "needHelp": "Besoin d'aide ?",
+      "explainConcept": "Expliquer ce concept",
+      "giveHint": "Donner un indice",
+      "explainMistake": "Expliquer mon erreur",
+      "teachConcept": "M'enseigner le concept",
+      "ask": "Demander au tuteur IA",
+      "placeholder": "Question optionnelle pour le tuteur…",
+      "unavailable": "Le tuteur IA est temporairement indisponible.",
+      "loading": "Réflexion…",
+      "response": "Réponse du tuteur"
     },
     "master": {
       "title": "Résultat final",

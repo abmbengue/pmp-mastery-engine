@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireSession } from "@/modules/auth/session";
 import { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
+import { recommendNextLearning } from "@/modules/learning-engine/recommendation-service";
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
 import type { Locale } from "@/shared/types/locale";
@@ -22,6 +23,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const loc = locale as Locale;
 
   const data = await getDashboardV2(session.user.id, loc);
+  const recommendation = await recommendNextLearning(session.user.id, loc);
 
   async function logoutAction() {
     "use server";
@@ -121,6 +123,44 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         ) : (
           <p className="mt-3 text-sm text-gray-600" data-testid="continue-learning-empty">
             {t("noContinue")}
+          </p>
+        )}
+      </section>
+
+      {/* Recommended for you */}
+      <section
+        aria-labelledby="recommended-heading"
+        className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-6"
+        data-testid="recommended-section"
+      >
+        <h2 id="recommended-heading" className="text-xl font-semibold text-gray-900">
+          {t("recommendedForYou")}
+        </h2>
+        {recommendation ? (
+          <div className="mt-4" data-testid="recommended-card">
+            <h3 className="text-lg font-semibold text-gray-900" data-testid="recommended-title">
+              {recommendation.title}
+            </h3>
+            {recommendation.estimatedMinutes != null && (
+              <p className="mt-1 text-sm text-gray-600" data-testid="recommended-duration">
+                {recommendation.estimatedMinutes} {ta("minutes")}
+              </p>
+            )}
+            <p className="mt-2 text-sm text-gray-700" data-testid="recommended-reason">
+              <span className="font-medium">{t("recommendedWhy")} </span>
+              {recommendation.reason}
+            </p>
+            <Link
+              href={recommendation.path}
+              className="mt-4 inline-flex rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              data-testid="recommended-open"
+            >
+              {t("openCourse")}
+            </Link>
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-gray-600" data-testid="recommended-empty">
+            {t("noRecommendation")}
           </p>
         )}
       </section>
