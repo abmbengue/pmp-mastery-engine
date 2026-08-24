@@ -70,15 +70,15 @@ describe("lesson session and progression", () => {
     expect(progress).not.toBeNull();
     expect(progress!.completedLessons).toBeGreaterThanOrEqual(1);
     expect(progress!.percentage).toBeGreaterThan(0);
-    expect(progress!.totalLessons).toBe(6);
+    expect(progress!.totalLessons).toBe(7);
   });
 
-  it("returns correct percentage: 1/6 = 17%", async () => {
+  it("returns correct percentage: 1/7 = 14%", async () => {
     // Reset all progress first then complete only one lesson
     await prisma.lessonProgress.deleteMany({ where: { userId } });
     await finishLesson(userId, lessonId, 180, 80, null);
     const progress = await getCourseProgress(userId, courseId);
-    expect(progress!.percentage).toBe(17); // Math.round(1/6*100)
+    expect(progress!.percentage).toBe(14); // Math.round(1/7*100)
   });
 });
 
@@ -111,8 +111,8 @@ describe("next lesson navigation", () => {
     const next = await findNextLesson(
       "personal-finance",
       "essentials",
-      "saving-investing",
-      "risk-and-return"
+      "wealth-building",
+      "compound-interest"
     );
     expect(next).toBeNull();
   });

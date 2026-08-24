@@ -4,8 +4,10 @@
 
 ```
 Academy (1) ──→ (N) Course (1) ──→ (N) Module (1) ──→ (N) Lesson (1) ──→ (N) LearningItem
-                                                                                    │
-Skill (1) ←── (N) Question ←── (N) AnswerOption              Question linked via LearningItem (QUIZ type)
+                                         │                  │                    │
+                                    category?          difficulty          Question linked via QUIZ
+                                                         │
+Skill (1) ←── (N) LessonSkill (N) ──→ Lesson
   │
   └── ConceptMastery (per User)
 ```
@@ -24,16 +26,22 @@ Skill (1) ←── (N) Question ←── (N) AnswerOption              Questio
 
 ### Course → Module → Lesson
 
-Same i18n pattern. Lesson additionally has:
+Same i18n pattern.
+
+**Module** additionally has:
 
 | Field | Type | Notes |
 |---|---|---|
-| estimatedMinutes | Int? | Total lesson estimate |
-| learnMinutes | Int? | LEARN phase target |
-| practiceMinutes | Int? | PRACTICE phase target |
-| testMinutes | Int? | TEST phase target |
-| reviewMinutes | Int? | REVIEW phase target |
-| masterMinutes | Int? | MASTER phase target |
+| category | String? | Structure tag (FOUNDATIONS, DEBT, PEOPLE, AGILE, …) |
+
+**Lesson** additionally has:
+
+| Field | Type | Notes |
+|---|---|---|
+| estimatedMinutes | Int? | Total lesson estimate (micro-learning) |
+| difficulty | BEGINNER \| INTERMEDIATE \| ADVANCED | Content difficulty |
+| learnMinutes … masterMinutes | Int? | Per-phase estimates |
+| skills | LessonSkill[] | Many concepts per lesson |
 
 ### LearningItem
 
@@ -42,32 +50,42 @@ Same i18n pattern. Lesson additionally has:
 | type | Enum | TEXT, VIDEO, EXERCISE, QUIZ, FLASHCARD, SIMULATION, ASSESSMENT |
 | sortOrder | Int | Order within lesson |
 | payload | JSON | Type-specific content (Zod validated) |
-| difficulty | Int | 1-5 scale |
+| difficulty | Int | 1-5 scale (item-level) |
 
 #### Payload Schemas (Zod)
 
 **TEXT**: `{ bodyFr, bodyEn }`
 
-**VIDEO** (placeholder):
+**VIDEO / Short Learning** (placeholder hosting):
+
 ```json
 {
-  "url": null,
-  "durationSec": null,
+  "videoUrl": null,
+  "durationSeconds": 150,
   "titleFr": "...",
   "titleEn": "...",
   "language": "both",
   "thumbnailUrl": null,
   "descriptionFr": "...",
   "descriptionEn": "...",
-  "isPlaceholder": true
+  "isPlaceholder": true,
+  "isShort": true,
+  "topic": "income",
+  "difficulty": "BEGINNER",
+  "academySlug": "personal-finance",
+  "relatedSkillSlug": "pf-income"
 }
 ```
+
+Short Learning = VIDEO with `isShort: true` and duration ≤ ~180 seconds. No YouTube/Vimeo integration yet.
 
 **EXERCISE**: `{ promptFr, promptEn, hintFr?, hintEn? }`
 
 **QUIZ**: `{ instructionsFr?, instructionsEn? }` + linked Question records
 
 **FLASHCARD**: `{ frontFr, frontEn, backFr, backEn }`
+
+**SIMULATION** / **ASSESSMENT**: placeholder schemas for future phases (no runtime UI yet)
 
 ### Question
 
@@ -100,31 +118,44 @@ Same i18n pattern. Lesson additionally has:
 
 ## Seed Content Summary
 
-### Personal Finance (`personal-finance`)
+### Personal Finance (`personal-finance`) — ACTIVE
 
 **Course**: essentials
 
-| Module | Lessons |
+| Module (category) | Lessons |
 |---|---|
-| foundations | understanding-income, tracking-expenses, building-a-budget |
-| saving-investing | why-save, introduction-to-investing, risk-and-return |
+| foundations (FOUNDATIONS) | understanding-income, tracking-expenses, building-a-budget |
+| saving-investing (INVESTING) | why-save, introduction-to-investing, risk-and-return |
+| wealth-building (WEALTH_BUILDING) | compound-interest |
 
-### PMP (`pmp-project-management`)
+### Corporate Finance (`corporate-finance`) — ACTIVE
+
+**Course**: cf-essentials
+
+| Module (category) | Lessons |
+|---|---|
+| foundations (FOUNDATIONS) | financial-statements-overview, revenue-ebitda-ebit, cash-flow-basics |
+| valuation (VALUATION) | enterprise-vs-equity-value, multiples-and-dcf-basics |
+
+### PMP (`pmp-project-management`) — ACTIVE
 
 **Course**: foundations
 
-| Module | Lessons |
+| Module (category) | Lessons |
 |---|---|
-| pm-foundations | what-is-project-management, project-roles, project-lifecycle |
-| methodologies | predictive-vs-adaptive, agile-principles, hybrid-project-management |
+| pm-foundations (PROCESS) | what-is-project-management, project-roles, project-lifecycle |
+| methodologies (AGILE) | predictive-vs-adaptive, agile-principles, hybrid-project-management |
 
-Each lesson contains: 1 TEXT + 1 VIDEO (placeholder) + 1 EXERCISE + 1 QUIZ (with 1 question) + 1 FLASHCARD.
+Skills cover People, Process, Business Environment, Agile, Hybrid, Situational Thinking.
+
+Each lesson contains: 1 TEXT + 1 VIDEO (placeholder, optionally Short) + 1 EXERCISE + 1 QUIZ + 1 FLASHCARD.
 
 ## Adding New Content
 
 1. Add Skill if new concept
-2. Create Lesson via seed helper or admin (future CMS)
-3. Add LearningItems with validated payloads
-4. Link Questions to QUIZ LearningItems
+2. Create Lesson via seed helper (`difficulty`, `category` on module)
+3. Link multiple skills via `LessonSkill`
+4. Add LearningItems with validated payloads
+5. Link Questions to QUIZ LearningItems
 
-See `prisma/seed/helpers.ts` for the `seedLessonWithContent()` helper.
+See `prisma/seed/helpers.ts` for `seedLessonWithContent()`.

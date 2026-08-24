@@ -82,9 +82,9 @@ describe("auth and user isolation integration", () => {
     expect(userBMastery.length).toBe(0);
   });
 
-  it("auto-enrolls only into active V1 courses", async () => {
+  it("auto-enrolls into all active academy courses", async () => {
     const userAEnrollments = await prisma.enrollment.findMany({ where: { userId: userAId }, include: { course: { include: { academy: true } } } });
     const slugs = userAEnrollments.map((e) => e.course.academy.slug).sort();
-    expect(slugs).toEqual(["personal-finance", "pmp-project-management"]);
+    expect(slugs).toEqual(["corporate-finance", "personal-finance", "pmp-project-management"]);
   });
 });
