@@ -82,6 +82,13 @@
     "registerLink": "S'inscrire",
     "loginLink": "Se connecter"
   },
+  "demo": {
+    "tryDemo": "Essayer la démo",
+    "explorePlatform": "Découvrir la plateforme sans créer de compte.",
+    "banner": "Mode démonstration",
+    "createAccount": "Créer un compte",
+    "reset": "Réinitialiser la démo"
+  },
   "dashboard": {
     "welcome": "Bienvenue",
     "settings": "Paramètres",

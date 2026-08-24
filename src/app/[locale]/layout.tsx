@@ -4,6 +4,13 @@ import { notFound } from "next/navigation";
 import { routing } from "@/modules/localization/routing";
 import { getCurrentSession } from "@/modules/auth/session";
 import { Link } from "@/modules/localization/navigation";
+import {
+  isDemoModeEnabled,
+  isDemoUserSession,
+} from "@/modules/demo/demo-config";
+import { DemoBanner } from "@/app/[locale]/components/demo/DemoBanner";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -29,9 +36,13 @@ export default async function LocaleLayout({
     getCurrentSession(),
   ]);
 
+  const showDemoBanner =
+    isDemoModeEnabled() && session?.user && isDemoUserSession(session);
+
   return (
     <NextIntlClientProvider messages={messages}>
       <div className="min-h-screen bg-slate-50 text-gray-900">
+        {showDemoBanner ? <DemoBanner /> : null}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:shadow"

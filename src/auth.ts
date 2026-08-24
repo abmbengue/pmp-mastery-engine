@@ -59,6 +59,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string | null | undefined;
         session.user.locale = (token.locale as "fr" | "en" | undefined) ?? "fr";
       }
       return session;

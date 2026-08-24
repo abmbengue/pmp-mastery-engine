@@ -6,6 +6,7 @@ import { seedCorporateFinance } from "./seed/corporate-finance";
 import { seedSimulationItems } from "./seed/simulations";
 import { seedPmpExamBank } from "./seed/pmp-exam-bank";
 import { PLANNED_ACADEMY_CONFIGS } from "../src/modules/content/planned-academies";
+import { seedDemoUserLearningData } from "../src/modules/demo/demo-user-data";
 
 async function main() {
   console.log("Seeding database...");
@@ -83,6 +84,8 @@ async function main() {
   await prisma.learningStreak.create({
     data: { userId: demoUser.id, currentStreak: 0, longestStreak: 0 },
   });
+
+  await seedDemoUserLearningData(prisma, demoUser.id);
 
   console.log("Seed completed.");
   console.log(

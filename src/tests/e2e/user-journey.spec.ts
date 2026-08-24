@@ -733,3 +733,61 @@ test("PASSWORD RESET: Forgot → Reset → Login with new password", async ({ pa
   await page.getByTestId("login-submit").click();
   await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 15_000 });
 });
+
+async function enterDemo(page: Page, locale: "fr" | "en") {
+  await page.context().clearCookies();
+  await page.goto(`/${locale}`);
+  await expect(page.getByTestId("landing-demo-link")).toBeVisible();
+  await page.getByTestId("landing-demo-link").click();
+  await expect(page).toHaveURL(new RegExp(`/${locale}/dashboard`), { timeout: 15_000 });
+  await page.reload();
+  await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByTestId("demo-banner")).toBeVisible({ timeout: 10_000 });
+}
+
+test.describe("Demo mode", () => {
+  test.describe.configure({ mode: "serial" });
+
+  test("DEMO: Landing → Try demo → Dashboard with progress", async ({ page }) => {
+    await enterDemo(page, "fr");
+    await expect(page.getByTestId("global-progress")).not.toContainText("0%");
+    await expect(page.getByTestId("continue-learning-section")).toBeVisible();
+  });
+
+  test("DEMO EN: Try demo → Dashboard in English", async ({ page }) => {
+    await enterDemo(page, "en");
+    await expect(page.locator("body")).toContainText("Welcome");
+    await expect(page.getByTestId("demo-banner")).toContainText("Demo mode");
+  });
+
+  test("DEMO JOURNEY: Landing → Demo → Dashboard → PF → Lesson → Quiz → Dashboard", async ({
+    page,
+  }) => {
+    await enterDemo(page, "fr");
+    await page.getByTestId("quick-access-personal-finance").click();
+    await expect(page.getByTestId("course-page")).toBeVisible();
+    await page.getByTestId("continue-course-btn").click();
+    await expect(page.getByTestId("lesson-player")).toBeVisible();
+    await page.getByTestId("next-phase-btn").click();
+    await expect(page.getByTestId("phase-practice")).toBeVisible();
+    await page.getByTestId("next-phase-btn").click();
+    await expect(page.getByTestId("test-phase")).toBeVisible();
+    await answerAllQuizQuestions(page, "first");
+    await page.getByTestId("submit-quiz").click();
+    await expect(page.getByTestId("review-phase")).toBeVisible();
+    await page.goto("/fr/dashboard");
+    await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  });
+
+  test("DEMO PMP: Try demo → PMP practice → result → readiness", async ({ page }) => {
+    await enterDemo(page, "en");
+    await page.getByTestId("nav-pmp-exam").click();
+    await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
+    await page.getByTestId("start-exam-quick-practice").click();
+    await answerAllExamQuestions(page);
+    await submitExam(page);
+    await expect(page.getByTestId("practice-score")).toBeVisible();
+    await page.getByTestId("nav-readiness-report").click();
+    await expect(page.getByTestId("readiness-report-page")).toBeVisible({ timeout: 15_000 });
+  });
+});

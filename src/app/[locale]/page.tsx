@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/modules/localization/navigation";
+import { isDemoModeEnabled } from "@/modules/demo/demo-config";
 
 export default async function HomePage({
   params,
@@ -9,6 +10,7 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
+  const demoEnabled = isDemoModeEnabled();
 
   return (
     <section data-testid="landing-page">
@@ -22,6 +24,15 @@ export default async function HomePage({
         >
           {t("app.startLearning")}
         </Link>
+        {demoEnabled ? (
+          <Link
+            href="/demo"
+            className="inline-block rounded-lg border-2 border-blue-600 bg-white px-6 py-3 font-medium text-blue-700 hover:bg-blue-50"
+            data-testid="landing-demo-link"
+          >
+            {t("demo.tryDemo")}
+          </Link>
+        ) : null}
         <Link
           href="/login"
           className="inline-block rounded-lg border border-gray-300 px-6 py-3 text-gray-800 hover:bg-gray-50"
@@ -37,6 +48,11 @@ export default async function HomePage({
           {t("auth.registerButton")}
         </Link>
       </div>
+      {demoEnabled ? (
+        <p className="mt-4 text-sm text-gray-600" data-testid="landing-demo-hint">
+          {t("demo.explorePlatform")}
+        </p>
+      ) : null}
     </section>
   );
 }
