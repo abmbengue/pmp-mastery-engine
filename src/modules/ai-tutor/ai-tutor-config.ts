@@ -15,7 +15,7 @@ export type AiTutorRuntimeConfig = {
  * Never expose these values to the browser.
  */
 export function getAiTutorConfig(
-  env: NodeJS.ProcessEnv = process.env
+  env: Record<string, string | undefined> = process.env
 ): AiTutorRuntimeConfig {
   const rawProvider = (env.AI_PROVIDER ?? "noop").toLowerCase();
   const apiKey = env.AI_API_KEY?.trim() || null;

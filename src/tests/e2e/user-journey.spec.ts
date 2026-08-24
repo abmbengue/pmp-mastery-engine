@@ -163,10 +163,11 @@ test("PHASE5 TEST2: Wrong answer → Review → Explain my mistake", async ({ pa
   await register(page, "en", email);
   await page.getByTestId("continue-learning-btn").click();
   await expect(page.getByTestId("lesson-player")).toBeVisible();
+  await expect(page.getByTestId("phase-learn")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("phase-practice")).toBeVisible();
   await page.getByTestId("next-phase-btn").click();
   await expect(page.getByTestId("test-phase")).toBeVisible();
-  // Pick last radio — often incorrect for single-choice demos; if correct, still can open tutor
   const radios = page.locator('input[type="radio"]');
   const count = await radios.count();
   await radios.nth(Math.max(0, count - 1)).click();
