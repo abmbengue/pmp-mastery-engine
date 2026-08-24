@@ -13,10 +13,14 @@ describe("error → corrective learning linkage", () => {
   it("links errorType → skill → learningObjective", () => {
     const hint = mapErrorToCorrectiveLearning("STAKEHOLDER_ERROR", "communication");
     expect(hint.errorCategory).toBe("STAKEHOLDER_ERROR");
-    expect(hint.preferredSkillSlugs[0]).toBe("communication");
+    expect(hint.preferredSkillSlugs).toContain("communication");
+    expect(hint.preferredSkillSlugs).toContain("stakeholder-engagement");
     expect(hint.learningObjective).toBe("APPLY");
     expect(hint.summaryEn.length).toBeGreaterThan(10);
     expect(hint.summaryFr.length).toBeGreaterThan(10);
+
+    const withNewHint = mapErrorToCorrectiveLearning("RISK_ERROR", "custom-risk-skill");
+    expect(withNewHint.preferredSkillSlugs[0]).toBe("custom-risk-skill");
   });
 
   it("ranks recurring errors for readiness surfaces", () => {
