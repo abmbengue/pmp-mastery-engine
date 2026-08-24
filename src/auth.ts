@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { findUserByEmail } from "@/data/repositories/user-repository";
 import { verifyPassword } from "@/modules/auth/password";
+import { checkRateLimit, safeApiLog } from "@/modules/security";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -23,7 +24,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const parsed = credentialsSchema.safeParse(rawCredentials);
         if (!parsed.success) return null;
 
-        const user = await findUserByEmail(parsed.data.email);
+        const email = parsed.data.email.toLowerCase();
+        const rl = checkRateLimit(`login-authorize:${email}`, 10, 15 * 60_000);
+        if (!rl.ok) {
+          safeApiLog("login_authorize_rate_limited", {});
+          return null;
+        }
+
+        const user = await findUserByEmail(email);
         if (!user?.passwordHash) return null;
 
         const valid = await verifyPassword(parsed.data.password, user.passwordHash);

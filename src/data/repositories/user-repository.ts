@@ -2,7 +2,7 @@ import prisma from "@/data/prisma-client";
 import type { Locale } from "@/shared/types/locale";
 
 export async function findUserByEmail(email: string) {
-  return prisma.user.findUnique({ where: { email } });
+  return prisma.user.findUnique({ where: { email: email.toLowerCase() } });
 }
 
 export async function findUserById(id: string) {
@@ -17,10 +17,11 @@ export async function createUser(data: {
 }) {
   return prisma.user.create({
     data: {
-      email: data.email,
+      email: data.email.toLowerCase(),
       name: data.name,
       passwordHash: data.passwordHash,
       locale: data.locale === "en" ? "EN" : "FR",
+      // Pilot: emailVerifiedAt left null — login allowed without verification
     },
   });
 }

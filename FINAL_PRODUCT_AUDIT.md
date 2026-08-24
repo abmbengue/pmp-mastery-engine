@@ -1,9 +1,9 @@
 # FINAL PRODUCT AUDIT — Professional Learning Academy
 
-**Date:** 2026-08-24  
-**Branch audited:** `cursor/pla-phase12-content-hardening-e932`  
-**Mode:** READ-ONLY (no code changes, no migrations, no packages, no commits)  
-**Product stage:** Educational MVP (not production-ready)
+**Date:** 2026-08-24 (baseline) · **P1 update:** see `CHECKPOINT_P1_HARDENING.md`  
+**Branch audited:** `cursor/pla-phase12-content-hardening-e932` (audit) → P1 on `cursor/pla-p1-hardening-e932`  
+**Mode (original):** READ-ONLY · **P1:** hardening implemented for backlog items below  
+**Product stage:** Educational MVP → pilot / pre-production hardening in progress
 
 ## Baseline re-verified this audit
 
@@ -15,6 +15,17 @@
 | `npm run test:e2e` | **53/53 PASS** |
 
 Catalog counts (code): PF **29** · CF **33** · PMP lessons **38** · PMP questions **200** · Shorts **15**
+
+### P1 status (post-hardening)
+
+| P1 item | Status |
+|---|---|
+| PMP option quality / stem reuse | Addressed — unique options; quality tests added |
+| Password reset | Implemented (hashed token + Dev email port) |
+| Login rate limit | Implemented (in-memory; documented limits) |
+| Email verification vs invite-only | Decision: immediate register; `emailVerifiedAt` prep; see `AUTH_SECURITY.md` |
+
+Exact post-P1 lint/test/build/e2e numbers: `CHECKPOINT_P1_HARDENING.md`.
 
 ---
 

@@ -20,6 +20,8 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
           password: t("password"),
           login: t("loginButton"),
           invalidCredentials: t("invalidCredentials"),
+          rateLimited: t("rateLimited"),
+          forgotPassword: t("forgotPassword"),
         }}
       />
       <p className="mt-4 text-sm text-gray-600">

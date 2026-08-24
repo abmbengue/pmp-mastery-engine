@@ -685,3 +685,41 @@ test("PHASE9 TEST5: Review FR + nav isolation", async ({ page }) => {
   await expect(page.getByTestId("review-now-page")).toBeVisible();
   await expect(page.locator("h1")).toContainText(/Réviser|Review/i);
 });
+
+test("PASSWORD RESET: Forgot → Reset → Login with new password", async ({ page }) => {
+  const email = uniqueEmail("pwd-reset");
+  const oldPassword = "StrongPass1";
+  const newPassword = "NewStrong9";
+  await register(page, "en", email, oldPassword);
+  await page.getByTestId("logout-button").click();
+  await expect(page.getByTestId("landing-page")).toBeVisible();
+
+  await page.goto("/en/forgot-password");
+  await expect(page.getByTestId("forgot-password-page")).toBeVisible();
+  await page.getByTestId("forgot-email").fill(email);
+  await page.getByTestId("forgot-submit").click();
+  await expect(page.getByTestId("forgot-password-sent")).toBeVisible();
+
+  const devRes = await page.request.get("/api/auth/forgot-password/dev-last");
+  expect(devRes.ok()).toBeTruthy();
+  const payload = (await devRes.json()) as { resetUrl: string; to: string };
+  expect(payload.to).toBe(email);
+  expect(payload.resetUrl).toContain("/reset-password?token=");
+
+  await page.goto(payload.resetUrl.replace("http://localhost:3000", ""));
+  await expect(page.getByTestId("reset-password-page")).toBeVisible();
+  await page.getByTestId("reset-password").fill(newPassword);
+  await page.getByTestId("reset-confirm").fill(newPassword);
+  await page.getByTestId("reset-submit").click();
+  await expect(page.getByTestId("reset-success")).toBeVisible();
+  await expect(page.getByTestId("login-page")).toBeVisible({ timeout: 10_000 });
+
+  await page.getByTestId("login-email").fill(email);
+  await page.getByTestId("login-password").fill(oldPassword);
+  await page.getByTestId("login-submit").click();
+  await expect(page.getByTestId("login-error")).toBeVisible();
+
+  await page.getByTestId("login-password").fill(newPassword);
+  await page.getByTestId("login-submit").click();
+  await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 15_000 });
+});

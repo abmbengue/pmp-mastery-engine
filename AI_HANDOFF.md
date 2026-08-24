@@ -29,7 +29,8 @@ prisma/           schema, migrations, seeds
 
 | Module | Role |
 |---|---|
-| `auth` | session helpers — **auth() is source of truth** |
+| `auth` | session helpers, password hashing, **password reset** — **auth() is source of truth** |
+| `security` | in-memory rate limit + safeApiLog (single-node pilot) |
 | `learning-engine` | progress, next lesson, recommendations, review, shorts, paths |
 | `assessment-engine` | exams, analytics, readiness, PDF |
 | `simulation-engine` | pedagogical finance calculators |
@@ -43,7 +44,9 @@ prisma/           schema, migrations, seeds
 Academy → Course → Module → Lesson → LearningItem  
 ConceptMastery (`level`, `lastReviewedAt`, `nextReviewAt`)  
 Exam* tables for PMP practice  
-LessonProgress (+ metadata for Shorts completion)
+LessonProgress (+ metadata for Shorts completion)  
+User (`emailVerifiedAt` nullable — **not enforced** in pilot)  
+PasswordResetToken (hashed token, TTL, single-use)
 
 ## 6–9. Academies
 
@@ -110,14 +113,17 @@ npm run db:seed
 
 Auth isolation, exam analytics, spaced repetition, readiness disclaimer, Shorts completion metadata, Learning Paths config, bilingual messages.
 
-## 21. Possible next extensions (after Phase 12)
+## 21. P1 hardening (done) + possible next extensions
 
-Phase 12 delivered content quality + light hardening. Next (only if asked):
+P1 delivered: PMP option uniqueness, password reset (dev email port), login rate limit, email-verification **deferred** (immediate register + `emailVerifiedAt` prep). See `AUTH_SECURITY.md` and `CHECKPOINT_P1_HARDENING.md`.
 
-- Email verification + password reset  
+Next (only if asked):
+
+- Real email provider behind `PasswordResetEmailPort` + optional verification  
 - Optional real media hosting behind MediaProvider  
-- SME polish of PMP scenarios  
+- SME polish of remaining PMP narratives  
 - Activate one planned academy with validated catalog  
+- Distributed rate limiting for multi-instance deploys  
 
-Still defer: payment/OAuth/CMS/ML/official PMI/native mobile.
+Still defer: payment/OAuth/CMS/ML/official PMI/native mobile / Phase 13.
 

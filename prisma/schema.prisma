@@ -480,11 +480,13 @@ model AnswerOption {
 // ---------------------------------------------------------------------------
 
 model User {
-  id               String           @id @default(cuid())
-  email            String           @unique
+  id               String              @id @default(cuid())
+  email            String              @unique
   name             String
   passwordHash     String?
-  locale           Locale           @default(FR)
+  /** Null = not verified (pilot allows login anyway). Future email verification. */
+  emailVerifiedAt  DateTime?
+  locale           Locale              @default(FR)
   enrollments      Enrollment[]
   lessonProgress   LessonProgress[]
   quizAttempts     QuizAttempt[]
@@ -493,8 +495,23 @@ model User {
   examSessions     ExamSession[]
   examErrors       ExamError[]
   practiceTarget   PracticeTarget?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  passwordResetTokens PasswordResetToken[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+}
+
+/// One-time password reset tokens (store hash only — never plaintext)
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Enrollment {

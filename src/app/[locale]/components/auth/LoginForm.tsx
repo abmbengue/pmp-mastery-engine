@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import { Link } from "@/modules/localization/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -11,6 +12,8 @@ interface LoginFormProps {
     password: string;
     login: string;
     invalidCredentials: string;
+    rateLimited: string;
+    forgotPassword: string;
   };
 }
 
@@ -26,21 +29,43 @@ export function LoginForm({ locale, labels }: LoginFormProps) {
     setLoading(true);
     setError(null);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const gate = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    setLoading(false);
+      if (gate.status === 429) {
+        setError(labels.rateLimited);
+        setLoading(false);
+        return;
+      }
 
-    if (result?.error) {
+      if (!gate.ok) {
+        setError(labels.invalidCredentials);
+        setLoading(false);
+        return;
+      }
+
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(labels.invalidCredentials);
+        setLoading(false);
+        return;
+      }
+
+      router.push(`/${locale}/dashboard`);
+      router.refresh();
+    } catch {
       setError(labels.invalidCredentials);
-      return;
+      setLoading(false);
     }
-
-    router.push(`/${locale}/dashboard`);
-    router.refresh();
   }
 
   return (
@@ -88,6 +113,15 @@ export function LoginForm({ locale, labels }: LoginFormProps) {
       >
         {loading ? "…" : labels.login}
       </button>
+      <p className="text-center text-sm text-gray-600">
+        <Link
+          href="/forgot-password"
+          className="font-medium text-blue-700 underline focus:outline-none focus:ring-2 focus:ring-blue-400"
+          data-testid="forgot-password-link"
+        >
+          {labels.forgotPassword}
+        </Link>
+      </p>
     </form>
   );
 }
