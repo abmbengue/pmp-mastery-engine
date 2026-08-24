@@ -5,6 +5,7 @@
  */
 
 import type { CompactLesson } from "./compact";
+import { applyCfQualityUpgrades } from "./cf-quality-upgrades";
 import { CF_FOUNDATIONS_LESSONS } from "./cf-foundations";
 import { CF_FINANCING_LESSONS } from "./cf-financing";
 import { CF_VALUATION_LESSONS } from "./cf-valuation";
@@ -49,10 +50,10 @@ export const CF_MODULES = [
   },
 ] as const;
 
-export const CF_LESSONS: CompactLesson[] = [
+export const CF_LESSONS: CompactLesson[] = applyCfQualityUpgrades([
   ...CF_FOUNDATIONS_LESSONS,
   ...CF_FINANCING_LESSONS,
   ...CF_VALUATION_LESSONS,
   ...CF_INVESTMENT_MA_LESSONS,
   ...CF_ADVANCED_LESSONS,
-];
+]);

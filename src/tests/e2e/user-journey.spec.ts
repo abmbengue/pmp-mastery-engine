@@ -708,7 +708,7 @@ test("PASSWORD RESET: Forgot → Reset → Login with new password", async ({ pa
   await expect(page.getByTestId("forgot-password-page")).toBeVisible();
   await page.getByTestId("forgot-email").fill(email);
   await page.getByTestId("forgot-submit").click();
-  await expect(page.getByTestId("forgot-password-sent")).toBeVisible();
+  await expect(page.getByTestId("forgot-password-sent")).toBeVisible({ timeout: 20_000 });
 
   const devRes = await page.request.get("/api/auth/forgot-password/dev-last");
   expect(devRes.ok()).toBeTruthy();

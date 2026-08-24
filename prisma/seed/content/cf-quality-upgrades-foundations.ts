@@ -394,21 +394,21 @@ export const CF_FOUNDATIONS_QUALITY_UPGRADES: CompactLesson[] = [
     mistakeEn:
       "Using net income as a cash proxy — without reading OCF, CAPEX, and financing.",
     takeawayFr:
-      "Trois blocs : exploitation, investissement, financement — seul le total explique Δcash.",
+      "Trois blocs : exploitation, investissement, financement — seul le total explique Δcash. Trade-off : dividendes vs CAPEX vs désendettement.",
     takeawayEn:
-      "Three blocks: operating, investing, financing — only the total explains Δcash.",
+      "Three blocks: operating, investing, financing — only the total explains Δcash. Trade-off: dividends vs CAPEX vs deleveraging.",
     decisionFr:
-      "Si OCF faible malgré un bon net, freiner CAPEX et dividendes jusqu'à comprendre le CCC / BFR.",
+      "Si OCF faible malgré un bon net, freiner CAPEX et dividendes jusqu'à comprendre le CCC / BFR — arbitrer cash vs croissance.",
     decisionEn:
-      "If OCF is weak despite good net income, pause CAPEX and dividends until CCC / WC is understood.",
+      "If OCF is weak despite good net income, pause CAPEX and dividends until CCC / WC is understood — trade off cash vs growth.",
     flashcardFrontFr: "Trois flux de trésorerie",
     flashcardFrontEn: "Three cash flows",
     flashcardBackFr: "Exploitation · Investissement · Financement.",
     flashcardBackEn: "Operating · Investing · Financing.",
     exercisePromptFr:
-      "OCF 1 150, CAPEX −700, financement +100. Variation de cash ? Où apparaît le BFR ?",
+      "OCF 1 150, CAPEX −700, financement +100. Variation de cash ? Où apparaît le BFR ? Quel trade-off dividendes vs CAPEX ?",
     exercisePromptEn:
-      "OCF 1,150, CAPEX −700, financing +100. Cash change? Where does WC appear?",
+      "OCF 1,150, CAPEX −700, financing +100. Cash change? Where does WC appear? What trade-off: dividends vs CAPEX?",
     question: q({
       type: "SINGLE_CHOICE",
       promptFr:
@@ -746,20 +746,22 @@ export const CF_FOUNDATIONS_QUALITY_UPGRADES: CompactLesson[] = [
       "Distribuer 100 % du résultat net sans vérifier FCF — ou confondre BPA et cash par action.",
     mistakeEn:
       "Distributing 100% of net income without checking FCF — or confusing EPS with cash per share.",
-    takeawayFr: "Résultat net / BPA = lecture actionnaire ; OCF/FCF = lecture cash.",
-    takeawayEn: "Net income / EPS = shareholder view; OCF/FCF = cash view.",
+    takeawayFr:
+      "Résultat net / BPA = lecture actionnaire ; OCF/FCF = lecture cash. Trade-off : BPA élevé vs cash disponible.",
+    takeawayEn:
+      "Net income / EPS = shareholder view; OCF/FCF = cash view. Trade-off: high EPS vs available cash.",
     decisionFr:
-      "Plafonner dividendes et rachats au FCF récurrent, pas au résultat net d'une année.",
+      "Plafonner dividendes et rachats au FCF récurrent, pas au résultat net d'une année — arbitrer signal BPA vs liquidité.",
     decisionEn:
-      "Cap dividends and buybacks at recurring FCF, not one year’s net income.",
+      "Cap dividends and buybacks at recurring FCF, not one year’s net income — trade off EPS signal vs liquidity.",
     flashcardFrontFr: "Résultat net / BPA",
     flashcardFrontEn: "Net income / EPS",
     flashcardBackFr: "Net après intérêts et impôts ; BPA = net ÷ actions.",
     flashcardBackEn: "Net after interest and tax; EPS = net ÷ shares.",
     exercisePromptFr:
-      "EBT 1 200 M, impôts 300 M, 100 M actions. Net et BPA ? Pourquoi ne pas distribuer 900 M ?",
+      "EBT 1 200 M, impôts 300 M, 100 M actions. Net et BPA ? Pourquoi ne pas distribuer 900 M (trade-off cash vs signal) ?",
     exercisePromptEn:
-      "EBT 1,200M, tax 300M, 100M shares. Net and EPS? Why not distribute 900M?",
+      "EBT 1,200M, tax 300M, 100M shares. Net and EPS? Why not distribute 900M (cash vs signal trade-off)?",
     question: q({
       type: "SINGLE_CHOICE",
       promptFr:

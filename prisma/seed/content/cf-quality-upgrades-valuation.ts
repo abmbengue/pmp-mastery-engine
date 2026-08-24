@@ -254,20 +254,22 @@ export const CF_VALUATION_QUALITY_UPGRADES: CompactLesson[] = [
       "Multiplier l'EBITDA par un multiple puis diviser directement par les actions — confusion EV/Equity et multiple « entreprise » vs prix action.",
     mistakeEn:
       "Multiplying EBITDA by a multiple then dividing straight by shares — EV/Equity confusion and enterprise multiple vs share price mix-up.",
-    takeawayFr: "Multiple → EV → (− dette nette) → Equity → (÷ actions). Aucun saut.",
-    takeawayEn: "Multiple → EV → (− net debt) → Equity → (÷ shares). No skips.",
+    takeawayFr:
+      "Multiple → EV → (− dette nette) → Equity → (÷ actions). Aucun saut. Trade-off : multiple élevé vs dette nette élevée — le pont décide le prix/action.",
+    takeawayEn:
+      "Multiple → EV → (− net debt) → Equity → (÷ shares). No skips. Trade-off: high multiple vs high net debt — the bridge decides price/share.",
     decisionFr:
-      "Refusez toute slide « prix/action » qui n'affiche pas explicitement le pont dette nette.",
+      "Refusez toute slide « prix/action » qui n'affiche pas explicitement le pont dette nette — interprétez l'écart EV/Equity comme risque de levier.",
     decisionEn:
-      "Reject any “price/share” slide that does not explicitly show the net-debt bridge.",
+      "Reject any “price/share” slide that does not explicitly show the net-debt bridge — interpret the EV/Equity gap as leverage risk.",
     flashcardFrontFr: "Pont EV → Equity",
     flashcardFrontEn: "EV to Equity bridge",
     flashcardBackFr: "EV − dette nette = Equity Value (− puis ÷ actions).",
     flashcardBackEn: "EV − net debt = Equity Value (then ÷ shares).",
     exercisePromptFr:
-      "GreenLog : EBITDA 40 M€, 8x, dette nette 70 M€, 50 M actions. EV, Equity, prix ?",
+      "GreenLog : EBITDA 40 M€, 8x, dette nette 70 M€, 50 M actions. EV, Equity, prix ? Quel trade-off multiple vs levier ?",
     exercisePromptEn:
-      "GreenLog: EBITDA €40M, 8x, net debt €70M, 50M shares. EV, Equity, price?",
+      "GreenLog: EBITDA €40M, 8x, net debt €70M, 50M shares. EV, Equity, price? What trade-off: multiple vs leverage?",
     question: q({
       type: "SINGLE_CHOICE",
       promptFr:
@@ -753,12 +755,14 @@ export const CF_VALUATION_QUALITY_UPGRADES: CompactLesson[] = [
       "Choisir g ≥ WACC (formule explosive) ou oublier d'actualiser la TV à aujourd'hui.",
     mistakeEn:
       "Choosing g ≥ WACC (explosive formula) or forgetting to discount TV to today.",
-    takeawayFr: "TV = FCF×(1+g)/(WACC−g) ; souvent le cœur — et le risque — du DCF.",
-    takeawayEn: "TV = FCF×(1+g)/(WACC−g); often the core — and the risk — of DCF.",
+    takeawayFr:
+      "TV = FCF×(1+g)/(WACC−g) ; souvent le cœur — et le risque — du DCF. Trade-off : g élevé vs crédibilité long terme.",
+    takeawayEn:
+      "TV = FCF×(1+g)/(WACC−g); often the core — and the risk — of DCF. Trade-off: high g vs long-term credibility.",
     decisionFr:
-      "Bornez la TV : Gordon + multiple de sortie ; refusez g « confortable » sans benchmark de croissance long terme.",
+      "Bornez la TV : Gordon + multiple de sortie ; refusez g « confortable » sans benchmark — interprétez une TV > 80 % de l'EV comme risque d'hypothèse.",
     decisionEn:
-      "Bound TV: Gordon + exit multiple; reject a “comfortable” g without a long-term growth benchmark.",
+      "Bound TV: Gordon + exit multiple; reject a “comfortable” g without a benchmark — interpret TV > 80% of EV as assumption risk.",
     simulatorFr:
       "Dans DCF_BASICS, isolez l'effet de la croissance terminale g à WACC constant. Notez EV et la part implicite de la TV. Croisez avec un multiple de sortie proche de VALUATION_MULTIPLES.",
     simulatorEn:
@@ -768,9 +772,9 @@ export const CF_VALUATION_QUALITY_UPGRADES: CompactLesson[] = [
     flashcardBackFr: "FCF × (1+g) / (WACC − g), g < WACC — puis actualiser.",
     flashcardBackEn: "FCF × (1+g) / (WACC − g), g < WACC — then discount.",
     exercisePromptFr:
-      "FCF 50 M€, g 2 %, WACC 8 %. TV ? Si VA FCF 200 et VA TV 600, part de la TV dans l'EV ?",
+      "FCF 50 M€, g 2 %, WACC 8 %. TV ? Si VA FCF 200 et VA TV 600, part de la TV dans l'EV ? Quel trade-off g vs WACC ?",
     exercisePromptEn:
-      "FCF €50M, g 2%, WACC 8%. TV? If PV FCF 200 and PV TV 600, TV share of EV?",
+      "FCF €50M, g 2%, WACC 8%. TV? If PV FCF 200 and PV TV 600, TV share of EV? What trade-off: g vs WACC?",
     question: q({
       type: "SINGLE_CHOICE",
       promptFr:
