@@ -1,5 +1,6 @@
 import prisma from "@/data/prisma-client";
 import type { LessonProgressStatus, MasteryLevel } from "@/generated/prisma/client";
+export { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 
 export async function startLesson(userId: string, lessonId: string) {
   return prisma.lessonProgress.upsert({
@@ -110,14 +111,6 @@ export async function getUserMasteries(userId: string) {
     where: { userId },
     include: { skill: true },
   });
-}
-
-export function computeMasteryLevelFromScore(
-  scorePercent: number
-): MasteryLevel {
-  if (scorePercent >= 80) return "MASTERED";
-  if (scorePercent >= 50) return "LEARNING";
-  return "WEAK";
 }
 
 export type { LessonProgressStatus, MasteryLevel };

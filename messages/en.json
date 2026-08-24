@@ -6,6 +6,7 @@
     "dashboard": "Dashboard",
     "startLearning": "Get Started",
     "backToAcademies": "Back to academies",
+    "backToCourse": "Back to course",
     "modules": "Modules",
     "lessons": "Lessons",
     "quiz": "Quiz",
@@ -15,6 +16,71 @@
     "incorrect": "Incorrect",
     "score": "Score",
     "planned": "Coming soon",
-    "active": "Available"
+    "active": "Available",
+    "nextLesson": "Next lesson",
+    "previousLesson": "Previous lesson",
+    "continueLearning": "Continue learning"
+  },
+  "player": {
+    "phase": "Phase",
+    "of": "of",
+    "estimatedTime": "Estimated time",
+    "minutes": "min",
+    "next": "Next",
+    "previous": "Previous",
+    "startLesson": "Start lesson",
+    "finishLesson": "Finish lesson",
+    "phases": {
+      "LEARN": "Learn",
+      "PRACTICE": "Practice",
+      "TEST": "Test",
+      "REVIEW": "Review",
+      "MASTER": "Master"
+    },
+    "learn": {
+      "videoComingSoon": "Video coming soon",
+      "videoPlaceholder": "This video will be available in a future update."
+    },
+    "practice": {
+      "exerciseTitle": "Exercise",
+      "markDone": "Mark as done",
+      "done": "Done ✓",
+      "flashcardReveal": "Reveal answer",
+      "flashcardHide": "Hide answer",
+      "front": "Question",
+      "back": "Answer"
+    },
+    "test": {
+      "instruction": "Answer the following question:",
+      "selectOne": "Select one answer",
+      "selectMultiple": "Select all correct answers",
+      "trueOrFalse": "True or False",
+      "submit": "Submit answers",
+      "correct": "Correct!",
+      "incorrect": "Incorrect"
+    },
+    "review": {
+      "title": "Review",
+      "yourScore": "Your score",
+      "mastered": "Mastered concepts",
+      "toReview": "Concepts to review",
+      "explanation": "Explanation",
+      "askAiTutor": "Ask AI Tutor",
+      "aiTutorSoon": "The AI Tutor will be available soon."
+    },
+    "master": {
+      "title": "Final result",
+      "levelWeak": "Needs review",
+      "levelLearning": "Learning in progress",
+      "levelMastered": "Mastered!",
+      "weakMessage": "Review this content and retake the quiz.",
+      "learningMessage": "Good progress! Keep practicing.",
+      "masteredMessage": "Excellent work! You've mastered this concept.",
+      "retry": "Try again",
+      "nextLesson": "Next lesson",
+      "backToCourse": "Back to course",
+      "courseProgress": "Course progress",
+      "lessonsCompleted": "lesson(s) completed out of"
+    }
   }
 }

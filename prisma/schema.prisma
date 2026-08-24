@@ -236,6 +236,8 @@ model LessonProgress {
   timeSpentSec Int                  @default(0)
   startedAt    DateTime?
   completedAt  DateTime?
+  // Stores resumable player state: { currentPhase, quizScore, masteryLevel }
+  metadata     Json?
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
 

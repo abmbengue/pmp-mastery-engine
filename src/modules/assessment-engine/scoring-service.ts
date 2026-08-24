@@ -1,6 +1,7 @@
 import prisma from "@/data/prisma-client";
 import type { QuestionType } from "@/generated/prisma/client";
-import { computeMasteryLevelFromScore, updateConceptMastery } from "@/modules/learning-engine/progress-service";
+import { updateConceptMastery } from "@/modules/learning-engine/progress-service";
+import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 
 export interface AnswerValidationInput {
   questionId: string;

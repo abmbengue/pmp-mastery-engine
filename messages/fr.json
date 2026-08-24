@@ -6,6 +6,7 @@
     "dashboard": "Tableau de bord",
     "startLearning": "Commencer",
     "backToAcademies": "Retour aux académies",
+    "backToCourse": "Retour au cours",
     "modules": "Modules",
     "lessons": "Leçons",
     "quiz": "Quiz",
@@ -15,6 +16,71 @@
     "incorrect": "Réponse incorrecte",
     "score": "Score",
     "planned": "Bientôt disponible",
-    "active": "Disponible"
+    "active": "Disponible",
+    "nextLesson": "Leçon suivante",
+    "previousLesson": "Leçon précédente",
+    "continueLearning": "Continuer l'apprentissage"
+  },
+  "player": {
+    "phase": "Phase",
+    "of": "sur",
+    "estimatedTime": "Durée estimée",
+    "minutes": "min",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "startLesson": "Démarrer",
+    "finishLesson": "Terminer la leçon",
+    "phases": {
+      "LEARN": "Apprendre",
+      "PRACTICE": "Pratiquer",
+      "TEST": "Tester",
+      "REVIEW": "Réviser",
+      "MASTER": "Maîtriser"
+    },
+    "learn": {
+      "videoComingSoon": "Vidéo disponible prochainement",
+      "videoPlaceholder": "Cette vidéo sera disponible dans une prochaine mise à jour."
+    },
+    "practice": {
+      "exerciseTitle": "Exercice",
+      "markDone": "Marquer comme terminé",
+      "done": "Terminé ✓",
+      "flashcardReveal": "Révéler la réponse",
+      "flashcardHide": "Masquer la réponse",
+      "front": "Question",
+      "back": "Réponse"
+    },
+    "test": {
+      "instruction": "Répondez à la question suivante :",
+      "selectOne": "Sélectionnez une réponse",
+      "selectMultiple": "Sélectionnez toutes les réponses correctes",
+      "trueOrFalse": "Vrai ou Faux",
+      "submit": "Valider mes réponses",
+      "correct": "Bonne réponse !",
+      "incorrect": "Réponse incorrecte"
+    },
+    "review": {
+      "title": "Révision",
+      "yourScore": "Votre score",
+      "mastered": "Concepts maîtrisés",
+      "toReview": "Concepts à revoir",
+      "explanation": "Explication",
+      "askAiTutor": "Demander au tuteur IA",
+      "aiTutorSoon": "Le tuteur IA sera disponible prochainement."
+    },
+    "master": {
+      "title": "Résultat final",
+      "levelWeak": "À revoir",
+      "levelLearning": "En cours d'apprentissage",
+      "levelMastered": "Maîtrisé !",
+      "weakMessage": "Révisez ce contenu et retentez le quiz.",
+      "learningMessage": "Bonne progression ! Continuez à pratiquer.",
+      "masteredMessage": "Excellent travail ! Vous maîtrisez ce concept.",
+      "retry": "Réessayer",
+      "nextLesson": "Leçon suivante",
+      "backToCourse": "Retour au cours",
+      "courseProgress": "Progression du cours",
+      "lessonsCompleted": "leçon(s) complétée(s) sur"
+    }
   }
 }
