@@ -16,6 +16,10 @@ export type CompactLesson = {
   isShort?: boolean;
   shortTopic?: string;
   shortDurationSeconds?: number;
+  shortScriptFr?: string;
+  shortScriptEn?: string;
+  keyTakeawayFr?: string;
+  keyTakeawayEn?: string;
   textBodyFr: string;
   textBodyEn: string;
   flashcardFrontFr: string;

@@ -1,119 +1,83 @@
-export type CompactLesson = {
-  slug: string;
-  titleFr: string;
-  titleEn: string;
-  descriptionFr: string;
-  descriptionEn: string;
-  moduleSlug: string;
-  sortOrder: number;
-  estimatedMinutes: number;
-  difficulty: "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
-  skillSlug: string;
-  learningObjective: "IDENTIFY" | "APPLY" | "ANALYZE" | "DECIDE";
-  isShort?: boolean;
-  shortTopic?: string;
-  shortDurationSeconds?: number;
-  textBodyFr: string;
-  textBodyEn: string;
-  flashcardFrontFr: string;
-  flashcardFrontEn: string;
-  flashcardBackFr: string;
-  flashcardBackEn: string;
-  exercisePromptFr: string;
-  exercisePromptEn: string;
-  question: {
-    type: "SINGLE_CHOICE" | "TRUE_FALSE" | "MULTIPLE_CHOICE";
-    promptFr: string;
-    promptEn: string;
-    explanationCorrectFr: string;
-    explanationCorrectEn: string;
-    difficulty: number;
-    options: Array<{ labelFr: string; labelEn: string; isCorrect: boolean }>;
-  };
-  /** Optional situational mini-case for SITUATIONAL module */
+import type { CompactLesson } from "./compact";
+
+export type PmpLesson = CompactLesson & {
   situation?: {
     scenarioFr: string;
     scenarioEn: string;
+    problemFr?: string;
+    problemEn?: string;
     bestActionFr: string;
     bestActionEn: string;
   };
 };
 
-export const PMP_MODULES: Array<{
-  slug: string;
-  titleFr: string;
-  titleEn: string;
-  category: string;
-  sortOrder: number;
-  descriptionFr: string;
-  descriptionEn: string;
-}> = [
+export const PMP_MODULES = [
   {
-    slug: "foundations",
-    titleFr: "Fondamentaux",
-    titleEn: "Foundations",
-    category: "FOUNDATIONS",
-    sortOrder: 0,
-    descriptionFr: "Définitions, rôles clés et distinction projet vs opération.",
-    descriptionEn: "Definitions, key roles, and project vs operations distinction.",
+    "slug": "foundations",
+    "titleFr": "Fondamentaux",
+    "titleEn": "Foundations",
+    "category": "FOUNDATIONS",
+    "sortOrder": 0,
+    "descriptionFr": "Définitions, rôles clés et distinction projet vs opération.",
+    "descriptionEn": "Definitions, key roles, and project vs operations distinction."
   },
   {
-    slug: "people",
-    titleFr: "People",
-    titleEn: "People",
-    category: "PEOPLE",
-    sortOrder: 1,
-    descriptionFr: "Leadership, équipe, communication, parties prenantes et collaboration.",
-    descriptionEn: "Leadership, team, communication, stakeholders, and collaboration.",
+    "slug": "people",
+    "titleFr": "People",
+    "titleEn": "People",
+    "category": "PEOPLE",
+    "sortOrder": 1,
+    "descriptionFr": "Leadership, équipe, communication, parties prenantes et collaboration.",
+    "descriptionEn": "Leadership, team, communication, stakeholders, and collaboration."
   },
   {
-    slug: "process",
-    titleFr: "Process",
-    titleEn: "Process",
-    category: "PROCESS",
-    sortOrder: 2,
-    descriptionFr: "Planification, périmètre, planning, coûts, risques, qualité et intégration.",
-    descriptionEn: "Planning, scope, schedule, cost, risk, quality, and integration.",
+    "slug": "process",
+    "titleFr": "Process",
+    "titleEn": "Process",
+    "category": "PROCESS",
+    "sortOrder": 2,
+    "descriptionFr": "Planification, périmètre, planning, coûts, risques, qualité et intégration.",
+    "descriptionEn": "Planning, scope, schedule, cost, risk, quality, and integration."
   },
   {
-    slug: "business-environment",
-    titleFr: "Environnement business",
-    titleEn: "Business Environment",
-    category: "BUSINESS_ENVIRONMENT",
-    sortOrder: 3,
-    descriptionFr: "Gouvernance, conformité, bénéfices et valeur business.",
-    descriptionEn: "Governance, compliance, benefits, and business value.",
+    "slug": "business-environment",
+    "titleFr": "Environnement business",
+    "titleEn": "Business Environment",
+    "category": "BUSINESS_ENVIRONMENT",
+    "sortOrder": 3,
+    "descriptionFr": "Gouvernance, conformité, bénéfices et valeur business.",
+    "descriptionEn": "Governance, compliance, benefits, and business value."
   },
   {
-    slug: "agile",
-    titleFr: "Agile",
-    titleEn: "Agile",
-    category: "AGILE",
-    sortOrder: 4,
-    descriptionFr: "Mindset agile, livraison itérative, backlog et rétrospective.",
-    descriptionEn: "Agile mindset, iterative delivery, backlog, and retrospective.",
+    "slug": "agile",
+    "titleFr": "Agile",
+    "titleEn": "Agile",
+    "category": "AGILE",
+    "sortOrder": 4,
+    "descriptionFr": "Mindset agile, livraison itérative, backlog et rétrospective.",
+    "descriptionEn": "Agile mindset, iterative delivery, backlog, and retrospective."
   },
   {
-    slug: "hybrid",
-    titleFr: "Hybride",
-    titleEn: "Hybrid",
-    category: "HYBRID",
-    sortOrder: 5,
-    descriptionFr: "Combiner approches prédictives et adaptatives selon le contexte.",
-    descriptionEn: "Combine predictive and adaptive approaches by context.",
+    "slug": "hybrid",
+    "titleFr": "Hybride",
+    "titleEn": "Hybrid",
+    "category": "HYBRID",
+    "sortOrder": 5,
+    "descriptionFr": "Combiner approches prédictives et adaptatives selon le contexte.",
+    "descriptionEn": "Combine predictive and adaptive approaches by context."
   },
   {
-    slug: "situational-thinking",
-    titleFr: "Pensée situationnelle",
-    titleEn: "Situational Thinking",
-    category: "SITUATIONAL",
-    sortOrder: 6,
-    descriptionFr: "Mini-cas pour raisonner la meilleure action, pas mémoriser.",
-    descriptionEn: "Mini-cases to reason the best action, not memorize.",
-  },
+    "slug": "situational-thinking",
+    "titleFr": "Pensée situationnelle",
+    "titleEn": "Situational Thinking",
+    "category": "SITUATIONAL",
+    "sortOrder": 6,
+    "descriptionFr": "Mini-cas pour raisonner la meilleure action, pas mémoriser.",
+    "descriptionEn": "Mini-cases to reason the best action, not memorize."
+  }
 ];
 
-export const PMP_LESSONS: CompactLesson[] = [
+export const PMP_LESSONS: PmpLesson[] = [
   {
     slug: "what-is-project-management",
     titleFr: "Qu'est-ce que la gestion de projet ?",
@@ -129,16 +93,18 @@ export const PMP_LESSONS: CompactLesson[] = [
     isShort: true,
     shortTopic: "project-management",
     shortDurationSeconds: 155,
-    textBodyFr:
-      "Un projet est une initiative temporaire visant à produire un résultat unique : un produit, un service ou un changement mesurable. La gestion de projet coordonne ressources, délais et risques pour atteindre des objectifs définis, puis se termine. Les opérations courantes, par contraste, sont répétitives et permanentes. Comprendre cette distinction aide à choisir les bons outils et le bon niveau de formalisme.",
-    textBodyEn:
-      "A project is a temporary initiative to produce a unique result: a product, service, or measurable change. Project management coordinates resources, time, and risk to reach defined objectives, then ends. Ongoing operations, by contrast, are repetitive and permanent. Understanding this distinction helps choose the right tools and level of formality.",
+    shortScriptFr: "Hook : Pourquoi « Qu'est-ce que la gestion de projet ? » compte maintenant.\nConcept : Un projet est une initiative temporaire visant à produire un résultat unique : un produit, un service ou un changement mesurable. La gestion de projet coordonne ressources, délais et risques pour atteindre des objectifs définis, puis se termine. Les opérations courantes, par contraste, sont répétitives et permanentes. Comprendre cette distinction aide à choisir les bons outils et le bon niveau de formalisme. Découvrez la définition et les objectifs de la gestion de projet.\nExemple : Illustration : dans un contexte professionnel courant, « Qu'est-ce que la gestion de projet ? » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Qu'est-ce que la gestion de projet ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “What is Project Management?” matters now.\nConcept: A project is a temporary initiative to produce a unique result: a product, service, or measurable change. Project management coordinates resources, time, and risk to reach defined objectives, then ends. Ongoing operations, by contrast, are repetitive and permanent. Understanding this distinction helps choose the right tools and level of formality. Discover the definition and objectives of project management.\nExample: Illustration: in a common professional context, “What is Project Management?” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “What is Project Management?”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Qu'est-ce que la gestion de projet ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “What is Project Management?”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Qu'est-ce que la gestion de projet ? » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn projet est une initiative temporaire visant à produire un résultat unique : un produit, un service ou un changement mesurable. La gestion de projet coordonne ressources, délais et risques pour atteindre des objectifs définis, puis se termine. Les opérations courantes, par contraste, sont répétitives et permanentes. Comprendre cette distinction aide à choisir les bons outils et le bon niveau de formalisme. Découvrez la définition et les objectifs de la gestion de projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Qu'est-ce que la gestion de projet ? » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-foundations ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Qu'est-ce que la gestion de projet ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “What is Project Management?” and apply it in a simple situation.\n\nExplanation\nA project is a temporary initiative to produce a unique result: a product, service, or measurable change. Project management coordinates resources, time, and risk to reach defined objectives, then ends. Ongoing operations, by contrast, are repetitive and permanent. Understanding this distinction helps choose the right tools and level of formality. Discover the definition and objectives of project management.\n\nExample\nIllustration: in a common professional context, “What is Project Management?” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-foundations”.\n\nKey takeaway\nKey takeaway: master the core idea of “What is Project Management?”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Projet",
     flashcardFrontEn: "Project",
     flashcardBackFr: "Initiative temporaire créant un résultat unique.",
     flashcardBackEn: "Temporary initiative creating a unique result.",
-    exercisePromptFr: "Identifiez un projet et une opération courante dans votre organisation.",
-    exercisePromptEn: "Identify one project and one ongoing operation in your organization.",
+    exercisePromptFr: "Pratique : Identifiez un projet et une opération courante dans votre organisation. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Identify one project and one ongoing operation in your organization. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quelle caractéristique distingue un projet d'une opération courante ?",
@@ -147,9 +113,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "A project is temporary and produces a unique result.",
       difficulty: 1,
       options: [
-        { labelFr: "Il est permanent", labelEn: "It is permanent", isCorrect: false },
-        { labelFr: "Il est temporaire et unique", labelEn: "It is temporary and unique", isCorrect: true },
-        { labelFr: "Il n'a pas d'objectif", labelEn: "It has no objective", isCorrect: false },
+        {"labelFr":"Il est permanent","labelEn":"It is permanent","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Qu'est-ce que la gestion de projet ? ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “What is Project Management?”. Re-read the explanation and example."},
+        {"labelFr":"Il est temporaire et unique","labelEn":"It is temporary and unique","isCorrect":true},
+        {"labelFr":"Il n'a pas d'objectif","labelEn":"It has no objective","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Qu'est-ce que la gestion de projet ? ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “What is Project Management?”. Re-read the explanation and example."},
       ],
     },
   },
@@ -165,16 +131,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "pmp-foundations",
     learningObjective: "IDENTIFY",
-    textBodyFr:
-      "Les rôles essentiels incluent le sponsor (autorité, financement et levée des obstacles), le chef de projet (coordination quotidienne et intégration), et l'équipe projet (exécution des livrables). Les parties prenantes influencent ou sont touchées par le projet sans toujours exécuter. Des responsabilités claires réduisent les conflits et accélèrent les décisions.",
-    textBodyEn:
-      "Essential roles include the sponsor (authority, funding, and escalation), the project manager (day-to-day coordination and integration), and the project team (deliverable execution). Stakeholders influence or are affected by the project without always executing work. Clear responsibilities reduce conflict and speed decisions.",
+    textBodyFr: "Objectif\nComprendre « Rôles et responsabilités » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLes rôles essentiels incluent le sponsor (autorité, financement et levée des obstacles), le chef de projet (coordination quotidienne et intégration), et l'équipe projet (exécution des livrables). Les parties prenantes influencent ou sont touchées par le projet sans toujours exécuter. Des responsabilités claires réduisent les conflits et accélèrent les décisions. Comprenez les rôles clés dans un projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Rôles et responsabilités » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-foundations ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Rôles et responsabilités », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Project Roles and Responsibilities” and apply it in a simple situation.\n\nExplanation\nEssential roles include the sponsor (authority, funding, and escalation), the project manager (day-to-day coordination and integration), and the project team (deliverable execution). Stakeholders influence or are affected by the project without always executing work. Clear responsibilities reduce conflict and speed decisions. Understand key roles in a project.\n\nExample\nIllustration: in a common professional context, “Project Roles and Responsibilities” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-foundations”.\n\nKey takeaway\nKey takeaway: master the core idea of “Project Roles and Responsibilities”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Sponsor",
     flashcardFrontEn: "Sponsor",
     flashcardBackFr: "Fournit ressources, autorité et soutien au projet.",
     flashcardBackEn: "Provides resources, authority, and support for the project.",
-    exercisePromptFr: "Décrivez le rôle du chef de projet dans un projet que vous connaissez.",
-    exercisePromptEn: "Describe the project manager's role in a project you know.",
+    exercisePromptFr: "Pratique : Décrivez le rôle du chef de projet dans un projet que vous connaissez. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe the project manager's role in a project you know. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Le sponsor est responsable de la coordination quotidienne du projet.",
@@ -183,8 +147,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "False. Day-to-day coordination is the project manager's responsibility.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: false },
-        { labelFr: "Faux", labelEn: "False", isCorrect: true },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Rôles et responsabilités ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Roles and Responsibilities”. Re-read the explanation and example."},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":true},
       ],
     },
   },
@@ -200,16 +164,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "leadership",
     learningObjective: "APPLY",
-    textBodyFr:
-      "Le leadership en projet ne repose pas uniquement sur l'autorité hiérarchique : il combine vision claire, exemplarité et capacité à mobiliser. Un bon leader adapte son style (directif, participatif, délégatif) au maturité de l'équipe et au contexte. Il protège l'équipe des distractions tout en restant transparent sur les contraintes. Le leadership sert les objectifs du projet, pas l'ego du leader.",
-    textBodyEn:
-      "Project leadership is not only hierarchical authority: it combines clear vision, role modeling, and the ability to mobilize. A good leader adapts style (directive, participative, delegating) to team maturity and context. They shield the team from distractions while staying transparent about constraints. Leadership serves project goals, not the leader's ego.",
+    textBodyFr: "Objectif\nComprendre « Leadership en projet » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe leadership en projet ne repose pas uniquement sur l'autorité hiérarchique : il combine vision claire, exemplarité et capacité à mobiliser. Un bon leader adapte son style (directif, participatif, délégatif) au maturité de l'équipe et au contexte. Il protège l'équipe des distractions tout en restant transparent sur les contraintes. Le leadership sert les objectifs du projet, pas l'ego du leader. Inspirer, orienter et créer un environnement où l'équipe performe.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Leadership en projet » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « leadership ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Leadership en projet », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Leadership in Projects” and apply it in a simple situation.\n\nExplanation\nProject leadership is not only hierarchical authority: it combines clear vision, role modeling, and the ability to mobilize. A good leader adapts style (directive, participative, delegating) to team maturity and context. They shield the team from distractions while staying transparent about constraints. Leadership serves project goals, not the leader's ego. Inspire, guide, and create an environment where the team performs.\n\nExample\nIllustration: in a common professional context, “Leadership in Projects” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “leadership”.\n\nKey takeaway\nKey takeaway: master the core idea of “Leadership in Projects”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Leadership adaptatif",
     flashcardFrontEn: "Adaptive leadership",
     flashcardBackFr: "Ajuster le style de leadership au contexte et à la maturité de l'équipe.",
     flashcardBackEn: "Adjust leadership style to context and team maturity.",
-    exercisePromptFr: "Décrivez une situation où un style participatif est plus approprié qu'un style directif.",
-    exercisePromptEn: "Describe a situation where a participative style is more appropriate than a directive one.",
+    exercisePromptFr: "Pratique : Décrivez une situation où un style participatif est plus approprié qu'un style directif. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe a situation where a participative style is more appropriate than a directive one. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel comportement illustre le leadership en projet ?",
@@ -218,9 +180,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Clarifying vision and helping the team overcome obstacles serves the project.",
       difficulty: 2,
       options: [
-        { labelFr: "Centraliser toutes les décisions sans consultation", labelEn: "Centralize all decisions without consultation", isCorrect: false },
-        { labelFr: "Clarifier la vision et lever les obstacles pour l'équipe", labelEn: "Clarify vision and remove obstacles for the team", isCorrect: true },
-        { labelFr: "Éviter toute communication sur les contraintes", labelEn: "Avoid any communication about constraints", isCorrect: false },
+        {"labelFr":"Centraliser toutes les décisions sans consultation","labelEn":"Centralize all decisions without consultation","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Leadership en projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Leadership in Projects”. Re-read the explanation and example."},
+        {"labelFr":"Clarifier la vision et lever les obstacles pour l'équipe","labelEn":"Clarify vision and remove obstacles for the team","isCorrect":true},
+        {"labelFr":"Éviter toute communication sur les contraintes","labelEn":"Avoid any communication about constraints","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Leadership en projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Leadership in Projects”. Re-read the explanation and example."},
       ],
     },
   },
@@ -236,16 +198,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "team-development",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "Les équipes évoluent typiquement de la formation à la performance : accueil, conflit, normalisation, performance et dissolution. Reconnaître la phase actuelle permet d'intervenir utilement — faciliter l'alignement en phase de conflit, renforcer l'autonomie en phase de performance. Le développement d'équipe inclut compétences, confiance et règles de travail partagées.",
-    textBodyEn:
-      "Teams typically evolve from forming to performing: forming, conflict, norming, performing, and adjourning. Recognizing the current phase enables useful intervention — facilitating alignment during conflict, reinforcing autonomy during performance. Team development includes skills, trust, and shared working agreements.",
+    textBodyFr: "Objectif\nComprendre « Développement d'équipe » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLes équipes évoluent typiquement de la formation à la performance : accueil, conflit, normalisation, performance et dissolution. Reconnaître la phase actuelle permet d'intervenir utilement — faciliter l'alignement en phase de conflit, renforcer l'autonomie en phase de performance. Le développement d'équipe inclut compétences, confiance et règles de travail partagées. Construire une équipe performante et gérer les phases de maturation.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Développement d'équipe » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « team-development ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Développement d'équipe », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Team Development” and apply it in a simple situation.\n\nExplanation\nTeams typically evolve from forming to performing: forming, conflict, norming, performing, and adjourning. Recognizing the current phase enables useful intervention — facilitating alignment during conflict, reinforcing autonomy during performance. Team development includes skills, trust, and shared working agreements. Build a performing team and manage maturity phases.\n\nExample\nIllustration: in a common professional context, “Team Development” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “team-development”.\n\nKey takeaway\nKey takeaway: master the core idea of “Team Development”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Phase de normalisation",
     flashcardFrontEn: "Norming phase",
     flashcardBackFr: "L'équipe établit des normes et des modes de collaboration.",
     flashcardBackEn: "The team establishes norms and collaboration patterns.",
-    exercisePromptFr: "Identifiez la phase d'évolution d'une équipe que vous observez actuellement.",
-    exercisePromptEn: "Identify the development phase of a team you currently observe.",
+    exercisePromptFr: "Pratique : Identifiez la phase d'évolution d'une équipe que vous observez actuellement. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Identify the development phase of a team you currently observe. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "En phase de conflit initial, quelle intervention est généralement la plus utile ?",
@@ -254,9 +214,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Facilitating alignment on goals and rules helps navigate constructive conflict.",
       difficulty: 2,
       options: [
-        { labelFr: "Ignorer les tensions pour gagner du temps", labelEn: "Ignore tensions to save time", isCorrect: false },
-        { labelFr: "Faciliter l'alignement sur objectifs et règles", labelEn: "Facilitate alignment on goals and rules", isCorrect: true },
-        { labelFr: "Dissoudre immédiatement l'équipe", labelEn: "Immediately dissolve the team", isCorrect: false },
+        {"labelFr":"Ignorer les tensions pour gagner du temps","labelEn":"Ignore tensions to save time","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Développement d'équipe ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Team Development”. Re-read the explanation and example."},
+        {"labelFr":"Faciliter l'alignement sur objectifs et règles","labelEn":"Facilitate alignment on goals and rules","isCorrect":true},
+        {"labelFr":"Dissoudre immédiatement l'équipe","labelEn":"Immediately dissolve the team","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Développement d'équipe ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Team Development”. Re-read the explanation and example."},
       ],
     },
   },
@@ -268,23 +228,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "Understand conflict sources and resolution modes.",
     moduleSlug: "people",
     sortOrder: 2,
-    estimatedMinutes: 7,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "conflict-management",
     learningObjective: "DECIDE",
     isShort: true,
     shortTopic: "conflict-management",
     shortDurationSeconds: 130,
-    textBodyFr:
-      "Les conflits en projet naissent souvent de priorités, ressources, valeurs ou informations incomplètes — pas seulement d'ego. Les modes de résolution vont de l'évitement à la collaboration ; la collaboration vise une solution gagnant-gagnant quand le temps et la relation comptent. Un conflit bien géré peut améliorer la décision ; un conflit ignoré peut paralyser la livraison.",
-    textBodyEn:
-      "Project conflicts often arise from priorities, resources, values, or incomplete information — not only ego. Resolution modes range from avoidance to collaboration; collaboration seeks win-win when time and relationship matter. Well-managed conflict can improve decisions; ignored conflict can stall delivery.",
+    shortScriptFr: "Hook : Pourquoi « Bases de la gestion des conflits » compte maintenant.\nConcept : Les conflits en projet naissent souvent de priorités, ressources, valeurs ou informations incomplètes — pas seulement d'ego. Les modes de résolution vont de l'évitement à la collaboration ; la collaboration vise une solution gagnant-gagnant quand le temps et la relation comptent. Un conflit bien géré peut améliorer la décision ; un conflit ignoré peut paralyser la livraison. Comprendre les sources de conflit et les modes de résolution.\nExemple : Illustration : dans un contexte professionnel courant, « Bases de la gestion des conflits » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Bases de la gestion des conflits », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “Conflict Management Basics” matters now.\nConcept: Project conflicts often arise from priorities, resources, values, or incomplete information — not only ego. Resolution modes range from avoidance to collaboration; collaboration seeks win-win when time and relationship matter. Well-managed conflict can improve decisions; ignored conflict can stall delivery. Understand conflict sources and resolution modes.\nExample: Illustration: in a common professional context, “Conflict Management Basics” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “Conflict Management Basics”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Bases de la gestion des conflits », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “Conflict Management Basics”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Bases de la gestion des conflits » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLes conflits en projet naissent souvent de priorités, ressources, valeurs ou informations incomplètes — pas seulement d'ego. Les modes de résolution vont de l'évitement à la collaboration ; la collaboration vise une solution gagnant-gagnant quand le temps et la relation comptent. Un conflit bien géré peut améliorer la décision ; un conflit ignoré peut paralyser la livraison. Comprendre les sources de conflit et les modes de résolution.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Bases de la gestion des conflits » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « conflict-management ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Bases de la gestion des conflits », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Conflict Management Basics” and apply it in a simple situation.\n\nExplanation\nProject conflicts often arise from priorities, resources, values, or incomplete information — not only ego. Resolution modes range from avoidance to collaboration; collaboration seeks win-win when time and relationship matter. Well-managed conflict can improve decisions; ignored conflict can stall delivery. Understand conflict sources and resolution modes.\n\nExample\nIllustration: in a common professional context, “Conflict Management Basics” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “conflict-management”.\n\nKey takeaway\nKey takeaway: master the core idea of “Conflict Management Basics”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Collaboration (conflit)",
     flashcardFrontEn: "Collaboration (conflict)",
     flashcardBackFr: "Rechercher une solution qui satisfait les intérêts de toutes les parties.",
     flashcardBackEn: "Seek a solution satisfying all parties' interests.",
-    exercisePromptFr: "Choisissez le mode de résolution adapté à un conflit technique entre pairs experts.",
-    exercisePromptEn: "Choose the resolution mode suited to a technical conflict between expert peers.",
+    exercisePromptFr: "Pratique : Choisissez le mode de résolution adapté à un conflit technique entre pairs experts. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Choose the resolution mode suited to a technical conflict between expert peers. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Pour un conflit technique entre experts avec temps limité, quel mode est souvent prioritaire ?",
@@ -293,9 +255,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Collaboration or constructive negotiation seeks the best technical outcome.",
       difficulty: 2,
       options: [
-        { labelFr: "Évitement total", labelEn: "Total avoidance", isCorrect: false },
-        { labelFr: "Collaboration ou négociation constructive", labelEn: "Collaboration or constructive negotiation", isCorrect: true },
-        { labelFr: "Imposer la solution du chef de projet sans discussion", labelEn: "Impose the PM's solution without discussion", isCorrect: false },
+        {"labelFr":"Évitement total","labelEn":"Total avoidance","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Bases de la gestion des conflits ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Conflict Management Basics”. Re-read the explanation and example."},
+        {"labelFr":"Collaboration ou négociation constructive","labelEn":"Collaboration or constructive negotiation","isCorrect":true},
+        {"labelFr":"Imposer la solution du chef de projet sans discussion","labelEn":"Impose the PM's solution without discussion","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Bases de la gestion des conflits ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Conflict Management Basics”. Re-read the explanation and example."},
       ],
     },
   },
@@ -311,16 +273,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "communication",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La communication en projet couvre qui informer, quoi dire, quand, par quel canal et avec quel feedback. Un plan de communication aligne format et fréquence aux besoins des audiences : sponsor, équipe, clients, régulateurs. La transparence sur statut, risques et changements réduit l'anxiété et les rumeurs. Écouter activement est aussi essentiel que diffuser l'information.",
-    textBodyEn:
-      "Project communication covers who to inform, what to say, when, through which channel, and with what feedback. A communication plan aligns format and frequency to audience needs: sponsor, team, clients, regulators. Transparency on status, risks, and changes reduces anxiety and rumors. Active listening is as essential as broadcasting information.",
+    textBodyFr: "Objectif\nComprendre « Communication en projet » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa communication en projet couvre qui informer, quoi dire, quand, par quel canal et avec quel feedback. Un plan de communication aligne format et fréquence aux besoins des audiences : sponsor, équipe, clients, régulateurs. La transparence sur statut, risques et changements réduit l'anxiété et les rumeurs. Écouter activement est aussi essentiel que diffuser l'information. Planifier et exécuter une communication efficace avec les parties prenantes.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Communication en projet » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « communication ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Communication en projet », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Project Communication” and apply it in a simple situation.\n\nExplanation\nProject communication covers who to inform, what to say, when, through which channel, and with what feedback. A communication plan aligns format and frequency to audience needs: sponsor, team, clients, regulators. Transparency on status, risks, and changes reduces anxiety and rumors. Active listening is as essential as broadcasting information. Plan and execute effective communication with stakeholders.\n\nExample\nIllustration: in a common professional context, “Project Communication” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “communication”.\n\nKey takeaway\nKey takeaway: master the core idea of “Project Communication”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Plan de communication",
     flashcardFrontEn: "Communication plan",
     flashcardBackFr: "Document qui définit audiences, messages, canaux et fréquence.",
     flashcardBackEn: "Document defining audiences, messages, channels, and frequency.",
-    exercisePromptFr: "Définissez le canal et la fréquence idéale pour informer le sponsor d'un projet.",
-    exercisePromptEn: "Define the ideal channel and frequency to inform a project sponsor.",
+    exercisePromptFr: "Pratique : Définissez le canal et la fréquence idéale pour informer le sponsor d'un projet. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Define the ideal channel and frequency to inform a project sponsor. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Un plan de communication doit être adapté aux besoins de chaque audience.",
@@ -329,8 +289,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. Sponsors, teams, and clients have different information needs.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Communication en projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Communication”. Re-read the explanation and example."},
       ],
     },
   },
@@ -342,23 +302,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "Identify stakeholders and their influence on the project.",
     moduleSlug: "people",
     sortOrder: 4,
-    estimatedMinutes: 7,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "stakeholder-engagement",
     learningObjective: "IDENTIFY",
     isShort: true,
     shortTopic: "stakeholders",
     shortDurationSeconds: 120,
-    textBodyFr:
-      "Une partie prenante est toute personne ou groupe qui influence le projet ou est affecté par ses résultats : utilisateurs, finance, juridique, opérations, communautés locales. L'analyse d'influence et d'intérêt aide à prioriser l'engagement : haute influence et haute intérêt nécessitent une collaboration étroite. Ignorer une partie prenante clé est une source fréquente d'échec.",
-    textBodyEn:
-      "A stakeholder is any person or group that influences the project or is affected by its results: users, finance, legal, operations, local communities. Influence and interest analysis helps prioritize engagement: high influence and high interest require close collaboration. Ignoring a key stakeholder is a frequent source of failure.",
+    shortScriptFr: "Hook : Pourquoi « Qu'est-ce qu'une partie prenante ? » compte maintenant.\nConcept : Une partie prenante est toute personne ou groupe qui influence le projet ou est affecté par ses résultats : utilisateurs, finance, juridique, opérations, communautés locales. L'analyse d'influence et d'intérêt aide à prioriser l'engagement : haute influence et haute intérêt nécessitent une collaboration étroite. Ignorer une partie prenante clé est une source fréquente d'échec. Identifier les parties prenantes et leur influence sur le projet.\nExemple : Illustration : dans un contexte professionnel courant, « Qu'est-ce qu'une partie prenante ? » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Qu'est-ce qu'une partie prenante ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “What is a Stakeholder?” matters now.\nConcept: A stakeholder is any person or group that influences the project or is affected by its results: users, finance, legal, operations, local communities. Influence and interest analysis helps prioritize engagement: high influence and high interest require close collaboration. Ignoring a key stakeholder is a frequent source of failure. Identify stakeholders and their influence on the project.\nExample: Illustration: in a common professional context, “What is a Stakeholder?” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “What is a Stakeholder?”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Qu'est-ce qu'une partie prenante ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “What is a Stakeholder?”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Qu'est-ce qu'une partie prenante ? » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUne partie prenante est toute personne ou groupe qui influence le projet ou est affecté par ses résultats : utilisateurs, finance, juridique, opérations, communautés locales. L'analyse d'influence et d'intérêt aide à prioriser l'engagement : haute influence et haute intérêt nécessitent une collaboration étroite. Ignorer une partie prenante clé est une source fréquente d'échec. Identifier les parties prenantes et leur influence sur le projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Qu'est-ce qu'une partie prenante ? » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « stakeholder-engagement ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Qu'est-ce qu'une partie prenante ? », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “What is a Stakeholder?” and apply it in a simple situation.\n\nExplanation\nA stakeholder is any person or group that influences the project or is affected by its results: users, finance, legal, operations, local communities. Influence and interest analysis helps prioritize engagement: high influence and high interest require close collaboration. Ignoring a key stakeholder is a frequent source of failure. Identify stakeholders and their influence on the project.\n\nExample\nIllustration: in a common professional context, “What is a Stakeholder?” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “stakeholder-engagement”.\n\nKey takeaway\nKey takeaway: master the core idea of “What is a Stakeholder?”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Partie prenante",
     flashcardFrontEn: "Stakeholder",
     flashcardBackFr: "Personne ou groupe qui influence ou est affecté par le projet.",
     flashcardBackEn: "Person or group that influences or is affected by the project.",
-    exercisePromptFr: "Listez cinq parties prenantes d'un projet logiciel interne.",
-    exercisePromptEn: "List five stakeholders for an internal software project.",
+    exercisePromptFr: "Pratique : Listez cinq parties prenantes d'un projet logiciel interne. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List five stakeholders for an internal software project. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Qui est une partie prenante d'un projet ?",
@@ -367,9 +329,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Anyone affected by or able to influence the project.",
       difficulty: 1,
       options: [
-        { labelFr: "Seulement l'équipe projet", labelEn: "Only the project team", isCorrect: false },
-        { labelFr: "Quiconque influence ou est affecté par le projet", labelEn: "Anyone who influences or is affected by the project", isCorrect: true },
-        { labelFr: "Uniquement le sponsor", labelEn: "Only the sponsor", isCorrect: false },
+        {"labelFr":"Seulement l'équipe projet","labelEn":"Only the project team","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Qu'est-ce qu'une partie prenante ? ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “What is a Stakeholder?”. Re-read the explanation and example."},
+        {"labelFr":"Quiconque influence ou est affecté par le projet","labelEn":"Anyone who influences or is affected by the project","isCorrect":true},
+        {"labelFr":"Uniquement le sponsor","labelEn":"Only the sponsor","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Qu'est-ce qu'une partie prenante ? ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “What is a Stakeholder?”. Re-read the explanation and example."},
       ],
     },
   },
@@ -385,16 +347,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "motivation",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La motivation combine facteurs intrinsèques (autonomie, maîtrise, purpose) et extrinsèques (reconnaissance, récompenses). Les individus ne sont pas motivés par la même chose : certains valorisent la croissance, d'autres la stabilité ou la visibilité. Reconnaître les contributions, donner du feedback constructif et connecter le travail aux objectifs du projet renforcent l'engagement durable.",
-    textBodyEn:
-      "Motivation combines intrinsic factors (autonomy, mastery, purpose) and extrinsic ones (recognition, rewards). Individuals are not motivated by the same things: some value growth, others stability or visibility. Recognizing contributions, giving constructive feedback, and connecting work to project goals reinforce sustainable engagement.",
+    textBodyFr: "Objectif\nComprendre « Motivation de l'équipe » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa motivation combine facteurs intrinsèques (autonomie, maîtrise, purpose) et extrinsèques (reconnaissance, récompenses). Les individus ne sont pas motivés par la même chose : certains valorisent la croissance, d'autres la stabilité ou la visibilité. Reconnaître les contributions, donner du feedback constructif et connecter le travail aux objectifs du projet renforcent l'engagement durable. Comprendre les leviers de motivation et de engagement.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Motivation de l'équipe » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « motivation ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Motivation de l'équipe », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Team Motivation” and apply it in a simple situation.\n\nExplanation\nMotivation combines intrinsic factors (autonomy, mastery, purpose) and extrinsic ones (recognition, rewards). Individuals are not motivated by the same things: some value growth, others stability or visibility. Recognizing contributions, giving constructive feedback, and connecting work to project goals reinforce sustainable engagement. Understand motivation and engagement levers.\n\nExample\nIllustration: in a common professional context, “Team Motivation” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “motivation”.\n\nKey takeaway\nKey takeaway: master the core idea of “Team Motivation”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Motivation intrinsèque",
     flashcardFrontEn: "Intrinsic motivation",
     flashcardBackFr: "Engagement tiré du travail lui-même : autonomie, maîtrise, purpose.",
     flashcardBackEn: "Engagement drawn from the work itself: autonomy, mastery, purpose.",
-    exercisePromptFr: "Identifiez un levier de motivation intrinsèque pour un membre de votre équipe.",
-    exercisePromptEn: "Identify one intrinsic motivation lever for a member of your team.",
+    exercisePromptFr: "Pratique : Identifiez un levier de motivation intrinsèque pour un membre de votre équipe. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Identify one intrinsic motivation lever for a member of your team. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel élément renforce typiquement la motivation intrinsèque ?",
@@ -403,9 +363,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Autonomy and clear purpose strengthen intrinsic engagement.",
       difficulty: 2,
       options: [
-        { labelFr: "Micro-management constant", labelEn: "Constant micromanagement", isCorrect: false },
-        { labelFr: "Autonomie et purpose clair", labelEn: "Autonomy and clear purpose", isCorrect: true },
-        { labelFr: "Absence totale de feedback", labelEn: "Complete absence of feedback", isCorrect: false },
+        {"labelFr":"Micro-management constant","labelEn":"Constant micromanagement","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Motivation de l'équipe ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Team Motivation”. Re-read the explanation and example."},
+        {"labelFr":"Autonomie et purpose clair","labelEn":"Autonomy and clear purpose","isCorrect":true},
+        {"labelFr":"Absence totale de feedback","labelEn":"Complete absence of feedback","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Motivation de l'équipe ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Team Motivation”. Re-read the explanation and example."},
       ],
     },
   },
@@ -421,16 +381,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "collaboration",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La collaboration efficace repose sur objectifs partagés, règles de travail explicites et outils adaptés. Les équipes distribuées nécessitent des rituels synchrones (standups, revues) et asynchrones (documentation, tickets). La co-création avec les parties prenantes améliore l'acceptation des livrables. Le chef de projet facilite la collaboration sans remplacer les experts métier.",
-    textBodyEn:
-      "Effective collaboration rests on shared goals, explicit working agreements, and suitable tools. Distributed teams need synchronous rituals (standups, reviews) and asynchronous ones (documentation, tickets). Co-creation with stakeholders improves deliverable acceptance. The project manager facilitates collaboration without replacing domain experts.",
+    textBodyFr: "Objectif\nComprendre « Collaboration et travail d'équipe » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa collaboration efficace repose sur objectifs partagés, règles de travail explicites et outils adaptés. Les équipes distribuées nécessitent des rituels synchrones (standups, revues) et asynchrones (documentation, tickets). La co-création avec les parties prenantes améliore l'acceptation des livrables. Le chef de projet facilite la collaboration sans remplacer les experts métier. Favoriser la collaboration transverse et la co-création.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Collaboration et travail d'équipe » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « collaboration ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Collaboration et travail d'équipe », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Collaboration and Teamwork” and apply it in a simple situation.\n\nExplanation\nEffective collaboration rests on shared goals, explicit working agreements, and suitable tools. Distributed teams need synchronous rituals (standups, reviews) and asynchronous ones (documentation, tickets). Co-creation with stakeholders improves deliverable acceptance. The project manager facilitates collaboration without replacing domain experts. Foster cross-functional collaboration and co-creation.\n\nExample\nIllustration: in a common professional context, “Collaboration and Teamwork” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “collaboration”.\n\nKey takeaway\nKey takeaway: master the core idea of “Collaboration and Teamwork”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Règles de travail",
     flashcardFrontEn: "Working agreements",
     flashcardBackFr: "Normes explicites sur communication, décisions et qualité.",
     flashcardBackEn: "Explicit norms on communication, decisions, and quality.",
-    exercisePromptFr: "Proposez trois règles de travail pour une équipe distribuée.",
-    exercisePromptEn: "Propose three working agreements for a distributed team.",
+    exercisePromptFr: "Pratique : Proposez trois règles de travail pour une équipe distribuée. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Propose three working agreements for a distributed team. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Des règles de travail explicites améliorent la collaboration.",
@@ -439,8 +397,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. They reduce ambiguity on expectations and behaviors.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Collaboration et travail d'équipe ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Collaboration and Teamwork”. Re-read the explanation and example."},
       ],
     },
   },
@@ -456,16 +414,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "planning",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La planification traduit les objectifs en livrables, activités, ressources et jalons mesurables. Un plan de management de projet intègre les sous-plans (périmètre, planning, coûts, qualité, risques, communication). La planification est itérative : on refine quand l'information émerge. Un plan réaliste inclut buffers, hypothèses documentées et critères d'acceptation clairs.",
-    textBodyEn:
-      "Planning translates objectives into deliverables, activities, resources, and measurable milestones. A project management plan integrates sub-plans (scope, schedule, cost, quality, risk, communication). Planning is iterative: you refine as information emerges. A realistic plan includes buffers, documented assumptions, and clear acceptance criteria.",
+    textBodyFr: "Objectif\nComprendre « Planification de projet » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa planification traduit les objectifs en livrables, activités, ressources et jalons mesurables. Un plan de management de projet intègre les sous-plans (périmètre, planning, coûts, qualité, risques, communication). La planification est itérative : on refine quand l'information émerge. Un plan réaliste inclut buffers, hypothèses documentées et critères d'acceptation clairs. Élaborer un plan intégré couvrant périmètre, délais, coûts et risques.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Planification de projet » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « planning ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Planification de projet », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Project Planning” and apply it in a simple situation.\n\nExplanation\nPlanning translates objectives into deliverables, activities, resources, and measurable milestones. A project management plan integrates sub-plans (scope, schedule, cost, quality, risk, communication). Planning is iterative: you refine as information emerges. A realistic plan includes buffers, documented assumptions, and clear acceptance criteria. Develop an integrated plan covering scope, schedule, cost, and risk.\n\nExample\nIllustration: in a common professional context, “Project Planning” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “planning”.\n\nKey takeaway\nKey takeaway: master the core idea of “Project Planning”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Plan de management de projet",
     flashcardFrontEn: "Project management plan",
     flashcardBackFr: "Document intégrant sous-plans pour piloter le projet.",
     flashcardBackEn: "Document integrating sub-plans to steer the project.",
-    exercisePromptFr: "Listez les sous-plans essentiels d'un plan de management de projet.",
-    exercisePromptEn: "List essential sub-plans of a project management plan.",
+    exercisePromptFr: "Pratique : Listez les sous-plans essentiels d'un plan de management de projet. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List essential sub-plans of a project management plan. Then note one mistake to avoid.",
     question: {
       type: "MULTIPLE_CHOICE",
       promptFr: "Quels éléments font typiquement partie d'un plan intégré ? (Plusieurs réponses)",
@@ -474,10 +430,10 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Scope, schedule, cost, and risk are classic sub-plans.",
       difficulty: 2,
       options: [
-        { labelFr: "Plan de périmètre", labelEn: "Scope plan", isCorrect: true },
-        { labelFr: "Plan de planning", labelEn: "Schedule plan", isCorrect: true },
-        { labelFr: "Liste de courses personnelles", labelEn: "Personal grocery list", isCorrect: false },
-        { labelFr: "Plan de gestion des risques", labelEn: "Risk management plan", isCorrect: true },
+        {"labelFr":"Plan de périmètre","labelEn":"Scope plan","isCorrect":true},
+        {"labelFr":"Plan de planning","labelEn":"Schedule plan","isCorrect":true},
+        {"labelFr":"Liste de courses personnelles","labelEn":"Personal grocery list","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Planification de projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Planning”. Re-read the explanation and example."},
+        {"labelFr":"Plan de gestion des risques","labelEn":"Risk management plan","isCorrect":true},
       ],
     },
   },
@@ -493,16 +449,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "scope",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "Le périmètre décrit les livrables et le travail nécessaire pour les produire, ainsi que ce qui est explicitement exclu. La décomposition en WBS structure le travail en packages mesurables. Le contrôle du périmètre compare le travail réalisé au baseline et gère les demandes de changement. L'élargissement non contrôlé du périmètre (scope creep) menace délais et budget.",
-    textBodyEn:
-      "Scope describes deliverables and work needed to produce them, plus what is explicitly excluded. WBS decomposition structures work into measurable packages. Scope control compares performed work to baseline and manages change requests. Uncontrolled scope expansion (scope creep) threatens schedule and budget.",
+    textBodyFr: "Objectif\nComprendre « Gestion du périmètre » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe périmètre décrit les livrables et le travail nécessaire pour les produire, ainsi que ce qui est explicitement exclu. La décomposition en WBS structure le travail en packages mesurables. Le contrôle du périmètre compare le travail réalisé au baseline et gère les demandes de changement. L'élargissement non contrôlé du périmètre (scope creep) menace délais et budget. Définir, valider et contrôler ce qui est inclus dans le projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gestion du périmètre » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « scope ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gestion du périmètre », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Scope Management” and apply it in a simple situation.\n\nExplanation\nScope describes deliverables and work needed to produce them, plus what is explicitly excluded. WBS decomposition structures work into measurable packages. Scope control compares performed work to baseline and manages change requests. Uncontrolled scope expansion (scope creep) threatens schedule and budget. Define, validate, and control what is included in the project.\n\nExample\nIllustration: in a common professional context, “Scope Management” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “scope”.\n\nKey takeaway\nKey takeaway: master the core idea of “Scope Management”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "WBS",
     flashcardFrontEn: "WBS",
     flashcardBackFr: "Décomposition hiérarchique du travail du projet.",
     flashcardBackEn: "Hierarchical decomposition of project work.",
-    exercisePromptFr: "Décomposez un livrable majeur en trois packages de travail.",
-    exercisePromptEn: "Decompose one major deliverable into three work packages.",
+    exercisePromptFr: "Pratique : Décomposez un livrable majeur en trois packages de travail. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Decompose one major deliverable into three work packages. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel outil structure le travail en packages mesurables ?",
@@ -511,9 +465,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "The WBS decomposes scope into work elements.",
       difficulty: 2,
       options: [
-        { labelFr: "Organigramme des tâches", labelEn: "Gantt chart", isCorrect: false },
-        { labelFr: "WBS (structure de décomposition)", labelEn: "WBS (work breakdown structure)", isCorrect: true },
-        { labelFr: "Matrice RACI seule", labelEn: "RACI matrix alone", isCorrect: false },
+        {"labelFr":"Organigramme des tâches","labelEn":"Gantt chart","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion du périmètre ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Scope Management”. Re-read the explanation and example."},
+        {"labelFr":"WBS (structure de décomposition)","labelEn":"WBS (work breakdown structure)","isCorrect":true},
+        {"labelFr":"Matrice RACI seule","labelEn":"RACI matrix alone","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion du périmètre ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Scope Management”. Re-read the explanation and example."},
       ],
     },
   },
@@ -529,16 +483,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "schedule",
     learningObjective: "APPLY",
-    textBodyFr:
-      "Le planning séquence les activités, estime durées et ressources, et identifie le chemin critique — la chaîne d'activités qui détermine la date de fin la plus courte. Les jalons marquent des points de contrôle sans durée. Le suivi compare avancement réel vs planifié (SPI, dérives). Compresser un planning (fast-tracking, crashing) a des coûts et risques qu'il faut évaluer.",
-    textBodyEn:
-      "The schedule sequences activities, estimates durations and resources, and identifies the critical path — the chain of activities determining the shortest finish date. Milestones mark control points with zero duration. Tracking compares actual vs planned progress (SPI, variances). Compressing a schedule (fast-tracking, crashing) has costs and risks to evaluate.",
+    textBodyFr: "Objectif\nComprendre « Gestion du planning » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe planning séquence les activités, estime durées et ressources, et identifie le chemin critique — la chaîne d'activités qui détermine la date de fin la plus courte. Les jalons marquent des points de contrôle sans durée. Le suivi compare avancement réel vs planifié (SPI, dérives). Compresser un planning (fast-tracking, crashing) a des coûts et risques qu'il faut évaluer. Construire et suivre un planning réaliste avec dépendances et jalons.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gestion du planning » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « schedule ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gestion du planning », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Schedule Management” and apply it in a simple situation.\n\nExplanation\nThe schedule sequences activities, estimates durations and resources, and identifies the critical path — the chain of activities determining the shortest finish date. Milestones mark control points with zero duration. Tracking compares actual vs planned progress (SPI, variances). Compressing a schedule (fast-tracking, crashing) has costs and risks to evaluate. Build and track a realistic schedule with dependencies and milestones.\n\nExample\nIllustration: in a common professional context, “Schedule Management” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “schedule”.\n\nKey takeaway\nKey takeaway: master the core idea of “Schedule Management”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Chemin critique",
     flashcardFrontEn: "Critical path",
     flashcardBackFr: "Séquence d'activités déterminant la durée minimale du projet.",
     flashcardBackEn: "Sequence of activities determining minimum project duration.",
-    exercisePromptFr: "Identifiez une activité sur le chemin critique d'un projet connu.",
-    exercisePromptEn: "Identify one activity on the critical path of a known project.",
+    exercisePromptFr: "Pratique : Identifiez une activité sur le chemin critique d'un projet connu. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Identify one activity on the critical path of a known project. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Le chemin critique détermine la durée minimale du projet.",
@@ -547,8 +499,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. No total float on the critical path without extending the project.",
       difficulty: 2,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion du planning ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Schedule Management”. Re-read the explanation and example."},
       ],
     },
   },
@@ -564,16 +516,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "cost",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "La gestion des coûts couvre estimation (analogique, paramétrique, bottom-up), constitution du budget baseline et suivi des dérives. L'EAC (estimation à la fin) projette le coût total selon la performance actuelle. Les coûts directs (équipe, matériel) et indirects (overhead) doivent être distingués. Un budget sans marge de contingence ignore les risques financiers connus.",
-    textBodyEn:
-      "Cost management covers estimation (analogous, parametric, bottom-up), budget baseline creation, and variance tracking. EAC (estimate at completion) projects total cost based on current performance. Direct costs (team, materials) and indirect costs (overhead) should be distinguished. A budget without contingency margin ignores known financial risks.",
+    textBodyFr: "Objectif\nComprendre « Gestion des coûts » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa gestion des coûts couvre estimation (analogique, paramétrique, bottom-up), constitution du budget baseline et suivi des dérives. L'EAC (estimation à la fin) projette le coût total selon la performance actuelle. Les coûts directs (équipe, matériel) et indirects (overhead) doivent être distingués. Un budget sans marge de contingence ignore les risques financiers connus. Estimer, budgéter et contrôler les coûts du projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gestion des coûts » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « cost ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gestion des coûts », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Cost Management” and apply it in a simple situation.\n\nExplanation\nCost management covers estimation (analogous, parametric, bottom-up), budget baseline creation, and variance tracking. EAC (estimate at completion) projects total cost based on current performance. Direct costs (team, materials) and indirect costs (overhead) should be distinguished. A budget without contingency margin ignores known financial risks. Estimate, budget, and control project costs.\n\nExample\nIllustration: in a common professional context, “Cost Management” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “cost”.\n\nKey takeaway\nKey takeaway: master the core idea of “Cost Management”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "EAC",
     flashcardFrontEn: "EAC",
     flashcardBackFr: "Estimation du coût total à la fin du projet.",
     flashcardBackEn: "Estimate of total cost at project completion.",
-    exercisePromptFr: "Comparez estimation analogique et bottom-up pour un nouveau produit.",
-    exercisePromptEn: "Compare analogous and bottom-up estimation for a new product.",
+    exercisePromptFr: "Pratique : Comparez estimation analogique et bottom-up pour un nouveau produit. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Compare analogous and bottom-up estimation for a new product. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Qu'est-ce que l'EAC ?",
@@ -582,9 +532,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "EAC projects expected total cost at project end.",
       difficulty: 2,
       options: [
-        { labelFr: "Coût initial planifié seulement", labelEn: "Initial planned cost only", isCorrect: false },
-        { labelFr: "Estimation du coût à la fin du projet", labelEn: "Estimate at completion", isCorrect: true },
-        { labelFr: "Budget de contingence uniquement", labelEn: "Contingency budget only", isCorrect: false },
+        {"labelFr":"Coût initial planifié seulement","labelEn":"Initial planned cost only","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion des coûts ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Cost Management”. Re-read the explanation and example."},
+        {"labelFr":"Estimation du coût à la fin du projet","labelEn":"Estimate at completion","isCorrect":true},
+        {"labelFr":"Budget de contingence uniquement","labelEn":"Contingency budget only","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion des coûts ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Cost Management”. Re-read the explanation and example."},
       ],
     },
   },
@@ -596,23 +546,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "Distinguish future risk from current issue to respond correctly.",
     moduleSlug: "process",
     sortOrder: 4,
-    estimatedMinutes: 6,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "risk-management",
     learningObjective: "IDENTIFY",
     isShort: true,
     shortTopic: "risk-vs-issue",
     shortDurationSeconds: 110,
-    textBodyFr:
-      "Un risque est un événement futur incertain qui pourrait affecter le projet (positif ou négatif) ; on le gère par identification, analyse et réponses planifiées. Un problème (issue) est un événement qui a déjà eu lieu et nécessite une action immédiate. Confondre les deux retarde la réponse : un risque matérialisé devient souvent un problème à traiter dans le registre des issues.",
-    textBodyEn:
-      "A risk is a future uncertain event that could affect the project (positive or negative); you manage it through identification, analysis, and planned responses. An issue is an event that has already occurred and needs immediate action. Confusing the two delays response: a materialized risk often becomes an issue tracked in the issue log.",
+    shortScriptFr: "Hook : Pourquoi « Risque vs problème » compte maintenant.\nConcept : Un risque est un événement futur incertain qui pourrait affecter le projet (positif ou négatif) ; on le gère par identification, analyse et réponses planifiées. Un problème (issue) est un événement qui a déjà eu lieu et nécessite une action immédiate. Confondre les deux retarde la réponse : un risque matérialisé devient souvent un problème à traiter dans le registre des issues. Distinguer risque futur et problème actuel pour réagir correctement.\nExemple : Illustration : dans un contexte professionnel courant, « Risque vs problème » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Risque vs problème », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “Risk vs Issue” matters now.\nConcept: A risk is a future uncertain event that could affect the project (positive or negative); you manage it through identification, analysis, and planned responses. An issue is an event that has already occurred and needs immediate action. Confusing the two delays response: a materialized risk often becomes an issue tracked in the issue log. Distinguish future risk from current issue to respond correctly.\nExample: Illustration: in a common professional context, “Risk vs Issue” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “Risk vs Issue”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Risque vs problème », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “Risk vs Issue”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Risque vs problème » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn risque est un événement futur incertain qui pourrait affecter le projet (positif ou négatif) ; on le gère par identification, analyse et réponses planifiées. Un problème (issue) est un événement qui a déjà eu lieu et nécessite une action immédiate. Confondre les deux retarde la réponse : un risque matérialisé devient souvent un problème à traiter dans le registre des issues. Distinguer risque futur et problème actuel pour réagir correctement.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Risque vs problème » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « risk-management ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Risque vs problème », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Risk vs Issue” and apply it in a simple situation.\n\nExplanation\nA risk is a future uncertain event that could affect the project (positive or negative); you manage it through identification, analysis, and planned responses. An issue is an event that has already occurred and needs immediate action. Confusing the two delays response: a materialized risk often becomes an issue tracked in the issue log. Distinguish future risk from current issue to respond correctly.\n\nExample\nIllustration: in a common professional context, “Risk vs Issue” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “risk-management”.\n\nKey takeaway\nKey takeaway: master the core idea of “Risk vs Issue”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Risque",
     flashcardFrontEn: "Risk",
     flashcardBackFr: "Événement futur incertain pouvant affecter le projet.",
     flashcardBackEn: "Future uncertain event that could affect the project.",
-    exercisePromptFr: "Classez trois situations en risque ou problème.",
-    exercisePromptEn: "Classify three situations as risk or issue.",
+    exercisePromptFr: "Pratique : Classez trois situations en risque ou problème. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Classify three situations as risk or issue. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Un fournisseur clé a déjà manqué sa date de livraison. C'est :",
@@ -621,9 +573,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "This is an issue: the event occurred and requires action.",
       difficulty: 1,
       options: [
-        { labelFr: "Un risque futur", labelEn: "A future risk", isCorrect: false },
-        { labelFr: "Un problème actuel", labelEn: "A current issue", isCorrect: true },
-        { labelFr: "Ni l'un ni l'autre", labelEn: "Neither", isCorrect: false },
+        {"labelFr":"Un risque futur","labelEn":"A future risk","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Risque vs problème ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Risk vs Issue”. Re-read the explanation and example."},
+        {"labelFr":"Un problème actuel","labelEn":"A current issue","isCorrect":true},
+        {"labelFr":"Ni l'un ni l'autre","labelEn":"Neither","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Risque vs problème ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Risk vs Issue”. Re-read the explanation and example."},
       ],
     },
   },
@@ -639,16 +591,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "quality",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La qualité en projet signifie que les livrables respectent les exigences et sont adaptés à l'usage — pas seulement absence de défauts. Le plan de qualité définit standards, métriques et activités d'assurance. Le contrôle qualité vérifie les résultats (tests, revues, inspections). L'amélioration continue via rétrospectives et leçons apprises renforce la qualité sur le long terme.",
-    textBodyEn:
-      "Project quality means deliverables meet requirements and fit for use — not only absence of defects. The quality plan defines standards, metrics, and assurance activities. Quality control verifies results (tests, reviews, inspections). Continuous improvement via retrospectives and lessons learned strengthens quality long term.",
+    textBodyFr: "Objectif\nComprendre « Gestion de la qualité » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa qualité en projet signifie que les livrables respectent les exigences et sont adaptés à l'usage — pas seulement absence de défauts. Le plan de qualité définit standards, métriques et activités d'assurance. Le contrôle qualité vérifie les résultats (tests, revues, inspections). L'amélioration continue via rétrospectives et leçons apprises renforce la qualité sur le long terme. Planifier la qualité, assurer et contrôler les livrables.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gestion de la qualité » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « quality ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gestion de la qualité », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Quality Management” and apply it in a simple situation.\n\nExplanation\nProject quality means deliverables meet requirements and fit for use — not only absence of defects. The quality plan defines standards, metrics, and assurance activities. Quality control verifies results (tests, reviews, inspections). Continuous improvement via retrospectives and lessons learned strengthens quality long term. Plan quality, assure it, and control deliverables.\n\nExample\nIllustration: in a common professional context, “Quality Management” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “quality”.\n\nKey takeaway\nKey takeaway: master the core idea of “Quality Management”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Assurance qualité",
     flashcardFrontEn: "Quality assurance",
     flashcardBackFr: "Processus pour garantir que les méthodes produisent la qualité attendue.",
     flashcardBackEn: "Processes to ensure methods produce expected quality.",
-    exercisePromptFr: "Distinguez une activité d'assurance qualité et une de contrôle qualité.",
-    exercisePromptEn: "Distinguish one quality assurance activity from one quality control activity.",
+    exercisePromptFr: "Pratique : Distinguez une activité d'assurance qualité et une de contrôle qualité. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Distinguish one quality assurance activity from one quality control activity. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel exemple illustre le contrôle qualité ?",
@@ -657,9 +607,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Testing a deliverable before release is quality control.",
       difficulty: 2,
       options: [
-        { labelFr: "Définir un standard de code", labelEn: "Define a code standard", isCorrect: false },
-        { labelFr: "Exécuter des tests avant livraison", labelEn: "Run tests before delivery", isCorrect: true },
-        { labelFr: "Former l'équipe aux bonnes pratiques", labelEn: "Train the team on good practices", isCorrect: false },
+        {"labelFr":"Définir un standard de code","labelEn":"Define a code standard","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion de la qualité ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Quality Management”. Re-read the explanation and example."},
+        {"labelFr":"Exécuter des tests avant livraison","labelEn":"Run tests before delivery","isCorrect":true},
+        {"labelFr":"Former l'équipe aux bonnes pratiques","labelEn":"Train the team on good practices","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gestion de la qualité ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Quality Management”. Re-read the explanation and example."},
       ],
     },
   },
@@ -671,23 +621,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "Manage change requests with traceability and impact analysis.",
     moduleSlug: "process",
     sortOrder: 6,
-    estimatedMinutes: 7,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "change-management",
     learningObjective: "DECIDE",
     isShort: true,
     shortTopic: "change-management",
     shortDurationSeconds: 140,
-    textBodyFr:
-      "Le change management en projet traite les modifications au baseline (périmètre, planning, coût) via un processus formel : demande, analyse d'impact, décision, mise à jour du baseline. Les changements non documentés créent de la dette de gouvernance. Distinguer changement de produit (nouvelle fonctionnalité) et changement organisationnel (adoption utilisateurs) évite les confusions.",
-    textBodyEn:
-      "Project change management handles modifications to baseline (scope, schedule, cost) through a formal process: request, impact analysis, decision, baseline update. Undocumented changes create governance debt. Distinguishing product change (new feature) from organizational change (user adoption) avoids confusion.",
+    shortScriptFr: "Hook : Pourquoi « Bases du change management » compte maintenant.\nConcept : Le change management en projet traite les modifications au baseline (périmètre, planning, coût) via un processus formel : demande, analyse d'impact, décision, mise à jour du baseline. Les changements non documentés créent de la dette de gouvernance. Distinguer changement de produit (nouvelle fonctionnalité) et changement organisationnel (adoption utilisateurs) évite les confusions. Gérer les demandes de changement avec traçabilité et impact.\nExemple : Illustration : dans un contexte professionnel courant, « Bases du change management » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Bases du change management », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “Change Management Basics” matters now.\nConcept: Project change management handles modifications to baseline (scope, schedule, cost) through a formal process: request, impact analysis, decision, baseline update. Undocumented changes create governance debt. Distinguishing product change (new feature) from organizational change (user adoption) avoids confusion. Manage change requests with traceability and impact analysis.\nExample: Illustration: in a common professional context, “Change Management Basics” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “Change Management Basics”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Bases du change management », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “Change Management Basics”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Bases du change management » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe change management en projet traite les modifications au baseline (périmètre, planning, coût) via un processus formel : demande, analyse d'impact, décision, mise à jour du baseline. Les changements non documentés créent de la dette de gouvernance. Distinguer changement de produit (nouvelle fonctionnalité) et changement organisationnel (adoption utilisateurs) évite les confusions. Gérer les demandes de changement avec traçabilité et impact.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Bases du change management » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « change-management ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Bases du change management », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Change Management Basics” and apply it in a simple situation.\n\nExplanation\nProject change management handles modifications to baseline (scope, schedule, cost) through a formal process: request, impact analysis, decision, baseline update. Undocumented changes create governance debt. Distinguishing product change (new feature) from organizational change (user adoption) avoids confusion. Manage change requests with traceability and impact analysis.\n\nExample\nIllustration: in a common professional context, “Change Management Basics” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “change-management”.\n\nKey takeaway\nKey takeaway: master the core idea of “Change Management Basics”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Demande de changement",
     flashcardFrontEn: "Change request",
     flashcardBackFr: "Proposition formelle de modifier le baseline du projet.",
     flashcardBackEn: "Formal proposal to modify the project baseline.",
-    exercisePromptFr: "Décrivez les étapes d'une demande de changement typique.",
-    exercisePromptEn: "Describe the steps of a typical change request.",
+    exercisePromptFr: "Pratique : Décrivez les étapes d'une demande de changement typique. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe the steps of a typical change request. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Toute modification au baseline doit passer par un processus de changement documenté.",
@@ -696,8 +648,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. This protects traceability, budget, and stakeholder alignment.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Bases du change management ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Change Management Basics”. Re-read the explanation and example."},
       ],
     },
   },
@@ -713,16 +665,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "ADVANCED",
     skillSlug: "integration",
     learningObjective: "DECIDE",
-    textBodyFr:
-      "L'intégration relie tous les domaines : périmètre, planning, coûts, qualité, risques, ressources, communication, parties prenantes et changements. Le chef de projet arbitre les trade-offs quand les objectifs entrent en conflit. La charte de projet autorise le projet ; le plan de management guide l'exécution ; la clôture formalise les livrables et les leçons. Sans intégration, les sous-plans optimisent localement mais échouent globalement.",
-    textBodyEn:
-      "Integration connects all domains: scope, schedule, cost, quality, risk, resources, communication, stakeholders, and changes. The project manager arbitrates trade-offs when objectives conflict. The charter authorizes the project; the management plan guides execution; closing formalizes deliverables and lessons. Without integration, sub-plans optimize locally but fail globally.",
+    textBodyFr: "Objectif\nComprendre « Intégration de projet » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nL'intégration relie tous les domaines : périmètre, planning, coûts, qualité, risques, ressources, communication, parties prenantes et changements. Le chef de projet arbitre les trade-offs quand les objectifs entrent en conflit. La charte de projet autorise le projet ; le plan de management guide l'exécution ; la clôture formalise les livrables et les leçons. Sans intégration, les sous-plans optimisent localement mais échouent globalement. Coordonner les domaines de connaissance pour une livraison cohérente.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Intégration de projet » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « integration ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Intégration de projet », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Project Integration” and apply it in a simple situation.\n\nExplanation\nIntegration connects all domains: scope, schedule, cost, quality, risk, resources, communication, stakeholders, and changes. The project manager arbitrates trade-offs when objectives conflict. The charter authorizes the project; the management plan guides execution; closing formalizes deliverables and lessons. Without integration, sub-plans optimize locally but fail globally. Coordinate knowledge areas for coherent delivery.\n\nExample\nIllustration: in a common professional context, “Project Integration” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “integration”.\n\nKey takeaway\nKey takeaway: master the core idea of “Project Integration”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Intégration",
     flashcardFrontEn: "Integration",
     flashcardBackFr: "Coordination de tous les domaines pour livrer le projet avec succès.",
     flashcardBackEn: "Coordination of all domains to deliver the project successfully.",
-    exercisePromptFr: "Donnez un exemple de trade-off entre planning et qualité.",
-    exercisePromptEn: "Give an example of a trade-off between schedule and quality.",
+    exercisePromptFr: "Pratique : Donnez un exemple de trade-off entre planning et qualité. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Give an example of a trade-off between schedule and quality. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel rôle central joue l'intégration en projet ?",
@@ -731,9 +681,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "It coordinates domains and arbitrates global trade-offs.",
       difficulty: 3,
       options: [
-        { labelFr: "Remplacer tous les sous-plans", labelEn: "Replace all sub-plans", isCorrect: false },
-        { labelFr: "Coordonner domaines et arbitrer trade-offs", labelEn: "Coordinate domains and arbitrate trade-offs", isCorrect: true },
-        { labelFr: "Éliminer la gestion des risques", labelEn: "Eliminate risk management", isCorrect: false },
+        {"labelFr":"Remplacer tous les sous-plans","labelEn":"Replace all sub-plans","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Intégration de projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Integration”. Re-read the explanation and example."},
+        {"labelFr":"Coordonner domaines et arbitrer trade-offs","labelEn":"Coordinate domains and arbitrate trade-offs","isCorrect":true},
+        {"labelFr":"Éliminer la gestion des risques","labelEn":"Eliminate risk management","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Intégration de projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Integration”. Re-read the explanation and example."},
       ],
     },
   },
@@ -749,16 +699,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "governance",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "La gouvernance définit qui décide quoi, à quel niveau et avec quelles informations. Un comité de pilotage arbitre priorités et budgets ; le chef de projet exécute dans le cadre approuvé. Les politiques organisationnelles (sécurité, achats, conformité) contraignent les choix du projet. Une gouvernance claire évite les décisions parallèles et les blocages.",
-    textBodyEn:
-      "Governance defines who decides what, at which level, and with which information. A steering committee arbitrates priorities and budgets; the project manager executes within the approved frame. Organizational policies (security, procurement, compliance) constrain project choices. Clear governance avoids parallel decisions and blockages.",
+    textBodyFr: "Objectif\nComprendre « Gouvernance de projet » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa gouvernance définit qui décide quoi, à quel niveau et avec quelles informations. Un comité de pilotage arbitre priorités et budgets ; le chef de projet exécute dans le cadre approuvé. Les politiques organisationnelles (sécurité, achats, conformité) contraignent les choix du projet. Une gouvernance claire évite les décisions parallèles et les blocages. Structures de décision, escalade et alignement avec l'organisation.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gouvernance de projet » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « governance ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gouvernance de projet », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Project Governance” and apply it in a simple situation.\n\nExplanation\nGovernance defines who decides what, at which level, and with which information. A steering committee arbitrates priorities and budgets; the project manager executes within the approved frame. Organizational policies (security, procurement, compliance) constrain project choices. Clear governance avoids parallel decisions and blockages. Decision structures, escalation, and organizational alignment.\n\nExample\nIllustration: in a common professional context, “Project Governance” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “governance”.\n\nKey takeaway\nKey takeaway: master the core idea of “Project Governance”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Gouvernance",
     flashcardFrontEn: "Governance",
     flashcardBackFr: "Cadre de décision, escalade et alignement organisationnel.",
     flashcardBackEn: "Decision framework, escalation, and organizational alignment.",
-    exercisePromptFr: "Décrivez le rôle d'un comité de pilotage dans un projet.",
-    exercisePromptEn: "Describe the role of a steering committee in a project.",
+    exercisePromptFr: "Pratique : Décrivez le rôle d'un comité de pilotage dans un projet. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe the role of a steering committee in a project. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel objectif principal de la gouvernance de projet ?",
@@ -767,9 +715,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Ensure clear decisions and alignment with the organization.",
       difficulty: 2,
       options: [
-        { labelFr: "Éliminer le sponsor", labelEn: "Eliminate the sponsor", isCorrect: false },
-        { labelFr: "Décisions claires et alignement organisationnel", labelEn: "Clear decisions and organizational alignment", isCorrect: true },
-        { labelFr: "Supprimer toute documentation", labelEn: "Remove all documentation", isCorrect: false },
+        {"labelFr":"Éliminer le sponsor","labelEn":"Eliminate the sponsor","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gouvernance de projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Governance”. Re-read the explanation and example."},
+        {"labelFr":"Décisions claires et alignement organisationnel","labelEn":"Clear decisions and organizational alignment","isCorrect":true},
+        {"labelFr":"Supprimer toute documentation","labelEn":"Remove all documentation","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gouvernance de projet ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Project Governance”. Re-read the explanation and example."},
       ],
     },
   },
@@ -785,16 +733,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "compliance",
     learningObjective: "IDENTIFY",
-    textBodyFr:
-      "Les projets opèrent dans un cadre réglementaire et politique : données personnelles, sécurité, environnement, secteur bancaire ou santé. Les contraintes (deadline légale, budget fixe, technologie imposée) limitent les options sans être des risques. Identifier ces contraintes en amont évite des redesigns coûteux. La conformité est souvent non négociable.",
-    textBodyEn:
-      "Projects operate within regulatory and policy frames: personal data, security, environment, banking or healthcare sectors. Constraints (legal deadline, fixed budget, imposed technology) limit options without being risks. Identifying constraints early avoids costly redesigns. Compliance is often non-negotiable.",
+    textBodyFr: "Objectif\nComprendre « Conformité et contraintes » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLes projets opèrent dans un cadre réglementaire et politique : données personnelles, sécurité, environnement, secteur bancaire ou santé. Les contraintes (deadline légale, budget fixe, technologie imposée) limitent les options sans être des risques. Identifier ces contraintes en amont évite des redesigns coûteux. La conformité est souvent non négociable. Respecter réglementations, politiques et contraintes externes.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Conformité et contraintes » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « compliance ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Conformité et contraintes », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Compliance and Constraints” and apply it in a simple situation.\n\nExplanation\nProjects operate within regulatory and policy frames: personal data, security, environment, banking or healthcare sectors. Constraints (legal deadline, fixed budget, imposed technology) limit options without being risks. Identifying constraints early avoids costly redesigns. Compliance is often non-negotiable. Respect regulations, policies, and external constraints.\n\nExample\nIllustration: in a common professional context, “Compliance and Constraints” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “compliance”.\n\nKey takeaway\nKey takeaway: master the core idea of “Compliance and Constraints”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Contrainte",
     flashcardFrontEn: "Constraint",
     flashcardBackFr: "Limite fixe imposée au projet (ex. réglementation).",
     flashcardBackEn: "Fixed limit imposed on the project (e.g. regulation).",
-    exercisePromptFr: "Listez deux contraintes réglementaires possibles pour un projet IT.",
-    exercisePromptEn: "List two possible regulatory constraints for an IT project.",
+    exercisePromptFr: "Pratique : Listez deux contraintes réglementaires possibles pour un projet IT. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List two possible regulatory constraints for an IT project. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Une contrainte légale est typiquement non négociable.",
@@ -803,8 +749,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. Legal compliance generally cannot be ignored.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Conformité et contraintes ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Compliance and Constraints”. Re-read the explanation and example."},
       ],
     },
   },
@@ -820,16 +766,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "benefits",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "Un projet réussi livre des outputs ; la réalisation des bénéfices transforme ces outputs en outcomes mesurables (revenus, satisfaction, efficacité). Le business case définit les bénéfices attendus et les indicateurs. Le suivi post-projet vérifie que les bénéfices se matérialisent — souvent avec un owner des bénéfices distinct du chef de projet.",
-    textBodyEn:
-      "A successful project delivers outputs; benefits realization turns those outputs into measurable outcomes (revenue, satisfaction, efficiency). The business case defines expected benefits and indicators. Post-project tracking verifies benefits materialize — often with a benefits owner distinct from the project manager.",
+    textBodyFr: "Objectif\nComprendre « Réalisation des bénéfices » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn projet réussi livre des outputs ; la réalisation des bénéfices transforme ces outputs en outcomes mesurables (revenus, satisfaction, efficacité). Le business case définit les bénéfices attendus et les indicateurs. Le suivi post-projet vérifie que les bénéfices se matérialisent — souvent avec un owner des bénéfices distinct du chef de projet. Lier livrables projet aux bénéfices business attendus.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Réalisation des bénéfices » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « benefits ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Réalisation des bénéfices », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Benefits Realization” and apply it in a simple situation.\n\nExplanation\nA successful project delivers outputs; benefits realization turns those outputs into measurable outcomes (revenue, satisfaction, efficiency). The business case defines expected benefits and indicators. Post-project tracking verifies benefits materialize — often with a benefits owner distinct from the project manager. Link project deliverables to expected business benefits.\n\nExample\nIllustration: in a common professional context, “Benefits Realization” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “benefits”.\n\nKey takeaway\nKey takeaway: master the core idea of “Benefits Realization”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Outcome",
     flashcardFrontEn: "Outcome",
     flashcardBackFr: "Résultat business mesurable issu des livrables du projet.",
     flashcardBackEn: "Measurable business result from project deliverables.",
-    exercisePromptFr: "Transformez un livrable technique en bénéfice business mesurable.",
-    exercisePromptEn: "Turn one technical deliverable into a measurable business benefit.",
+    exercisePromptFr: "Pratique : Transformez un livrable technique en bénéfice business mesurable. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Turn one technical deliverable into a measurable business benefit. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quelle différence entre output et outcome ?",
@@ -838,9 +782,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Output is the deliverable; outcome is the resulting business benefit.",
       difficulty: 2,
       options: [
-        { labelFr: "Ils sont identiques", labelEn: "They are identical", isCorrect: false },
-        { labelFr: "Output = livrable ; outcome = bénéfice business", labelEn: "Output = deliverable; outcome = business benefit", isCorrect: true },
-        { labelFr: "Outcome précède toujours le projet", labelEn: "Outcome always precedes the project", isCorrect: false },
+        {"labelFr":"Ils sont identiques","labelEn":"They are identical","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Réalisation des bénéfices ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Benefits Realization”. Re-read the explanation and example."},
+        {"labelFr":"Output = livrable ; outcome = bénéfice business","labelEn":"Output = deliverable; outcome = business benefit","isCorrect":true},
+        {"labelFr":"Outcome précède toujours le projet","labelEn":"Outcome always precedes the project","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Réalisation des bénéfices ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Benefits Realization”. Re-read the explanation and example."},
       ],
     },
   },
@@ -856,16 +800,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "pmp-business-environment",
     learningObjective: "IDENTIFY",
-    textBodyFr:
-      "Chaque projet s'inscrit dans une organisation : matricielle, fonctionnelle ou projetisée. La culture (innovation vs conformité) influence vitesse de décision et tolérance au risque. Les facteurs EEF (Enterprise Environmental Factors) incluent marché, ressources disponibles et systèmes existants. Adapter l'approche au contexte est plus efficace que copier un template externe.",
-    textBodyEn:
-      "Every project sits within an organization: matrix, functional, or projectized. Culture (innovation vs compliance) influences decision speed and risk tolerance. EEFs (Enterprise Environmental Factors) include market, available resources, and existing systems. Adapting approach to context beats copying an external template.",
+    textBodyFr: "Objectif\nComprendre « Contexte organisationnel » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nChaque projet s'inscrit dans une organisation : matricielle, fonctionnelle ou projetisée. La culture (innovation vs conformité) influence vitesse de décision et tolérance au risque. Les facteurs EEF (Enterprise Environmental Factors) incluent marché, ressources disponibles et systèmes existants. Adapter l'approche au contexte est plus efficace que copier un template externe. Comprendre structure, culture et facteurs environnementaux du projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Contexte organisationnel » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-business-environment ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Contexte organisationnel », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Organizational Context” and apply it in a simple situation.\n\nExplanation\nEvery project sits within an organization: matrix, functional, or projectized. Culture (innovation vs compliance) influences decision speed and risk tolerance. EEFs (Enterprise Environmental Factors) include market, available resources, and existing systems. Adapting approach to context beats copying an external template. Understand structure, culture, and environmental factors of the project.\n\nExample\nIllustration: in a common professional context, “Organizational Context” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-business-environment”.\n\nKey takeaway\nKey takeaway: master the core idea of “Organizational Context”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Structure matricielle",
     flashcardFrontEn: "Matrix structure",
     flashcardBackFr: "Employés rapportent à manager fonctionnel et chef de projet.",
     flashcardBackEn: "Employees report to functional manager and project manager.",
-    exercisePromptFr: "Décrivez comment la culture de votre organisation influence les projets.",
-    exercisePromptEn: "Describe how your organization's culture influences projects.",
+    exercisePromptFr: "Pratique : Décrivez comment la culture de votre organisation influence les projets. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe how your organization's culture influences projects. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quels sont des facteurs environnementaux d'entreprise (EEF) ?",
@@ -874,9 +816,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "External and internal conditions influencing the project (market, systems).",
       difficulty: 2,
       options: [
-        { labelFr: "Uniquement le budget du projet", labelEn: "Only the project budget", isCorrect: false },
-        { labelFr: "Conditions org et marché influençant le projet", labelEn: "Org and market conditions influencing the project", isCorrect: true },
-        { labelFr: "Les préférences personnelles du PM", labelEn: "The PM's personal preferences", isCorrect: false },
+        {"labelFr":"Uniquement le budget du projet","labelEn":"Only the project budget","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Contexte organisationnel ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Organizational Context”. Re-read the explanation and example."},
+        {"labelFr":"Conditions org et marché influençant le projet","labelEn":"Org and market conditions influencing the project","isCorrect":true},
+        {"labelFr":"Les préférences personnelles du PM","labelEn":"The PM's personal preferences","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Contexte organisationnel ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Organizational Context”. Re-read the explanation and example."},
       ],
     },
   },
@@ -892,16 +834,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "business-value",
     learningObjective: "DECIDE",
-    textBodyFr:
-      "La valeur business combine bénéfices financiers et non financiers : revenus, coûts évités, satisfaction client, conformité, image. Prioriser par valeur évite de livrer beaucoup de faible valeur. Le minimum viable product (MVP) et le value stream mapping aident à concentrer l'effort. Chaque décision de périmètre devrait se poser la question : quelle valeur pour l'organisation ?",
-    textBodyEn:
-      "Business value combines financial and non-financial benefits: revenue, avoided costs, customer satisfaction, compliance, brand. Value-based prioritization avoids delivering lots of low value. MVP and value stream mapping help focus effort. Every scope decision should ask: what value for the organization?",
+    textBodyFr: "Objectif\nComprendre « Valeur business » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa valeur business combine bénéfices financiers et non financiers : revenus, coûts évités, satisfaction client, conformité, image. Prioriser par valeur évite de livrer beaucoup de faible valeur. Le minimum viable product (MVP) et le value stream mapping aident à concentrer l'effort. Chaque décision de périmètre devrait se poser la question : quelle valeur pour l'organisation ? Prioriser le travail selon la valeur pour l'organisation.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Valeur business » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « business-value ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Valeur business », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Business Value” and apply it in a simple situation.\n\nExplanation\nBusiness value combines financial and non-financial benefits: revenue, avoided costs, customer satisfaction, compliance, brand. Value-based prioritization avoids delivering lots of low value. MVP and value stream mapping help focus effort. Every scope decision should ask: what value for the organization? Prioritize work according to organizational value.\n\nExample\nIllustration: in a common professional context, “Business Value” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “business-value”.\n\nKey takeaway\nKey takeaway: master the core idea of “Business Value”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Valeur business",
     flashcardFrontEn: "Business value",
     flashcardBackFr: "Bénéfices nets pour l'organisation, financiers et non financiers.",
     flashcardBackEn: "Net benefits for the organization, financial and non-financial.",
-    exercisePromptFr: "Classez trois fonctionnalités par valeur business estimée.",
-    exercisePromptEn: "Rank three features by estimated business value.",
+    exercisePromptFr: "Pratique : Classez trois fonctionnalités par valeur business estimée. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Rank three features by estimated business value. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Pour prioriser le backlog, quelle question est centrale ?",
@@ -910,9 +850,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "What business value does this item bring to the organization?",
       difficulty: 2,
       options: [
-        { labelFr: "Qui a demandé en premier ?", labelEn: "Who asked first?", isCorrect: false },
-        { labelFr: "Quelle valeur business pour l'organisation ?", labelEn: "What business value for the organization?", isCorrect: true },
-        { labelFr: "Quelle tâche est la plus facile ?", labelEn: "Which task is easiest?", isCorrect: false },
+        {"labelFr":"Qui a demandé en premier ?","labelEn":"Who asked first?","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Valeur business ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Business Value”. Re-read the explanation and example."},
+        {"labelFr":"Quelle valeur business pour l'organisation ?","labelEn":"What business value for the organization?","isCorrect":true},
+        {"labelFr":"Quelle tâche est la plus facile ?","labelEn":"Which task is easiest?","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Valeur business ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Business Value”. Re-read the explanation and example."},
       ],
     },
   },
@@ -924,23 +864,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "Adopt values: collaboration, adaptation, and value delivery.",
     moduleSlug: "agile",
     sortOrder: 0,
-    estimatedMinutes: 7,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "agile-mindset",
     learningObjective: "IDENTIFY",
     isShort: true,
     shortTopic: "agile-mindset",
     shortDurationSeconds: 125,
-    textBodyFr:
-      "Le mindset agile privilégie les personnes et la collaboration, la réponse au changement plutôt que le plan rigide, et la livraison fréquente de valeur. C'est une philosophie de travail, pas seulement une méthode. L'empirisme (transparence, inspection, adaptation) guide l'amélioration continue. L'agilité organisationnelle étend ces principes au-delà des équipes produit.",
-    textBodyEn:
-      "The agile mindset values people and collaboration, responding to change over rigid plans, and frequent value delivery. It is a work philosophy, not only a method. Empiricism (transparency, inspection, adaptation) guides continuous improvement. Organizational agility extends these principles beyond product teams.",
+    shortScriptFr: "Hook : Pourquoi « Mindset agile » compte maintenant.\nConcept : Le mindset agile privilégie les personnes et la collaboration, la réponse au changement plutôt que le plan rigide, et la livraison fréquente de valeur. C'est une philosophie de travail, pas seulement une méthode. L'empirisme (transparence, inspection, adaptation) guide l'amélioration continue. L'agilité organisationnelle étend ces principes au-delà des équipes produit. Adopter les valeurs : collaboration, adaptation et livraison de valeur.\nExemple : Illustration : dans un contexte professionnel courant, « Mindset agile » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Mindset agile », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “Agile Mindset” matters now.\nConcept: The agile mindset values people and collaboration, responding to change over rigid plans, and frequent value delivery. It is a work philosophy, not only a method. Empiricism (transparency, inspection, adaptation) guides continuous improvement. Organizational agility extends these principles beyond product teams. Adopt values: collaboration, adaptation, and value delivery.\nExample: Illustration: in a common professional context, “Agile Mindset” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “Agile Mindset”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Mindset agile », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “Agile Mindset”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Mindset agile » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe mindset agile privilégie les personnes et la collaboration, la réponse au changement plutôt que le plan rigide, et la livraison fréquente de valeur. C'est une philosophie de travail, pas seulement une méthode. L'empirisme (transparence, inspection, adaptation) guide l'amélioration continue. L'agilité organisationnelle étend ces principes au-delà des équipes produit. Adopter les valeurs : collaboration, adaptation et livraison de valeur.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Mindset agile » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « agile-mindset ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Mindset agile », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Agile Mindset” and apply it in a simple situation.\n\nExplanation\nThe agile mindset values people and collaboration, responding to change over rigid plans, and frequent value delivery. It is a work philosophy, not only a method. Empiricism (transparency, inspection, adaptation) guides continuous improvement. Organizational agility extends these principles beyond product teams. Adopt values: collaboration, adaptation, and value delivery.\n\nExample\nIllustration: in a common professional context, “Agile Mindset” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “agile-mindset”.\n\nKey takeaway\nKey takeaway: master the core idea of “Agile Mindset”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Mindset agile",
     flashcardFrontEn: "Agile mindset",
     flashcardBackFr: "Collaboration, adaptation et livraison fréquente de valeur.",
     flashcardBackEn: "Collaboration, adaptation, and frequent value delivery.",
-    exercisePromptFr: "Comparez une décision « plan rigide » vs « réponse au changement ».",
-    exercisePromptEn: "Compare a 'rigid plan' vs 'responding to change' decision.",
+    exercisePromptFr: "Pratique : Comparez une décision « plan rigide » vs « réponse au changement ». Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Compare a 'rigid plan' vs 'responding to change' decision. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "L'agilité valorise la réponse au changement plutôt qu'un plan figé.",
@@ -949,8 +891,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. Adapting to uncertainty is a pillar of the agile mindset.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Mindset agile ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Agile Mindset”. Re-read the explanation and example."},
       ],
     },
   },
@@ -966,16 +908,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "pmp-agile",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La livraison itérative produit des incréments fonctionnels à intervalles réguliers plutôt qu'un big bang final. Chaque itération apporte feedback réel des utilisateurs et réduit le risque de construire le mauvais produit. Les itérations ont une durée fixe (timebox) ; le périmètre s'adapte. Cette approche fonctionne quand les exigences évoluent ou sont difficiles à spécifier en amont.",
-    textBodyEn:
-      "Iterative delivery produces functional increments at regular intervals rather than one final big bang. Each iteration brings real user feedback and reduces the risk of building the wrong product. Iterations have fixed duration (timebox); scope adapts. This approach works when requirements evolve or are hard to specify upfront.",
+    textBodyFr: "Objectif\nComprendre « Livraison itérative » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa livraison itérative produit des incréments fonctionnels à intervalles réguliers plutôt qu'un big bang final. Chaque itération apporte feedback réel des utilisateurs et réduit le risque de construire le mauvais produit. Les itérations ont une durée fixe (timebox) ; le périmètre s'adapte. Cette approche fonctionne quand les exigences évoluent ou sont difficiles à spécifier en amont. Livrer par incréments courts pour réduire le risque et valider tôt.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Livraison itérative » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-agile ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Livraison itérative », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Iterative Delivery” and apply it in a simple situation.\n\nExplanation\nIterative delivery produces functional increments at regular intervals rather than one final big bang. Each iteration brings real user feedback and reduces the risk of building the wrong product. Iterations have fixed duration (timebox); scope adapts. This approach works when requirements evolve or are hard to specify upfront. Deliver in short increments to reduce risk and validate early.\n\nExample\nIllustration: in a common professional context, “Iterative Delivery” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-agile”.\n\nKey takeaway\nKey takeaway: master the core idea of “Iterative Delivery”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Incrément",
     flashcardFrontEn: "Increment",
     flashcardBackFr: "Version fonctionnelle ajoutée du produit à chaque itération.",
     flashcardBackEn: "Functional version of the product added each iteration.",
-    exercisePromptFr: "Définissez un incrément pour la première itération d'une nouvelle app.",
-    exercisePromptEn: "Define an increment for the first iteration of a new app.",
+    exercisePromptFr: "Pratique : Définissez un incrément pour la première itération d'une nouvelle app. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Define an increment for the first iteration of a new app. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel avantage principal de la livraison itérative ?",
@@ -984,9 +924,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Early feedback reduces the risk of building the wrong product.",
       difficulty: 2,
       options: [
-        { labelFr: "Éliminer tout planning", labelEn: "Eliminate all planning", isCorrect: false },
-        { labelFr: "Feedback early et réduction du risque produit", labelEn: "Early feedback and reduced product risk", isCorrect: true },
-        { labelFr: "Supprimer les tests", labelEn: "Remove testing", isCorrect: false },
+        {"labelFr":"Éliminer tout planning","labelEn":"Eliminate all planning","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Livraison itérative ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Iterative Delivery”. Re-read the explanation and example."},
+        {"labelFr":"Feedback early et réduction du risque produit","labelEn":"Early feedback and reduced product risk","isCorrect":true},
+        {"labelFr":"Supprimer les tests","labelEn":"Remove testing","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Livraison itérative ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Iterative Delivery”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1002,16 +942,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "backlog",
     learningObjective: "APPLY",
-    textBodyFr:
-      "Le backlog produit est la source unique de travail priorisé pour l'équipe. Les items (user stories, epics) sont ordonnés par valeur ; le haut du backlog est le plus détaillé (refinement). Le Product Owner gère le contenu et l'ordre ; l'équipe estime l'effort. Un backlog vivant évolue avec le feedback — il n'est pas un document figé.",
-    textBodyEn:
-      "The product backlog is the single source of prioritized work for the team. Items (user stories, epics) are ordered by value; top items are most detailed (refinement). The Product Owner manages content and order; the team estimates effort. A living backlog evolves with feedback — it is not a fixed document.",
+    textBodyFr: "Objectif\nComprendre « Backlog produit » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe backlog produit est la source unique de travail priorisé pour l'équipe. Les items (user stories, epics) sont ordonnés par valeur ; le haut du backlog est le plus détaillé (refinement). Le Product Owner gère le contenu et l'ordre ; l'équipe estime l'effort. Un backlog vivant évolue avec le feedback — il n'est pas un document figé. Prioriser et maintenir la liste ordonnée des besoins.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Backlog produit » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « backlog ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Backlog produit », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Product Backlog” and apply it in a simple situation.\n\nExplanation\nThe product backlog is the single source of prioritized work for the team. Items (user stories, epics) are ordered by value; top items are most detailed (refinement). The Product Owner manages content and order; the team estimates effort. A living backlog evolves with feedback — it is not a fixed document. Prioritize and maintain the ordered list of needs.\n\nExample\nIllustration: in a common professional context, “Product Backlog” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “backlog”.\n\nKey takeaway\nKey takeaway: master the core idea of “Product Backlog”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Backlog produit",
     flashcardFrontEn: "Product backlog",
     flashcardBackFr: "Liste ordonnée et priorisée des besoins produit.",
     flashcardBackEn: "Ordered, prioritized list of product needs.",
-    exercisePromptFr: "Priorisez trois user stories pour un sprint selon la valeur.",
-    exercisePromptEn: "Prioritize three user stories for a sprint by value.",
+    exercisePromptFr: "Pratique : Priorisez trois user stories pour un sprint selon la valeur. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Prioritize three user stories for a sprint by value. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Qui est typiquement responsable du contenu et l'ordre du backlog produit ?",
@@ -1020,9 +958,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "The Product Owner manages backlog content and prioritization.",
       difficulty: 2,
       options: [
-        { labelFr: "Le Scrum Master seul", labelEn: "The Scrum Master alone", isCorrect: false },
-        { labelFr: "Le Product Owner", labelEn: "The Product Owner", isCorrect: true },
-        { labelFr: "Le sponsor uniquement", labelEn: "The sponsor only", isCorrect: false },
+        {"labelFr":"Le Scrum Master seul","labelEn":"The Scrum Master alone","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Backlog produit ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Product Backlog”. Re-read the explanation and example."},
+        {"labelFr":"Le Product Owner","labelEn":"The Product Owner","isCorrect":true},
+        {"labelFr":"Le sponsor uniquement","labelEn":"The sponsor only","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Backlog produit ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Product Backlog”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1038,16 +976,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "product-ownership",
     learningObjective: "DECIDE",
-    textBodyFr:
-      "Le Product Owner maximise la valeur du produit en priorisant le backlog, clarifiant les besoins et acceptant les incréments. Il représente les parties prenantes business et arbitre les trade-offs valeur vs effort. Il ne micro-manage pas l'équipe technique mais définit « quoi » et « pourquoi ». Un PO absent ou faible crée du rework et des priorités floues.",
-    textBodyEn:
-      "The Product Owner maximizes product value by prioritizing the backlog, clarifying needs, and accepting increments. They represent business stakeholders and arbitrate value vs effort trade-offs. They do not micromanage the technical team but define 'what' and 'why'. An absent or weak PO creates rework and fuzzy priorities.",
+    textBodyFr: "Objectif\nComprendre « Product ownership » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe Product Owner maximise la valeur du produit en priorisant le backlog, clarifiant les besoins et acceptant les incréments. Il représente les parties prenantes business et arbitre les trade-offs valeur vs effort. Il ne micro-manage pas l'équipe technique mais définit « quoi » et « pourquoi ». Un PO absent ou faible crée du rework et des priorités floues. Maximiser la valeur produit et représenter les parties prenantes.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Product ownership » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « product-ownership ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Product ownership », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Product Ownership” and apply it in a simple situation.\n\nExplanation\nThe Product Owner maximizes product value by prioritizing the backlog, clarifying needs, and accepting increments. They represent business stakeholders and arbitrate value vs effort trade-offs. They do not micromanage the technical team but define 'what' and 'why'. An absent or weak PO creates rework and fuzzy priorities. Maximize product value and represent stakeholders.\n\nExample\nIllustration: in a common professional context, “Product Ownership” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “product-ownership”.\n\nKey takeaway\nKey takeaway: master the core idea of “Product Ownership”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Product Owner",
     flashcardFrontEn: "Product Owner",
     flashcardBackFr: "Maximise valeur produit ; priorise backlog et accepte incréments.",
     flashcardBackEn: "Maximizes product value; prioritizes backlog and accepts increments.",
-    exercisePromptFr: "Décrivez une décision typique du Product Owner sur le backlog.",
-    exercisePromptEn: "Describe a typical Product Owner decision on the backlog.",
+    exercisePromptFr: "Pratique : Décrivez une décision typique du Product Owner sur le backlog. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe a typical Product Owner decision on the backlog. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Le Product Owner définit principalement le « quoi » et le « pourquoi », pas le « comment » technique.",
@@ -1056,8 +992,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. The team decides how to implement; the PO maximizes value.",
       difficulty: 2,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Product ownership ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Product Ownership”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1073,16 +1009,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "sprint-concepts",
     learningObjective: "APPLY",
-    textBodyFr:
-      "Un sprint est un timebox fixe (souvent 2 semaines) pendant lequel l'équipe livre un incrément vers le sprint goal. Le sprint planning sélectionne le travail du backlog ; le daily synchronise ; la review démontre l'incrément aux parties prenantes ; la retrospective améliore le processus. Le scope du sprint est protégé pendant le sprint — les changements majeurs passent par le backlog.",
-    textBodyEn:
-      "A sprint is a fixed timebox (often 2 weeks) during which the team delivers an increment toward the sprint goal. Sprint planning selects backlog work; daily syncs progress; review demos the increment to stakeholders; retrospective improves the process. Sprint scope is protected during the sprint — major changes go through the backlog.",
+    textBodyFr: "Objectif\nComprendre « Concepts de sprint » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn sprint est un timebox fixe (souvent 2 semaines) pendant lequel l'équipe livre un incrément vers le sprint goal. Le sprint planning sélectionne le travail du backlog ; le daily synchronise ; la review démontre l'incrément aux parties prenantes ; la retrospective améliore le processus. Le scope du sprint est protégé pendant le sprint — les changements majeurs passent par le backlog. Timebox, sprint goal, planning et review dans un cadre Scrum.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Concepts de sprint » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « sprint-concepts ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Concepts de sprint », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Sprint Concepts” and apply it in a simple situation.\n\nExplanation\nA sprint is a fixed timebox (often 2 weeks) during which the team delivers an increment toward the sprint goal. Sprint planning selects backlog work; daily syncs progress; review demos the increment to stakeholders; retrospective improves the process. Sprint scope is protected during the sprint — major changes go through the backlog. Timebox, sprint goal, planning, and review in a Scrum frame.\n\nExample\nIllustration: in a common professional context, “Sprint Concepts” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “sprint-concepts”.\n\nKey takeaway\nKey takeaway: master the core idea of “Sprint Concepts”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Sprint goal",
     flashcardFrontEn: "Sprint goal",
     flashcardBackFr: "Objectif unique que le sprint vise à atteindre.",
     flashcardBackEn: "Single objective the sprint aims to achieve.",
-    exercisePromptFr: "Définissez un sprint goal pour une fonctionnalité de paiement.",
-    exercisePromptEn: "Define a sprint goal for a payment feature.",
+    exercisePromptFr: "Pratique : Définissez un sprint goal pour une fonctionnalité de paiement. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Define a sprint goal for a payment feature. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel événement Scrum démontre l'incrément aux parties prenantes ?",
@@ -1091,9 +1025,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "The sprint review presents the increment and collects feedback.",
       difficulty: 2,
       options: [
-        { labelFr: "Daily standup", labelEn: "Daily standup", isCorrect: false },
-        { labelFr: "Sprint review", labelEn: "Sprint review", isCorrect: true },
-        { labelFr: "Sprint retrospective", labelEn: "Sprint retrospective", isCorrect: false },
+        {"labelFr":"Daily standup","labelEn":"Daily standup","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Concepts de sprint ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Sprint Concepts”. Re-read the explanation and example."},
+        {"labelFr":"Sprint review","labelEn":"Sprint review","isCorrect":true},
+        {"labelFr":"Sprint retrospective","labelEn":"Sprint retrospective","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Concepts de sprint ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Sprint Concepts”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1109,16 +1043,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "pmp-agile",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "Le feedback transforme les assumptions en connaissances. Sources : utilisateurs, analytics, support, review de sprint. L'adaptation répond au feedback en ajustant backlog, design ou processus. Retarder le feedback (long cycles sans démo) augmente le coût du changement. Un cadre d'inspection régulière (review, démos) rend l'adaptation systématique.",
-    textBodyEn:
-      "Feedback turns assumptions into knowledge. Sources: users, analytics, support, sprint review. Adaptation responds to feedback by adjusting backlog, design, or process. Delaying feedback (long cycles without demos) increases change cost. Regular inspection (review, demos) makes adaptation systematic.",
+    textBodyFr: "Objectif\nComprendre « Feedback et adaptation » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe feedback transforme les assumptions en connaissances. Sources : utilisateurs, analytics, support, review de sprint. L'adaptation répond au feedback en ajustant backlog, design ou processus. Retarder le feedback (long cycles sans démo) augmente le coût du changement. Un cadre d'inspection régulière (review, démos) rend l'adaptation systématique. Utiliser le feedback utilisateur pour adapter le produit et le processus.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Feedback et adaptation » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-agile ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Feedback et adaptation », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Feedback and Adaptation” and apply it in a simple situation.\n\nExplanation\nFeedback turns assumptions into knowledge. Sources: users, analytics, support, sprint review. Adaptation responds to feedback by adjusting backlog, design, or process. Delaying feedback (long cycles without demos) increases change cost. Regular inspection (review, demos) makes adaptation systematic. Use user feedback to adapt product and process.\n\nExample\nIllustration: in a common professional context, “Feedback and Adaptation” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-agile”.\n\nKey takeaway\nKey takeaway: master the core idea of “Feedback and Adaptation”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Inspection",
     flashcardFrontEn: "Inspection",
     flashcardBackFr: "Examiner le produit et le processus pour identifier les améliorations.",
     flashcardBackEn: "Examine product and process to identify improvements.",
-    exercisePromptFr: "Listez trois sources de feedback pour un produit digital.",
-    exercisePromptEn: "List three feedback sources for a digital product.",
+    exercisePromptFr: "Pratique : Listez trois sources de feedback pour un produit digital. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List three feedback sources for a digital product. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Pourquoi le feedback early réduit le coût du changement ?",
@@ -1127,9 +1059,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Correcting early avoids building much on a wrong assumption.",
       difficulty: 2,
       options: [
-        { labelFr: "Parce que le changement est interdit après", labelEn: "Because change is forbidden after", isCorrect: false },
-        { labelFr: "Corriger tôt limite le travail basé sur de mauvaises assumptions", labelEn: "Early correction limits work based on wrong assumptions", isCorrect: true },
-        { labelFr: "Parce que les utilisateurs ne changent jamais d'avis", labelEn: "Because users never change their minds", isCorrect: false },
+        {"labelFr":"Parce que le changement est interdit après","labelEn":"Because change is forbidden after","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Feedback et adaptation ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Feedback and Adaptation”. Re-read the explanation and example."},
+        {"labelFr":"Corriger tôt limite le travail basé sur de mauvaises assumptions","labelEn":"Early correction limits work based on wrong assumptions","isCorrect":true},
+        {"labelFr":"Parce que les utilisateurs ne changent jamais d'avis","labelEn":"Because users never change their minds","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Feedback et adaptation ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Feedback and Adaptation”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1145,16 +1077,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "BEGINNER",
     skillSlug: "pmp-agile",
     learningObjective: "APPLY",
-    textBodyFr:
-      "La rétrospective inspecte comment l'équipe a travaillé : ce qui a bien fonctionné, ce qui a bloqué, et quelles actions concrètes amélioreront le prochain cycle. Format classique : Start/Stop/Continue ou 4L (liked, learned, lacked, longed for). Les actions doivent être petites, assignées et suivies. Sans rétrospective, les mêmes problèmes se répètent sprint après sprint.",
-    textBodyEn:
-      "The retrospective inspects how the team worked: what went well, what blocked, and which concrete actions will improve the next cycle. Classic formats: Start/Stop/Continue or 4L (liked, learned, lacked, longed for). Actions should be small, assigned, and tracked. Without retrospectives, the same problems repeat sprint after sprint.",
+    textBodyFr: "Objectif\nComprendre « Rétrospective » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa rétrospective inspecte comment l'équipe a travaillé : ce qui a bien fonctionné, ce qui a bloqué, et quelles actions concrètes amélioreront le prochain cycle. Format classique : Start/Stop/Continue ou 4L (liked, learned, lacked, longed for). Les actions doivent être petites, assignées et suivies. Sans rétrospective, les mêmes problèmes se répètent sprint après sprint. Améliorer l'équipe et le processus après chaque itération.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Rétrospective » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-agile ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Rétrospective », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Retrospective” and apply it in a simple situation.\n\nExplanation\nThe retrospective inspects how the team worked: what went well, what blocked, and which concrete actions will improve the next cycle. Classic formats: Start/Stop/Continue or 4L (liked, learned, lacked, longed for). Actions should be small, assigned, and tracked. Without retrospectives, the same problems repeat sprint after sprint. Improve team and process after each iteration.\n\nExample\nIllustration: in a common professional context, “Retrospective” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-agile”.\n\nKey takeaway\nKey takeaway: master the core idea of “Retrospective”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Rétrospective",
     flashcardFrontEn: "Retrospective",
     flashcardBackFr: "Cérémonie pour améliorer processus et collaboration de l'équipe.",
     flashcardBackEn: "Ceremony to improve team process and collaboration.",
-    exercisePromptFr: "Proposez deux actions concrètes issues d'une rétrospective.",
-    exercisePromptEn: "Propose two concrete actions from a retrospective.",
+    exercisePromptFr: "Pratique : Proposez deux actions concrètes issues d'une rétrospective. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Propose two concrete actions from a retrospective. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Les actions de rétrospective doivent être concrètes et suivies.",
@@ -1163,8 +1093,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. Vague actions without follow-up do not change behavior.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Rétrospective ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Retrospective”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1176,23 +1106,25 @@ export const PMP_LESSONS: CompactLesson[] = [
     descriptionEn: "When hybrid makes sense and basics of combining predictive and agile.",
     moduleSlug: "hybrid",
     sortOrder: 0,
-    estimatedMinutes: 7,
+    estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "hybrid-delivery",
     learningObjective: "IDENTIFY",
     isShort: true,
     shortTopic: "hybrid-project",
     shortDurationSeconds: 135,
-    textBodyFr:
-      "Un projet hybride mélange planification structurée (jalons, budget global) et exécution agile (sprints, backlog) selon les parties du projet. C'est courant quand certaines composantes sont stables (infrastructure, conformité) et d'autres évolutives (interface utilisateur). Le hybride n'est pas un échec de méthode — c'est un tailoring conscient du contexte.",
-    textBodyEn:
-      "A hybrid project mixes structured planning (milestones, overall budget) and agile execution (sprints, backlog) across project parts. It is common when some components are stable (infrastructure, compliance) and others evolving (user interface). Hybrid is not method failure — it is conscious tailoring to context.",
+    shortScriptFr: "Hook : Pourquoi « Bases du projet hybride » compte maintenant.\nConcept : Un projet hybride mélange planification structurée (jalons, budget global) et exécution agile (sprints, backlog) selon les parties du projet. C'est courant quand certaines composantes sont stables (infrastructure, conformité) et d'autres évolutives (interface utilisateur). Le hybride n'est pas un échec de méthode — c'est un tailoring conscient du contexte. Quand le hybride fait sens et bases de la combinaison prédictif-agile.\nExemple : Illustration : dans un contexte professionnel courant, « Bases du projet hybride » aide à clarifier la décision avant d'agir.\nTakeaway : À retenir : maîtrisez l'idée centrale de « Bases du projet hybride », puis passez à la pratique et au quiz pour ancrer le skill.",
+    shortScriptEn: "Hook: Why “Hybrid Project Basics” matters now.\nConcept: A hybrid project mixes structured planning (milestones, overall budget) and agile execution (sprints, backlog) across project parts. It is common when some components are stable (infrastructure, compliance) and others evolving (user interface). Hybrid is not method failure — it is conscious tailoring to context. When hybrid makes sense and basics of combining predictive and agile.\nExample: Illustration: in a common professional context, “Hybrid Project Basics” clarifies the decision before acting.\nTakeaway: Key takeaway: master the core idea of “Hybrid Project Basics”, then practice and quiz to lock in the skill.",
+    keyTakeawayFr: "À retenir : maîtrisez l'idée centrale de « Bases du projet hybride », puis passez à la pratique et au quiz pour ancrer le skill.",
+    keyTakeawayEn: "Key takeaway: master the core idea of “Hybrid Project Basics”, then practice and quiz to lock in the skill.",
+    textBodyFr: "Objectif\nComprendre « Bases du projet hybride » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn projet hybride mélange planification structurée (jalons, budget global) et exécution agile (sprints, backlog) selon les parties du projet. C'est courant quand certaines composantes sont stables (infrastructure, conformité) et d'autres évolutives (interface utilisateur). Le hybride n'est pas un échec de méthode — c'est un tailoring conscient du contexte. Quand le hybride fait sens et bases de la combinaison prédictif-agile.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Bases du projet hybride » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « hybrid-delivery ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Bases du projet hybride », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Hybrid Project Basics” and apply it in a simple situation.\n\nExplanation\nA hybrid project mixes structured planning (milestones, overall budget) and agile execution (sprints, backlog) across project parts. It is common when some components are stable (infrastructure, compliance) and others evolving (user interface). Hybrid is not method failure — it is conscious tailoring to context. When hybrid makes sense and basics of combining predictive and agile.\n\nExample\nIllustration: in a common professional context, “Hybrid Project Basics” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “hybrid-delivery”.\n\nKey takeaway\nKey takeaway: master the core idea of “Hybrid Project Basics”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Projet hybride",
     flashcardFrontEn: "Hybrid project",
     flashcardBackFr: "Combine planification structurée et exécution agile selon le contexte.",
     flashcardBackEn: "Combines structured planning and agile execution by context.",
-    exercisePromptFr: "Identifiez une partie prédictive et une partie agile d'un projet connu.",
-    exercisePromptEn: "Identify one predictive and one agile part of a known project.",
+    exercisePromptFr: "Pratique : Identifiez une partie prédictive et une partie agile d'un projet connu. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Identify one predictive and one agile part of a known project. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "L'approche hybride combine typiquement planification structurée et exécution agile.",
@@ -1201,8 +1133,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. Hybrid adapts the method to project components.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Bases du projet hybride ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Hybrid Project Basics”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1218,16 +1150,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "hybrid-delivery",
     learningObjective: "APPLY",
-    textBodyFr:
-      "Combiner prédictif et agile peut prendre la forme de : roadmap avec jalons fixes et sprints entre les gates ; WBS pour le programme et backlog pour les équipes produit ; budget envelope avec burn rate agile. Les interfaces entre modes doivent être explicites : qui fournit quoi, quand, et avec quels critères d'acceptation. La communication entre équipes prédictives et agiles est le point critique.",
-    textBodyEn:
-      "Combining predictive and agile can take the form of: roadmap with fixed milestones and sprints between gates; WBS for the program and backlog for product teams; budget envelope with agile burn rate. Interfaces between modes must be explicit: who delivers what, when, and with which acceptance criteria. Communication between predictive and agile teams is the critical point.",
+    textBodyFr: "Objectif\nComprendre « Combiner prédictif et agile » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nCombiner prédictif et agile peut prendre la forme de : roadmap avec jalons fixes et sprints entre les gates ; WBS pour le programme et backlog pour les équipes produit ; budget envelope avec burn rate agile. Les interfaces entre modes doivent être explicites : qui fournit quoi, quand, et avec quels critères d'acceptation. La communication entre équipes prédictives et agiles est le point critique. Pratiques concrètes pour intégrer les deux modes de travail.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Combiner prédictif et agile » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « hybrid-delivery ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Combiner prédictif et agile », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Combining Predictive and Agile” and apply it in a simple situation.\n\nExplanation\nCombining predictive and agile can take the form of: roadmap with fixed milestones and sprints between gates; WBS for the program and backlog for product teams; budget envelope with agile burn rate. Interfaces between modes must be explicit: who delivers what, when, and with which acceptance criteria. Communication between predictive and agile teams is the critical point. Concrete practices to integrate both work modes.\n\nExample\nIllustration: in a common professional context, “Combining Predictive and Agile” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “hybrid-delivery”.\n\nKey takeaway\nKey takeaway: master the core idea of “Combining Predictive and Agile”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Gate (jalon)",
     flashcardFrontEn: "Gate (milestone)",
     flashcardBackFr: "Point de contrôle prédictif entre phases ou releases.",
     flashcardBackEn: "Predictive control point between phases or releases.",
-    exercisePromptFr: "Décrivez comment lier un jalon programme à deux sprints produit.",
-    exercisePromptEn: "Describe how to link a program milestone to two product sprints.",
+    exercisePromptFr: "Pratique : Décrivez comment lier un jalon programme à deux sprints produit. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Describe how to link a program milestone to two product sprints. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel élément est critique quand on combine prédictif et agile ?",
@@ -1236,9 +1166,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Explicit interfaces between modes and teams.",
       difficulty: 2,
       options: [
-        { labelFr: "Utiliser un seul outil sans adaptation", labelEn: "Use one tool without adaptation", isCorrect: false },
-        { labelFr: "Interfaces explicites entre modes et équipes", labelEn: "Explicit interfaces between modes and teams", isCorrect: true },
-        { labelFr: "Interdire toute planification", labelEn: "Ban all planning", isCorrect: false },
+        {"labelFr":"Utiliser un seul outil sans adaptation","labelEn":"Use one tool without adaptation","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Combiner prédictif et agile ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Combining Predictive and Agile”. Re-read the explanation and example."},
+        {"labelFr":"Interfaces explicites entre modes et équipes","labelEn":"Explicit interfaces between modes and teams","isCorrect":true},
+        {"labelFr":"Interdire toute planification","labelEn":"Ban all planning","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Combiner prédictif et agile ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Combining Predictive and Agile”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1254,16 +1184,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "hybrid-delivery",
     learningObjective: "DECIDE",
-    textBodyFr:
-      "Le tailoring sélectionne et adapte processus, artefacts et durée des cérémonies selon taille, risque, culture et réglementation du projet. Un petit projet interne n'a pas besoin du même formalisme qu'un programme régulé. Documenter les choix de tailoring (ce qu'on utilise, ce qu'on simplifie) évite les audits surprises. Le tailoring est continu, pas seulement à l'initiation.",
-    textBodyEn:
-      "Tailoring selects and adapts processes, artifacts, and ceremony length based on project size, risk, culture, and regulation. A small internal project does not need the same formality as a regulated program. Documenting tailoring choices (what you use, what you simplify) avoids audit surprises. Tailoring is continuous, not only at initiation.",
+    textBodyFr: "Objectif\nComprendre « Tailoring » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLe tailoring sélectionne et adapte processus, artefacts et durée des cérémonies selon taille, risque, culture et réglementation du projet. Un petit projet interne n'a pas besoin du même formalisme qu'un programme régulé. Documenter les choix de tailoring (ce qu'on utilise, ce qu'on simplifie) évite les audits surprises. Le tailoring est continu, pas seulement à l'initiation. Adapter processus, artefacts et gouvernance au contexte du projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Tailoring » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « hybrid-delivery ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Tailoring », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Tailoring” and apply it in a simple situation.\n\nExplanation\nTailoring selects and adapts processes, artifacts, and ceremony length based on project size, risk, culture, and regulation. A small internal project does not need the same formality as a regulated program. Documenting tailoring choices (what you use, what you simplify) avoids audit surprises. Tailoring is continuous, not only at initiation. Adapt processes, artifacts, and governance to project context.\n\nExample\nIllustration: in a common professional context, “Tailoring” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “hybrid-delivery”.\n\nKey takeaway\nKey takeaway: master the core idea of “Tailoring”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Tailoring",
     flashcardFrontEn: "Tailoring",
     flashcardBackFr: "Adapter processus et artefacts au contexte spécifique du projet.",
     flashcardBackEn: "Adapt processes and artifacts to the project's specific context.",
-    exercisePromptFr: "Listez trois éléments à simplifier pour un petit projet interne.",
-    exercisePromptEn: "List three elements to simplify for a small internal project.",
+    exercisePromptFr: "Pratique : Listez trois éléments à simplifier pour un petit projet interne. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List three elements to simplify for a small internal project. Then note one mistake to avoid.",
     question: {
       type: "TRUE_FALSE",
       promptFr: "Le tailoring adapte les processus au contexte du projet.",
@@ -1272,8 +1200,8 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "True. No one-size-fits-all in modern project management.",
       difficulty: 1,
       options: [
-        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
-        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        {"labelFr":"Vrai","labelEn":"True","isCorrect":true},
+        {"labelFr":"Faux","labelEn":"False","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Tailoring ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Tailoring”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1289,16 +1217,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "ADVANCED",
     skillSlug: "hybrid-delivery",
     learningObjective: "ANALYZE",
-    textBodyFr:
-      "La gouvernance hybride combine décisions stratégiques centralisées (budget, scope majeur) et autonomie d'exécution des équipes agiles. Les gates vérifient outcomes et risques sans micro-manager les sprints. Le comité de pilotage voit les métriques de valeur (lead time, satisfaction) en plus des jalons. Clarifier ce qui est décidé au gate vs en sprint évite les conflits d'autorité.",
-    textBodyEn:
-      "Hybrid governance combines centralized strategic decisions (budget, major scope) and execution autonomy of agile teams. Gates verify outcomes and risks without micromanaging sprints. The steering committee sees value metrics (lead time, satisfaction) in addition to milestones. Clarifying what is decided at the gate vs in sprint avoids authority conflicts.",
+    textBodyFr: "Objectif\nComprendre « Gouvernance hybride » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa gouvernance hybride combine décisions stratégiques centralisées (budget, scope majeur) et autonomie d'exécution des équipes agiles. Les gates vérifient outcomes et risques sans micro-manager les sprints. Le comité de pilotage voit les métriques de valeur (lead time, satisfaction) en plus des jalons. Clarifier ce qui est décidé au gate vs en sprint évite les conflits d'autorité. Aligner comités, gates et autonomie agile dans un même programme.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Gouvernance hybride » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « hybrid-delivery ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Gouvernance hybride », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Hybrid Governance” and apply it in a simple situation.\n\nExplanation\nHybrid governance combines centralized strategic decisions (budget, major scope) and execution autonomy of agile teams. Gates verify outcomes and risks without micromanaging sprints. The steering committee sees value metrics (lead time, satisfaction) in addition to milestones. Clarifying what is decided at the gate vs in sprint avoids authority conflicts. Align committees, gates, and agile autonomy in one program.\n\nExample\nIllustration: in a common professional context, “Hybrid Governance” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “hybrid-delivery”.\n\nKey takeaway\nKey takeaway: master the core idea of “Hybrid Governance”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Gate de gouvernance",
     flashcardFrontEn: "Governance gate",
     flashcardBackFr: "Point où le comité valide progression, risques et budget.",
     flashcardBackEn: "Point where committee validates progress, risks, and budget.",
-    exercisePromptFr: "Définissez ce qui est décidé au gate vs en sprint planning.",
-    exercisePromptEn: "Define what is decided at the gate vs in sprint planning.",
+    exercisePromptFr: "Pratique : Définissez ce qui est décidé au gate vs en sprint planning. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Define what is decided at the gate vs in sprint planning. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "En gouvernance hybride, que vérifie typiquement un gate ?",
@@ -1307,9 +1233,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Outcomes, major risks, and budget alignment — not each sprint task.",
       difficulty: 3,
       options: [
-        { labelFr: "Chaque tâche du daily standup", labelEn: "Each daily standup task", isCorrect: false },
-        { labelFr: "Outcomes, risques majeurs et budget", labelEn: "Outcomes, major risks, and budget", isCorrect: true },
-        { labelFr: "Rien — les gates sont obsolètes", labelEn: "Nothing — gates are obsolete", isCorrect: false },
+        {"labelFr":"Chaque tâche du daily standup","labelEn":"Each daily standup task","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gouvernance hybride ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Hybrid Governance”. Re-read the explanation and example."},
+        {"labelFr":"Outcomes, risques majeurs et budget","labelEn":"Outcomes, major risks, and budget","isCorrect":true},
+        {"labelFr":"Rien — les gates sont obsolètes","labelEn":"Nothing — gates are obsolete","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Gouvernance hybride ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Hybrid Governance”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1325,16 +1251,14 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "hybrid-delivery",
     learningObjective: "DECIDE",
-    textBodyFr:
-      "La stratégie de livraison définit cadence (releases, trains), critères de done et comment les incréments s'assemblent en valeur business. En hybride : releases majeures alignées aux gates, incréments mineurs en continu entre les gates. La stratégie doit être visible pour toutes les équipes. Changer de stratégie en cours de route sans communication crée des dépendances cassées.",
-    textBodyEn:
-      "Delivery strategy defines cadence (releases, trains), done criteria, and how increments assemble into business value. In hybrid: major releases aligned to gates, minor increments continuously between gates. Strategy must be visible to all teams. Changing strategy mid-flight without communication creates broken dependencies.",
+    textBodyFr: "Objectif\nComprendre « Stratégie de livraison » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nLa stratégie de livraison définit cadence (releases, trains), critères de done et comment les incréments s'assemblent en valeur business. En hybride : releases majeures alignées aux gates, incréments mineurs en continu entre les gates. La stratégie doit être visible pour toutes les équipes. Changer de stratégie en cours de route sans communication crée des dépendances cassées. Choisir cadence, releases et critères de succès pour le programme.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Stratégie de livraison » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « hybrid-delivery ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Stratégie de livraison », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Delivery Strategy” and apply it in a simple situation.\n\nExplanation\nDelivery strategy defines cadence (releases, trains), done criteria, and how increments assemble into business value. In hybrid: major releases aligned to gates, minor increments continuously between gates. Strategy must be visible to all teams. Changing strategy mid-flight without communication creates broken dependencies. Choose cadence, releases, and success criteria for the program.\n\nExample\nIllustration: in a common professional context, “Delivery Strategy” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “hybrid-delivery”.\n\nKey takeaway\nKey takeaway: master the core idea of “Delivery Strategy”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Release train",
     flashcardFrontEn: "Release train",
     flashcardBackFr: "Cadence planifiée de releases alignant plusieurs équipes.",
     flashcardBackEn: "Planned release cadence aligning multiple teams.",
-    exercisePromptFr: "Définissez une cadence de release pour un programme hybride.",
-    exercisePromptEn: "Define a release cadence for a hybrid program.",
+    exercisePromptFr: "Pratique : Définissez une cadence de release pour un programme hybride. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Define a release cadence for a hybrid program. Then note one mistake to avoid.",
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quel élément central d'une stratégie de livraison hybride ?",
@@ -1343,9 +1267,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Release cadence and shared done criteria across teams.",
       difficulty: 2,
       options: [
-        { labelFr: "Chaque équipe choisit sa cadence sans coordination", labelEn: "Each team picks cadence without coordination", isCorrect: false },
-        { labelFr: "Cadence et critères de done partagés", labelEn: "Shared cadence and done criteria", isCorrect: true },
-        { labelFr: "Une seule release finale sans incréments", labelEn: "One final release without increments", isCorrect: false },
+        {"labelFr":"Chaque équipe choisit sa cadence sans coordination","labelEn":"Each team picks cadence without coordination","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Stratégie de livraison ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Delivery Strategy”. Re-read the explanation and example."},
+        {"labelFr":"Cadence et critères de done partagés","labelEn":"Shared cadence and done criteria","isCorrect":true},
+        {"labelFr":"Une seule release finale sans incréments","labelEn":"One final release without increments","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Stratégie de livraison ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Delivery Strategy”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1361,26 +1285,20 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "pmp-situational-thinking",
     learningObjective: "DECIDE",
-    situation: {
-      scenarioFr:
-        "En milieu de sprint, un directeur commercial demande une nouvelle fonctionnalité de reporting « urgente » pour une démo client dans 10 jours. L'équipe est déjà engagée sur le sprint goal actuel. Le Product Owner hésite.",
-      scenarioEn:
-        "Mid-sprint, a sales director requests a new reporting feature as 'urgent' for a client demo in 10 days. The team is already committed to the current sprint goal. The Product Owner hesitates.",
-      bestActionFr:
-        "Accueillir la demande, évaluer la valeur et l'impact avec le PO, puis ajouter au backlog priorisé — pas insérer dans le sprint courant sans replanifier avec l'équipe.",
-      bestActionEn:
-        "Acknowledge the request, assess value and impact with the PO, then add to the prioritized backlog — do not insert into the current sprint without replanning with the team.",
-    },
-    textBodyFr:
-      "Face à une demande urgente mid-sprint, la meilleure action protège le sprint goal et la vélocité tout en respectant la partie prenante. Insérer du travail sans replanifier déstabilise l'équipe et masque la vraie capacité. Documenter la demande, quantifier la valeur business et planifier pour le prochain sprint (ou négocier un scope swap explicite) est plus durable que céder à la pression immédiate.",
-    textBodyEn:
-      "Facing an urgent mid-sprint request, the best action protects the sprint goal and velocity while respecting the stakeholder. Inserting work without replanning destabilizes the team and hides true capacity. Documenting the request, quantifying business value, and planning for the next sprint (or negotiating an explicit scope swap) is more sustainable than yielding to immediate pressure.",
+    textBodyFr: "Objectif\nComprendre « Élargissement du périmètre en sprint » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nFace à une demande urgente mid-sprint, la meilleure action protège le sprint goal et la vélocité tout en respectant la partie prenante. Insérer du travail sans replanifier déstabilise l'équipe et masque la vraie capacité. Documenter la demande, quantifier la valeur business et planifier pour le prochain sprint (ou négocier un scope swap explicite) est plus durable que céder à la pression immédiate. Raisonner face à une demande de fonctionnalité en cours de sprint.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Élargissement du périmètre en sprint » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-situational-thinking ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Élargissement du périmètre en sprint », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Scope Creep Mid-Sprint” and apply it in a simple situation.\n\nExplanation\nFacing an urgent mid-sprint request, the best action protects the sprint goal and velocity while respecting the stakeholder. Inserting work without replanning destabilizes the team and hides true capacity. Documenting the request, quantifying business value, and planning for the next sprint (or negotiating an explicit scope swap) is more sustainable than yielding to immediate pressure. Reason through a feature request during an active sprint.\n\nExample\nIllustration: in a common professional context, “Scope Creep Mid-Sprint” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-situational-thinking”.\n\nKey takeaway\nKey takeaway: master the core idea of “Scope Creep Mid-Sprint”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Demande urgente mid-sprint",
     flashcardFrontEn: "Urgent mid-sprint request",
     flashcardBackFr: "Backlog + priorisation, pas insertion silencieuse dans le sprint.",
     flashcardBackEn: "Backlog + prioritization, not silent insertion into the sprint.",
-    exercisePromptFr: "Rédigez la réponse que vous donneriez au directeur commercial.",
-    exercisePromptEn: "Write the response you would give to the sales director.",
+    exercisePromptFr: "Pratique : Rédigez la réponse que vous donneriez au directeur commercial. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Write the response you would give to the sales director. Then note one mistake to avoid.",
+    situation: {
+          "scenarioFr": "En milieu de sprint, un directeur commercial demande une nouvelle fonctionnalité de reporting « urgente » pour une démo client dans 10 jours. L'équipe est déjà engagée sur le sprint goal actuel. Le Product Owner hésite.",
+          "scenarioEn": "Mid-sprint, a sales director requests a new reporting feature as 'urgent' for a client demo in 10 days. The team is already committed to the current sprint goal. The Product Owner hesitates.",
+          "bestActionFr": "Accueillir la demande, évaluer la valeur et l'impact avec le PO, puis ajouter au backlog priorisé — pas insérer dans le sprint courant sans replanifier avec l'équipe.",
+          "bestActionEn": "Acknowledge the request, assess value and impact with the PO, then add to the prioritized backlog — do not insert into the current sprint without replanning with the team."
+    },
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Meilleure première action face à cette demande ?",
@@ -1389,9 +1307,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Document, assess value with PO, and prioritize in backlog — protects the sprint.",
       difficulty: 3,
       options: [
-        { labelFr: "Ajouter immédiatement la feature au sprint sans discussion", labelEn: "Immediately add the feature to the sprint without discussion", isCorrect: false },
-        { labelFr: "Documenter, évaluer valeur et prioriser au backlog", labelEn: "Document, assess value, and prioritize in backlog", isCorrect: true },
-        { labelFr: "Refuser sèchement sans explication", labelEn: "Flatly refuse without explanation", isCorrect: false },
+        {"labelFr":"Ajouter immédiatement la feature au sprint sans discussion","labelEn":"Immediately add the feature to the sprint without discussion","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Élargissement du périmètre en sprint ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Scope Creep Mid-Sprint”. Re-read the explanation and example."},
+        {"labelFr":"Documenter, évaluer valeur et prioriser au backlog","labelEn":"Document, assess value, and prioritize in backlog","isCorrect":true},
+        {"labelFr":"Refuser sèchement sans explication","labelEn":"Flatly refuse without explanation","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Élargissement du périmètre en sprint ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Scope Creep Mid-Sprint”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1407,26 +1325,20 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "INTERMEDIATE",
     skillSlug: "pmp-situational-thinking",
     learningObjective: "DECIDE",
-    situation: {
-      scenarioFr:
-        "Deux développeurs seniors s'opposent sur l'architecture d'une API : microservices vs monolithe modulaire. Le débat bloque la story critique du sprint. Chacun a des arguments valables liés à la scalabilité et au délai.",
-      scenarioEn:
-        "Two senior developers disagree on API architecture: microservices vs modular monolith. The debate blocks the sprint's critical story. Each has valid arguments related to scalability and deadline.",
-      bestActionFr:
-        "Faciliter une session timeboxée avec critères explicites (délai, risque, maintenabilité), faire produire une recommandation par les experts, puis décider ou escalader si nécessaire.",
-      bestActionEn:
-        "Facilitate a timeboxed session with explicit criteria (deadline, risk, maintainability), have experts produce a recommendation, then decide or escalate if needed.",
-    },
-    textBodyFr:
-      "Un conflit technique entre experts n'est pas résolu par le chef de projet qui choisit la technologie. La facilitation structurée : critères de décision partagés, timebox, prototypage léger si utile, et documentation de la décision. Si le blocage persiste, escalader au tech lead ou architecte avec les options analysées — pas avec le conflit non traité.",
-    textBodyEn:
-      "Technical conflict between experts is not resolved by the project manager picking the technology. Structured facilitation: shared decision criteria, timebox, light prototyping if useful, and decision documentation. If blockage persists, escalate to tech lead or architect with analyzed options — not with untreated conflict.",
+    textBodyFr: "Objectif\nComprendre « Conflit technique entre experts » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUn conflit technique entre experts n'est pas résolu par le chef de projet qui choisit la technologie. La facilitation structurée : critères de décision partagés, timebox, prototypage léger si utile, et documentation de la décision. Si le blocage persiste, escalader au tech lead ou architecte avec les options analysées — pas avec le conflit non traité. Faciliter un conflit d'architecture sans imposer une solution.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Conflit technique entre experts » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-situational-thinking ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Conflit technique entre experts », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Technical Conflict Between Experts” and apply it in a simple situation.\n\nExplanation\nTechnical conflict between experts is not resolved by the project manager picking the technology. Structured facilitation: shared decision criteria, timebox, light prototyping if useful, and decision documentation. If blockage persists, escalate to tech lead or architect with analyzed options — not with untreated conflict. Facilitate an architecture conflict without imposing a solution.\n\nExample\nIllustration: in a common professional context, “Technical Conflict Between Experts” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-situational-thinking”.\n\nKey takeaway\nKey takeaway: master the core idea of “Technical Conflict Between Experts”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Conflit technique",
     flashcardFrontEn: "Technical conflict",
     flashcardBackFr: "Faciliter avec critères explicites ; ne pas imposer la solution technique.",
     flashcardBackEn: "Facilitate with explicit criteria; do not impose the technical solution.",
-    exercisePromptFr: "Listez trois critères de décision pour ce débat d'architecture.",
-    exercisePromptEn: "List three decision criteria for this architecture debate.",
+    exercisePromptFr: "Pratique : Listez trois critères de décision pour ce débat d'architecture. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List three decision criteria for this architecture debate. Then note one mistake to avoid.",
+    situation: {
+          "scenarioFr": "Deux développeurs seniors s'opposent sur l'architecture d'une API : microservices vs monolithe modulaire. Le débat bloque la story critique du sprint. Chacun a des arguments valables liés à la scalabilité et au délai.",
+          "scenarioEn": "Two senior developers disagree on API architecture: microservices vs modular monolith. The debate blocks the sprint's critical story. Each has valid arguments related to scalability and deadline.",
+          "bestActionFr": "Faciliter une session timeboxée avec critères explicites (délai, risque, maintenabilité), faire produire une recommandation par les experts, puis décider ou escalader si nécessaire.",
+          "bestActionEn": "Facilitate a timeboxed session with explicit criteria (deadline, risk, maintainability), have experts produce a recommendation, then decide or escalate if needed."
+    },
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Quelle approche est la plus appropriée pour le chef de projet ?",
@@ -1435,9 +1347,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Facilitate a timeboxed session with criteria and expert recommendation.",
       difficulty: 3,
       options: [
-        { labelFr: "Choisir microservices car c'est moderne", labelEn: "Choose microservices because it is modern", isCorrect: false },
-        { labelFr: "Faciliter session timeboxée avec critères explicites", labelEn: "Facilitate timeboxed session with explicit criteria", isCorrect: true },
-        { labelFr: "Reporter indéfiniment la décision", labelEn: "Postpone the decision indefinitely", isCorrect: false },
+        {"labelFr":"Choisir microservices car c'est moderne","labelEn":"Choose microservices because it is modern","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Conflit technique entre experts ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Technical Conflict Between Experts”. Re-read the explanation and example."},
+        {"labelFr":"Faciliter session timeboxée avec critères explicites","labelEn":"Facilitate timeboxed session with explicit criteria","isCorrect":true},
+        {"labelFr":"Reporter indéfiniment la décision","labelEn":"Postpone the decision indefinitely","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Conflit technique entre experts ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Technical Conflict Between Experts”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1453,26 +1365,20 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "ADVANCED",
     skillSlug: "pmp-situational-thinking",
     learningObjective: "DECIDE",
-    situation: {
-      scenarioFr:
-        "Un fournisseur clé annonce un retard de 3 semaines sur un composant hardware indispensable. Le chemin critique absorbe déjà peu de marge. Le sponsor demande « trouver une solution » sans budget supplémentaire.",
-      scenarioEn:
-        "A key supplier announces a 3-week delay on essential hardware. The critical path already has little float. The sponsor asks to 'find a solution' without additional budget.",
-      bestActionFr:
-        "Mettre à jour le registre des issues, analyser options (fournisseur alternatif, fast-track parallèle, scope swap), quantifier impact sur EAC et date, puis présenter trade-offs au sponsor pour décision.",
-      bestActionEn:
-        "Update the issue log, analyze options (alternate supplier, parallel fast-track, scope swap), quantify impact on EAC and date, then present trade-offs to the sponsor for decision.",
-    },
-    textBodyFr:
-      "Quand un risque devient un problème sur le chemin critique, l'action immédiate est l'analyse d'impact et la transparence — pas l'optimisme silencieux. Options typiques : fournisseur alternatif (coût/délai), fast-tracking d'autres activités, réduction de scope, ou négociation avec le fournisseur. Le sponsor doit voir les trade-offs quantifiés pour autoriser budget ou scope.",
-    textBodyEn:
-      "When a risk becomes an issue on the critical path, immediate action is impact analysis and transparency — not silent optimism. Typical options: alternate supplier (cost/time), fast-tracking other activities, scope reduction, or supplier negotiation. The sponsor must see quantified trade-offs to authorize budget or scope.",
+    textBodyFr: "Objectif\nComprendre « Retard fournisseur critique » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nQuand un risque devient un problème sur le chemin critique, l'action immédiate est l'analyse d'impact et la transparence — pas l'optimisme silencieux. Options typiques : fournisseur alternatif (coût/délai), fast-tracking d'autres activités, réduction de scope, ou négociation avec le fournisseur. Le sponsor doit voir les trade-offs quantifiés pour autoriser budget ou scope. Réagir quand un risque matérialisé menace le chemin critique.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Retard fournisseur critique » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-situational-thinking ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Retard fournisseur critique », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Critical Vendor Delay” and apply it in a simple situation.\n\nExplanation\nWhen a risk becomes an issue on the critical path, immediate action is impact analysis and transparency — not silent optimism. Typical options: alternate supplier (cost/time), fast-tracking other activities, scope reduction, or supplier negotiation. The sponsor must see quantified trade-offs to authorize budget or scope. React when a materialized risk threatens the critical path.\n\nExample\nIllustration: in a common professional context, “Critical Vendor Delay” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-situational-thinking”.\n\nKey takeaway\nKey takeaway: master the core idea of “Critical Vendor Delay”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Risque matérialisé",
     flashcardFrontEn: "Materialized risk",
     flashcardBackFr: "Analyser impact, options et trade-offs avant promettre une date.",
     flashcardBackEn: "Analyze impact, options, and trade-offs before promising a date.",
-    exercisePromptFr: "Listez trois options face au retard fournisseur.",
-    exercisePromptEn: "List three options facing the supplier delay.",
+    exercisePromptFr: "Pratique : Listez trois options face au retard fournisseur. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: List three options facing the supplier delay. Then note one mistake to avoid.",
+    situation: {
+          "scenarioFr": "Un fournisseur clé annonce un retard de 3 semaines sur un composant hardware indispensable. Le chemin critique absorbe déjà peu de marge. Le sponsor demande « trouver une solution » sans budget supplémentaire.",
+          "scenarioEn": "A key supplier announces a 3-week delay on essential hardware. The critical path already has little float. The sponsor asks to 'find a solution' without additional budget.",
+          "bestActionFr": "Mettre à jour le registre des issues, analyser options (fournisseur alternatif, fast-track parallèle, scope swap), quantifier impact sur EAC et date, puis présenter trade-offs au sponsor pour décision.",
+          "bestActionEn": "Update the issue log, analyze options (alternate supplier, parallel fast-track, scope swap), quantify impact on EAC and date, then present trade-offs to the sponsor for decision."
+    },
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Meilleure première action du chef de projet ?",
@@ -1481,9 +1387,9 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Document the issue, analyze options, and quantify impact for the sponsor.",
       difficulty: 3,
       options: [
-        { labelFr: "Promettre la date originale au client", labelEn: "Promise the original date to the client", isCorrect: false },
-        { labelFr: "Analyser options et présenter trade-offs quantifiés", labelEn: "Analyze options and present quantified trade-offs", isCorrect: true },
-        { labelFr: "Ignorer le retard et continuer comme prévu", labelEn: "Ignore the delay and continue as planned", isCorrect: false },
+        {"labelFr":"Promettre la date originale au client","labelEn":"Promise the original date to the client","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Retard fournisseur critique ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Critical Vendor Delay”. Re-read the explanation and example."},
+        {"labelFr":"Analyser options et présenter trade-offs quantifiés","labelEn":"Analyze options and present quantified trade-offs","isCorrect":true},
+        {"labelFr":"Ignorer le retard et continuer comme prévu","labelEn":"Ignore the delay and continue as planned","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Retard fournisseur critique ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Critical Vendor Delay”. Re-read the explanation and example."},
       ],
     },
   },
@@ -1499,26 +1405,20 @@ export const PMP_LESSONS: CompactLesson[] = [
     difficulty: "ADVANCED",
     skillSlug: "pmp-situational-thinking",
     learningObjective: "DECIDE",
-    situation: {
-      scenarioFr:
-        "Le sponsor soumet une demande de changement majeure : ajouter une intégration réglementaire non prévue. Elle touche le chemin critique et nécessite 4 semaines de travail. Le budget baseline n'a pas de contingence restante.",
-      scenarioEn:
-        "The sponsor submits a major change request: add an unforeseen regulatory integration. It touches the critical path and requires 4 weeks of work. The budget baseline has no remaining contingency.",
-      bestActionFr:
-        "Traiter via le processus de changement formel : analyse d'impact (planning, coût, risque, qualité), options (scope swap, budget supplémentaire, phasing), recommandation documentée, puis décision du comité ou sponsor avant exécution.",
-      bestActionEn:
-        "Process through formal change: impact analysis (schedule, cost, risk, quality), options (scope swap, additional budget, phasing), documented recommendation, then committee or sponsor decision before execution.",
-    },
-    textBodyFr:
-      "Une demande de changement majeure du sponsor ne doit pas être exécutée sans analyse — même si le demandeur est le sponsor. Le processus protège l'équipe et clarifie les trade-offs : date, budget, autres livrables. Phasing (livrer l'essentiel réglementaire en premier) ou scope swap sont souvent des options à présenter. Exécuter sans baseline update crée de la dette de gouvernance.",
-    textBodyEn:
-      "A major change request from the sponsor should not be executed without analysis — even when the requester is the sponsor. The process protects the team and clarifies trade-offs: date, budget, other deliverables. Phasing (deliver essential regulatory part first) or scope swap are often options to present. Executing without baseline update creates governance debt.",
+    textBodyFr: "Objectif\nComprendre « Changement sur le chemin critique » et pouvoir l'appliquer dans une situation simple.\n\nExplication\nUne demande de changement majeure du sponsor ne doit pas être exécutée sans analyse — même si le demandeur est le sponsor. Le processus protège l'équipe et clarifie les trade-offs : date, budget, autres livrables. Phasing (livrer l'essentiel réglementaire en premier) ou scope swap sont souvent des options à présenter. Exécuter sans baseline update crée de la dette de gouvernance. Traiter une demande de changement majeure sans déstabiliser le projet.\n\nExemple\nIllustration : dans un contexte professionnel courant, « Changement sur le chemin critique » aide à clarifier la décision avant d'agir.\n\nExemple pratique\nExercice mental : reformulez le concept en une phrase, puis citez un chiffre ou un fait que vous vérifieriez dans la vraie vie (contenu pédagogique — pas un conseil personnalisé).\n\nErreur fréquente\nErreur fréquente : mémoriser le label sans relier le concept à une décision concrète liée à « pmp-situational-thinking ».\n\nÀ retenir\nÀ retenir : maîtrisez l'idée centrale de « Changement sur le chemin critique », puis passez à la pratique et au quiz pour ancrer le skill.",
+    textBodyEn: "Objective\nUnderstand “Change on the Critical Path” and apply it in a simple situation.\n\nExplanation\nA major change request from the sponsor should not be executed without analysis — even when the requester is the sponsor. The process protects the team and clarifies trade-offs: date, budget, other deliverables. Phasing (deliver essential regulatory part first) or scope swap are often options to present. Executing without baseline update creates governance debt. Handle a major change request without destabilizing the project.\n\nExample\nIllustration: in a common professional context, “Change on the Critical Path” clarifies the decision before acting.\n\nPractical example\nMental exercise: restate the concept in one sentence, then name one figure or fact you would verify in real life (educational — not personalized advice).\n\nCommon mistake\nCommon mistake: memorizing the label without linking the concept to a concrete decision related to “pmp-situational-thinking”.\n\nKey takeaway\nKey takeaway: master the core idea of “Change on the Critical Path”, then practice and quiz to lock in the skill.",
     flashcardFrontFr: "Changement majeur",
     flashcardFrontEn: "Major change",
     flashcardBackFr: "Processus formel + analyse d'impact avant exécution.",
     flashcardBackEn: "Formal process + impact analysis before execution.",
-    exercisePromptFr: "Proposez deux options de trade-off pour ce changement.",
-    exercisePromptEn: "Propose two trade-off options for this change.",
+    exercisePromptFr: "Pratique : Proposez deux options de trade-off pour ce changement. Puis notez une erreur à éviter.",
+    exercisePromptEn: "Practice: Propose two trade-off options for this change. Then note one mistake to avoid.",
+    situation: {
+          "scenarioFr": "Le sponsor soumet une demande de changement majeure : ajouter une intégration réglementaire non prévue. Elle touche le chemin critique et nécessite 4 semaines de travail. Le budget baseline n'a pas de contingence restante.",
+          "scenarioEn": "The sponsor submits a major change request: add an unforeseen regulatory integration. It touches the critical path and requires 4 weeks of work. The budget baseline has no remaining contingency.",
+          "bestActionFr": "Traiter via le processus de changement formel : analyse d'impact (planning, coût, risque, qualité), options (scope swap, budget supplémentaire, phasing), recommandation documentée, puis décision du comité ou sponsor avant exécution.",
+          "bestActionEn": "Process through formal change: impact analysis (schedule, cost, risk, quality), options (scope swap, additional budget, phasing), documented recommendation, then committee or sponsor decision before execution."
+    },
     question: {
       type: "SINGLE_CHOICE",
       promptFr: "Face à ce changement du sponsor, quelle action est correcte ?",
@@ -1527,10 +1427,10 @@ export const PMP_LESSONS: CompactLesson[] = [
       explanationCorrectEn: "Formal process with impact analysis and decision before execution.",
       difficulty: 3,
       options: [
-        { labelFr: "Commencer immédiatement car le sponsor a demandé", labelEn: "Start immediately because the sponsor asked", isCorrect: false },
-        { labelFr: "Processus de changement avec analyse d'impact", labelEn: "Change process with impact analysis", isCorrect: true },
-        { labelFr: "Refuser sans analyse ni discussion", labelEn: "Refuse without analysis or discussion", isCorrect: false },
+        {"labelFr":"Commencer immédiatement car le sponsor a demandé","labelEn":"Start immediately because the sponsor asked","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Changement sur le chemin critique ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Change on the Critical Path”. Re-read the explanation and example."},
+        {"labelFr":"Processus de changement avec analyse d'impact","labelEn":"Change process with impact analysis","isCorrect":true},
+        {"labelFr":"Refuser sans analyse ni discussion","labelEn":"Refuse without analysis or discussion","isCorrect":false,"explanationWrongFr":"Cette option est moins appropriée pour « Changement sur le chemin critique ». Relisez l'explication et l'exemple.","explanationWrongEn":"This option is less appropriate for “Change on the Critical Path”. Re-read the explanation and example."},
       ],
     },
-  },
+  }
 ];

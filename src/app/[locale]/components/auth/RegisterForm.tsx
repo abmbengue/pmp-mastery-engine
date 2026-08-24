@@ -51,6 +51,9 @@ export function RegisterForm({ locale, labels }: RegisterFormProps) {
         case "email_exists":
           setError(labels.emailExists);
           return;
+        case "rate_limited":
+          setError(labels.genericError);
+          return;
         case "password_mismatch":
           setError(labels.passwordMismatch);
           return;
@@ -84,10 +87,14 @@ export function RegisterForm({ locale, labels }: RegisterFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" data-testid="register-form">
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">{labels.email}</label>
+        <label htmlFor="register-email" className="mb-1 block text-sm font-medium text-gray-700">
+          {labels.email}
+        </label>
         <input
+          id="register-email"
           type="email"
           required
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -95,10 +102,14 @@ export function RegisterForm({ locale, labels }: RegisterFormProps) {
         />
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">{labels.password}</label>
+        <label htmlFor="register-password" className="mb-1 block text-sm font-medium text-gray-700">
+          {labels.password}
+        </label>
         <input
+          id="register-password"
           type="password"
           required
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -106,10 +117,14 @@ export function RegisterForm({ locale, labels }: RegisterFormProps) {
         />
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">{labels.confirmPassword}</label>
+        <label htmlFor="register-confirm-password" className="mb-1 block text-sm font-medium text-gray-700">
+          {labels.confirmPassword}
+        </label>
         <input
+          id="register-confirm-password"
           type="password"
           required
+          autoComplete="new-password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -117,12 +132,14 @@ export function RegisterForm({ locale, labels }: RegisterFormProps) {
         />
       </div>
       {error && (
-        <p className="text-sm text-red-600" data-testid="register-error">{error}</p>
+        <p className="text-sm text-red-600" role="alert" data-testid="register-error">
+          {error}
+        </p>
       )}
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+        className="min-h-11 w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
         data-testid="register-submit"
       >
         {loading ? "…" : labels.register}

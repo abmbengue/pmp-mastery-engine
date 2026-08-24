@@ -16,6 +16,11 @@ export type CompactLesson = {
   isShort?: boolean;
   shortTopic?: string;
   shortDurationSeconds?: number;
+  /** Phase 12 pedagogical short script (placeholder media) */
+  shortScriptFr?: string;
+  shortScriptEn?: string;
+  keyTakeawayFr?: string;
+  keyTakeawayEn?: string;
   textBodyFr: string;
   textBodyEn: string;
   flashcardFrontFr: string;
@@ -28,6 +33,17 @@ export type CompactLesson = {
 };
 
 export function compactToLessonSeed(lesson: CompactLesson): LessonSeedConfig {
+  const shortDescriptionFr = lesson.isShort
+    ? [lesson.shortScriptFr, lesson.keyTakeawayFr ? `À retenir : ${lesson.keyTakeawayFr}` : null]
+        .filter(Boolean)
+        .join("\n\n") || lesson.descriptionFr
+    : lesson.descriptionFr;
+  const shortDescriptionEn = lesson.isShort
+    ? [lesson.shortScriptEn, lesson.keyTakeawayEn ? `Key takeaway: ${lesson.keyTakeawayEn}` : null]
+        .filter(Boolean)
+        .join("\n\n") || lesson.descriptionEn
+    : lesson.descriptionEn;
+
   return {
     slug: lesson.slug,
     titleFr: lesson.titleFr,
@@ -49,6 +65,12 @@ export function compactToLessonSeed(lesson: CompactLesson): LessonSeedConfig {
     isShort: lesson.isShort,
     shortTopic: lesson.shortTopic ?? lesson.slug,
     shortDurationSeconds: lesson.shortDurationSeconds,
+    shortScriptFr: lesson.shortScriptFr,
+    shortScriptEn: lesson.shortScriptEn,
+    keyTakeawayFr: lesson.keyTakeawayFr,
+    keyTakeawayEn: lesson.keyTakeawayEn,
+    videoDescriptionFr: shortDescriptionFr,
+    videoDescriptionEn: shortDescriptionEn,
     flashcardFrontFr: lesson.flashcardFrontFr,
     flashcardFrontEn: lesson.flashcardFrontEn,
     flashcardBackFr: lesson.flashcardBackFr,

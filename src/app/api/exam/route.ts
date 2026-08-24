@@ -5,6 +5,7 @@ import {
   createExamSession,
   listExams,
 } from "@/modules/assessment-engine/exam-service";
+import { checkRateLimit, safeApiLog } from "@/modules/security";
 
 const startSchema = z.object({
   examSlug: z.string().min(1).max(120),
@@ -26,6 +27,18 @@ export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const rl = checkRateLimit(`exam-start:${session.user.id}`, 20, 60_000);
+  if (!rl.ok) {
+    safeApiLog("exam_start_rate_limited", { userId: session.user.id });
+    return NextResponse.json(
+      { error: "rate_limited", retryAfterSec: rl.retryAfterSec },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSec) },
+      }
+    );
   }
 
   let raw: unknown;
@@ -54,6 +67,7 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to start exam";
+    safeApiLog("exam_start_failed", { userId: session.user.id });
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

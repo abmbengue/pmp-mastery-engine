@@ -109,6 +109,21 @@ export function validateLessonCatalog(
           message: "Short under 60 seconds",
         });
       }
+      if (!lesson.shortScriptFr?.trim() || !lesson.shortScriptEn?.trim()) {
+        issues.push({
+          code: "SHORT_NO_SCRIPT",
+          path,
+          message: "Short missing pedagogical script FR/EN",
+        });
+      }
+    }
+
+    if (lesson.textBodyFr.length < 500 || lesson.textBodyEn.length < 500) {
+      issues.push({
+        code: "SHALLOW_BODY",
+        path,
+        message: "Lesson body too short for Phase 12 pedagogical standard",
+      });
     }
   }
 

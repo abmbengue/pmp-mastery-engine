@@ -235,6 +235,43 @@ export async function recommendNextLearning(
     });
     if (topErrors[0] && topErrors[0]._count.category >= 2) {
       const hint = mapErrorToCorrectiveLearning(topErrors[0].category);
+
+      // Prefer explicit corrective lesson slugs when present (same recommendation engine)
+      for (const lessonSlug of hint.preferredLessonSlugs) {
+        const lesson = await prisma.lesson.findFirst({
+          where: {
+            slug: lessonSlug,
+            module: { courseId: { in: enrolledCourseIds } },
+          },
+          include: {
+            module: { include: { course: { include: { academy: true } } } },
+            skills: { include: { skill: true } },
+          },
+        });
+        if (!lesson) continue;
+        const skill = lesson.skills[0]?.skill;
+        const skillTitle = skill
+          ? pickLocalized(skill.titleFr, skill.titleEn, locale)
+          : pickLocalized(lesson.titleFr, lesson.titleEn, locale);
+        const path = buildLessonPath({
+          academySlug: lesson.module.course.academy.slug,
+          courseSlug: lesson.module.course.slug,
+          moduleSlug: lesson.module.slug,
+          lessonSlug: lesson.slug,
+        });
+        return {
+          reasonCode: "CORRECTIVE_LEARNING",
+          title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+          reason: reasonText("CORRECTIVE_LEARNING", locale, skillTitle),
+          path,
+          estimatedMinutes: lesson.estimatedMinutes,
+          academySlug: lesson.module.course.academy.slug,
+          courseSlug: lesson.module.course.slug,
+          skillSlug: skill?.slug,
+          lessonSlug: lesson.slug,
+        };
+      }
+
       for (const slug of hint.preferredSkillSlugs) {
         const skill = await prisma.skill.findUnique({ where: { slug } });
         if (!skill) continue;

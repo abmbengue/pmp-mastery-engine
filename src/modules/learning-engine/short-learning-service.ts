@@ -6,7 +6,6 @@ import {
 import type { Locale } from "@/shared/types/locale";
 import { pickLocalized } from "@/shared/types/locale";
 import { resolveMediaAsset, type MediaRef } from "@/modules/media";
-import { isShortCompletedForUser } from "@/modules/learning-engine/short-progress-service";
 
 /**
  * Short Learning foundation — lists VIDEO items flagged as shorts.
@@ -226,8 +225,15 @@ export async function getShortDiscovery(
   const dueSlugs = new Set(dueSkills.map((d) => d.skill.slug));
 
   const withFlags: ShortLearningCard[] = [];
+  const { getCompletedShortIdsForUser } = await import(
+    "@/modules/learning-engine/short-progress-service"
+  );
+  const completedSet = await getCompletedShortIdsForUser(
+    userId,
+    all.map((s) => s.id)
+  );
   for (const s of all) {
-    const completed = await isShortCompletedForUser(userId, s.id);
+    const completed = completedSet.has(s.id);
     withFlags.push({
       ...s,
       completed,

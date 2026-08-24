@@ -46,10 +46,14 @@ export function LoginForm({ locale, labels }: LoginFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" data-testid="login-form">
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">{labels.email}</label>
+        <label htmlFor="login-email" className="mb-1 block text-sm font-medium text-gray-700">
+          {labels.email}
+        </label>
         <input
+          id="login-email"
           type="email"
           required
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -57,10 +61,14 @@ export function LoginForm({ locale, labels }: LoginFormProps) {
         />
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">{labels.password}</label>
+        <label htmlFor="login-password" className="mb-1 block text-sm font-medium text-gray-700">
+          {labels.password}
+        </label>
         <input
+          id="login-password"
           type="password"
           required
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -68,12 +76,14 @@ export function LoginForm({ locale, labels }: LoginFormProps) {
         />
       </div>
       {error && (
-        <p className="text-sm text-red-600" data-testid="login-error">{error}</p>
+        <p className="text-sm text-red-600" role="alert" data-testid="login-error">
+          {error}
+        </p>
       )}
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+        className="min-h-11 w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
         data-testid="login-submit"
       >
         {loading ? "…" : labels.login}

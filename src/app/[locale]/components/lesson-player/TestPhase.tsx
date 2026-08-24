@@ -84,17 +84,21 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
             <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
               {instruction}
             </legend>
-            <p className="mb-4 text-base font-medium leading-relaxed text-gray-900" data-testid="quiz-question-prompt">
+            <p
+              id={`prompt-${q.id}`}
+              className="mb-4 text-base font-medium leading-relaxed text-gray-900"
+              data-testid="quiz-question-prompt"
+            >
               {q.prompt}
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2" role="group" aria-labelledby={`prompt-${q.id}`}>
               {q.options.map((opt) => {
                 const selected = (selections[q.id] ?? []).includes(opt.id);
                 return (
                   <label
                     key={opt.id}
                     className={[
-                      "flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors",
+                      "flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors focus-within:ring-2 focus-within:ring-blue-500",
                       selected
                         ? "border-blue-500 bg-blue-50"
                         : "border-gray-200 hover:border-gray-300 hover:bg-gray-50",
@@ -124,7 +128,7 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
       <button
         type="submit"
         disabled={!allAnswered || submitting}
-        className="w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 sm:w-auto sm:px-8"
+        className="min-h-11 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 sm:w-auto sm:px-8"
         data-testid="submit-quiz"
       >
         {submitting ? "…" : labels.submit}

@@ -110,6 +110,14 @@ npm run db:seed
 
 Auth isolation, exam analytics, spaced repetition, readiness disclaimer, Shorts completion metadata, Learning Paths config, bilingual messages.
 
-## 21. Possible next extensions (Phase 12+)
+## 21. Possible next extensions (after Phase 12)
 
-Optional real media hosting, more planned academies content, richer PDF styling — still defer payment/OAuth/CMS/ML/official PMI.
+Phase 12 delivered content quality + light hardening. Next (only if asked):
+
+- Email verification + password reset  
+- Optional real media hosting behind MediaProvider  
+- SME polish of PMP scenarios  
+- Activate one planned academy with validated catalog  
+
+Still defer: payment/OAuth/CMS/ML/official PMI/native mobile.
+

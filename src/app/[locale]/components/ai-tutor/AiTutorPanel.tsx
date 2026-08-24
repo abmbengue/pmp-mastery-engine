@@ -93,6 +93,7 @@ export function AiTutorPanel({ context, labels, testId = "ai-tutor-panel" }: Pro
           onClick={() => setOpen((v) => !v)}
           data-testid="ask-ai-tutor"
           aria-expanded={open}
+          aria-controls={`${testId}-panel`}
         >
           {labels.ask}
         </button>
@@ -105,7 +106,7 @@ export function AiTutorPanel({ context, labels, testId = "ai-tutor-panel" }: Pro
       )}
 
       {open && (
-        <div className="mt-3 space-y-3">
+        <div className="mt-3 space-y-3" id={`${testId}-panel`} role="region" aria-label={labels.title}>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"

@@ -8,11 +8,28 @@ import {
   aiTutorApiBodySchema,
   loadAiTutorContext,
 } from "@/modules/ai-tutor/context-loader";
+import {
+  checkRateLimit,
+  clientIpFromRequest,
+  safeApiLog,
+} from "@/modules/security";
 
 export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const rl = checkRateLimit(`ai-tutor:${session.user.id}`, 30, 60_000);
+  if (!rl.ok) {
+    safeApiLog("ai_tutor_rate_limited", { userId: session.user.id });
+    return NextResponse.json(
+      { error: "rate_limited", retryAfterSec: rl.retryAfterSec },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSec) },
+      }
+    );
   }
 
   let raw: unknown;
@@ -58,6 +75,11 @@ export async function POST(request: Request) {
     const code = err instanceof AiTutorError ? err.code : "UNKNOWN";
     const status =
       code === "MALFORMED_REQUEST" || code === "MISSING_API_KEY" ? 400 : 503;
+    safeApiLog("ai_tutor_error", {
+      userId: session.user.id,
+      code,
+      ip: clientIpFromRequest(request),
+    });
 
     return NextResponse.json(
       {

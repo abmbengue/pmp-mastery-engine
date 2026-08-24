@@ -129,10 +129,46 @@ export async function listShortsWithCompletion(
     return shorts.map((s) => ({ ...s, completed: false }));
   }
 
-  const result: Array<ShortLearningCard & { completed: boolean }> = [];
-  for (const short of shorts) {
-    const completed = await isShortCompletedForUser(userId, short.id);
-    result.push({ ...short, completed });
+  const completedSet = await getCompletedShortIdsForUser(
+    userId,
+    shorts.map((s) => s.id)
+  );
+  return shorts.map((s) => ({
+    ...s,
+    completed: completedSet.has(s.id),
+  }));
+}
+
+/**
+ * Batch completion lookup — avoids N+1 progress queries on Shorts discovery.
+ */
+export async function getCompletedShortIdsForUser(
+  userId: string,
+  shortIds: string[]
+): Promise<Set<string>> {
+  if (shortIds.length === 0) return new Set();
+
+  const items = await prisma.learningItem.findMany({
+    where: { id: { in: shortIds } },
+    select: { id: true, lessonId: true },
+  });
+  const lessonIds = [...new Set(items.map((i) => i.lessonId))];
+  if (lessonIds.length === 0) return new Set();
+
+  const progresses = await prisma.lessonProgress.findMany({
+    where: { userId, lessonId: { in: lessonIds } },
+    select: { lessonId: true, metadata: true },
+  });
+
+  const completed = new Set<string>();
+  const byLesson = new Map(
+    progresses.map((p) => [p.lessonId, parseMetadata(p.metadata)])
+  );
+  for (const item of items) {
+    const meta = byLesson.get(item.lessonId);
+    if (meta?.shortsCompleted?.includes(item.id)) {
+      completed.add(item.id);
+    }
   }
-  return result;
+  return completed;
 }

@@ -40,6 +40,8 @@ export const videoPayloadSchema = z
     learningObjective: z
       .enum(["IDENTIFY", "APPLY", "ANALYZE", "DECIDE"])
       .optional(),
+    keyTakeawayFr: z.string().optional(),
+    keyTakeawayEn: z.string().optional(),
     /**
      * Media provider abstraction (Phase 11).
      * placeholder = no real file; external = public URL; object-storage/cdn reserved.

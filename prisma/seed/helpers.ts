@@ -101,6 +101,13 @@ export interface LessonSeedConfig {
   isShort?: boolean;
   shortTopic?: string;
   shortDurationSeconds?: number;
+  shortScriptFr?: string;
+  shortScriptEn?: string;
+  keyTakeawayFr?: string;
+  keyTakeawayEn?: string;
+  /** Override VIDEO description (Short script) */
+  videoDescriptionFr?: string;
+  videoDescriptionEn?: string;
   flashcardFrontFr: string;
   flashcardFrontEn: string;
   flashcardBackFr: string;
@@ -195,10 +202,12 @@ export async function seedLessonWithContent(
         titleEn: config.videoTitleEn,
         language: "both",
         thumbnailUrl: null,
-        descriptionFr: config.descriptionFr,
-        descriptionEn: config.descriptionEn,
+        descriptionFr: config.videoDescriptionFr ?? config.descriptionFr,
+        descriptionEn: config.videoDescriptionEn ?? config.descriptionEn,
         isPlaceholder: true,
         isShort: config.isShort ?? false,
+        keyTakeawayFr: config.keyTakeawayFr,
+        keyTakeawayEn: config.keyTakeawayEn,
         topic: config.shortTopic,
         difficulty,
         academySlug: options?.academySlug,
