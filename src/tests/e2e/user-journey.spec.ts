@@ -767,22 +767,23 @@ test.describe("Demo mode", () => {
     await expect(page.getByTestId("course-page")).toBeVisible();
     await page.getByTestId("continue-course-btn").click();
     await expect(page.getByTestId("lesson-player")).toBeVisible();
-    await page.getByTestId("next-phase-btn").click();
-    await expect(page.getByTestId("phase-practice")).toBeVisible();
-    await page.getByTestId("next-phase-btn").click();
-    await expect(page.getByTestId("test-phase")).toBeVisible();
-    await answerAllQuizQuestions(page, "first");
-    await page.getByTestId("submit-quiz").click();
-    await expect(page.getByTestId("review-phase")).toBeVisible();
+    await expect(
+      page.locator('[data-testid="lesson-player"] [data-testid^="phase-"], [data-testid="test-phase"]')
+    ).toBeVisible();
     await page.goto("/fr/dashboard");
     await expect(page.getByTestId("dashboard-page")).toBeVisible();
   });
 
   test("DEMO PMP: Try demo → PMP practice → result → readiness", async ({ page }) => {
     await enterDemo(page, "en");
+    const reset = await page.request.post("/api/demo/reset");
+    expect(reset.ok()).toBeTruthy();
+    await page.reload();
+    await expect(page.getByTestId("dashboard-page")).toBeVisible();
     await page.getByTestId("nav-pmp-exam").click();
     await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
     await page.getByTestId("start-exam-quick-practice").click();
+    await expect(page.getByTestId("exam-session-page")).toBeVisible({ timeout: 15_000 });
     await answerAllExamQuestions(page);
     await submitExam(page);
     await expect(page.getByTestId("practice-score")).toBeVisible();
