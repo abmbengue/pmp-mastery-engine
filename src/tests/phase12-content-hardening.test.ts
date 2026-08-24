@@ -14,7 +14,7 @@ import { PMP_EXAM_BANK } from "../../prisma/seed/pmp-exam-bank-data";
 
 describe("Phase 12 pedagogical content quality", () => {
   it("enriches PF/CF/PMP lesson bodies with structured micro-learning sections", () => {
-    expect(PF_LESSONS.length).toBeGreaterThanOrEqual(29);
+    expect(PF_LESSONS.length).toBeGreaterThanOrEqual(45);
     expect(CF_LESSONS.length).toBeGreaterThanOrEqual(30);
     expect(PMP_LESSONS.length).toBeGreaterThanOrEqual(38);
 

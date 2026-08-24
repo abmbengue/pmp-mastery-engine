@@ -35,6 +35,27 @@ export type CompactLesson = {
     explanationCorrectFr: string;
     explanationCorrectEn: string;
     difficulty: number;
-    options: Array<{ labelFr: string; labelEn: string; isCorrect: boolean }>;
+    options: Array<{
+      labelFr: string;
+      labelEn: string;
+      isCorrect: boolean;
+      explanationWrongFr?: string;
+      explanationWrongEn?: string;
+    }>;
   };
+  questions?: Array<{
+    type: "SINGLE_CHOICE" | "TRUE_FALSE" | "MULTIPLE_CHOICE";
+    promptFr: string;
+    promptEn: string;
+    explanationCorrectFr: string;
+    explanationCorrectEn: string;
+    difficulty: number;
+    options: Array<{
+      labelFr: string;
+      labelEn: string;
+      isCorrect: boolean;
+      explanationWrongFr?: string;
+      explanationWrongEn?: string;
+    }>;
+  }>;
 };

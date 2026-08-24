@@ -66,6 +66,7 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
   await skillId("pf-investing", "Bases de l'investissement", "Investing basics");
   await skillId("pf-interest", "Intérêt", "Interest");
   await skillId("pf-wealth", "Construction de patrimoine", "Wealth building");
+  await skillId("pf-wealth-building", "Construction de patrimoine", "Wealth building");
   await skillId("pf-compounding", "Intérêt composé", "Compound interest");
 
   for (const mod of PF_MODULES) {

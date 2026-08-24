@@ -127,7 +127,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
       "personal-finance",
       "essentials",
       "foundations",
-      "understanding-income"
+      "understanding-money"
     );
     expect(first).not.toBeNull();
 
@@ -136,7 +136,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
     });
 
     let next = await getNextLessonForCourse(demoUserId, pfCourseId);
-    expect(next?.lesson?.slug).toBe("understanding-income");
+    expect(next?.lesson?.slug).toBe("understanding-money");
 
     await startLesson(demoUserId, first!.id);
     next = await getNextLessonForCourse(demoUserId, pfCourseId);
@@ -145,15 +145,15 @@ describe("Phase 4 content and dashboard aggregation", () => {
 
     await completeLesson(demoUserId, first!.id, 120);
     next = await getNextLessonForCourse(demoUserId, pfCourseId);
-    expect(next?.lesson?.slug).toBe("tracking-expenses");
+    expect(next?.lesson?.slug).toBe("understanding-income");
 
     const coursePage = await getCoursePageV2(demoUserId, "personal-finance", "essentials", "en");
     expect(coursePage).not.toBeNull();
     expect(coursePage!.progress.completedLessons).toBeGreaterThanOrEqual(1);
-    const income = coursePage!.modules
+    const money = coursePage!.modules
       .flatMap((m) => m.lessons)
-      .find((l) => l.slug === "understanding-income");
-    expect(income?.status).toBe("COMPLETED");
+      .find((l) => l.slug === "understanding-money");
+    expect(money?.status).toBe("COMPLETED");
     expect(coursePage!.nextLesson).not.toBeNull();
   });
 

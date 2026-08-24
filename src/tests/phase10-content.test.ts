@@ -91,7 +91,7 @@ describe("Phase 10 learning paths", () => {
 
 describe("Phase 10 content catalogs FR/EN", () => {
   it("expands personal finance with required modules", () => {
-    expect(PF_LESSONS.length).toBeGreaterThanOrEqual(25);
+    expect(PF_LESSONS.length).toBeGreaterThanOrEqual(45);
     for (const slug of [
       "understanding-income",
       "tracking-expenses",

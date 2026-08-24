@@ -30,6 +30,7 @@ export type CompactLesson = {
   exercisePromptFr: string;
   exercisePromptEn: string;
   question: LessonSeedConfig["question"];
+  questions?: LessonSeedConfig["questions"];
 };
 
 export function compactToLessonSeed(lesson: CompactLesson): LessonSeedConfig {
@@ -55,7 +56,7 @@ export function compactToLessonSeed(lesson: CompactLesson): LessonSeedConfig {
     difficulty: lesson.difficulty,
     learnMinutes: Math.min(3, Math.max(2, Math.floor(lesson.estimatedMinutes * 0.35))),
     practiceMinutes: Math.min(3, Math.max(2, Math.floor(lesson.estimatedMinutes * 0.25))),
-    testMinutes: 2,
+    testMinutes: Math.min(4, Math.max(2, 1 + (lesson.questions?.length ?? 0))),
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr: lesson.textBodyFr,
@@ -78,5 +79,6 @@ export function compactToLessonSeed(lesson: CompactLesson): LessonSeedConfig {
     exercisePromptFr: lesson.exercisePromptFr,
     exercisePromptEn: lesson.exercisePromptEn,
     question: lesson.question,
+    questions: lesson.questions,
   };
 }

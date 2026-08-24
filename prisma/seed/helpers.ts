@@ -131,6 +131,22 @@ export interface LessonSeedConfig {
       explanationWrongEn?: string;
     }>;
   };
+  /** Optional extra quiz items (same QUIZ LearningItem) — content expansion */
+  questions?: Array<{
+    type: "SINGLE_CHOICE" | "MULTIPLE_CHOICE" | "TRUE_FALSE";
+    promptFr: string;
+    promptEn: string;
+    explanationCorrectFr: string;
+    explanationCorrectEn: string;
+    difficulty: number;
+    options: Array<{
+      labelFr: string;
+      labelEn: string;
+      isCorrect: boolean;
+      explanationWrongFr?: string;
+      explanationWrongEn?: string;
+    }>;
+  }>;
 }
 
 export async function seedLessonWithContent(
@@ -240,24 +256,32 @@ export async function seedLessonWithContent(
       sortOrder: 3,
       difficulty: config.question.difficulty,
       payload: {
-        instructionsFr: "Répondez à la question suivante.",
-        instructionsEn: "Answer the following question.",
+        instructionsFr:
+          (config.questions?.length ?? 0) > 0
+            ? "Répondez aux questions suivantes."
+            : "Répondez à la question suivante.",
+        instructionsEn:
+          (config.questions?.length ?? 0) > 0
+            ? "Answer the following questions."
+            : "Answer the following question.",
       },
     },
   });
 
-  await createQuestionWithOptions(prisma, {
-    learningItemId: quizItem.id,
-    skillId,
-    type: config.question.type,
-    promptFr: config.question.promptFr,
-    promptEn: config.question.promptEn,
-    explanationCorrectFr: config.question.explanationCorrectFr,
-    explanationCorrectEn: config.question.explanationCorrectEn,
-    difficulty: config.question.difficulty,
-    options: config.question.options,
-  });
-
+  const allQuestions = [config.question, ...(config.questions ?? [])];
+  for (const q of allQuestions) {
+    await createQuestionWithOptions(prisma, {
+      learningItemId: quizItem.id,
+      skillId,
+      type: q.type,
+      promptFr: q.promptFr,
+      promptEn: q.promptEn,
+      explanationCorrectFr: q.explanationCorrectFr,
+      explanationCorrectEn: q.explanationCorrectEn,
+      difficulty: q.difficulty,
+      options: q.options,
+    });
+  }
   await prisma.learningItem.create({
     data: {
       lessonId: lesson.id,
