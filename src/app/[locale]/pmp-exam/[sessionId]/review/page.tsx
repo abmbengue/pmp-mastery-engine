@@ -31,10 +31,13 @@ export default async function ExamReviewPage({
     redirect(`/${locale}/pmp-exam/${sessionId}`);
   }
 
-  const domains = (view.result.domainBreakdown as DomainPerformanceRow[]) ?? [];
-  const skills = (view.result.skillBreakdown as SkillPerformanceRow[]) ?? [];
+  const domains =
+    (view.result.domainBreakdown as unknown as DomainPerformanceRow[]) ?? [];
+  const skills =
+    (view.result.skillBreakdown as unknown as SkillPerformanceRow[]) ?? [];
   const delivery =
-    (view.result.deliveryBreakdown as DeliveryPerformanceRow[] | null) ?? [];
+    (view.result.deliveryBreakdown as unknown as DeliveryPerformanceRow[] | null) ??
+    [];
 
   const readiness = calculatePmpReadiness({
     recentPercentages: [view.result.percentage],

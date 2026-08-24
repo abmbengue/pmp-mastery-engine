@@ -18,6 +18,7 @@ import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import type { Locale } from "@/shared/types/locale";
 import { pickLocalized } from "@/shared/types/locale";
 import prisma from "@/data/prisma-client";
+import type { Prisma } from "@/generated/prisma/client";
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -520,9 +521,9 @@ export async function submitExamSession(
         correctCount: score.correct,
         incorrectCount: score.incorrect,
         unansweredCount: score.unanswered,
-        domainBreakdown,
-        skillBreakdown,
-        deliveryBreakdown,
+        domainBreakdown: domainBreakdown as unknown as Prisma.InputJsonValue,
+        skillBreakdown: skillBreakdown as unknown as Prisma.InputJsonValue,
+        deliveryBreakdown: deliveryBreakdown as unknown as Prisma.InputJsonValue,
         readinessLevel: readiness.level,
       },
     });
