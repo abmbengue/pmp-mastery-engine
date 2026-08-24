@@ -44,7 +44,9 @@
     "login": "Connexion",
     "register": "Inscription",
     "skipToContent": "Aller au contenu",
-    "pmpExam": "Examen PMP"
+    "pmpExam": "Examen PMP",
+    "review": "Révision",
+    "readinessReport": "Rapport de préparation"
   },
   "auth": {
     "loginTitle": "Connexion",
@@ -121,6 +123,47 @@
     "currentAverage": "Moyenne actuelle",
     "targetGap": "Écart à l'objectif",
     "saveTarget": "Enregistrer l'objectif",
+    "evolution": "Évolution des scores",
+    "reviewNow": "Réviser maintenant",
+    "dueForReview": "À revoir",
+    "reviewSubtitle": "Micro-révisions espacées selon skills faibles, erreurs répétées et concepts dus.",
+    "openReview": "Ouvrir la file de révision",
+    "openReadinessReport": "Ouvrir le rapport de préparation",
+    "noReviewItems": "Rien à revoir pour le moment. Continuez à pratiquer !",
+    "reviewReason": "Pourquoi réviser ?"
+  },
+  "review": {
+    "title": "Réviser maintenant",
+    "subtitle": "Micro-révisions priorisées par répétition espacée — environ 5 à 10 minutes.",
+    "durationHint": "Visez une session courte : un concept, une leçon, pratique optionnelle.",
+    "empty": "Rien n'est dû pour révision. Excellent — continuez à pratiquer pour rester affûté.",
+    "skill": "Compétence",
+    "minutes": "min",
+    "openLesson": "Ouvrir la leçon",
+    "noLesson": "Pas encore de leçon liée pour cette compétence.",
+    "backDashboard": "Retour au tableau de bord",
+    "openReadiness": "Rapport de préparation PMP"
+  },
+  "readinessReport": {
+    "title": "Rapport de préparation PMP",
+    "print": "Imprimer / vue export",
+    "backExam": "Retour à l'examen PMP",
+    "practiceReadiness": "Préparation pratique",
+    "averageScore": "Score moyen",
+    "bestScore": "Meilleur score",
+    "recentScore": "Score récent",
+    "scoreTrend": "Tendance des scores",
+    "questionsAnswered": "Questions répondues",
+    "target": "Objectif de pratique",
+    "gap": "Écart",
+    "retryAverage": "Moyenne des retries",
+    "domains": "Performance par domaine (PEOPLE / PROCESS / BUSINESS)",
+    "delivery": "Approche de livraison (AGILE / HYBRID / PREDICTIVE)",
+    "weakSkills": "Skills faibles",
+    "recurringErrors": "Erreurs récurrentes",
+    "nextActions": "Prochaines actions recommandées",
+    "none": "Aucune pour le moment",
+    "open": "Ouvrir",
     "evolution": "Évolution des scores"
   },
   "pmpExam": {
@@ -190,7 +233,8 @@
     "retryWeakSkills": "Retry skills faibles",
     "retryWeakDomain": "Retry domaine faible",
     "retryErrorType": "Retry type d'erreur",
-    "retryMixed": "Retry mixte"
+    "retryMixed": "Retry mixte",
+    "readinessReportLink": "Ouvrir le rapport de préparation PMP"
   },
   "shorts": {
     "title": "Short Learning",

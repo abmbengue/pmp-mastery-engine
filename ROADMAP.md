@@ -4,92 +4,58 @@
 
 ### Phase 0 — Project Initialization
 - [x] Next.js 15 + TypeScript + Tailwind CSS
-- [x] ESLint
-- [x] Vitest + Playwright setup
-- [x] Modular folder structure
-- [x] Git initialization
-- [x] Initial documentation
-- [x] next-intl (FR/EN)
-- [x] Docker Compose for PostgreSQL
+- [x] ESLint, Vitest, Playwright
+- [x] Modular folder structure, docs, next-intl, Docker PostgreSQL
 
 ### Phase 1 — Data Layer
-- [x] Prisma schema (full content + progress model)
-- [x] PostgreSQL migrations
-- [x] Repositories (academy, course, lesson, question, user)
-- [x] Seed: Personal Finance (2 modules × 3 lessons)
-- [x] Seed: PMP (2 modules × 3 lessons)
-- [x] Seed: 6 planned academies (catalogue)
-- [x] Demo user
-- [x] Learning engine: progress service (basic)
-- [x] Assessment engine: scoring service
-- [x] AI Tutor: AiTutorPort + NoopAiTutor
-- [x] Essential tests (unit, integration, E2E smoke)
-- [x] Minimal UI for E2E path
+- [x] Prisma schema + migrations + repositories + seeds
+- [x] Learning / assessment engines (basics) + AI Tutor port
+- [x] Essential tests
 
 ### Phase 2 — Learning Engine
-- [x] Lesson player with phase navigation (LEARN → PRACTICE → TEST → REVIEW → MASTER)
-- [x] Complete learning flow: start lesson → complete → update progress
-- [x] Quiz UI with supported question types
-- [x] Flashcard interaction
-- [x] Exercise completion
-- [x] Video placeholder display
-- [x] Progress persistence on lesson completion
-- [x] Extended unit tests + Playwright journeys
+- [x] Lesson player LEARN→MASTER, quizzes, flashcards, progress
 
 ### Phase 3 — Auth + Dashboard
-- [x] Auth.js v5 credentials authentication
-- [x] User registration / login / logout
-- [x] Dashboard UI: global progress, active courses
-- [x] Weak / mastered concepts display
-- [x] Learning time and streak display
-- [x] Settings page (locale preference)
-- [x] Protected progression / quiz APIs
-- [x] User data isolation tests
+- [x] Auth.js credentials, protected APIs, dashboard V1, isolation tests
 
-## Phase 4 — UI Polish + Content Expansion
+### Phase 4 — UI Polish + Content Expansion
+- [x] Dashboard V2, Next Lesson, Short architecture, CF academy, a11y
 
-- [x] Dashboard V2 (Continue Learning, My Learning, Skills, Stats, Quick Access)
-- [x] Next Lesson Engine (progress-aware)
-- [x] Course Page V2 (statuses, durations, CONTINUE)
-- [x] Micro-learning duration display
-- [x] Short Video architecture (VIDEO + Short metadata, UX foundation)
-- [x] Personal Finance structure (FOUNDATIONS / INVESTING / WEALTH_BUILDING)
-- [x] Corporate Finance academy (ACTIVE, small seed)
-- [x] PMP structure (People / Process / Agile / Hybrid / Situational)
-- [x] ContentDifficulty + Lesson↔Skill M2M
-- [x] Accessibility light audit fixes
-- [x] FR/EN for new surfaces
-- [x] Expanded unit + E2E coverage
+### Phase 5 — AI Tutor + Recommendations
+- [x] AiTutorService, `/api/ai-tutor`, `recommendNextLearning`, Shorts progress
 
-## Phase 5 — AI Tutor + Recommendations
+### Phase 6 — Financial Pedagogical Simulators
+- [x] PF + CF simulators, SIMULATION items, SIMULATORS.md
 
-- [x] AiTutorPort → AiTutorService → providers (noop / mock / openai-compatible)
-- [x] `/api/ai-tutor` with session + Zod + minimal context
-- [x] AiTutorPanel (HINT / EXPLAIN / TEACH / EXPLAIN_MISTAKE)
-- [x] Deterministic `recommendNextLearning` + Dashboard Recommended for You
-- [x] Short Mark completed via LessonProgress metadata
-- [x] AI_TUTOR.md documentation
-- [x] Unit + API + E2E coverage (mock provider)
+### Phase 7 — PMP Exam Simulator
+- [x] Exam hub/session/review, original bank, blueprint, FR/EN, AI explain on review
+- [x] Mobile exam UX foundations, accessibility
 
-## Phase 6 — Financial Pedagogical Simulators
+### Phase 8 — PMP Learning Analytics
+- [x] Retry engine, error analysis, performance history, score trend
+- [x] Readiness V2, recommendations linkage, question bank expansion
+- [x] Baseline: Vitest 159, E2E 41, build pass
 
-- [x] SimulationEngine + pure calculation functions
-- [x] Personal Finance: Compound Interest, Budget, Debt Repayment
-- [x] Corporate Finance: Valuation Multiples, DCF Basics
-- [x] BASE / UPSIDE / DOWNSIDE scenarios + sensitivity
-- [x] SIMULATION LearningItem payload + seed
-- [x] Progress save + AI Tutor “Explain this result”
-- [x] FR/EN, SIMULATORS.md, unit + E2E tests
+### Phase 9 — Pedagogical Enrichment + Spaced Repetition + Readiness Report
+- [x] Error → Corrective Learning (extends `recommendNextLearning`)
+- [x] Deterministic spaced repetition + `getReviewQueue`
+- [x] Review Now UI + Dashboard Due for Review
+- [x] PMP Readiness Report + printable export (print)
+- [x] Personal Finance + Corporate Finance content enrichment
+- [x] Short VIDEO metadata (`relatedLessonSlug`, learning objective)
+- [x] FR/EN, a11y & security preserved
+- [x] Docs: SPACED_REPETITION.md, PMP_READINESS_REPORT.md
+- [x] Unit + E2E coverage for Phase 9 surfaces
 
-## Phase 7 — Advanced Learning / Production Prep
+## Future (do not start in this agent run)
 
-- [ ] PMP mock exams / situational simulator
-- [ ] Adaptive learning enhancements
-- [ ] Real short video hosting
-- [ ] Payment / subscription
-- [ ] CMS / admin
-- [ ] OAuth providers
+### Phase 10+ (ideas only)
+- Deeper content authoring tooling (still no full CMS required)
+- Richer export formats if needed
+- Optional video hosting integration
+- OAuth / payment only if product prioritizes them later
 
-- 6 academies have no content (PLANNED status)
-- No admin/CMS for content management
-- No CI/CD configured
+## Still deferred
+- 6 academies remain PLANNED (catalogue)
+- No admin/CMS, no CI/CD mandated here
+- No official PMI scoring or PMI integration

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireSession } from "@/modules/auth/session";
 import { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
 import { recommendNextLearning } from "@/modules/learning-engine/recommendation-service";
+import { getReviewQueue } from "@/modules/learning-engine/review-service";
 import { getPmpPracticeDashboard } from "@/modules/assessment-engine/exam-service";
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
@@ -27,6 +28,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const data = await getDashboardV2(session.user.id, loc);
   const recommendation = await recommendNextLearning(session.user.id, loc);
   const pmpPractice = await getPmpPracticeDashboard(session.user.id, loc);
+  const reviewQueue = await getReviewQueue(session.user.id, loc);
+  const dueForReview = reviewQueue.slice(0, 5);
 
   async function logoutAction() {
     "use server";
@@ -128,6 +131,66 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             {t("noContinue")}
           </p>
         )}
+      </section>
+
+      {/* REVIEW NOW / DUE FOR REVIEW */}
+      <section
+        aria-labelledby="review-now-heading"
+        className="rounded-xl border border-amber-200 bg-amber-50/40 p-6"
+        data-testid="review-now-section"
+      >
+        <h2 id="review-now-heading" className="text-xl font-semibold text-gray-900">
+          {t("reviewNow")}
+        </h2>
+        <p className="mt-1 text-sm text-gray-600">{t("reviewSubtitle")}</p>
+        {dueForReview.length === 0 ? (
+          <p className="mt-3 text-sm text-gray-600" data-testid="review-now-empty">
+            {t("noReviewItems")}
+          </p>
+        ) : (
+          <ul className="mt-4 space-y-3" data-testid="due-for-review-list">
+            {dueForReview.map((item, idx) => (
+              <li
+                key={`${item.skillSlug}-${item.reasonCode}-${idx}`}
+                className="rounded-lg border border-amber-100 bg-white p-3"
+                data-testid={`due-review-item-${idx + 1}`}
+              >
+                <p className="font-medium text-gray-900">
+                  {item.lessonTitle ?? item.skillTitle}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  <span className="font-medium">{t("reviewReason")} </span>
+                  {item.reason}
+                </p>
+                {item.lessonPath && (
+                  <Link
+                    href={item.lessonPath}
+                    className="mt-2 inline-flex text-sm font-medium text-amber-900 underline focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    data-testid={`due-review-open-${idx + 1}`}
+                  >
+                    {t("openCourse")}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/review"
+            className="inline-flex min-h-11 items-center rounded-lg bg-amber-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            data-testid="open-review-queue"
+          >
+            {t("openReview")}
+          </Link>
+          <Link
+            href="/pmp-exam/readiness-report"
+            className="inline-flex min-h-11 items-center rounded-lg border border-amber-400 px-4 py-2.5 text-sm font-semibold text-amber-950 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            data-testid="open-readiness-report"
+          >
+            {t("openReadinessReport")}
+          </Link>
+        </div>
       </section>
 
       {/* PMP PRACTICE */}

@@ -41,6 +41,7 @@ export default async function PmpExamHubPage({
         minutes: t("minutes"),
         untimed: t("untimed"),
         fullExamNote: t("fullExamNote"),
+        readinessReport: t("readinessReportLink"),
       }}
     />
   );

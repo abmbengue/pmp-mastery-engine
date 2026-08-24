@@ -124,6 +124,48 @@ const FOUNDATIONS_LESSONS: LessonSeedConfig[] = [
       ],
     },
   },
+  {
+    slug: "working-capital-and-fcf",
+    titleFr: "Besoin en fonds de roulement et Free Cash Flow",
+    titleEn: "Working capital and Free Cash Flow",
+    descriptionFr: "Relier BFR, CAPEX et cash disponible pour les investisseurs.",
+    descriptionEn: "Connect working capital, CAPEX, and cash available to investors.",
+    sortOrder: 3,
+    estimatedMinutes: 9,
+    difficulty: "INTERMEDIATE",
+    learnMinutes: 3,
+    practiceMinutes: 2,
+    testMinutes: 2,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    isShort: true,
+    shortTopic: "free-cash-flow",
+    shortDurationSeconds: 165,
+    textBodyFr:
+      "Le besoin en fonds de roulement (BFR) mesure le cash immobilisé dans le cycle d'exploitation (stocks, créances, dettes fournisseurs). Le Free Cash Flow (FCF) approxime le cash après investissements nécessaires : souvent CFO − CAPEX (simplifié pédagogiquement). Une hausse du BFR consomme du cash même si le résultat comptable est positif.",
+    textBodyEn:
+      "Working capital measures cash tied in the operating cycle (inventory, receivables, payables). Free Cash Flow (FCF) approximates cash after required investment: often CFO − CAPEX (pedagogical simplification). Rising working capital consumes cash even when accounting profit looks strong.",
+    videoTitleFr: "BFR et FCF",
+    videoTitleEn: "Working capital and FCF",
+    flashcardFrontFr: "Free Cash Flow (simplifié)",
+    flashcardFrontEn: "Free Cash Flow (simplified)",
+    flashcardBackFr: "Cash d'exploitation moins CAPEX nécessaires.",
+    flashcardBackEn: "Operating cash minus required CAPEX.",
+    exercisePromptFr: "Expliquez pourquoi une hausse des stocks réduit le FCF.",
+    exercisePromptEn: "Explain why rising inventory reduces FCF.",
+    question: {
+      type: "TRUE_FALSE",
+      promptFr: "Une hausse du besoin en fonds de roulement consomme généralement du cash.",
+      promptEn: "An increase in working capital typically consumes cash.",
+      explanationCorrectFr: "Vrai. Plus de cash est immobilisé dans le cycle d'exploitation.",
+      explanationCorrectEn: "True. More cash is tied up in the operating cycle.",
+      difficulty: 2,
+      options: [
+        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
+        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+      ],
+    },
+  },
 ];
 
 const VALUATION_LESSONS: LessonSeedConfig[] = [
@@ -185,9 +227,9 @@ const VALUATION_LESSONS: LessonSeedConfig[] = [
     shortTopic: "valuation",
     shortDurationSeconds: 170,
     textBodyFr:
-      "Les multiples (ex. EV/EBITDA) comparent des entreprises similaires. Le DCF actualise les flux futurs pour estimer une valeur intrinsèque. Les deux approches sont complémentaires.",
+      "Les multiples (ex. EV/EBITDA) comparent des entreprises similaires. Le DCF actualise les flux futurs pour estimer une valeur intrinsèque. Les deux approches sont complémentaires. Utilisez le simulateur pédagogique pour observer l'impact du taux d'actualisation et de la croissance — sans confondre avec une valorisation professionnelle.",
     textBodyEn:
-      "Multiples (e.g. EV/EBITDA) compare similar companies. DCF discounts future cash flows to estimate intrinsic value. Both approaches are complementary.",
+      "Multiples (e.g. EV/EBITDA) compare similar companies. DCF discounts future cash flows to estimate intrinsic value. Both approaches are complementary. Use the pedagogical simulator to observe discount-rate and growth effects — without confusing this with a professional valuation.",
     videoTitleFr: "Multiples et DCF en bref",
     videoTitleEn: "Multiples and DCF in Brief",
     flashcardFrontFr: "DCF",
@@ -206,6 +248,125 @@ const VALUATION_LESSONS: LessonSeedConfig[] = [
       options: [
         { labelFr: "Vrai", labelEn: "True", isCorrect: true },
         { labelFr: "Faux", labelEn: "False", isCorrect: false },
+      ],
+    },
+  },
+  {
+    slug: "capital-structure-and-wacc",
+    titleFr: "Structure du capital et WACC",
+    titleEn: "Capital structure and WACC",
+    descriptionFr: "Dette, equity et coût moyen pondéré du capital (pédagogique).",
+    descriptionEn: "Debt, equity, and weighted average cost of capital (educational).",
+    sortOrder: 2,
+    estimatedMinutes: 10,
+    difficulty: "INTERMEDIATE",
+    learnMinutes: 3,
+    practiceMinutes: 3,
+    testMinutes: 2,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    textBodyFr:
+      "La structure du capital décrit le mix dette / equity. Le WACC (Weighted Average Cost of Capital) est un taux d'actualisation pédagogique qui pondère le coût de la dette et le coût des fonds propres. Plus le risque perçu monte, plus le coût du capital tend à monter — ce qui baisse la valeur actualisée dans un DCF simplifié.",
+    textBodyEn:
+      "Capital structure describes the debt / equity mix. WACC (Weighted Average Cost of Capital) is an educational discount rate weighting debt cost and equity cost. As perceived risk rises, the cost of capital tends to rise — lowering present value in a simplified DCF.",
+    videoTitleFr: "WACC en bref",
+    videoTitleEn: "WACC in brief",
+    flashcardFrontFr: "WACC",
+    flashcardFrontEn: "WACC",
+    flashcardBackFr: "Coût moyen pondéré du capital (dette + equity).",
+    flashcardBackEn: "Weighted average cost of capital (debt + equity).",
+    exercisePromptFr: "Citez deux composantes du WACC.",
+    exercisePromptEn: "Name two components of WACC.",
+    question: {
+      type: "SINGLE_CHOICE",
+      promptFr: "Le WACC sert typiquement à…",
+      promptEn: "WACC is typically used to…",
+      explanationCorrectFr: "Actualiser des flux dans une approche DCF pédagogique.",
+      explanationCorrectEn: "Discount cash flows in an educational DCF approach.",
+      difficulty: 2,
+      options: [
+        { labelFr: "Remplacer le bilan", labelEn: "Replace the balance sheet", isCorrect: false },
+        { labelFr: "Actualiser des flux (approche DCF)", labelEn: "Discount cash flows (DCF approach)", isCorrect: true },
+        { labelFr: "Mesurer uniquement le dividende", labelEn: "Measure dividends only", isCorrect: false },
+      ],
+    },
+  },
+  {
+    slug: "trading-vs-transaction-multiples",
+    titleFr: "Multiples de trading vs transaction",
+    titleEn: "Trading vs transaction multiples",
+    descriptionFr: "Comparer cotation et transactions M&A de façon pédagogique.",
+    descriptionEn: "Compare listed comps and M&A deals in an educational way.",
+    sortOrder: 3,
+    estimatedMinutes: 9,
+    difficulty: "INTERMEDIATE",
+    learnMinutes: 3,
+    practiceMinutes: 2,
+    testMinutes: 2,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    textBodyFr:
+      "Les multiples de trading (sociétés cotées comparables) reflètent le marché public. Les multiples de transaction (deals M&A) incluent souvent une prime de contrôle. Les deux sont des outils de triangulation — jamais une vérité unique. Vérifiez toujours la cohérence EV vs Equity et la qualité des pairs.",
+    textBodyEn:
+      "Trading multiples (listed comps) reflect the public market. Transaction multiples (M&A deals) often include a control premium. Both are triangulation tools — never a single truth. Always check EV vs Equity consistency and peer quality.",
+    videoTitleFr: "Trading vs transaction",
+    videoTitleEn: "Trading vs transaction",
+    flashcardFrontFr: "Prime de contrôle",
+    flashcardFrontEn: "Control premium",
+    flashcardBackFr: "Surcote fréquente dans les multiples de transaction M&A.",
+    flashcardBackEn: "Uplift often seen in M&A transaction multiples.",
+    exercisePromptFr: "Donnez un exemple de multiple trading et un de transaction.",
+    exercisePromptEn: "Give one trading multiple example and one transaction example.",
+    question: {
+      type: "TRUE_FALSE",
+      promptFr: "Les multiples de transaction incluent souvent une prime de contrôle.",
+      promptEn: "Transaction multiples often include a control premium.",
+      explanationCorrectFr: "Vrai. Les deals M&A paient souvent pour le contrôle.",
+      explanationCorrectEn: "True. M&A deals often pay for control.",
+      difficulty: 2,
+      options: [
+        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
+        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+      ],
+    },
+  },
+  {
+    slug: "accretion-dilution-basics",
+    titleFr: "Bases accretion / dilution",
+    titleEn: "Accretion / dilution basics",
+    descriptionFr: "Comprendre l'effet d'une acquisition sur le BPA (pédagogique).",
+    descriptionEn: "Understand an acquisition’s effect on EPS (educational).",
+    sortOrder: 4,
+    estimatedMinutes: 9,
+    difficulty: "ADVANCED",
+    learnMinutes: 3,
+    practiceMinutes: 3,
+    testMinutes: 1,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    textBodyFr:
+      "L'accrétion / dilution compare le BPA (bénéfice par action) pro forma après acquisition au BPA standalone. Une acquisition est dite accretive si le BPA augmente, dilutive s'il baisse. C'est un test pédagogique de structure (cash / dette / actions), pas une garantie de création de valeur économique.",
+    textBodyEn:
+      "Accretion / dilution compares pro forma EPS after an acquisition to standalone EPS. A deal is called accretive if EPS rises, dilutive if it falls. It is an educational structure test (cash / debt / shares), not a guarantee of economic value creation.",
+    videoTitleFr: "Accretion / dilution",
+    videoTitleEn: "Accretion / dilution",
+    flashcardFrontFr: "Accretive",
+    flashcardFrontEn: "Accretive",
+    flashcardBackFr: "Le BPA pro forma augmente après l'opération.",
+    flashcardBackEn: "Pro forma EPS increases after the deal.",
+    exercisePromptFr: "Citez un facteur qui peut rendre une acquisition dilutive.",
+    exercisePromptEn: "Name one factor that can make an acquisition dilutive.",
+    question: {
+      type: "SINGLE_CHOICE",
+      promptFr: "Une opération dilutive signifie typiquement que…",
+      promptEn: "A dilutive deal typically means that…",
+      explanationCorrectFr: "Le BPA pro forma diminue.",
+      explanationCorrectEn: "Pro forma EPS decreases.",
+      difficulty: 2,
+      options: [
+        { labelFr: "Le BPA pro forma diminue", labelEn: "Pro forma EPS decreases", isCorrect: true },
+        { labelFr: "Le cash disparaît toujours", labelEn: "Cash always disappears", isCorrect: false },
+        { labelFr: "Le WACC devient nul", labelEn: "WACC becomes zero", isCorrect: false },
       ],
     },
   },
@@ -247,14 +408,14 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
       descriptionFr: "Parcours introductif : fondations financières et bases de valorisation.",
       descriptionEn: "Introductory path: financial foundations and valuation basics.",
       sortOrder: 0,
-      estimatedMinutes: 46,
+      estimatedMinutes: 74,
     },
     update: {
       titleFr: "Essentiels de la finance d'entreprise",
       titleEn: "Corporate Finance Essentials",
       descriptionFr: "Parcours introductif : fondations financières et bases de valorisation.",
       descriptionEn: "Introductory path: financial foundations and valuation basics.",
-      estimatedMinutes: 46,
+      estimatedMinutes: 74,
     },
   });
 
@@ -276,23 +437,32 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
     titleEn: "Cash flow",
   });
 
+  const skillCapital = await upsertSkill(prisma, {
+    slug: "cf-capital-structure",
+    titleFr: "Structure du capital",
+    titleEn: "Capital structure",
+  });
+
   const module1 = await prisma.module.create({
     data: {
       courseId: course.id,
       slug: "foundations",
       titleFr: "Fondamentaux",
       titleEn: "Foundations",
-      descriptionFr: "États financiers, revenu, EBITDA, EBIT et cash flow.",
-      descriptionEn: "Financial statements, revenue, EBITDA, EBIT, and cash flow.",
+      descriptionFr: "États financiers, revenu, EBITDA, EBIT, cash flow, BFR et FCF.",
+      descriptionEn: "Financial statements, revenue, EBITDA, EBIT, cash flow, WC and FCF.",
       category: "FOUNDATIONS",
       sortOrder: 0,
-      estimatedMinutes: 26,
+      estimatedMinutes: 35,
     },
   });
 
   for (const lessonConfig of FOUNDATIONS_LESSONS) {
     const extra =
-      lessonConfig.slug === "cash-flow-basics" ? [skillCashFlow.id] : [];
+      lessonConfig.slug === "cash-flow-basics" ||
+      lessonConfig.slug === "working-capital-and-fcf"
+        ? [skillCashFlow.id]
+        : [];
     await seedLessonWithContent(prisma, module1.id, skillFoundations.id, lessonConfig, {
       academySlug: "corporate-finance",
       extraSkillIds: extra,
@@ -305,17 +475,22 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
       slug: "valuation",
       titleFr: "Valorisation",
       titleEn: "Valuation",
-      descriptionFr: "Enterprise value, equity value, multiples et bases du DCF.",
-      descriptionEn: "Enterprise value, equity value, multiples, and DCF basics.",
+      descriptionFr: "EV, equity, multiples, DCF, WACC et bases accretion/dilution.",
+      descriptionEn: "EV, equity, multiples, DCF, WACC, and accretion/dilution basics.",
       category: "VALUATION",
       sortOrder: 1,
-      estimatedMinutes: 20,
+      estimatedMinutes: 39,
     },
   });
 
   for (const lessonConfig of VALUATION_LESSONS) {
+    const extra =
+      lessonConfig.slug === "capital-structure-and-wacc"
+        ? [skillCapital.id]
+        : [];
     await seedLessonWithContent(prisma, module2.id, skillValuation.id, lessonConfig, {
       academySlug: "corporate-finance",
+      extraSkillIds: extra,
     });
   }
 

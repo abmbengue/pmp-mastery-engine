@@ -34,6 +34,12 @@ export const videoPayloadSchema = z
     difficulty: contentDifficultySchema.optional(),
     academySlug: z.string().optional(),
     relatedSkillSlug: z.string().optional(),
+    /** Optional related lesson slug for Short Learning linkage */
+    relatedLessonSlug: z.string().optional(),
+    /** Optional learning objective tag for pedagogical mapping */
+    learningObjective: z
+      .enum(["IDENTIFY", "APPLY", "ANALYZE", "DECIDE"])
+      .optional(),
   })
   .transform((data) => {
     const videoUrl = data.videoUrl ?? data.url ?? null;

@@ -364,8 +364,12 @@ test("PHASE7 TEST6: AI Tutor explanation", async ({ page }) => {
   await page.getByTestId("start-exam-quick-practice").click();
   await answerAllExamQuestions(page);
   await submitExam(page);
-  await page.getByTestId("explain-ai-1").click();
-  await expect(page.getByTestId("ai-explain-1")).toBeVisible({ timeout: 15_000 });
+  const explainBtn = page.locator('[data-testid^="explain-ai-"]').first();
+  await expect(explainBtn).toBeVisible();
+  await explainBtn.click();
+  await expect(page.locator('[data-testid^="ai-explain-"]').first()).toBeVisible({
+    timeout: 15_000,
+  });
 });
 
 test("PHASE7 TEST7: Weak skill recommendation", async ({ page }) => {
@@ -544,4 +548,67 @@ test("PHASE8 TEST10: Question repetition prevention", async ({ page }) => {
   // prompts are unlikely — assert exam works after recent exclusion path.
   await expect(page.getByTestId("exam-prompt")).toBeVisible();
   void firstPrompt;
+});
+
+test("PHASE9 TEST1: Review Now page and queue", async ({ page }) => {
+  const email = uniqueEmail("p9-review");
+  await register(page, "en", email);
+  await page.goto("/en/academies/pmp-project-management/courses/pmp-foundations");
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await page.goto("/en/review");
+  await expect(page.getByTestId("review-now-page")).toBeVisible();
+  await expect(page.getByTestId("review-open-readiness")).toBeVisible();
+});
+
+test("PHASE9 TEST2: Dashboard Review Now section", async ({ page }) => {
+  const email = uniqueEmail("p9-dash-review");
+  await register(page, "en", email);
+  await page.goto("/en/dashboard");
+  await expect(page.getByTestId("review-now-section")).toBeVisible();
+  await expect(page.getByTestId("open-review-queue")).toBeVisible();
+  await page.getByTestId("open-review-queue").click();
+  await expect(page.getByTestId("review-now-page")).toBeVisible();
+});
+
+test("PHASE9 TEST3: PMP Readiness Report EN", async ({ page }) => {
+  const email = uniqueEmail("p9-ready-en");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await page.goto("/en/pmp-exam/readiness-report");
+  await expect(page.getByTestId("readiness-report-page")).toBeVisible();
+  await expect(page.getByTestId("readiness-disclaimer")).toContainText(
+    "NOT AN OFFICIAL PMI SCORE"
+  );
+  await expect(page.getByTestId("report-readiness")).toBeVisible();
+  await expect(page.getByTestId("readiness-print")).toBeVisible();
+});
+
+test("PHASE9 TEST4: PMP Readiness Report FR", async ({ page }) => {
+  const email = uniqueEmail("p9-ready-fr");
+  await register(page, "fr", email);
+  await page.goto("/fr/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await page.goto("/fr/pmp-exam/readiness-report");
+  await expect(page.getByTestId("readiness-report-page")).toBeVisible();
+  await expect(page.getByTestId("readiness-disclaimer")).toContainText(
+    "PAS UN SCORE PMI OFFICIEL"
+  );
+});
+
+test("PHASE9 TEST5: Review FR + nav isolation", async ({ page }) => {
+  const email = uniqueEmail("p9-fr-review");
+  await register(page, "fr", email);
+  await page.goto("/fr/dashboard");
+  await expect(page.getByTestId("review-now-section")).toBeVisible();
+  await page.getByTestId("nav-review").click();
+  await expect(page.getByTestId("review-now-page")).toBeVisible();
+  await expect(page.locator("h1")).toContainText(/Réviser|Review/i);
 });

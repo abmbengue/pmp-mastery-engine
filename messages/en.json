@@ -44,7 +44,9 @@
     "login": "Login",
     "register": "Register",
     "skipToContent": "Skip to content",
-    "pmpExam": "PMP Exam"
+    "pmpExam": "PMP Exam",
+    "review": "Review",
+    "readinessReport": "Readiness report"
   },
   "auth": {
     "loginTitle": "Login",
@@ -121,6 +123,47 @@
     "currentAverage": "Current average",
     "targetGap": "Gap to target",
     "saveTarget": "Save target",
+    "evolution": "Score evolution",
+    "reviewNow": "Review Now",
+    "dueForReview": "Due for review",
+    "reviewSubtitle": "Short spaced reviews from weak skills, repeated errors, and due concepts.",
+    "openReview": "Open review queue",
+    "openReadinessReport": "Open readiness report",
+    "noReviewItems": "Nothing due for review right now. Keep practicing!",
+    "reviewReason": "Why review?"
+  },
+  "review": {
+    "title": "Review Now",
+    "subtitle": "Micro-learning reviews prioritized by spaced repetition — about 5–10 minutes.",
+    "durationHint": "Aim for a short session: one concept, one lesson, optional quick practice.",
+    "empty": "Nothing is due for review. Great work — keep practicing to stay sharp.",
+    "skill": "Skill",
+    "minutes": "min",
+    "openLesson": "Open lesson",
+    "noLesson": "No linked lesson yet for this skill.",
+    "backDashboard": "Back to dashboard",
+    "openReadiness": "PMP readiness report"
+  },
+  "readinessReport": {
+    "title": "PMP Readiness Report",
+    "print": "Print / export view",
+    "backExam": "Back to PMP exam",
+    "practiceReadiness": "Practice readiness",
+    "averageScore": "Average score",
+    "bestScore": "Best score",
+    "recentScore": "Recent score",
+    "scoreTrend": "Score trend",
+    "questionsAnswered": "Questions answered",
+    "target": "Practice target",
+    "gap": "Gap",
+    "retryAverage": "Retry average",
+    "domains": "Domain performance (PEOPLE / PROCESS / BUSINESS)",
+    "delivery": "Delivery approach (AGILE / HYBRID / PREDICTIVE)",
+    "weakSkills": "Weak skills",
+    "recurringErrors": "Recurring errors",
+    "nextActions": "Recommended next actions",
+    "none": "None yet",
+    "open": "Open",
     "evolution": "Score evolution"
   },
   "pmpExam": {
@@ -190,7 +233,8 @@
     "retryWeakSkills": "Retry weak skills",
     "retryWeakDomain": "Retry weak domain",
     "retryErrorType": "Retry error type",
-    "retryMixed": "Mixed retry"
+    "retryMixed": "Mixed retry",
+    "readinessReportLink": "Open PMP Readiness Report"
   },
   "shorts": {
     "title": "Short Learning",

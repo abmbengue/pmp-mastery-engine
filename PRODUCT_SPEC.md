@@ -2,11 +2,11 @@
 
 ## Product Name
 
-**Professional Learning Academy** (provisional)
+**Professional Learning Academy** (PLA)
 
 ## Vision
 
-A bilingual web platform for progressive professional skill acquisition through micro-learning: short lessons, videos, quizzes, exercises, flashcards, and personalized progression.
+A bilingual web platform for progressive professional skill acquisition through micro-learning: short lessons, videos, quizzes, exercises, flashcards, pedagogical simulators, PMP practice exams, spaced review, and practice readiness reports.
 
 ## Target Users
 
@@ -16,71 +16,74 @@ Non-technical professionals seeking to acquire or refresh professional skills in
 
 - French (FR) — default
 - English (EN)
-- User-selectable; both UI and seeded content available in both languages
+- User-selectable; UI and seeded content in both languages
 
 ## Academies
 
-### Active (V1)
+### Active
 
-| Academy | Modules | Lessons | Status |
-|---|---|---|---|
-| Personal Finance | 2 | 6 | Active |
-| PMP / Project Management | 2 | 6 | Active |
+| Academy | Focus | Status |
+|---|---|---|
+| Personal Finance | Foundations, debt, investing, wealth building | Active (enriched Phase 9) |
+| Corporate Finance | Statements, cash flow, valuation, WACC, multiples | Active (enriched Phase 9) |
+| PMP / Project Management | People / Process / Business + Agile/Hybrid + exam practice | Active |
 
-### Planned (catalogue only)
+### Planned (catalogue)
 
-Corporate Finance, Business & Strategy, Financial Modeling, Energy & Oil & Gas, Leadership & Management, Professional English
+Business & Strategy, Financial Modeling, Energy & Oil & Gas, Leadership & Management, Professional English
 
-## Content Types Supported
+## Content Types
 
-1. Text
-2. Video (placeholder V1)
-3. Quiz — single choice, multiple choice, true/false
-4. Exercise
-5. Flashcard
-6. Simulation (schema ready, not implemented)
-7. Assessment / mock exam (schema ready, not implemented)
+1. Text  
+2. Video / Short (placeholder URL; metadata ready)  
+3. Quiz — single / multiple / true-false  
+4. Exercise  
+5. Flashcard  
+6. Simulation (pedagogical finance simulators)  
+7. Assessment / mock exam (PMP practice bank)
 
 ## Micro-Learning Format
-
-Each lesson follows:
 
 ```
 LEARN → PRACTICE → TEST → REVIEW → MASTER
 ```
 
-Durations are configurable per lesson (metadata, not hardcoded).
+Plus **Review Now** spaced micro-sessions (≈5–10 minutes).
 
-## Progression (V1 backend)
+## Progression
 
-- Course enrollment
-- Lesson started / completed
-- Course progress percentage
-- Quiz scores and attempts
-- Time spent tracking
-- Concept mastery (weak / learning / mastered)
+- Enrollment, lesson progress, course %  
+- Quiz attempts / scores  
+- Concept mastery (WEAK / LEARNING / MASTERED)  
+- Spaced review queue  
+- Corrective learning from exam errors (via `recommendNextLearning`)
 
-## Dashboard (planned Phase 3)
+## Dashboard
 
-Will display: global progress, active courses, next lesson, recent scores, weak/mastered concepts, learning time, goals.
+Continue Learning, Review Now / Due for Review, PMP Practice, Recommended for You, My Learning, Skills, Stats, Quick Access.
 
-## AI Tutor (planned)
+## AI Tutor
 
-Actions: explain concept, explain like beginner, give example, test me, why wrong, explain in FR/EN. Port interface created; no LLM connected.
+Port + providers (noop / mock / openai-compatible). Used for hints/explanations; not for scoring.
 
-## PMP Specifics
+## PMP Practice
 
-- Content organized around: People, Process, Business Environment, Agile, Hybrid
-- All content is original — no PMBOK reproduction
-- Source references can be added later
+- Original FR/EN question bank  
+- Exam builder, retry, error analysis, performance history, score trend  
+- Readiness V2 + **PMP Readiness Report** (practice only)  
+- Explicit disclaimer: **NOT AN OFFICIAL PMI SCORE**
 
 ## Personal Finance Categories
 
-- Foundations: income, expenses, budgeting, saving
-- Debt: interest, loans, credit, debt management
-- Investing: stocks, bonds, real estate, diversification
-- Wealth Building: compound interest, inflation, retirement
+- Foundations: income, expenses, budgeting, emergency fund, saving  
+- Debt: interest, loans, credit, repayment strategies  
+- Investing: stocks, bonds, diversification, risk/return, real estate  
+- Wealth building: compound interest, inflation, retirement, portfolio basics  
 
-## Out of Scope (V1)
+## Corporate Finance Concepts (educational)
 
-Adaptive quizzes, simulators, full mock exams, payments, CMS, mobile app, real AI, video hosting.
+Financial statements, revenue, EBITDA, EBIT, working capital, FCF, EV / equity value, debt, capital structure, WACC, DCF, trading/transaction multiples, accretion/dilution basics. Existing simulators reused.
+
+## Out of Scope (through Phase 9)
+
+Payment, CMS, OAuth, marketplace, native mobile, ML, official PMI scoring/integration, complex video cloud, commercial analytics.

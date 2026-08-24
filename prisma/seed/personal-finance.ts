@@ -16,9 +16,9 @@ const MODULE_1_LESSONS: LessonSeedConfig[] = [
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr:
-      "Les revenus proviennent de sources actives (salaire, freelance) ou passives (loyers, dividendes). Comprendre la nature de vos revenus est la première étape d'une gestion financière saine.",
+      "Les revenus proviennent de sources actives (salaire, freelance) ou passives (loyers, dividendes, intérêts). Distinguez flux récurrents et ponctuels, mesurez le revenu net après impôts, puis évaluez le risque de perte. Un diagnostic solide précède le budget, le fonds d'urgence et l'investissement.",
     textBodyEn:
-      "Income comes from active sources (salary, freelance) or passive sources (rent, dividends). Understanding the nature of your income is the first step toward healthy financial management.",
+      "Income comes from active sources (salary, freelance) or passive sources (rent, dividends, interest). Separate recurring from one-off flows, measure net income after tax, then assess loss risk. A solid diagnosis comes before budgeting, emergency funds, and investing.",
     videoTitleFr: "Introduction aux revenus",
     videoTitleEn: "Introduction to Income",
     flashcardFrontFr: "Revenu actif",
@@ -55,9 +55,9 @@ const MODULE_1_LESSONS: LessonSeedConfig[] = [
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr:
-      "Le suivi des dépenses permet de visualiser où va votre argent. Catégorisez vos dépenses en fixes (loyer) et variables (loisirs) pour mieux contrôler votre budget.",
+      "Suivre ses dépenses rend visible où va l'argent : besoins, envies et fuites (abonnements, frais). Classez 30 jours, calculez le taux d'épargne, puis reliez chaque catégorie à une priorité avant d'optimiser.",
     textBodyEn:
-      "Tracking expenses helps you see where your money goes. Categorize spending into fixed (rent) and variable (entertainment) to better control your budget.",
+      "Tracking expenses makes money flows visible: needs, wants, and leaks (subscriptions, fees). Classify for 30 days, compute your savings rate, then link each category to a priority before optimizing.",
     videoTitleFr: "Suivi des dépenses",
     videoTitleEn: "Expense Tracking",
     flashcardFrontFr: "Dépense fixe",
@@ -93,9 +93,9 @@ const MODULE_1_LESSONS: LessonSeedConfig[] = [
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr:
-      "Un budget est un plan qui alloue vos revenus à différentes catégories. La règle 50/30/20 suggère 50 % pour les besoins, 30 % pour les envies et 20 % pour l'épargne.",
+      "Un budget alloue consciemment le revenu net : besoins, envies, épargne. Méthodes 50/30/20 ou enveloppes fonctionnent si elles sont suivies. Incluez un fonds d'urgence (3–6 mois de dépenses essentielles) avant d'augmenter le risque d'investissement.",
     textBodyEn:
-      "A budget is a plan that allocates your income across categories. The 50/30/20 rule suggests 50% for needs, 30% for wants, and 20% for savings.",
+      "A budget consciously allocates net income: needs, wants, savings. 50/30/20 or envelope methods work if followed. Include an emergency fund (3–6 months of essential expenses) before increasing investment risk.",
     videoTitleFr: "Créer votre premier budget",
     videoTitleEn: "Creating Your First Budget",
     flashcardFrontFr: "Règle 50/30/20",
@@ -174,9 +174,9 @@ const MODULE_2_LESSONS: LessonSeedConfig[] = [
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr:
-      "Investir consiste à faire fructifier votre argent via des actifs (actions, obligations, immobilier). La diversification réduit le risque en répartissant les investissements.",
+      "Investir consiste à faire fructifier votre argent via des actifs (actions, obligations, immobilier). Les actions représentent une part d'entreprise ; les obligations un prêt à un émetteur. La diversification réduit le risque en répartissant les investissements — LEARN → PRACTICE → TEST → REVIEW → MASTER.",
     textBodyEn:
-      "Investing means growing your money through assets (stocks, bonds, real estate). Diversification reduces risk by spreading investments.",
+      "Investing means growing your money through assets (stocks, bonds, real estate). Stocks are ownership shares; bonds are loans to an issuer. Diversification reduces risk by spreading investments — LEARN → PRACTICE → TEST → REVIEW → MASTER.",
     videoTitleFr: "Les bases de l'investissement",
     videoTitleEn: "Investing Basics",
     flashcardFrontFr: "Diversification",
@@ -214,9 +214,9 @@ const MODULE_2_LESSONS: LessonSeedConfig[] = [
     reviewMinutes: 1,
     masterMinutes: 1,
     textBodyFr:
-      "En finance, un rendement plus élevé implique généralement un risque plus élevé. Votre tolérance au risque dépend de votre horizon de placement et de votre situation personnelle.",
+      "En finance, un rendement plus élevé implique généralement un risque plus élevé. Un portefeuille de base combine souvent actions (croissance) et obligations (stabilité relative), selon l'horizon. Votre tolérance au risque dépend de votre horizon de placement et de votre situation personnelle — outil pédagogique, pas un conseil personnalisé.",
     textBodyEn:
-      "In finance, higher returns generally imply higher risk. Your risk tolerance depends on your investment horizon and personal situation.",
+      "In finance, higher returns generally imply higher risk. A basic portfolio often combines stocks (growth) and bonds (relative stability), by horizon. Your risk tolerance depends on investment horizon and personal situation — educational only, not personalized advice.",
     videoTitleFr: "Risque vs rendement",
     videoTitleEn: "Risk vs Return",
     flashcardFrontFr: "Tolérance au risque",
@@ -433,6 +433,197 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
       extraSkillIds: [skillInterest.id, skillCompounding.id],
     }
   );
+
+
+  // Phase 9 enrichment — Debt + emergency fund + retirement micro-lessons
+  const skillDebt = await upsertSkill(prisma, {
+    slug: "pf-debt",
+    titleFr: "Dette et crédit",
+    titleEn: "Debt & credit",
+  });
+
+  const debtModule = await prisma.module.create({
+    data: {
+      courseId: course.id,
+      slug: "debt",
+      titleFr: "Dette et remboursement",
+      titleEn: "Debt & repayment",
+      descriptionFr: "Intérêt, crédit, prêts et stratégies de remboursement.",
+      descriptionEn: "Interest, credit, loans, and repayment strategies.",
+      category: "DEBT",
+      sortOrder: 3,
+      estimatedMinutes: 18,
+    },
+  });
+
+  await seedLessonWithContent(prisma, debtModule.id, skillDebt.id, {
+    slug: "interest-and-loans",
+    titleFr: "Intérêt et prêts",
+    titleEn: "Interest and loans",
+    descriptionFr: "Comprendre le coût du crédit et le taux d'intérêt.",
+    descriptionEn: "Understand the cost of credit and interest rates.",
+    sortOrder: 0,
+    estimatedMinutes: 9,
+    difficulty: "BEGINNER",
+    learnMinutes: 3,
+    practiceMinutes: 2,
+    testMinutes: 2,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    isShort: true,
+    shortTopic: "debt-interest",
+    shortDurationSeconds: 150,
+    textBodyFr:
+      "L'intérêt est le prix du temps et du risque pour le prêteur. Comparez TAEG, durée et amortissement. Une dette à taux élevé (revolving) mérite souvent d'être remboursée avant d'investir agressivement.",
+    textBodyEn:
+      "Interest is the price of time and risk for the lender. Compare APR, term, and amortization. High-rate revolving debt often deserves priority repayment before aggressive investing.",
+    videoTitleFr: "Intérêt en 3 minutes",
+    videoTitleEn: "Interest in 3 minutes",
+    flashcardFrontFr: "TAEG",
+    flashcardFrontEn: "APR",
+    flashcardBackFr: "Taux annuel effectif global : coût total du crédit.",
+    flashcardBackEn: "Annual percentage rate: total cost of credit.",
+    exercisePromptFr: "Comparez deux prêts de même montant mais de durées différentes.",
+    exercisePromptEn: "Compare two loans with the same principal but different terms.",
+    question: {
+      type: "SINGLE_CHOICE",
+      promptFr: "Que représente principalement le taux d'intérêt d'un prêt ?",
+      promptEn: "What does a loan interest rate mainly represent?",
+      explanationCorrectFr: "C'est le coût du financement pour l'emprunteur.",
+      explanationCorrectEn: "It is the cost of financing for the borrower.",
+      difficulty: 1,
+      options: [
+        { labelFr: "Le coût du financement", labelEn: "The cost of financing", isCorrect: true },
+        { labelFr: "Le salaire du conseiller", labelEn: "The advisor salary", isCorrect: false },
+        { labelFr: "La TVA", labelEn: "VAT", isCorrect: false },
+      ],
+    },
+  }, { academySlug: "personal-finance" });
+
+  await seedLessonWithContent(prisma, debtModule.id, skillDebt.id, {
+    slug: "debt-repayment-strategies",
+    titleFr: "Stratégies de remboursement",
+    titleEn: "Debt repayment strategies",
+    descriptionFr: "Avalanche vs boule de neige — choisir une méthode claire.",
+    descriptionEn: "Avalanche vs snowball — choose a clear method.",
+    sortOrder: 1,
+    estimatedMinutes: 9,
+    difficulty: "INTERMEDIATE",
+    learnMinutes: 3,
+    practiceMinutes: 3,
+    testMinutes: 1,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    textBodyFr:
+      "L'avalanche priorise le taux le plus élevé (souvent optimal mathématiquement). La boule de neige priorise le plus petit solde (motivation). Choisissez une règle, automatisez, et mesurez le mois où la dette disparaît grâce au simulateur pédagogique.",
+    textBodyEn:
+      "Avalanche prioritizes the highest rate (often mathematically optimal). Snowball prioritizes the smallest balance (motivation). Pick a rule, automate it, and measure payoff timing with the pedagogical simulator.",
+    videoTitleFr: "Rembourser une dette",
+    videoTitleEn: "Paying down debt",
+    flashcardFrontFr: "Méthode avalanche",
+    flashcardFrontEn: "Avalanche method",
+    flashcardBackFr: "Rembourser d'abord la dette au taux le plus élevé.",
+    flashcardBackEn: "Pay the highest-rate debt first.",
+    exercisePromptFr: "Classez trois dettes par priorité avalanche.",
+    exercisePromptEn: "Rank three debts by avalanche priority.",
+    question: {
+      type: "TRUE_FALSE",
+      promptFr: "L'avalanche priorise généralement le taux d'intérêt le plus élevé.",
+      promptEn: "Avalanche usually prioritizes the highest interest rate.",
+      explanationCorrectFr: "Vrai.",
+      explanationCorrectEn: "True.",
+      difficulty: 1,
+      options: [
+        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
+        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+      ],
+    },
+  }, { academySlug: "personal-finance" });
+
+  await seedLessonWithContent(prisma, module1.id, skillBudgeting.id, {
+    slug: "emergency-fund",
+    titleFr: "Fonds d'urgence",
+    titleEn: "Emergency fund",
+    descriptionFr: "Constituer une réserve liquide pour les chocs.",
+    descriptionEn: "Build a liquid buffer for shocks.",
+    sortOrder: 3,
+    estimatedMinutes: 8,
+    difficulty: "BEGINNER",
+    learnMinutes: 3,
+    practiceMinutes: 2,
+    testMinutes: 1,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    isShort: true,
+    shortTopic: "emergency-fund",
+    shortDurationSeconds: 155,
+    textBodyFr:
+      "Un fonds d'urgence couvre 3 à 6 mois de dépenses essentielles, placé de façon liquide et accessible. Il protège votre plan d'investissement contre les ventes forcées en cas de perte d'emploi ou de panne majeure.",
+    textBodyEn:
+      "An emergency fund covers 3–6 months of essential expenses in a liquid, accessible account. It protects your investment plan from forced sales after job loss or major repairs.",
+    videoTitleFr: "Fonds d'urgence",
+    videoTitleEn: "Emergency fund",
+    flashcardFrontFr: "Fonds d'urgence",
+    flashcardFrontEn: "Emergency fund",
+    flashcardBackFr: "Réserve liquide pour chocs de vie (3–6 mois).",
+    flashcardBackEn: "Liquid reserve for life shocks (3–6 months).",
+    exercisePromptFr: "Estimez 3 mois de dépenses essentielles.",
+    exercisePromptEn: "Estimate 3 months of essential expenses.",
+    question: {
+      type: "SINGLE_CHOICE",
+      promptFr: "Où placer idéalement un fonds d'urgence ?",
+      promptEn: "Where should an emergency fund ideally sit?",
+      explanationCorrectFr: "Dans un placement liquide et accessible.",
+      explanationCorrectEn: "In a liquid, accessible account.",
+      difficulty: 1,
+      options: [
+        { labelFr: "Compte liquide accessible", labelEn: "Liquid accessible account", isCorrect: true },
+        { labelFr: "Actions très volatiles uniquement", labelEn: "Only highly volatile stocks", isCorrect: false },
+        { labelFr: "Espèces non tracées", labelEn: "Untracked cash only", isCorrect: false },
+      ],
+    },
+  }, { academySlug: "personal-finance", extraSkillIds: [skillFoundations.id] });
+
+  await seedLessonWithContent(prisma, module3.id, skillWealth.id, {
+    slug: "inflation-and-retirement-basics",
+    titleFr: "Inflation et bases de retraite",
+    titleEn: "Inflation and retirement basics",
+    descriptionFr: "Protéger le pouvoir d'achat sur le long terme.",
+    descriptionEn: "Protect purchasing power over the long term.",
+    sortOrder: 1,
+    estimatedMinutes: 9,
+    difficulty: "INTERMEDIATE",
+    learnMinutes: 3,
+    practiceMinutes: 2,
+    testMinutes: 2,
+    reviewMinutes: 1,
+    masterMinutes: 1,
+    textBodyFr:
+      "L'inflation érode le pouvoir d'achat. Une épargne trop liquide sur 20 ans peut perdre en valeur réelle. La retraite se prépare par l'horizon, le taux d'épargne, et une allocation diversifiée — sans promesse de rendement.",
+    textBodyEn:
+      "Inflation erodes purchasing power. Overly liquid savings over 20 years can lose real value. Retirement planning uses horizon, savings rate, and diversified allocation — without return promises.",
+    videoTitleFr: "Inflation",
+    videoTitleEn: "Inflation",
+    flashcardFrontFr: "Inflation",
+    flashcardFrontEn: "Inflation",
+    flashcardBackFr: "Hausse générale des prix qui réduit le pouvoir d'achat.",
+    flashcardBackEn: "General rise in prices that reduces purchasing power.",
+    exercisePromptFr: "Expliquez pourquoi 2 % d'inflation annuelle compte sur 20 ans.",
+    exercisePromptEn: "Explain why 2% annual inflation matters over 20 years.",
+    question: {
+      type: "TRUE_FALSE",
+      promptFr: "L'inflation peut réduire la valeur réelle d'une épargne non rémunérée.",
+      promptEn: "Inflation can reduce the real value of unremunerated cash savings.",
+      explanationCorrectFr: "Vrai.",
+      explanationCorrectEn: "True.",
+      difficulty: 1,
+      options: [
+        { labelFr: "Vrai", labelEn: "True", isCorrect: true },
+        { labelFr: "Faux", labelEn: "False", isCorrect: false },
+      ],
+    },
+  }, { academySlug: "personal-finance", extraSkillIds: [skillCompounding.id] });
+
 
   return { academy, course };
 }

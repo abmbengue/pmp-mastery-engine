@@ -8,6 +8,8 @@ export type RecommendationReasonCode =
   | "WEAK_SKILL"
   | "REPEATED_ERROR"
   | "WEAK_DOMAIN"
+  | "CORRECTIVE_LEARNING"
+  | "DUE_FOR_REVIEW"
   | "LEARNING_SKILL"
   | "IN_PROGRESS_LESSON"
   | "NEXT_INCOMPLETE"
@@ -40,6 +42,10 @@ function reasonText(
         return `Recommandé car vous répétez des erreurs sur « ${skillTitle} ».`;
       case "WEAK_DOMAIN":
         return `Recommandé car le domaine « ${skillTitle} » reste faible.`;
+      case "CORRECTIVE_LEARNING":
+        return `Recommandé comme apprentissage correctif lié à vos erreurs (« ${skillTitle} »).`;
+      case "DUE_FOR_REVIEW":
+        return `Recommandé car « ${skillTitle} » est dû pour une révision espacée.`;
       case "LEARNING_SKILL":
         return `Recommandé car vous apprenez encore « ${skillTitle} » (niveau ${masteryLevel ?? "LEARNING"}).`;
       case "IN_PROGRESS_LESSON":
@@ -58,6 +64,10 @@ function reasonText(
       return `Recommended because you repeatedly miss items related to “${skillTitle}”.`;
     case "WEAK_DOMAIN":
       return `Recommended because the “${skillTitle}” domain remains weak.`;
+    case "CORRECTIVE_LEARNING":
+      return `Recommended as corrective learning linked to your errors (“${skillTitle}”).`;
+    case "DUE_FOR_REVIEW":
+      return `Recommended because “${skillTitle}” is due for spaced review.`;
     case "LEARNING_SKILL":
       return `Recommended because you are still learning “${skillTitle}” (level ${masteryLevel ?? "LEARNING"}).`;
     case "IN_PROGRESS_LESSON":
@@ -211,6 +221,51 @@ export async function recommendNextLearning(
     };
   }
 
+  // 2b) Corrective learning from top recurring error category (extends same engine)
+  if (errorGroups.length > 0) {
+    const { mapErrorToCorrectiveLearning } = await import(
+      "@/modules/learning-engine/corrective-learning"
+    );
+    const topErrors = await prisma.examError.groupBy({
+      by: ["category"],
+      where: { userId },
+      _count: { category: true },
+      orderBy: { _count: { category: "desc" } },
+      take: 1,
+    });
+    if (topErrors[0] && topErrors[0]._count.category >= 2) {
+      const hint = mapErrorToCorrectiveLearning(topErrors[0].category);
+      for (const slug of hint.preferredSkillSlugs) {
+        const skill = await prisma.skill.findUnique({ where: { slug } });
+        if (!skill) continue;
+        const lesson = await findLessonForSkill(
+          userId,
+          skill.id,
+          enrolledCourseIds
+        );
+        if (!lesson) continue;
+        const skillTitle = pickLocalized(skill.titleFr, skill.titleEn, locale);
+        const path = buildLessonPath({
+          academySlug: lesson.module.course.academy.slug,
+          courseSlug: lesson.module.course.slug,
+          moduleSlug: lesson.module.slug,
+          lessonSlug: lesson.slug,
+        });
+        return {
+          reasonCode: "CORRECTIVE_LEARNING",
+          title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+          reason: reasonText("CORRECTIVE_LEARNING", locale, skillTitle),
+          path,
+          estimatedMinutes: lesson.estimatedMinutes,
+          academySlug: lesson.module.course.academy.slug,
+          courseSlug: lesson.module.course.slug,
+          skillSlug: skill.slug,
+          lessonSlug: lesson.slug,
+        };
+      }
+    }
+  }
+
   // 3) Weak domain via recent exam result → map to related skill lesson
   const lastResult = await prisma.examResult.findFirst({
     where: { session: { userId } },
@@ -268,6 +323,42 @@ export async function recommendNextLearning(
   for (const mastery of learning) {
     const lesson = await findLessonForSkill(userId, mastery.skillId, enrolledCourseIds);
     if (!lesson) continue;
+
+    // Prefer spaced-repetition due items before generic LEARNING
+    const { computeNextReviewAt } = await import(
+      "@/modules/learning-engine/spaced-repetition"
+    );
+    const due = computeNextReviewAt({
+      masteryLevel: "LEARNING",
+      lastReviewedAt: mastery.lastReviewedAt,
+      lastAttemptAt: mastery.lastReviewedAt,
+      recentErrorCount: 0,
+    });
+    if (due.getTime() <= Date.now()) {
+      const skillTitle = pickLocalized(
+        mastery.skill.titleFr,
+        mastery.skill.titleEn,
+        locale
+      );
+      const path = buildLessonPath({
+        academySlug: lesson.module.course.academy.slug,
+        courseSlug: lesson.module.course.slug,
+        moduleSlug: lesson.module.slug,
+        lessonSlug: lesson.slug,
+      });
+      return {
+        reasonCode: "DUE_FOR_REVIEW",
+        title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+        reason: reasonText("DUE_FOR_REVIEW", locale, skillTitle),
+        path,
+        estimatedMinutes: lesson.estimatedMinutes,
+        academySlug: lesson.module.course.academy.slug,
+        courseSlug: lesson.module.course.slug,
+        skillSlug: mastery.skill.slug,
+        masteryLevel: mastery.level,
+        lessonSlug: lesson.slug,
+      };
+    }
 
     const reasonCode = "LEARNING_SKILL" as const;
     const skillTitle = pickLocalized(

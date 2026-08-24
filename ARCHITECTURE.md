@@ -14,12 +14,12 @@ Professional Learning Academy (PLA) is a modular, bilingual learning platform de
 │  Modules (src/modules/)                     │
 │  academies | content | learning-engine      │
 │  assessment-engine | localization | auth    │
-│  ai-tutor | dashboard                       │
+│  ai-tutor | dashboard | simulation-engine   │
 ├─────────────────────────────────────────────┤
 │  Data Layer (src/data/)                     │
 │  Prisma client + repositories               │
 ├─────────────────────────────────────────────┤
-│  Shared (src/shared/)                         │
+│  Shared (src/shared/)                       │
 │  Types, Zod schemas, utilities              │
 ├─────────────────────────────────────────────┤
 │  PostgreSQL                                  │
@@ -32,81 +32,85 @@ Professional Learning Academy (PLA) is a modular, bilingual learning platform de
 Academy → Course → Module → Lesson → LearningItem
 ```
 
-Each `LearningItem` has a `type` (TEXT, VIDEO, EXERCISE, QUIZ, FLASHCARD, etc.) and a JSON `payload` validated by Zod schemas in `src/shared/types/content-payloads.ts`.
+Each `LearningItem` has a `type` (TEXT, VIDEO, EXERCISE, QUIZ, FLASHCARD, SIMULATION, etc.) and a JSON `payload` validated by Zod schemas in `src/shared/types/content-payloads.ts`.
+
+## Learning engine (reuse — do not duplicate)
+
+| Concern | Module |
+|---|---|
+| Lesson phases LEARN→…→MASTER | `lesson-phases.ts`, Lesson Player UI |
+| Progress / mastery | `progress-service.ts`, `ConceptMastery` |
+| Next lesson | `next-lesson-service.ts` |
+| Recommendations (single engine) | `recommendation-service.ts` → `recommendNextLearning()` |
+| Spaced repetition (Phase 9) | `spaced-repetition.ts` + `review-service.ts` |
+| Corrective learning (Phase 9) | `corrective-learning.ts` (extends recommendations) |
+| Shorts | `short-learning-service.ts` + VIDEO payload |
+
+## Assessment / PMP practice
+
+| Concern | Module |
+|---|---|
+| Exam builder / sessions | `exam-service.ts`, blueprint |
+| Analytics / readiness V2 | `analytics-engine.ts` |
+| Readiness report (Phase 9) | `readiness-report-service.ts` |
+| Error analysis / retry | existing exam analytics + retry flows |
 
 ## Internationalization Strategy
 
 | Layer | Approach |
 |---|---|
-| UI (labels, navigation) | `next-intl` message files (`messages/fr.json`, `messages/en.json`) |
+| UI (labels, navigation) | `next-intl` (`messages/fr.json`, `messages/en.json`) |
 | Pedagogical content | Bilingual DB columns (`titleFr`/`titleEn`, etc.) |
-| Resolution | `pickLocalized()` utility + repository localize helpers |
-
-This hybrid approach was chosen for V1 because:
-- Only 2 languages are needed
-- Content is auditable directly in the database
-- No code duplication for content models
-- UI translations remain separate and maintainable
+| Resolution | `pickLocalized()` + repository helpers |
 
 ## Micro-Learning Phases
-
-Lessons support configurable phase durations (NOT hardcoded):
 
 ```
 LEARN → PRACTICE → TEST → REVIEW → MASTER
 ```
 
-Stored as `learnMinutes`, `practiceMinutes`, etc. on the `Lesson` model.
+Durations are configurable per lesson (`learnMinutes`, etc.).
 
-## AI Tutor (Prepared, Not Connected)
+## Spaced repetition & Review Now (Phase 9)
 
-```
-AiTutorPort (interface)
-  └── NoopAiTutor (V1 stub)
-  └── [Future] OpenAI / Anthropic implementation
-```
+Deterministic intervals by mastery (WEAK / LEARNING / MASTERED).  
+`getReviewQueue(userId)` feeds Dashboard **Review Now** and `/review`.  
+See [SPACED_REPETITION.md](./SPACED_REPETITION.md).
 
-The port accepts context (lesson, concept, user level, locale) and action type. The learning engine does not depend on any specific AI provider.
+## PMP Readiness Report (Phase 9)
 
-## Auth (Implemented in Phase 3)
+Synthesizes practice metrics with an explicit **NOT AN OFFICIAL PMI SCORE** disclaimer.  
+Printable export via `window.print()`.  
+See [PMP_READINESS_REPORT.md](./PMP_READINESS_REPORT.md).
 
-The platform now uses **Auth.js v5** with a **Credentials** provider and Prisma-backed user records. Passwords are hashed with `bcryptjs` and are never exposed to the client. Session resolution happens server-side through `auth()` helpers in `src/modules/auth/session.ts`.
+## Auth & security
 
-Current scope:
-- Register / login / logout
-- JWT-backed persistent sessions
-- Protected dashboard, settings, lesson progression APIs
-- Per-user locale persistence (`User.locale`)
-- Test-only seeded demo account (`demo@pla.local`) kept for regression support
+Auth.js v5 Credentials + Prisma. Session via `auth()` / `requireSession`.  
+**Never** trust client-supplied `userId` or email as identity.  
+No bank data; no unnecessary sensitive fields.
 
-## Video (Prepared, Placeholder Only)
+## VIDEO / Shorts metadata
 
-Video `LearningItem` payloads include: url, durationSec, titleFr/En, language, thumbnailUrl, descriptionFr/En, isPlaceholder. No real video hosting in V1.
-
-## PMP Content Policy
-
-All PMP-related content is **original**. No PMBOK content is reproduced. The schema supports future `sourceReferences` if needed.
+VIDEO payloads support: academy, topic, skill, difficulty, lesson (`relatedLessonSlug`), language, duration (≤180s for shorts), learning objective. Placeholder playback only — no YouTube/Vimeo hosting in this phase.
 
 ## Key Design Decisions
 
-1. **PostgreSQL from V1** — no SQLite intermediate step
-2. **Prisma ORM** — type-safe data access, migration support
-3. **Repository pattern** — data access isolated from business logic
-4. **Zod validation** — LearningItem payloads validated at app layer
-5. **Modular monolith** — single Next.js app with clear module boundaries
-6. **Extensible content types** — new types added via enum + Zod schema
+1. PostgreSQL + Prisma from V1  
+2. Repository pattern  
+3. Zod-validated LearningItem payloads  
+4. Modular monolith  
+5. Single recommendation engine (`recommendNextLearning`) — extend, never fork  
+6. Deterministic pedagogy (no ML scoring)
 
-## What Is NOT Implemented (after Phase 3)
+## Explicitly out of scope (through Phase 9)
 
-- Social/OAuth authentication
-- Password reset / email verification
-- Admin/CMS authentication roles
-- Adaptive quiz system
-- Simulators
-- Real AI Tutor
-- Video hosting
-- CMS / admin panel
-- Payment / subscription
-- Mobile app
+- Payment / subscription  
+- CMS / admin  
+- OAuth  
+- Native mobile app  
+- Real ML  
+- Official PMI scoring / PMI integration  
+- Complex cloud video infrastructure  
+- Commercial analytics  
 
-See [ROADMAP.md](./ROADMAP.md) for planned phases.
+See [ROADMAP.md](./ROADMAP.md).

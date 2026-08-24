@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/shared/types/locale";
+import { Link } from "@/modules/localization/navigation";
 
 type ExamCard = {
   id: string;
@@ -111,6 +112,16 @@ export function ExamHubClient({
 
       <p className="text-xs text-gray-500" data-testid="full-exam-architecture-note">
         {labels.fullExamNote}
+      </p>
+
+      <p className="text-sm">
+        <Link
+          href="/pmp-exam/readiness-report"
+          className="font-medium text-indigo-800 underline focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          data-testid="hub-readiness-report-link"
+        >
+          {labels.readinessReport ?? "PMP Readiness Report"}
+        </Link>
       </p>
     </div>
   );

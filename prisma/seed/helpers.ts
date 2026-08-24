@@ -200,6 +200,8 @@ export async function seedLessonWithContent(
         difficulty,
         academySlug: options?.academySlug,
         relatedSkillSlug: undefined,
+        relatedLessonSlug: config.slug,
+        learningObjective: config.isShort ? "IDENTIFY" : undefined,
       },
     },
   });
