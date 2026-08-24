@@ -1,0 +1,283 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum AcademyStatus {
+  PLANNED
+  ACTIVE
+}
+
+enum Locale {
+  FR
+  EN
+}
+
+enum LearningItemType {
+  TEXT
+  VIDEO
+  EXERCISE
+  QUIZ
+  FLASHCARD
+  SIMULATION
+  ASSESSMENT
+}
+
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  NUMERIC
+  CALCULATION
+  SITUATIONAL
+}
+
+enum LessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum MasteryLevel {
+  WEAK
+  LEARNING
+  MASTERED
+}
+
+// ---------------------------------------------------------------------------
+// Content hierarchy: Academy → Course → Module → Lesson → LearningItem
+// ---------------------------------------------------------------------------
+
+model Academy {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  titleFr       String
+  titleEn       String
+  descriptionFr String        @db.Text
+  descriptionEn String        @db.Text
+  status        AcademyStatus @default(PLANNED)
+  sortOrder     Int           @default(0)
+  courses       Course[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Course {
+  id               String       @id @default(cuid())
+  academyId        String
+  academy          Academy      @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  slug             String
+  titleFr          String
+  titleEn          String
+  descriptionFr    String       @db.Text
+  descriptionEn    String       @db.Text
+  sortOrder        Int          @default(0)
+  estimatedMinutes Int?
+  modules          Module[]
+  enrollments      Enrollment[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@unique([academyId, slug])
+}
+
+model Module {
+  id               String   @id @default(cuid())
+  courseId         String
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug             String
+  titleFr          String
+  titleEn          String
+  descriptionFr    String   @db.Text
+  descriptionEn    String   @db.Text
+  sortOrder        Int      @default(0)
+  estimatedMinutes Int?
+  lessons          Lesson[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([courseId, slug])
+}
+
+model Lesson {
+  id               String           @id @default(cuid())
+  moduleId         String
+  module           Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  slug             String
+  titleFr          String
+  titleEn          String
+  descriptionFr    String           @db.Text
+  descriptionEn    String           @db.Text
+  sortOrder        Int              @default(0)
+  estimatedMinutes Int?
+  // Micro-learning phase durations — configurable per lesson, NOT hardcoded
+  learnMinutes     Int?
+  practiceMinutes  Int?
+  testMinutes      Int?
+  reviewMinutes    Int?
+  masterMinutes    Int?
+  learningItems    LearningItem[]
+  lessonProgress   LessonProgress[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@unique([moduleId, slug])
+}
+
+model LearningItem {
+  id         String           @id @default(cuid())
+  lessonId   String
+  lesson     Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  type       LearningItemType
+  sortOrder  Int              @default(0)
+  payload    Json
+  difficulty Int              @default(1)
+  questions  Question[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Skills & Assessment
+// ---------------------------------------------------------------------------
+
+model Skill {
+  id            String           @id @default(cuid())
+  slug          String           @unique
+  titleFr       String
+  titleEn       String
+  descriptionFr String?          @db.Text
+  descriptionEn String?          @db.Text
+  questions     Question[]
+  masteries     ConceptMastery[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model Question {
+  id                   String         @id @default(cuid())
+  learningItemId       String?
+  learningItem         LearningItem?  @relation(fields: [learningItemId], references: [id], onDelete: SetNull)
+  skillId              String?
+  skill                Skill?         @relation(fields: [skillId], references: [id], onDelete: SetNull)
+  type                 QuestionType
+  promptFr             String         @db.Text
+  promptEn             String         @db.Text
+  explanationCorrectFr String         @db.Text
+  explanationCorrectEn String         @db.Text
+  difficulty           Int            @default(1)
+  category             String?
+  answerOptions        AnswerOption[]
+  quizAttempts         QuizAttempt[]
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+}
+
+model AnswerOption {
+  id                 String   @id @default(cuid())
+  questionId         String
+  question           Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  labelFr            String
+  labelEn            String
+  isCorrect          Boolean  @default(false)
+  explanationWrongFr String?  @db.Text
+  explanationWrongEn String?  @db.Text
+  sortOrder          Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Users & Progress
+// ---------------------------------------------------------------------------
+
+model User {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  name             String
+  locale           Locale           @default(FR)
+  enrollments      Enrollment[]
+  lessonProgress   LessonProgress[]
+  quizAttempts     QuizAttempt[]
+  conceptMasteries ConceptMastery[]
+  learningStreak   LearningStreak?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model Enrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  enrolledAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model LessonProgress {
+  id           String               @id @default(cuid())
+  userId       String
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId     String
+  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  status       LessonProgressStatus @default(NOT_STARTED)
+  timeSpentSec Int                  @default(0)
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model QuizAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId     String
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  learningItemId String?
+  score          Float
+  answers        Json
+  attemptNo      Int      @default(1)
+  isCorrect      Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ConceptMastery {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId        String
+  skill          Skill        @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  level          MasteryLevel @default(WEAK)
+  lastReviewedAt DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([userId, skillId])
+}
+
+model LearningStreak {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastActiveAt  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}

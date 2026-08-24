@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pla-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pla_user
+      POSTGRES_PASSWORD: pla_dev_password
+      POSTGRES_DB: pla_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pla_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pla_user -d pla_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pla_postgres_data:

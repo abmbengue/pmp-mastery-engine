@@ -1,0 +1,20 @@
+{
+  "app": {
+    "title": "Professional Learning Academy",
+    "tagline": "Learn professional skills, one lesson at a time.",
+    "academies": "Academies",
+    "dashboard": "Dashboard",
+    "startLearning": "Get Started",
+    "backToAcademies": "Back to academies",
+    "modules": "Modules",
+    "lessons": "Lessons",
+    "quiz": "Quiz",
+    "submit": "Submit",
+    "result": "Result",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "score": "Score",
+    "planned": "Coming soon",
+    "active": "Available"
+  }
+}

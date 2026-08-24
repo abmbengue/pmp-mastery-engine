@@ -1,0 +1,53 @@
+import { setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { findAllAcademies, localizeAcademy } from "@/data/repositories/academy-repository";
+import { Link } from "@/modules/localization/navigation";
+import type { Locale } from "@/shared/types/locale";
+
+export default async function AcademiesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("app");
+  const academies = await findAllAcademies();
+  const loc = locale as Locale;
+
+  return (
+    <section data-testid="academies-page">
+      <h1 className="mb-6 text-2xl font-bold">{t("academies")}</h1>
+      <ul className="space-y-4">
+        {academies.map((academy) => {
+          const { title, description } = localizeAcademy(academy, loc);
+          const isActive = academy.status === "ACTIVE";
+          return (
+            <li
+              key={academy.id}
+              className="rounded-lg border bg-white p-4"
+              data-testid={`academy-${academy.slug}`}
+            >
+              <h2 className="text-lg font-semibold">{title}</h2>
+              <p className="mt-1 text-sm text-gray-600">{description}</p>
+              <span className="mt-2 inline-block text-xs text-gray-500">
+                {isActive ? t("active") : t("planned")}
+              </span>
+              {isActive && academy.courses[0] && (
+                <div className="mt-3">
+                  <Link
+                    href={`/academies/${academy.slug}/courses/${academy.courses[0].slug}`}
+                    className="text-sm text-blue-600 hover:underline"
+                    data-testid={`academy-link-${academy.slug}`}
+                  >
+                    {title} →
+                  </Link>
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}

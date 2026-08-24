@@ -1,0 +1,20 @@
+{
+  "app": {
+    "title": "Professional Learning Academy",
+    "tagline": "Apprenez des compétences professionnelles, une leçon à la fois.",
+    "academies": "Académies",
+    "dashboard": "Tableau de bord",
+    "startLearning": "Commencer",
+    "backToAcademies": "Retour aux académies",
+    "modules": "Modules",
+    "lessons": "Leçons",
+    "quiz": "Quiz",
+    "submit": "Valider",
+    "result": "Résultat",
+    "correct": "Bonne réponse !",
+    "incorrect": "Réponse incorrecte",
+    "score": "Score",
+    "planned": "Bientôt disponible",
+    "active": "Disponible"
+  }
+}
