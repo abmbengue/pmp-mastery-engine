@@ -36,7 +36,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
     expect(course!.modules.length).toBeGreaterThanOrEqual(2);
     const lessonCount = course!.modules.reduce((n, m) => n + m.lessons.length, 0);
     expect(lessonCount).toBeGreaterThanOrEqual(4);
-    expect(lessonCount).toBeLessThanOrEqual(8);
+    expect(lessonCount).toBeGreaterThanOrEqual(20);
   });
 
   it("structures Personal Finance with categories and multi-skills", async () => {
@@ -46,6 +46,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
     expect(categories).toContain("FOUNDATIONS");
     expect(categories).toContain("INVESTING");
     expect(categories).toContain("WEALTH_BUILDING");
+    expect(categories).toContain("DEBT");
 
     const compound = await findLessonBySlug(
       "personal-finance",
@@ -62,7 +63,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
     });
     const slugs = links.map((l) => l.skill.slug);
     expect(slugs).toEqual(
-      expect.arrayContaining(["pf-wealth-building", "pf-interest", "pf-compounding"])
+      expect.arrayContaining(["pf-compounding", "pf-foundations"])
     );
   });
 

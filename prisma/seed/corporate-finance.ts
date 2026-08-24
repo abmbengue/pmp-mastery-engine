@@ -68,7 +68,7 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
   for (const mod of CF_MODULES) {
     const moduleLessons = CF_LESSONS.filter((l) => l.moduleSlug === mod.slug);
     const estimatedMinutes = moduleLessons.reduce((s, l) => s + l.estimatedMinutes, 0);
-    const module = await prisma.module.create({
+    const courseModule = await prisma.module.create({
       data: {
         courseId: course.id,
         slug: mod.slug,
@@ -88,7 +88,7 @@ export async function seedCorporateFinance(prisma: PrismaClient) {
         ...compactToLessonSeed(lesson),
         learningObjective: lesson.learningObjective,
       };
-      await seedLessonWithContent(prisma, module.id, sid, config, {
+      await seedLessonWithContent(prisma, courseModule.id, sid, config, {
         academySlug: "corporate-finance",
         relatedSkillSlug: lesson.skillSlug,
         extraSkillIds:

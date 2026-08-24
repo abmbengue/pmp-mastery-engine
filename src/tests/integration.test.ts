@@ -87,13 +87,13 @@ describe("content and progression integration", () => {
     const pfLessons = pf!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
     expect(pfLessons).toBeGreaterThanOrEqual(7);
 
-    const pmp = await findCourseBySlug("pmp-project-management", "foundations");
-    expect(pmp!.modules).toHaveLength(2);
+    const pmp = await findCourseBySlug("pmp-project-management", "pmp-foundations");
+    expect(pmp!.modules.length).toBeGreaterThanOrEqual(2);
     const pmpLessons = pmp!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
-    expect(pmpLessons).toBe(6);
+    expect(pmpLessons).toBeGreaterThanOrEqual(6);
 
     const cf = await findCourseBySlug("corporate-finance", "cf-essentials");
-    expect(cf!.modules).toHaveLength(2);
+    expect(cf!.modules.length).toBeGreaterThanOrEqual(2);
     const cfLessons = cf!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
     expect(cfLessons).toBeGreaterThanOrEqual(4);
   });

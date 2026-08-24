@@ -74,8 +74,14 @@ describe("lesson session and progression", () => {
   });
 
   it("returns correct percentage for a single completed lesson", async () => {
-    // Reset all progress first then complete only one lesson
-    await prisma.lessonProgress.deleteMany({ where: { userId } });
+    // Reset progress for this course only (avoid wiping other parallel suites)
+    const courseLessons = await prisma.lesson.findMany({
+      where: { module: { courseId } },
+      select: { id: true },
+    });
+    await prisma.lessonProgress.deleteMany({
+      where: { userId, lessonId: { in: courseLessons.map((l) => l.id) } },
+    });
     await finishLesson(userId, lessonId, 180, 80, null);
     const progress = await getCourseProgress(userId, courseId);
     const expected = Math.round((1 / progress!.totalLessons) * 100);

@@ -71,7 +71,7 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
   for (const mod of PF_MODULES) {
     const moduleLessons = PF_LESSONS.filter((l) => l.moduleSlug === mod.slug);
     const estimatedMinutes = moduleLessons.reduce((s, l) => s + l.estimatedMinutes, 0);
-    const module = await prisma.module.create({
+    const courseModule = await prisma.module.create({
       data: {
         courseId: course.id,
         slug: mod.slug,
@@ -95,7 +95,7 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
         ...compactToLessonSeed(lesson),
         learningObjective: lesson.learningObjective,
       };
-      await seedLessonWithContent(prisma, module.id, sid, config, {
+      await seedLessonWithContent(prisma, courseModule.id, sid, config, {
         academySlug: "personal-finance",
         relatedSkillSlug: lesson.skillSlug,
         extraSkillIds:

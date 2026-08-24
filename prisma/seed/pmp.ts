@@ -85,7 +85,7 @@ export async function seedPmp(prisma: PrismaClient) {
   for (const mod of PMP_MODULES) {
     const moduleLessons = PMP_LESSONS.filter((l) => l.moduleSlug === mod.slug);
     const estimatedMinutes = moduleLessons.reduce((s, l) => s + l.estimatedMinutes, 0);
-    const module = await prisma.module.create({
+    const courseModule = await prisma.module.create({
       data: {
         courseId: course.id,
         slug: mod.slug,
@@ -111,7 +111,7 @@ export async function seedPmp(prisma: PrismaClient) {
         ...compactToLessonSeed({ ...lesson, textBodyFr: textFr, textBodyEn: textEn }),
         learningObjective: lesson.learningObjective,
       };
-      await seedLessonWithContent(prisma, module.id, sid, config, {
+      await seedLessonWithContent(prisma, courseModule.id, sid, config, {
         academySlug: "pmp-project-management",
         relatedSkillSlug: lesson.skillSlug,
         extraSkillIds:
