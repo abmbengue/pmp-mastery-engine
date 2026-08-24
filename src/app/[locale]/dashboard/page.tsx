@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireSession } from "@/modules/auth/session";
 import { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
 import { recommendNextLearning } from "@/modules/learning-engine/recommendation-service";
+import { getPmpPracticeDashboard } from "@/modules/assessment-engine/exam-service";
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
 import type { Locale } from "@/shared/types/locale";
@@ -24,6 +25,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
   const data = await getDashboardV2(session.user.id, loc);
   const recommendation = await recommendNextLearning(session.user.id, loc);
+  const pmpPractice = await getPmpPracticeDashboard(session.user.id, loc);
 
   async function logoutAction() {
     "use server";
@@ -125,6 +127,75 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             {t("noContinue")}
           </p>
         )}
+      </section>
+
+      {/* PMP PRACTICE */}
+      <section
+        aria-labelledby="pmp-practice-heading"
+        className="rounded-xl border border-indigo-200 bg-indigo-50/40 p-6"
+        data-testid="pmp-practice-section"
+      >
+        <h2 id="pmp-practice-heading" className="text-xl font-semibold text-gray-900">
+          {t("pmpPractice")}
+        </h2>
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <dt className="text-gray-500">{t("lastExam")}</dt>
+            <dd className="font-medium" data-testid="pmp-last-exam">
+              {pmpPractice.lastExam
+                ? `${pmpPractice.lastExam.title} (${pmpPractice.lastExam.percentage}%)`
+                : t("noExamYet")}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-gray-500">{t("bestScore")}</dt>
+            <dd className="font-medium" data-testid="pmp-best-score">
+              {pmpPractice.bestScore == null ? "—" : `${pmpPractice.bestScore}%`}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-gray-500">{t("averageExamScore")}</dt>
+            <dd className="font-medium" data-testid="pmp-average-score">
+              {pmpPractice.averageScore == null ? "—" : `${pmpPractice.averageScore}%`}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-gray-500">{t("questionsAnswered")}</dt>
+            <dd className="font-medium" data-testid="pmp-questions-answered">
+              {pmpPractice.questionsAnswered}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-gray-500">{t("weakestDomain")}</dt>
+            <dd className="font-medium" data-testid="pmp-weakest-domain">
+              {pmpPractice.weakestDomain ?? "—"}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-gray-500">{t("practiceReadiness")}</dt>
+            <dd className="font-medium" data-testid="pmp-practice-readiness">
+              {pmpPractice.practiceReadiness}
+            </dd>
+          </div>
+        </dl>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/pmp-exam"
+            className="inline-flex rounded-lg bg-indigo-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            data-testid="pmp-start-practice"
+          >
+            {t("startPractice")}
+          </Link>
+          {pmpPractice.inProgressSession && (
+            <Link
+              href={`/pmp-exam/${pmpPractice.inProgressSession.sessionId}`}
+              className="inline-flex rounded-lg border border-indigo-400 px-4 py-2.5 text-sm font-semibold text-indigo-800 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              data-testid="pmp-resume-exam"
+            >
+              {t("resumeExam")}
+            </Link>
+          )}
+        </div>
       </section>
 
       {/* Recommended for you */}

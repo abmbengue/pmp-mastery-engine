@@ -4,6 +4,7 @@ import { seedPersonalFinance } from "./seed/personal-finance";
 import { seedPmp } from "./seed/pmp";
 import { seedCorporateFinance } from "./seed/corporate-finance";
 import { seedSimulationItems } from "./seed/simulations";
+import { seedPmpExamBank } from "./seed/pmp-exam-bank";
 
 const PLANNED_ACADEMIES = [
   {
@@ -52,6 +53,12 @@ async function main() {
   console.log("Seeding database...");
 
   // Clean existing data (order matters for FK constraints)
+  await prisma.examAnswer.deleteMany();
+  await prisma.examResult.deleteMany();
+  await prisma.examSessionQuestion.deleteMany();
+  await prisma.examSession.deleteMany();
+  await prisma.exam.deleteMany();
+  await prisma.questionSkill.deleteMany();
   await prisma.quizAttempt.deleteMany();
   await prisma.conceptMastery.deleteMany();
   await prisma.lessonProgress.deleteMany();
@@ -80,6 +87,7 @@ async function main() {
   const pmp = await seedPmp(prisma);
   const cf = await seedCorporateFinance(prisma);
   await seedSimulationItems(prisma);
+  const examBank = await seedPmpExamBank(prisma);
 
   // Demo user for tests only (never used as default real identity)
   const demoUserPasswordHash = await bcrypt.hash("Demo123!", 12);
@@ -112,6 +120,7 @@ async function main() {
   console.log(
     `  Academies: ${PLANNED_ACADEMIES.length + 3} (${3} active, ${PLANNED_ACADEMIES.length} planned)`
   );
+  console.log(`  PMP exam bank: ${examBank.bankCount} questions`);
   console.log(`  Demo user: ${demoUser.email}`);
 }
 

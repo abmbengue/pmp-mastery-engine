@@ -17,6 +17,8 @@ export const aiTutorApiBodySchema = z.object({
   simulationType: z.string().max(80).optional(),
   simulationScenario: z.string().max(40).optional(),
   simulationSummary: z.string().max(800).optional(),
+  /** When set, correct answers are withheld until the exam session is completed */
+  examSessionId: z.string().min(1).max(120).optional(),
 });
 
 export type AiTutorApiBody = z.infer<typeof aiTutorApiBodySchema>;
@@ -100,6 +102,17 @@ export async function loadAiTutorContext(
     });
 
     if (question) {
+      let examInProgress = false;
+      if (body.examSessionId) {
+        const examSession = await prisma.examSession.findUnique({
+          where: { id: body.examSessionId },
+          select: { status: true },
+        });
+        examInProgress =
+          examSession?.status === "IN_PROGRESS" ||
+          examSession?.status === "NOT_STARTED";
+      }
+
       const selected = new Set(body.selectedOptionIds ?? []);
       const userAnswerLabels = question.answerOptions
         .filter((o) => selected.has(o.id))
@@ -120,15 +133,18 @@ export async function loadAiTutorContext(
         id: question.id,
         prompt: pickLocalized(question.promptFr, question.promptEn, locale),
         userAnswerLabels,
-        correctAnswerLabels,
-        explanation: pickLocalized(
-          question.explanationCorrectFr,
-          question.explanationCorrectEn,
-          locale
-        ),
-        isCorrect,
+        // Never reveal answers while an exam session is still open
+        correctAnswerLabels: examInProgress ? undefined : correctAnswerLabels,
+        explanation: examInProgress
+          ? undefined
+          : pickLocalized(
+              question.explanationCorrectFr,
+              question.explanationCorrectEn,
+              locale
+            ),
+        isCorrect: examInProgress ? undefined : isCorrect,
       };
-      context.learningItemType = "QUIZ";
+      context.learningItemType = examInProgress ? "EXAM_IN_PROGRESS" : "QUIZ";
 
       if (question.skill && !context.skillSlug) {
         context.skillSlug = question.skill.slug;

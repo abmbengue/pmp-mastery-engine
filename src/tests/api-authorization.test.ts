@@ -103,4 +103,18 @@ describe("API authorization", () => {
     );
     expect(response.status).toBe(401);
   });
+
+  it("rejects unauthorized exam start requests", async () => {
+    const { auth } = await import("@/auth");
+    vi.mocked(auth).mockResolvedValue(null);
+    const { POST } = await import("@/app/api/exam/route");
+    const response = await POST(
+      new Request("http://localhost/api/exam", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ examSlug: "quick-practice" }),
+      })
+    );
+    expect(response.status).toBe(401);
+  });
 });

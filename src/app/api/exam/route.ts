@@ -1,0 +1,59 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { auth } from "@/auth";
+import {
+  createExamSession,
+  listExams,
+} from "@/modules/assessment-engine/exam-service";
+
+const startSchema = z.object({
+  examSlug: z.string().min(1).max(120),
+});
+
+export async function GET(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const url = new URL(request.url);
+  const locale = url.searchParams.get("locale") === "en" ? "en" : "fr";
+  const exams = await listExams(locale);
+  return NextResponse.json({ exams });
+}
+
+export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  let raw: unknown;
+  try {
+    raw = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const parsed = startSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+  }
+
+  try {
+    const examSession = await createExamSession(
+      session.user.id,
+      parsed.data.examSlug
+    );
+    return NextResponse.json({
+      sessionId: examSession.id,
+      examSlug: examSession.exam.slug,
+      questionCount: examSession.questions.length,
+      durationMinutes: examSession.exam.durationMinutes,
+      remainingSeconds: examSession.remainingSeconds,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to start exam";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+}

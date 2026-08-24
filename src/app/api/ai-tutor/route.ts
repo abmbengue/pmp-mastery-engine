@@ -32,9 +32,16 @@ export async function POST(request: Request) {
 
   try {
     const context = await loadAiTutorContext(parsed.data);
+
+    // During an in-progress exam, never allow answer-revealing modes
+    let mode = parsed.data.mode;
+    if (context.learningItemType === "EXAM_IN_PROGRESS" && mode !== "HINT") {
+      mode = "HINT";
+    }
+
     const service = getAiTutorService();
     const response = await service.ask({
-      action: parsed.data.mode,
+      action: mode,
       context,
       userMessage: parsed.data.userMessage,
     });

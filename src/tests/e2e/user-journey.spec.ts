@@ -263,3 +263,155 @@ test("PHASE6 TEST7: EN simulator", async ({ page }) => {
   await expect(page.getByTestId("simulator-page")).toBeVisible();
   await expect(page.locator("body")).toContainText("Budget");
 });
+
+async function answerAllExamQuestions(page: Page) {
+  await expect(page.getByTestId("exam-session-page")).toBeVisible();
+  const progress = await page.getByTestId("exam-progress").textContent();
+  const total = Number(progress?.split("/")[1]?.trim() ?? "0");
+  for (let i = 0; i < total; i += 1) {
+    await page.locator('[data-testid^="exam-option-"]').first().click();
+    if (i < total - 1) {
+      await page.getByTestId("exam-next").click();
+    }
+  }
+}
+
+async function submitExam(page: Page) {
+  await page.getByTestId("exam-finish").click();
+  await expect(page.getByTestId("exam-submit-confirm")).toBeVisible();
+  await page.getByTestId("exam-submit-confirm-btn").click();
+  await expect(page.getByTestId("exam-review-page")).toBeVisible({ timeout: 30_000 });
+}
+
+test("PHASE7 TEST1: Login → PMP → Quick Practice → answer → submit → result", async ({
+  page,
+}) => {
+  const email = uniqueEmail("p7-quick");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
+  await page.getByTestId("start-exam-quick-practice").click();
+  await expect(page.getByTestId("exam-session-page")).toBeVisible();
+  await expect(page.getByTestId("exam-timer")).toBeVisible();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await expect(page.getByTestId("practice-score")).toBeVisible();
+  await expect(page.getByTestId("practice-score-notice")).toContainText("Practice score");
+});
+
+test("PHASE7 TEST2: Domain Practice Process → result", async ({ page }) => {
+  const email = uniqueEmail("p7-domain");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-domain-process").click();
+  await expect(page.getByTestId("exam-session-page")).toBeVisible();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await expect(page.getByTestId("domain-PROCESS")).toBeVisible();
+});
+
+test("PHASE7 TEST3: Mock Exam navigation flag previous next submit", async ({
+  page,
+}) => {
+  const email = uniqueEmail("p7-mock");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-mock-exam").click();
+  await expect(page.getByTestId("exam-session-page")).toBeVisible();
+  await page.locator('[data-testid^="exam-option-"]').first().click();
+  await page.getByTestId("exam-flag").click();
+  await page.getByTestId("exam-next").click();
+  await page.getByTestId("exam-previous").click();
+  await expect(page.getByTestId("exam-flag")).toHaveAttribute("aria-pressed", "true");
+  await page.getByTestId("exam-nav-3").click();
+  await expect(page.getByTestId("exam-progress")).toContainText("3 /");
+  await submitExam(page);
+  await expect(page.getByTestId("exam-review-page")).toBeVisible();
+});
+
+test("PHASE7 TEST4: Resume interrupted exam", async ({ page }) => {
+  const email = uniqueEmail("p7-resume");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await expect(page.getByTestId("exam-session-page")).toBeVisible();
+  await page.locator('[data-testid^="exam-option-"]').first().click();
+  await page.getByTestId("exam-flag").click();
+  const url = page.url();
+  const sessionId = url.split("/pmp-exam/")[1];
+  await page.goto("/en/pmp-exam");
+  await expect(page.getByTestId("resume-exam-banner")).toBeVisible();
+  await page.getByTestId("resume-exam-btn").click();
+  await expect(page).toHaveURL(new RegExp(`/pmp-exam/${sessionId}`));
+  await expect(page.getByTestId("exam-flag")).toHaveAttribute("aria-pressed", "true");
+});
+
+test("PHASE7 TEST5: Review wrong answers", async ({ page }) => {
+  const email = uniqueEmail("p7-review");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await expect(page.getByTestId("review-questions")).toBeVisible();
+  await expect(page.locator('[data-testid^="review-q-"]').first()).toBeVisible();
+});
+
+test("PHASE7 TEST6: AI Tutor explanation", async ({ page }) => {
+  const email = uniqueEmail("p7-ai");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await page.getByTestId("explain-ai-1").click();
+  await expect(page.getByTestId("ai-explain-1")).toBeVisible({ timeout: 15_000 });
+});
+
+test("PHASE7 TEST7: Weak skill recommendation", async ({ page }) => {
+  const email = uniqueEmail("p7-reco");
+  await register(page, "en", email);
+  // Ensure enrollment so recommendations can resolve a lesson
+  await page.goto("/en/academies/pmp-project-management/courses/pmp-foundations");
+  await page.goto("/en/pmp-exam");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await answerAllExamQuestions(page);
+  await submitExam(page);
+  await expect(page.getByTestId("weak-skills-list")).toBeVisible();
+  // Recommendation section appears when recommendNextLearning finds a lesson
+  const reco = page.getByTestId("exam-recommendation");
+  if (await reco.count()) {
+    await expect(reco).toBeVisible();
+  }
+});
+
+test("PHASE7 TEST8: FR exam", async ({ page }) => {
+  const email = uniqueEmail("p7-fr");
+  await register(page, "fr", email);
+  await page.goto("/fr/pmp-exam");
+  await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
+  await expect(page.locator("body")).toContainText("Simulateur");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await expect(page.getByTestId("exam-scenario")).toBeVisible();
+  await expect(page.getByTestId("exam-finish")).toContainText("Terminer");
+});
+
+test("PHASE7 TEST9: EN exam", async ({ page }) => {
+  const email = uniqueEmail("p7-en");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam");
+  await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
+  await expect(page.locator("body")).toContainText("PMP Exam Simulator");
+  await page.getByTestId("start-exam-quick-practice").click();
+  await expect(page.getByTestId("exam-finish")).toContainText("Finish");
+});
+
+test("PHASE7 TEST10: Dashboard PMP Practice", async ({ page }) => {
+  const email = uniqueEmail("p7-dash");
+  await register(page, "en", email);
+  await page.goto("/en/dashboard");
+  await expect(page.getByTestId("pmp-practice-section")).toBeVisible();
+  await expect(page.getByTestId("pmp-start-practice")).toBeVisible();
+  await page.getByTestId("pmp-start-practice").click();
+  await expect(page.getByTestId("pmp-exam-hub")).toBeVisible();
+});
