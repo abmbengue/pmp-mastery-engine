@@ -132,7 +132,7 @@ describe("Phase 4 content and dashboard aggregation", () => {
     expect(first).not.toBeNull();
 
     await prisma.lessonProgress.deleteMany({
-      where: { userId: demoUserId, lessonId: first!.id },
+      where: { userId: demoUserId },
     });
 
     let next = await getNextLessonForCourse(demoUserId, pfCourseId);

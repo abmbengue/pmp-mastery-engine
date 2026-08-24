@@ -99,7 +99,7 @@ describe("next lesson navigation", () => {
       "understanding-income"
     );
     expect(next).not.toBeNull();
-    expect(next!.slug).toBe("tracking-expenses");
+    expect(next!.slug).toBe("net-vs-gross-income");
     expect(next!.moduleSlug).toBe("foundations");
   });
 
