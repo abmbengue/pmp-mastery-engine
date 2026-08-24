@@ -740,7 +740,6 @@ async function enterDemo(page: Page, locale: "fr" | "en") {
   await expect(page.getByTestId("landing-demo-link")).toBeVisible();
   await page.getByTestId("landing-demo-link").click();
   await expect(page).toHaveURL(new RegExp(`/${locale}/dashboard`), { timeout: 15_000 });
-  await page.reload();
   await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 15_000 });
   await expect(page.getByTestId("demo-banner")).toBeVisible({ timeout: 10_000 });
 }

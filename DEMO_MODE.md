@@ -50,7 +50,7 @@ When disabled:
 
 1. User opens landing (`/fr` or `/en`)
 2. Clicks **“Essayer la démo”** / **“Try the demo”** (visible only when `DEMO_MODE=true`)
-3. `GET /[locale]/demo` route handler:
+3. Server Action `enterDemo` (form submit from landing, or `/[locale]/demo` page):
    - Verifies `DEMO_MODE=true`
    - Signs out any existing session
    - Calls Auth.js `signIn("credentials")` server-side with demo credentials

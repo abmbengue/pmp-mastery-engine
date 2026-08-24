@@ -1,6 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/modules/localization/navigation";
 import { isDemoModeEnabled } from "@/modules/demo/demo-config";
+import { enterDemo } from "@/app/[locale]/demo/actions";
+import { DemoEntryButton } from "@/app/[locale]/components/demo/DemoEntryButton";
 
 export default async function HomePage({
   params,
@@ -25,13 +27,12 @@ export default async function HomePage({
           {t("app.startLearning")}
         </Link>
         {demoEnabled ? (
-          <Link
-            href="/demo"
-            className="inline-block rounded-lg border-2 border-blue-600 bg-white px-6 py-3 font-medium text-blue-700 hover:bg-blue-50"
-            data-testid="landing-demo-link"
-          >
-            {t("demo.tryDemo")}
-          </Link>
+          <form action={enterDemo.bind(null, locale)}>
+            <DemoEntryButton
+              label={t("demo.tryDemo")}
+              className="inline-block rounded-lg border-2 border-blue-600 bg-white px-6 py-3 font-medium text-blue-700 hover:bg-blue-50"
+            />
+          </form>
         ) : null}
         <Link
           href="/login"

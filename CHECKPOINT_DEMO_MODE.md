@@ -24,7 +24,7 @@
 
 | Route | Method | Description |
 |-------|--------|-------------|
-| `/[locale]/demo` | GET | Demo login → redirect dashboard |
+| `/[locale]/demo` | GET | Demo login page (calls `enterDemo` action) |
 | `/api/demo/reset` | POST | Reset demo pedagogical data |
 | `/[locale]` | GET | Landing with conditional demo CTA |
 

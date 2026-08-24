@@ -1,3 +1,5 @@
+"use server";
+
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
@@ -7,12 +9,7 @@ import {
   isDemoModeEnabled,
 } from "@/modules/demo/demo-config";
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ locale: string }> }
-) {
-  const { locale } = await params;
-
+export async function enterDemo(locale: string) {
   if (!isDemoModeEnabled()) {
     redirect(`/${locale}/login`);
   }
