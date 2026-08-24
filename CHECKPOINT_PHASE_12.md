@@ -30,10 +30,14 @@ Labeled login/register fields; quiz focus targets; AI tutor `aria-controls` / re
 Shorts discovery completion batched (N+1 removed).
 
 ## I. Tests
-Vitest + E2E non-regression + Phase 12 content/hardening tests. No existing tests deleted.
+| Command | Result |
+|---|---|
+| `npm run lint` | PASS |
+| `npm run test` | **201/201 PASS** |
+| `npm run build` | PASS |
+| `npm run test:e2e` | **53/53 PASS** |
 
-## J. Build
-`npm run build` PASS (see final run).
+No existing tests deleted. Added Phase 12 content/hardening coverage. E2E uses `DISABLE_RATE_LIMIT=1` so register flood is not blocked.
 
 ## K. Remaining risks
 - No email verification / password reset  

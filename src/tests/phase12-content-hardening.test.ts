@@ -132,6 +132,18 @@ describe("Phase 12 rate limiting", () => {
     expect(checkRateLimit("t:user", 2, 60_000).ok).toBe(false);
   });
 
+  it("can be disabled via DISABLE_RATE_LIMIT for e2e", () => {
+    const prev = process.env.DISABLE_RATE_LIMIT;
+    process.env.DISABLE_RATE_LIMIT = "1";
+    try {
+      expect(checkRateLimit("t:disabled", 1, 60_000).ok).toBe(true);
+      expect(checkRateLimit("t:disabled", 1, 60_000).ok).toBe(true);
+    } finally {
+      if (prev === undefined) delete process.env.DISABLE_RATE_LIMIT;
+      else process.env.DISABLE_RATE_LIMIT = prev;
+    }
+  });
+
   it("redacts secrets in safeApiLog", () => {
     const logs: string[] = [];
     const original = console.info;

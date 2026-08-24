@@ -33,6 +33,11 @@ export function checkRateLimit(
   windowMs: number,
   now = Date.now()
 ): RateLimitResult {
+  // Educational MVP: allow disabling for Playwright / local stress runs
+  if (process.env.DISABLE_RATE_LIMIT === "1") {
+    return { ok: true, remaining: limit, retryAfterSec: 0 };
+  }
+
   const existing = buckets.get(key);
   if (!existing || existing.resetAt <= now) {
     buckets.set(key, { count: 1, resetAt: now + windowMs });

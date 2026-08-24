@@ -25,7 +25,7 @@
 |---|---|
 | Zod validation on mutating routes | **IMPLEMENTED** / strengthened |
 | JSON parse error handling | **IMPLEMENTED** (register, lesson progress, exam, AI) |
-| Rate limit — register (IP) | **IMPLEMENTED** (10 / 15 min) |
+| Rate limit — register (IP) | **IMPLEMENTED** (10 / 15 min; `DISABLE_RATE_LIMIT=1` for Playwright) |
 | Rate limit — AI tutor (user) | **IMPLEMENTED** (30 / min) |
 | Rate limit — exam start (user) | **IMPLEMENTED** (20 / min) |
 | Distributed rate limit | **NOT IMPLEMENTED** (single-instance Map) |

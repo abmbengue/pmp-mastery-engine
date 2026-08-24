@@ -18,7 +18,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "AI_PROVIDER=mock npm run dev",
+    command: "AI_PROVIDER=mock DISABLE_RATE_LIMIT=1 npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
