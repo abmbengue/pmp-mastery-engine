@@ -1,11 +1,14 @@
 /**
  * Deterministic spaced-repetition intervals (days).
  * Pedagogical / explicable — NOT machine learning.
+ * Centralized configuration — do not scatter magic numbers.
  */
 export const REVIEW_INTERVALS_DAYS = {
-  WEAK: 0,
+  WEAK: 1,
   LEARNING: 3,
-  MASTERED: 14,
+  MASTERED: 7,
+  /** Items due within this many days appear in "Due soon" */
+  DUE_SOON_WINDOW_DAYS: 3,
   /** After a repeated exam error, pull forward by this many days */
   REPEATED_ERROR_PULL_FORWARD: 2,
 } as const;
@@ -14,7 +17,9 @@ export type ReviewReasonCode =
   | "WEAK_MASTERY"
   | "REPEATED_ERROR"
   | "DUE_TODAY"
+  | "DUE_SOON"
   | "RECENT_FAILURE"
+  | "RECENTLY_LEARNED"
   | "UNFINISHED_LESSON"
   | "CORRECTIVE_LEARNING";
 
@@ -23,6 +28,8 @@ export interface ReviewCandidateInput {
   skillSlug: string;
   masteryLevel: "WEAK" | "LEARNING" | "MASTERED";
   lastReviewedAt: Date | null;
+  /** Persisted schedule when available */
+  nextReviewAt?: Date | null;
   attemptCount: number;
   recentErrorCount: number;
   lastAttemptAt: Date | null;
@@ -51,7 +58,8 @@ export function intervalDaysForMastery(
 }
 
 /**
- * Next due date from last review (or last attempt) + mastery interval.
+ * Deterministic next review date from mastery + last activity.
+ * Alias: getNextReviewDate
  */
 export function computeNextReviewAt(
   input: Pick<
@@ -65,26 +73,39 @@ export function computeNextReviewAt(
   if (input.recentErrorCount >= 2) {
     days = Math.max(0, days - REVIEW_INTERVALS_DAYS.REPEATED_ERROR_PULL_FORWARD);
   }
-  if (input.masteryLevel === "WEAK") {
-    days = 0;
-  }
   const due = new Date(base);
   due.setDate(due.getDate() + days);
   return due;
 }
 
+/** Public alias for scheduling APIs / docs */
+export function getNextReviewDate(
+  input: Pick<
+    ReviewCandidateInput,
+    "masteryLevel" | "lastReviewedAt" | "lastAttemptAt" | "recentErrorCount"
+  >,
+  now: Date = new Date()
+): Date {
+  return computeNextReviewAt(input, now);
+}
+
 /**
  * Pure review queue builder — deterministic for same inputs + now.
+ * Prefers persisted nextReviewAt when provided.
  */
 export function buildReviewQueue(
   candidates: ReviewCandidateInput[],
   now: Date = new Date()
 ): ReviewQueueItemPure[] {
   const today = startOfDay(now);
+  const soonLimit = new Date(today);
+  soonLimit.setDate(soonLimit.getDate() + REVIEW_INTERVALS_DAYS.DUE_SOON_WINDOW_DAYS);
+
   const items: ReviewQueueItemPure[] = [];
 
   for (const c of candidates) {
-    const dueAt = computeNextReviewAt(c, now);
+    const computed = computeNextReviewAt(c, now);
+    const dueAt = c.nextReviewAt ?? computed;
     const dueDay = startOfDay(dueAt);
     const intervalDays = intervalDaysForMastery(c.masteryLevel);
 
@@ -103,12 +124,22 @@ export function buildReviewQueue(
     } else if (dueDay.getTime() <= today.getTime()) {
       reasonCode = "DUE_TODAY";
       priority =
-        c.masteryLevel === "LEARNING" ? 40 : c.masteryLevel === "MASTERED" ? 60 : 50;
+        c.masteryLevel === "LEARNING" ? 40 : c.masteryLevel === "MASTERED" ? 55 : 45;
+    } else if (dueDay.getTime() <= soonLimit.getTime()) {
+      reasonCode = "DUE_SOON";
+      priority = 70;
+    } else if (
+      c.masteryLevel === "LEARNING" &&
+      c.lastReviewedAt &&
+      startOfDay(c.lastReviewedAt).getTime() >=
+        today.getTime() - 2 * 24 * 60 * 60 * 1000
+    ) {
+      reasonCode = "RECENTLY_LEARNED";
+      priority = 80;
     }
 
     if (!reasonCode) continue;
 
-    // Prefer fewer attempts already done on weak skills (need exposure)
     priority += Math.min(15, c.attemptCount);
 
     items.push({
@@ -126,4 +157,30 @@ export function buildReviewQueue(
     if (a.priority !== b.priority) return a.priority - b.priority;
     return a.skillSlug.localeCompare(b.skillSlug);
   });
+}
+
+export type ReviewCalendarSection =
+  | "dueToday"
+  | "dueSoon"
+  | "weakConcepts"
+  | "repeatedErrors"
+  | "recentlyLearned";
+
+export function sectionForReason(code: ReviewReasonCode): ReviewCalendarSection {
+  switch (code) {
+    case "DUE_TODAY":
+      return "dueToday";
+    case "DUE_SOON":
+      return "dueSoon";
+    case "WEAK_MASTERY":
+      return "weakConcepts";
+    case "REPEATED_ERROR":
+    case "RECENT_FAILURE":
+    case "CORRECTIVE_LEARNING":
+      return "repeatedErrors";
+    case "RECENTLY_LEARNED":
+    case "UNFINISHED_LESSON":
+    default:
+      return "recentlyLearned";
+  }
 }

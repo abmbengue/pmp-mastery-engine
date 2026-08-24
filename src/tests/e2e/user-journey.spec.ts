@@ -550,6 +550,46 @@ test("PHASE8 TEST10: Question repetition prevention", async ({ page }) => {
   void firstPrompt;
 });
 
+test("PHASE10 TEST1: Review calendar sections", async ({ page }) => {
+  const email = uniqueEmail("p10-review");
+  await register(page, "en", email);
+  await page.goto("/en/review");
+  await expect(page.getByTestId("review-now-page")).toBeVisible();
+  await expect(page.getByTestId("start-review")).toBeVisible();
+  await expect(page.getByTestId("review-now-cta")).toBeVisible();
+});
+
+test("PHASE10 TEST2: Learning paths page", async ({ page }) => {
+  const email = uniqueEmail("p10-paths");
+  await register(page, "en", email);
+  await page.goto("/en/dashboard");
+  await expect(page.getByTestId("learning-paths-section")).toBeVisible();
+  await page.getByTestId("open-learning-paths").click();
+  await expect(page.getByTestId("learning-paths-page")).toBeVisible();
+  await expect(page.getByTestId("learning-path-financial-foundations")).toBeVisible();
+});
+
+test("PHASE10 TEST3: Shorts filters and previous/next", async ({ page }) => {
+  const email = uniqueEmail("p10-shorts");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/shorts");
+  await expect(page.getByTestId("shorts-page")).toBeVisible();
+  await expect(page.getByTestId("shorts-3min-badge")).toBeVisible();
+  await expect(page.getByTestId("shorts-filters")).toBeVisible();
+  await page.locator('[data-testid^="short-card-"]').first().click();
+  await expect(page.getByTestId("short-watch-page")).toBeVisible();
+  await expect(page.getByTestId("short-3min-badge")).toBeVisible();
+});
+
+test("PHASE10 TEST4: FR review + paths", async ({ page }) => {
+  const email = uniqueEmail("p10-fr");
+  await register(page, "fr", email);
+  await page.goto("/fr/review");
+  await expect(page.getByTestId("review-now-page")).toBeVisible();
+  await page.goto("/fr/learning-paths");
+  await expect(page.getByTestId("learning-paths-page")).toBeVisible();
+});
+
 test("PHASE9 TEST1: Review Now page and queue", async ({ page }) => {
   const email = uniqueEmail("p9-review");
   await register(page, "en", email);

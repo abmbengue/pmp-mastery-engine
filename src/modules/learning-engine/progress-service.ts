@@ -1,5 +1,6 @@
 import prisma from "@/data/prisma-client";
 import type { LessonProgressStatus, MasteryLevel } from "@/generated/prisma/client";
+import { getNextReviewDate } from "@/modules/learning-engine/spaced-repetition";
 export { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 
 export async function startLesson(userId: string, lessonId: string) {
@@ -91,17 +92,30 @@ export async function updateConceptMastery(
   skillId: string,
   level: MasteryLevel
 ) {
+  const now = new Date();
+  const nextReviewAt = getNextReviewDate(
+    {
+      masteryLevel: level,
+      lastReviewedAt: now,
+      lastAttemptAt: now,
+      recentErrorCount: 0,
+    },
+    now
+  );
+
   return prisma.conceptMastery.upsert({
     where: { userId_skillId: { userId, skillId } },
     create: {
       userId,
       skillId,
       level,
-      lastReviewedAt: new Date(),
+      lastReviewedAt: now,
+      nextReviewAt,
     },
     update: {
       level,
-      lastReviewedAt: new Date(),
+      lastReviewedAt: now,
+      nextReviewAt,
     },
   });
 }

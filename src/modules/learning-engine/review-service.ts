@@ -1,6 +1,8 @@
 import prisma from "@/data/prisma-client";
 import {
   buildReviewQueue,
+  sectionForReason,
+  type ReviewCalendarSection,
   type ReviewReasonCode,
 } from "@/modules/learning-engine/spaced-repetition";
 import {
@@ -27,6 +29,18 @@ export type ReviewQueueItem = {
   lessonPath: string | null;
   estimatedMinutes: number | null;
   shortExplanation: string;
+  section: ReviewCalendarSection;
+};
+
+export type ReviewCalendar = {
+  dueToday: ReviewQueueItem[];
+  dueSoon: ReviewQueueItem[];
+  weakConcepts: ReviewQueueItem[];
+  repeatedErrors: ReviewQueueItem[];
+  recentlyLearned: ReviewQueueItem[];
+  /** Flat prioritized queue (compat) */
+  all: ReviewQueueItem[];
+  primaryAction: ReviewQueueItem | null;
 };
 
 function reasonLabel(
@@ -41,9 +55,13 @@ function reasonLabel(
       case "REPEATED_ERROR":
         return `Erreurs répétées sur « ${skillTitle} ».`;
       case "DUE_TODAY":
-        return `Révision espacée due aujourd'hui pour « ${skillTitle} ».`;
+        return `Révision due aujourd'hui pour « ${skillTitle} ».`;
+      case "DUE_SOON":
+        return `Révision bientôt pour « ${skillTitle} ».`;
       case "RECENT_FAILURE":
         return `Échec récent sur « ${skillTitle} ».`;
+      case "RECENTLY_LEARNED":
+        return `Récemment appris : « ${skillTitle} » — consolidez.`;
       case "UNFINISHED_LESSON":
         return "Leçon en cours à terminer.";
       case "CORRECTIVE_LEARNING":
@@ -58,9 +76,13 @@ function reasonLabel(
     case "REPEATED_ERROR":
       return `Repeated errors on “${skillTitle}”.`;
     case "DUE_TODAY":
-      return `Spaced review due today for “${skillTitle}”.`;
+      return `Review due today for “${skillTitle}”.`;
+    case "DUE_SOON":
+      return `Review coming soon for “${skillTitle}”.`;
     case "RECENT_FAILURE":
       return `Recent failure on “${skillTitle}”.`;
+    case "RECENTLY_LEARNED":
+      return `Recently learned: “${skillTitle}” — consolidate.`;
     case "UNFINISHED_LESSON":
       return "Unfinished lesson to complete.";
     case "CORRECTIVE_LEARNING":
@@ -96,13 +118,10 @@ async function findLessonForSkillSlug(
   return links[0]?.lesson ?? null;
 }
 
-/**
- * Builds the spaced-repetition review queue for an authenticated user.
- */
-export async function getReviewQueue(
+async function buildQueueItems(
   userId: string,
   locale: Locale,
-  now: Date = new Date()
+  now: Date
 ): Promise<ReviewQueueItem[]> {
   const enrollments = await prisma.enrollment.findMany({
     where: { userId },
@@ -137,6 +156,7 @@ export async function getReviewQueue(
       skillSlug: m.skill.slug,
       masteryLevel: m.level as "WEAK" | "LEARNING" | "MASTERED",
       lastReviewedAt: m.lastReviewedAt,
+      nextReviewAt: m.nextReviewAt,
       attemptCount: attempts.length,
       recentErrorCount: errorCountBySkill.get(m.skill.slug) ?? 0,
       lastAttemptAt: attempts[0]?.createdAt ?? null,
@@ -144,7 +164,6 @@ export async function getReviewQueue(
     });
   }
 
-  // Also surface skills that only appear in exam errors (no mastery row yet)
   for (const [slug, count] of errorCountBySkill) {
     if (candidates.some((c) => c.skillSlug === slug)) continue;
     const skill = await prisma.skill.findUnique({ where: { slug } });
@@ -154,6 +173,7 @@ export async function getReviewQueue(
       skillSlug: skill.slug,
       masteryLevel: "WEAK" as const,
       lastReviewedAt: null,
+      nextReviewAt: null,
       attemptCount: 0,
       recentErrorCount: count,
       lastAttemptAt: null,
@@ -164,7 +184,7 @@ export async function getReviewQueue(
   const pureQueue = buildReviewQueue(candidates, now);
   const items: ReviewQueueItem[] = [];
 
-  for (const row of pureQueue.slice(0, 12)) {
+  for (const row of pureQueue.slice(0, 20)) {
     const skill = await prisma.skill.findUnique({ where: { id: row.skillId } });
     if (!skill) continue;
     const skillTitle = pickLocalized(skill.titleFr, skill.titleEn, locale);
@@ -199,12 +219,12 @@ export async function getReviewQueue(
       estimatedMinutes: lesson?.estimatedMinutes ?? 8,
       shortExplanation:
         locale === "fr"
-          ? `Révision micro-learning (~${lesson?.estimatedMinutes ?? 8} min). Intervalle indicatif : ${row.intervalDays} j.`
-          : `Micro-learning review (~${lesson?.estimatedMinutes ?? 8} min). Indicative interval: ${row.intervalDays} d.`,
+          ? `Révision micro-learning (~${lesson?.estimatedMinutes ?? 8} min). Prochaine échéance calculée : ${row.intervalDays} j.`
+          : `Micro-learning review (~${lesson?.estimatedMinutes ?? 8} min). Scheduled interval: ${row.intervalDays} d.`,
+      section: sectionForReason(row.reasonCode),
     });
   }
 
-  // Unfinished lessons (priority after skill-based items)
   const unfinished = await prisma.lessonProgress.findMany({
     where: {
       userId,
@@ -254,17 +274,62 @@ export async function getReviewQueue(
         locale === "fr"
           ? "Terminez cette leçon pour consolider votre progression."
           : "Finish this lesson to consolidate your progress.",
+      section: "recentlyLearned",
     });
   }
 
   items.sort((a, b) => a.priority - b.priority);
-  return items.slice(0, 15);
+  return items.slice(0, 20);
 }
 
 /**
- * Corrective learning from the latest exam errors — reuses recommendNextLearning
- * when possible, otherwise maps error → skill → lesson.
+ * Flat review queue (Phase 9 compat).
  */
+export async function getReviewQueue(
+  userId: string,
+  locale: Locale,
+  now: Date = new Date()
+): Promise<ReviewQueueItem[]> {
+  return buildQueueItems(userId, locale, now);
+}
+
+/**
+ * Grouped review calendar for the Review page (Phase 10).
+ */
+export async function getReviewCalendar(
+  userId: string,
+  locale: Locale,
+  now: Date = new Date()
+): Promise<ReviewCalendar> {
+  const all = await buildQueueItems(userId, locale, now);
+  const dueToday = all.filter((i) => i.section === "dueToday" || i.reasonCode === "WEAK_MASTERY");
+  const dueSoon = all.filter((i) => i.section === "dueSoon");
+  const weakConcepts = all.filter((i) => i.section === "weakConcepts");
+  const repeatedErrors = all.filter((i) => i.section === "repeatedErrors");
+  const recentlyLearned = all.filter((i) => i.section === "recentlyLearned");
+
+  // Deduplicate section lists by skillSlug while keeping order
+  const uniq = (rows: ReviewQueueItem[]) => {
+    const seen = new Set<string>();
+    return rows.filter((r) => {
+      const key = `${r.skillSlug}-${r.reasonCode}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  return {
+    dueToday: uniq(dueToday).slice(0, 8),
+    dueSoon: uniq(dueSoon).slice(0, 6),
+    weakConcepts: uniq(weakConcepts).slice(0, 6),
+    repeatedErrors: uniq(repeatedErrors).slice(0, 6),
+    recentlyLearned: uniq(recentlyLearned).slice(0, 6),
+    all,
+    primaryAction: all[0] ?? null,
+  };
+}
+
 export async function getCorrectiveLearningForUser(
   userId: string,
   locale: Locale
@@ -294,7 +359,6 @@ export async function getCorrectiveLearningForUser(
     skillHint
   );
 
-  // Prefer existing recommendation engine (weak skill / repeated error path)
   const recommendation = await recommendNextLearning(userId, locale);
 
   return {

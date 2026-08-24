@@ -29,6 +29,7 @@ export default async function ShortWatchPage({
   const allShorts = await listShortsByAcademy(academySlug, loc);
   const idx = allShorts.findIndex((s) => s.id === shortId);
   const nextShort = idx >= 0 && idx < allShorts.length - 1 ? allShorts[idx + 1] : null;
+  const prevShort = idx > 0 ? allShorts[idx - 1] : null;
 
   return (
     <section data-testid="short-watch-page">
@@ -43,16 +44,17 @@ export default async function ShortWatchPage({
         <span>{short.title}</span>
       </nav>
 
-      <h1 className="text-2xl font-bold text-gray-900">{short.title}</h1>
+      <p className="text-sm font-medium text-blue-800" data-testid="short-3min-badge">
+        {t("threeMinLearning")}
+      </p>
+      <h1 className="mt-1 text-2xl font-bold text-gray-900">{short.title}</h1>
       <p className="mt-2 text-sm text-gray-600">{short.description}</p>
 
       <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
         {short.durationSeconds != null && (
           <div>
             <dt className="text-gray-500">{t("duration")}</dt>
-            <dd className="font-medium">
-              {Math.ceil(short.durationSeconds / 60)} {ta("minutes")}
-            </dd>
+            <dd className="font-medium">{short.durationSeconds}s</dd>
           </div>
         )}
         {short.topic && (
@@ -73,20 +75,36 @@ export default async function ShortWatchPage({
             <dd className="font-medium">{short.relatedSkillSlug}</dd>
           </div>
         )}
+        {short.learningObjective && (
+          <div>
+            <dt className="text-gray-500">{t("learningObjective")}</dt>
+            <dd className="font-medium">{short.learningObjective}</dd>
+          </div>
+        )}
       </dl>
 
       <div
-        className="mt-6 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-10 text-center"
+        className="mt-6 space-y-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-8 text-center"
         data-testid="short-video-placeholder"
       >
-        <p className="text-4xl" aria-hidden="true">
-          ▶
-        </p>
-        <p className="mt-3 text-sm font-medium text-amber-700">{t("comingSoonBadge")}</p>
-        <p className="mt-1 text-xs text-gray-500">{t("placeholder")}</p>
+        <p className="text-sm font-semibold text-gray-800">{t("pedagogyHook")}</p>
+        <p className="text-sm text-gray-700">{t("pedagogyConcept")}</p>
+        <p className="text-sm text-gray-700">{t("pedagogyExample")}</p>
+        <p className="text-sm font-medium text-gray-900">{t("pedagogyTakeaway")}</p>
+        <p className="mt-3 text-xs text-amber-800">{t("comingSoonBadge")}</p>
+        <p className="text-xs text-gray-500">{t("placeholder")}</p>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-start">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start">
+        {prevShort && (
+          <Link
+            href={`/academies/${academySlug}/shorts/${prevShort.id}`}
+            className="min-h-11 rounded-lg border px-4 py-2.5 text-center text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="previous-short-link"
+          >
+            {t("previousShort")}
+          </Link>
+        )}
         <MarkShortCompletedButton
           shortId={short.id}
           academySlug={academySlug}
@@ -100,7 +118,7 @@ export default async function ShortWatchPage({
         {nextShort && (
           <Link
             href={`/academies/${academySlug}/shorts/${nextShort.id}`}
-            className="rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="min-h-11 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             data-testid="next-short-link"
           >
             {t("nextShort")}
@@ -109,7 +127,7 @@ export default async function ShortWatchPage({
         {short.lessonPath && (
           <Link
             href={short.lessonPath}
-            className="rounded-lg border border-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="min-h-11 rounded-lg border border-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {ta("continueLearning")}
           </Link>

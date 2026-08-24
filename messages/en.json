@@ -46,7 +46,8 @@
     "skipToContent": "Skip to content",
     "pmpExam": "PMP Exam",
     "review": "Review",
-    "readinessReport": "Readiness report"
+    "readinessReport": "Readiness report",
+    "learningPaths": "Paths"
   },
   "auth": {
     "loginTitle": "Login",
@@ -130,19 +131,38 @@
     "openReview": "Open review queue",
     "openReadinessReport": "Open readiness report",
     "noReviewItems": "Nothing due for review right now. Keep practicing!",
-    "reviewReason": "Why review?"
+    "reviewReason": "Why review?",
+    "learningPaths": "Learning paths",
+    "viewAllPaths": "View all paths",
+    "shortsPersonalFinance": "PF Shorts",
+    "shortsCorporateFinance": "CF Shorts",
+    "shortsPmp": "PMP Shorts"
   },
   "review": {
     "title": "Review Now",
-    "subtitle": "Micro-learning reviews prioritized by spaced repetition — about 5–10 minutes.",
-    "durationHint": "Aim for a short session: one concept, one lesson, optional quick practice.",
+    "subtitle": "See what to review today in under 10 seconds — spaced micro-learning.",
+    "durationHint": "Aim for a short session: 5–10 minutes.",
     "empty": "Nothing is due for review. Great work — keep practicing to stay sharp.",
     "skill": "Skill",
     "minutes": "min",
     "openLesson": "Open lesson",
     "noLesson": "No linked lesson yet for this skill.",
     "backDashboard": "Back to dashboard",
-    "openReadiness": "PMP readiness report"
+    "openReadiness": "PMP readiness report",
+    "dueToday": "Due today",
+    "dueSoon": "Due soon",
+    "weakConcepts": "Weak concepts",
+    "repeatedErrors": "Repeated errors",
+    "recentlyLearned": "Recently learned",
+    "sectionEmpty": "Nothing in this section right now.",
+    "startReview": "Start Review",
+    "reviewNowCta": "Review Now"
+  },
+  "learningPaths": {
+    "title": "Learning paths",
+    "subtitle": "Simple guided paths that reuse your existing course progress.",
+    "continue": "Continue path",
+    "openCourse": "Open course"
   },
   "readinessReport": {
     "title": "PMP Readiness Report",
@@ -251,7 +271,16 @@
     "relatedSkill": "Related skill",
     "empty": "No shorts available yet for this academy.",
     "backToAcademy": "Back to academy",
-    "comingSoonBadge": "Placeholder"
+    "comingSoonBadge": "Placeholder",
+    "threeMinLearning": "3 min learning",
+    "all": "All",
+    "filter": "Filter",
+    "previousShort": "Previous short",
+    "learningObjective": "Learning objective",
+    "pedagogyHook": "HOOK — grab attention with one concrete question.",
+    "pedagogyConcept": "CONCEPT — one idea, clearly stated.",
+    "pedagogyExample": "EXAMPLE — a short real-world illustration.",
+    "pedagogyTakeaway": "KEY TAKEAWAY — remember this one sentence."
   },
   "simulators": {
     "title": "Simulators",

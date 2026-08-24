@@ -17,18 +17,46 @@ describe("spaced repetition", () => {
     expect(intervalDaysForMastery("MASTERED")).toBe(REVIEW_INTERVALS_DAYS.MASTERED);
   });
 
-  it("schedules weak skills due immediately", () => {
+  it("schedules weak skills after the configured short interval", () => {
     const now = new Date("2026-08-24T12:00:00Z");
     const due = computeNextReviewAt(
       {
         masteryLevel: "WEAK",
-        lastReviewedAt: new Date("2026-08-20T12:00:00Z"),
+        lastReviewedAt: now,
         lastAttemptAt: null,
         recentErrorCount: 0,
       },
       now
     );
-    expect(due.getTime()).toBeLessThanOrEqual(now.getTime());
+    const expected = new Date(now);
+    expected.setDate(expected.getDate() + REVIEW_INTERVALS_DAYS.WEAK);
+    expect(due.getTime()).toBe(expected.getTime());
+  });
+
+  it("exposes getNextReviewDate as alias", async () => {
+    const { getNextReviewDate } = await import(
+      "@/modules/learning-engine/spaced-repetition"
+    );
+    const now = new Date("2026-08-24T12:00:00Z");
+    const a = getNextReviewDate(
+      {
+        masteryLevel: "LEARNING",
+        lastReviewedAt: now,
+        lastAttemptAt: null,
+        recentErrorCount: 0,
+      },
+      now
+    );
+    const b = computeNextReviewAt(
+      {
+        masteryLevel: "LEARNING",
+        lastReviewedAt: now,
+        lastAttemptAt: null,
+        recentErrorCount: 0,
+      },
+      now
+    );
+    expect(a.getTime()).toBe(b.getTime());
   });
 
   it("builds a deterministic priority queue", () => {

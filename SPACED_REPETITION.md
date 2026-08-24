@@ -1,56 +1,39 @@
-# Spaced Repetition (Phase 9)
+# Spaced Repetition
 
 ## Purpose
 
-Deterministic, explainable micro-review scheduling. **Not machine learning.** Pedagogical only.
+Deterministic, explainable micro-review scheduling. **Not machine learning.**
 
-## Core modules
+## Config (`REVIEW_INTERVALS_DAYS`)
 
-| Module | Role |
+| Mastery | Days |
 |---|---|
-| `src/modules/learning-engine/spaced-repetition.ts` | Pure intervals + `buildReviewQueue()` |
-| `src/modules/learning-engine/corrective-learning.ts` | Error type → skill / LO mapping |
-| `src/modules/learning-engine/review-service.ts` | `getReviewQueue()` for authenticated user |
-| `recommendNextLearning()` | Extended with `CORRECTIVE_LEARNING` and `DUE_FOR_REVIEW` |
+| WEAK | 1 |
+| LEARNING | 3 |
+| MASTERED | 7 |
+| Due-soon window | 3 |
+| Repeated-error pull-forward | 2 |
 
-## Intervals (configurable constants)
+## Persistence
 
-| Mastery | Interval |
-|---|---|
-| WEAK | Review soon (0 days) |
-| LEARNING | Short interval (3 days) |
-| MASTERED | Longer interval (14 days) |
+`ConceptMastery.nextReviewAt` is set whenever mastery is updated via `updateConceptMastery()` using `getNextReviewDate()` / `computeNextReviewAt()`.
 
-Repeated exam errors (≥2) pull the due date forward by 2 days.
+## APIs
 
-## Review queue priority
+- `getNextReviewDate()` / `computeNextReviewAt()` — pure  
+- `buildReviewQueue()` — pure priority queue  
+- `getReviewQueue()` / `getReviewCalendar()` — authenticated user services  
 
-1. Weak mastery  
-2. Repeated errors  
-3. Recent failure  
-4. Due today (spaced)  
-5. Unfinished lessons (appended by `getReviewQueue`)  
-6. New recommendation via existing `recommendNextLearning()` on dashboard / report  
+## Review calendar sections
 
-## Error → Corrective Learning
+Due today · Due soon · Weak concepts · Repeated errors · Recently learned  
 
-```
-Exam → Error Analysis → errorType → Weak Skill → Corrective Learning
-```
+UI: `/[locale]/review` with **Start Review** / **Review Now**.
 
-`mapErrorToCorrectiveLearning()` maps `ExamErrorCategoryCode` to preferred skill slugs and a learning objective. Recommendations reuse **`recommendNextLearning()`** (reason `CORRECTIVE_LEARNING`) — no second recommendation engine.
+## Corrective learning
 
-## UI
-
-- `/[locale]/review` — Review Now (5–10 min micro-learning)
-- Dashboard section **Review Now / Due for Review**
+Still extends `recommendNextLearning()` — no second recommendation engine.
 
 ## Security
 
-Queue is built only from `auth()` session `userId`. Client-supplied `userId` / email are never trusted.
-
-## What this is NOT
-
-- Not ML / adaptive neural ranking  
-- Not an official PMI study plan  
-- Not a CMS-driven content pipeline  
+Always scoped to `auth()` session user id.

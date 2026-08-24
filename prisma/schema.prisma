@@ -551,10 +551,13 @@ model ConceptMastery {
   skill          Skill        @relation(fields: [skillId], references: [id], onDelete: Cascade)
   level          MasteryLevel @default(WEAK)
   lastReviewedAt DateTime?
+  /** Deterministic spaced-repetition due date (Phase 10) */
+  nextReviewAt   DateTime?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
   @@unique([userId, skillId])
+  @@index([userId, nextReviewAt])
 }
 
 model LearningStreak {

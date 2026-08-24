@@ -107,6 +107,8 @@ export interface LessonSeedConfig {
   flashcardBackEn: string;
   exercisePromptFr: string;
   exercisePromptEn: string;
+  /** Optional learning objective for VIDEO / Short metadata */
+  learningObjective?: "IDENTIFY" | "APPLY" | "ANALYZE" | "DECIDE";
   question: {
     type: "SINGLE_CHOICE" | "MULTIPLE_CHOICE" | "TRUE_FALSE";
     promptFr: string;
@@ -132,6 +134,7 @@ export async function seedLessonWithContent(
   options?: {
     academySlug?: string;
     extraSkillIds?: string[];
+    relatedSkillSlug?: string;
   }
 ) {
   const difficulty = config.difficulty ?? "BEGINNER";
@@ -199,9 +202,10 @@ export async function seedLessonWithContent(
         topic: config.shortTopic,
         difficulty,
         academySlug: options?.academySlug,
-        relatedSkillSlug: undefined,
+        relatedSkillSlug: options?.relatedSkillSlug,
         relatedLessonSlug: config.slug,
-        learningObjective: config.isShort ? "IDENTIFY" : undefined,
+        learningObjective:
+          config.learningObjective ?? (config.isShort ? "IDENTIFY" : undefined),
       },
     },
   });

@@ -22,7 +22,15 @@ export type ShortLearningCard = {
   difficulty: string | null;
   academySlug: string;
   relatedSkillSlug: string | null;
+  relatedLessonSlug: string | null;
+  learningObjective: string | null;
   lessonPath: string | null;
+};
+
+export type ShortListFilters = {
+  topic?: string | null;
+  skill?: string | null;
+  difficulty?: string | null;
 };
 
 function parseVideoPayload(raw: unknown): VideoPayload | null {
@@ -30,9 +38,48 @@ function parseVideoPayload(raw: unknown): VideoPayload | null {
   return parsed.success ? parsed.data : null;
 }
 
+function toCard(
+  item: {
+    id: string;
+    payload: unknown;
+    lesson: {
+      slug: string;
+      module: {
+        slug: string;
+        course: { slug: string; academy: { slug: string } };
+      };
+    };
+  },
+  locale: Locale
+): ShortLearningCard | null {
+  const payload = parseVideoPayload(item.payload);
+  if (!payload || !payload.isShort) return null;
+
+  const academy = item.lesson.module.course.academy;
+  const course = item.lesson.module.course;
+  const mod = item.lesson.module;
+
+  return {
+    id: item.id,
+    title: pickLocalized(payload.titleFr, payload.titleEn, locale),
+    description: pickLocalized(payload.descriptionFr, payload.descriptionEn, locale),
+    durationSeconds: payload.durationSeconds,
+    thumbnailUrl: payload.thumbnailUrl,
+    isPlaceholder: payload.isPlaceholder,
+    topic: payload.topic ?? null,
+    difficulty: payload.difficulty ?? null,
+    academySlug: payload.academySlug ?? academy.slug,
+    relatedSkillSlug: payload.relatedSkillSlug ?? null,
+    relatedLessonSlug: payload.relatedLessonSlug ?? null,
+    learningObjective: payload.learningObjective ?? null,
+    lessonPath: `/academies/${academy.slug}/courses/${course.slug}/modules/${mod.slug}/lessons/${item.lesson.slug}`,
+  };
+}
+
 export async function listShortsByAcademy(
   academySlug: string,
-  locale: Locale
+  locale: Locale,
+  filters: ShortListFilters = {}
 ): Promise<ShortLearningCard[]> {
   const items = await prisma.learningItem.findMany({
     where: {
@@ -62,26 +109,12 @@ export async function listShortsByAcademy(
   const shorts: ShortLearningCard[] = [];
 
   for (const item of items) {
-    const payload = parseVideoPayload(item.payload);
-    if (!payload || !payload.isShort) continue;
-
-    const academy = item.lesson.module.course.academy;
-    const course = item.lesson.module.course;
-    const mod = item.lesson.module;
-
-    shorts.push({
-      id: item.id,
-      title: pickLocalized(payload.titleFr, payload.titleEn, locale),
-      description: pickLocalized(payload.descriptionFr, payload.descriptionEn, locale),
-      durationSeconds: payload.durationSeconds,
-      thumbnailUrl: payload.thumbnailUrl,
-      isPlaceholder: payload.isPlaceholder,
-      topic: payload.topic ?? null,
-      difficulty: payload.difficulty ?? null,
-      academySlug: payload.academySlug ?? academy.slug,
-      relatedSkillSlug: payload.relatedSkillSlug ?? null,
-      lessonPath: `/academies/${academy.slug}/courses/${course.slug}/modules/${mod.slug}/lessons/${item.lesson.slug}`,
-    });
+    const card = toCard(item, locale);
+    if (!card) continue;
+    if (filters.topic && card.topic !== filters.topic) continue;
+    if (filters.skill && card.relatedSkillSlug !== filters.skill) continue;
+    if (filters.difficulty && card.difficulty !== filters.difficulty) continue;
+    shorts.push(card);
   }
 
   return shorts;
@@ -105,26 +138,21 @@ export async function getShortById(
       },
     },
   });
+  if (!item) return null;
+  return toCard(item, locale);
+}
 
-  if (!item || item.type !== "VIDEO") return null;
-  const payload = parseVideoPayload(item.payload);
-  if (!payload || !payload.isShort) return null;
-
-  const academy = item.lesson.module.course.academy;
-  const course = item.lesson.module.course;
-  const mod = item.lesson.module;
-
+export function listShortFilterOptions(shorts: ShortLearningCard[]) {
+  const topics = [...new Set(shorts.map((s) => s.topic).filter(Boolean))] as string[];
+  const skills = [
+    ...new Set(shorts.map((s) => s.relatedSkillSlug).filter(Boolean)),
+  ] as string[];
+  const difficulties = [
+    ...new Set(shorts.map((s) => s.difficulty).filter(Boolean)),
+  ] as string[];
   return {
-    id: item.id,
-    title: pickLocalized(payload.titleFr, payload.titleEn, locale),
-    description: pickLocalized(payload.descriptionFr, payload.descriptionEn, locale),
-    durationSeconds: payload.durationSeconds,
-    thumbnailUrl: payload.thumbnailUrl,
-    isPlaceholder: payload.isPlaceholder,
-    topic: payload.topic ?? null,
-    difficulty: payload.difficulty ?? null,
-    academySlug: payload.academySlug ?? academy.slug,
-    relatedSkillSlug: payload.relatedSkillSlug ?? null,
-    lessonPath: `/academies/${academy.slug}/courses/${course.slug}/modules/${mod.slug}/lessons/${item.lesson.slug}`,
+    topics: topics.sort(),
+    skills: skills.sort(),
+    difficulties: difficulties.sort(),
   };
 }

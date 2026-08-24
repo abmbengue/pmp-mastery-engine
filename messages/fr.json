@@ -46,7 +46,8 @@
     "skipToContent": "Aller au contenu",
     "pmpExam": "Examen PMP",
     "review": "Révision",
-    "readinessReport": "Rapport de préparation"
+    "readinessReport": "Rapport de préparation",
+    "learningPaths": "Parcours"
   },
   "auth": {
     "loginTitle": "Connexion",
@@ -130,19 +131,38 @@
     "openReview": "Ouvrir la file de révision",
     "openReadinessReport": "Ouvrir le rapport de préparation",
     "noReviewItems": "Rien à revoir pour le moment. Continuez à pratiquer !",
-    "reviewReason": "Pourquoi réviser ?"
+    "reviewReason": "Pourquoi réviser ?",
+    "learningPaths": "Parcours d'apprentissage",
+    "viewAllPaths": "Voir tous les parcours",
+    "shortsPersonalFinance": "Shorts Finance Perso",
+    "shortsCorporateFinance": "Shorts Finance Entr.",
+    "shortsPmp": "Shorts PMP"
   },
   "review": {
     "title": "Réviser maintenant",
-    "subtitle": "Micro-révisions priorisées par répétition espacée — environ 5 à 10 minutes.",
-    "durationHint": "Visez une session courte : un concept, une leçon, pratique optionnelle.",
+    "subtitle": "Voyez quoi réviser aujourd'hui en moins de 10 secondes — micro-learning espacé.",
+    "durationHint": "Visez une session courte : 5 à 10 minutes.",
     "empty": "Rien n'est dû pour révision. Excellent — continuez à pratiquer pour rester affûté.",
     "skill": "Compétence",
     "minutes": "min",
     "openLesson": "Ouvrir la leçon",
     "noLesson": "Pas encore de leçon liée pour cette compétence.",
     "backDashboard": "Retour au tableau de bord",
-    "openReadiness": "Rapport de préparation PMP"
+    "openReadiness": "Rapport de préparation PMP",
+    "dueToday": "Dû aujourd'hui",
+    "dueSoon": "Bientôt dû",
+    "weakConcepts": "Concepts faibles",
+    "repeatedErrors": "Erreurs répétées",
+    "recentlyLearned": "Récemment appris",
+    "sectionEmpty": "Rien dans cette section pour le moment.",
+    "startReview": "Commencer la révision",
+    "reviewNowCta": "Réviser maintenant"
+  },
+  "learningPaths": {
+    "title": "Parcours d'apprentissage",
+    "subtitle": "Parcours guidés simples qui réutilisent votre progression de cours existante.",
+    "continue": "Continuer le parcours",
+    "openCourse": "Ouvrir le cours"
   },
   "readinessReport": {
     "title": "Rapport de préparation PMP",
@@ -251,7 +271,16 @@
     "relatedSkill": "Compétence liée",
     "empty": "Aucun short disponible pour cette académie.",
     "backToAcademy": "Retour à l'académie",
-    "comingSoonBadge": "Placeholder"
+    "comingSoonBadge": "Placeholder",
+    "threeMinLearning": "Apprentissage 3 min",
+    "all": "Tous",
+    "filter": "Filtrer",
+    "previousShort": "Short précédent",
+    "learningObjective": "Objectif d'apprentissage",
+    "pedagogyHook": "ACCROCHE — une question concrète pour capter l'attention.",
+    "pedagogyConcept": "CONCEPT — une idée, clairement énoncée.",
+    "pedagogyExample": "EXEMPLE — une illustration courte du monde réel.",
+    "pedagogyTakeaway": "À RETENIR — une phrase clé."
   },
   "simulators": {
     "title": "Simulateurs",

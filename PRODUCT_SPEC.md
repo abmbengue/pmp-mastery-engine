@@ -24,9 +24,13 @@ Non-technical professionals seeking to acquire or refresh professional skills in
 
 | Academy | Focus | Status |
 |---|---|---|
-| Personal Finance | Foundations, debt, investing, wealth building | Active (enriched Phase 9) |
-| Corporate Finance | Statements, cash flow, valuation, WACC, multiples | Active (enriched Phase 9) |
-| PMP / Project Management | People / Process / Business + Agile/Hybrid + exam practice | Active |
+| Personal Finance | Foundations, debt, investing, wealth building (~29 lessons) | Active (Phase 10 expanded) |
+| Corporate Finance | Statements, WC, valuation, DCF, M&A (~30 lessons) | Active (Phase 10 expanded) |
+| PMP / Project Management | People / Process / Business / Agile / Hybrid / Situational (~38 lessons) + exam practice | Active (original content) |
+
+### Planned (catalogue)
+
+Business & Strategy, Financial Modeling, Energy & Oil & Gas, Leadership & Management, Professional English
 
 ### Planned (catalogue)
 

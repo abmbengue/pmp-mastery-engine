@@ -71,11 +71,20 @@ LEARN → PRACTICE → TEST → REVIEW → MASTER
 
 Durations are configurable per lesson (`learnMinutes`, etc.).
 
-## Spaced repetition & Review Now (Phase 9)
+## Spaced repetition & Review Now (Phase 9–10)
 
-Deterministic intervals by mastery (WEAK / LEARNING / MASTERED).  
-`getReviewQueue(userId)` feeds Dashboard **Review Now** and `/review`.  
+Deterministic intervals by mastery (WEAK=1 / LEARNING=3 / MASTERED=7 days).  
+`ConceptMastery.nextReviewAt` persisted on mastery updates.  
+`getReviewCalendar(userId)` feeds Dashboard and `/review`.  
 See [SPACED_REPETITION.md](./SPACED_REPETITION.md).
+
+## Learning Paths (Phase 10)
+
+Config-only groupings of existing courses — see [LEARNING_PATHS.md](./LEARNING_PATHS.md).
+
+## Shorts (Phase 10)
+
+VIDEO `isShort` metadata + filtered list UX — see [SHORTS.md](./SHORTS.md).
 
 ## PMP Readiness Report (Phase 9)
 

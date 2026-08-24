@@ -3,6 +3,7 @@ import { requireSession } from "@/modules/auth/session";
 import { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
 import { recommendNextLearning } from "@/modules/learning-engine/recommendation-service";
 import { getReviewQueue } from "@/modules/learning-engine/review-service";
+import { listLearningPathsForUser } from "@/modules/learning-engine/learning-path-service";
 import { getPmpPracticeDashboard } from "@/modules/assessment-engine/exam-service";
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
@@ -30,6 +31,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const pmpPractice = await getPmpPracticeDashboard(session.user.id, loc);
   const reviewQueue = await getReviewQueue(session.user.id, loc);
   const dueForReview = reviewQueue.slice(0, 5);
+  const learningPaths = await listLearningPathsForUser(session.user.id, loc);
 
   async function logoutAction() {
     "use server";
@@ -189,6 +191,63 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             data-testid="open-readiness-report"
           >
             {t("openReadinessReport")}
+          </Link>
+        </div>
+      </section>
+
+      {/* LEARNING PATHS + SHORTS shortcuts */}
+      <section
+        aria-labelledby="learning-paths-heading"
+        className="rounded-xl border border-slate-200 bg-white p-6"
+        data-testid="learning-paths-section"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 id="learning-paths-heading" className="text-xl font-semibold text-gray-900">
+            {t("learningPaths")}
+          </h2>
+          <Link
+            href="/learning-paths"
+            className="text-sm font-medium text-blue-800 underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="open-learning-paths"
+          >
+            {t("viewAllPaths")}
+          </Link>
+        </div>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+          {learningPaths.map((path) => (
+            <li key={path.slug} className="rounded-lg border p-3" data-testid={`dash-path-${path.slug}`}>
+              <p className="font-medium text-gray-900">{path.title}</p>
+              <p className="mt-1 text-xs text-gray-600">{path.percentage}%</p>
+              <Link
+                href={path.nextLessonPath ?? path.coursePath}
+                className="mt-2 inline-flex text-sm font-medium text-blue-800 underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {t("openCourse")}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/academies/personal-finance/shorts"
+            className="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="dash-shorts-pf"
+          >
+            {t("shortsPersonalFinance")}
+          </Link>
+          <Link
+            href="/academies/corporate-finance/shorts"
+            className="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="dash-shorts-cf"
+          >
+            {t("shortsCorporateFinance")}
+          </Link>
+          <Link
+            href="/academies/pmp-project-management/shorts"
+            className="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="dash-shorts-pmp"
+          >
+            {t("shortsPmp")}
           </Link>
         </div>
       </section>

@@ -62,6 +62,9 @@ export default async function LocaleLayout({
                   <Link href="/review" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-review">
                     {t("review")}
                   </Link>
+                  <Link href="/learning-paths" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-learning-paths">
+                    {t("learningPaths")}
+                  </Link>
                   <Link href="/pmp-exam/readiness-report" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-readiness-report">
                     {t("readinessReport")}
                   </Link>
