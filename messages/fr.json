@@ -114,7 +114,14 @@
     "practiceReadiness": "Préparation pratique",
     "startPractice": "Commencer la pratique",
     "resumeExam": "Reprendre l'examen",
-    "noExamYet": "Aucun examen terminé pour le moment."
+    "noExamYet": "Aucun examen terminé pour le moment.",
+    "performanceHistory": "Historique de performance PMP",
+    "scoreTrend": "Tendance des scores",
+    "targetScore": "Objectif de score de pratique",
+    "currentAverage": "Moyenne actuelle",
+    "targetGap": "Écart à l'objectif",
+    "saveTarget": "Enregistrer l'objectif",
+    "evolution": "Évolution des scores"
   },
   "pmpExam": {
     "title": "Simulateur d'examen PMP",
@@ -172,7 +179,18 @@
     "aiError": "Le tuteur IA est temporairement indisponible.",
     "retry": "Pratiquer à nouveau",
     "dashboard": "Retour au tableau de bord",
-    "nav": "Examen PMP"
+    "nav": "Examen PMP",
+    "errorAnalysis": "Analyse des erreurs",
+    "noErrors": "Aucune erreur classifiée pour cette tentative.",
+    "whyMissed": "Pourquoi vous vous êtes trompé",
+    "targetedRetry": "Retry ciblé",
+    "retryError": "Impossible de démarrer le retry.",
+    "scoreTrend": "Tendance des scores",
+    "retryWrong": "Retry questions ratées",
+    "retryWeakSkills": "Retry skills faibles",
+    "retryWeakDomain": "Retry domaine faible",
+    "retryErrorType": "Retry type d'erreur",
+    "retryMixed": "Retry mixte"
   },
   "shorts": {
     "title": "Short Learning",

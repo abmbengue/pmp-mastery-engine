@@ -53,6 +53,10 @@ export interface AiTutorContext {
   simulationType?: string;
   simulationScenario?: string;
   simulationSummary?: string;
+  /** Deterministic analytics hints for tutoring (never scoring truth) */
+  errorType?: string;
+  weakSkill?: string;
+  previousAttemptsSummary?: string;
   /** Legacy field used by early stubs */
   conceptSlug?: string;
   recentAnswer?: {

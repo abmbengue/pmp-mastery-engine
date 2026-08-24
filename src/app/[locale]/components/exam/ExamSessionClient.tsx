@@ -261,11 +261,11 @@ export function ExamSessionClient({
 
   return (
     <section className="space-y-4" data-testid="exam-session-page">
-      <div className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-white/95 p-3 shadow-sm backdrop-blur">
-        <div>
-          <p className="text-sm text-gray-500">{view.exam.title}</p>
+      <div className="sticky top-0 z-10 -mx-1 flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-white/95 p-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/80 sm:mx-0">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm text-gray-500">{view.exam.title}</p>
           <p
-            className="text-lg font-semibold"
+            className="text-base font-semibold sm:text-lg"
             data-testid="exam-progress"
             aria-live="polite"
           >
@@ -273,7 +273,7 @@ export function ExamSessionClient({
           </p>
         </div>
         <div
-          className="rounded-md bg-slate-900 px-3 py-2 font-mono text-sm text-white"
+          className="shrink-0 rounded-md bg-slate-900 px-3 py-2 font-mono text-sm text-white"
           data-testid="exam-timer"
           role="timer"
           aria-label={labels.timer}
@@ -318,7 +318,7 @@ export function ExamSessionClient({
             return (
               <label
                 key={opt.id}
-                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition ${
+                className={`flex min-h-12 cursor-pointer items-start gap-3 rounded-lg border p-3 transition sm:p-4 ${
                   checked
                     ? "border-blue-600 bg-blue-50 ring-2 ring-blue-500"
                     : "border-gray-200 hover:border-blue-300"
@@ -343,7 +343,7 @@ export function ExamSessionClient({
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
-          className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-40"
+          className="min-h-11 flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-40 sm:flex-none"
           onClick={() => void goTo(index - 1)}
           disabled={index === 0}
           data-testid="exam-previous"
@@ -352,7 +352,7 @@ export function ExamSessionClient({
         </button>
         <button
           type="button"
-          className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-40"
+          className="min-h-11 flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-40 sm:flex-none"
           onClick={() => void goTo(index + 1)}
           disabled={index >= view.questions.length - 1}
           data-testid="exam-next"
@@ -361,7 +361,7 @@ export function ExamSessionClient({
         </button>
         <button
           type="button"
-          className={`rounded-lg border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+          className={`min-h-11 rounded-lg border px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 ${
             question.flagged ? "border-amber-500 bg-amber-50 text-amber-900" : ""
           }`}
           onClick={() => void toggleFlag()}
@@ -372,7 +372,7 @@ export function ExamSessionClient({
         </button>
         <button
           type="button"
-          className="ml-auto rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="min-h-11 w-full rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:ml-auto sm:w-auto"
           onClick={() => void handleSubmit(false)}
           data-testid="exam-finish"
           disabled={completed || submitting}

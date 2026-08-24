@@ -75,6 +75,55 @@ enum ExamSessionStatus {
   ABANDONED
 }
 
+enum PmpScenarioType {
+  FIRST_ACTION
+  NEXT_ACTION
+  BEST_ACTION
+  PREVENTION
+  ROOT_CAUSE
+  STAKEHOLDER
+  RISK
+  CHANGE
+  CONFLICT
+  AGILE
+  HYBRID
+  GOVERNANCE
+}
+
+enum LearningObjective {
+  IDENTIFY
+  APPLY
+  ANALYZE
+  DECIDE
+}
+
+enum ExamErrorCategory {
+  KNOWLEDGE_GAP
+  MISREAD_SCENARIO
+  WRONG_PRIORITY
+  WRONG_ACTION
+  AGILE_MINDSET
+  STAKEHOLDER_ERROR
+  RISK_ERROR
+  PROCESS_ERROR
+  OTHER
+}
+
+enum RetryType {
+  RETRY_WRONG_QUESTIONS
+  RETRY_WEAK_SKILLS
+  RETRY_WEAK_DOMAIN
+  RETRY_ERROR_TYPE
+  RETRY_MIXED
+}
+
+enum ScoreTrend {
+  IMPROVING
+  STABLE
+  DECLINING
+  INSUFFICIENT_DATA
+}
+
 enum LessonProgressStatus {
   NOT_STARTED
   IN_PROGRESS
@@ -246,15 +295,20 @@ model Question {
   examDifficulty       ExamDifficulty?
   scenarioFr           String?                @db.Text
   scenarioEn           String?                @db.Text
+  /// Pedagogical scenario category (PLA Learning Blueprint — not PMI)
+  scenarioType         PmpScenarioType?
+  learningObjective    LearningObjective?
   answerOptions        AnswerOption[]
   quizAttempts         QuizAttempt[]
   skillLinks           QuestionSkill[]
   examSessionQuestions ExamSessionQuestion[]
+  examErrors           ExamError[]
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
 
   @@index([examBank, pmpDomain])
   @@index([examBank, deliveryApproach])
+  @@index([examBank, scenarioType])
 }
 
 /// Extra skills linked to a question (in addition to primary skillId)
@@ -305,13 +359,21 @@ model ExamSession {
   remainingSeconds Int?
   startedAt        DateTime?
   completedAt      DateTime?
+  /// Deterministic RNG seed used by the exam builder (testable randomization)
+  blueprintSeed    String?
+  retryType        RetryType?
+  parentSessionId  String?
+  parentSession    ExamSession?          @relation("ExamRetryChain", fields: [parentSessionId], references: [id], onDelete: SetNull)
+  childRetries     ExamSession[]         @relation("ExamRetryChain")
   questions        ExamSessionQuestion[]
   result           ExamResult?
+  errors           ExamError[]
   createdAt        DateTime              @default(now())
   updatedAt        DateTime              @updatedAt
 
   @@index([userId, status])
   @@index([userId, examId])
+  @@index([parentSessionId])
 }
 
 model ExamSessionQuestion {
@@ -323,6 +385,7 @@ model ExamSessionQuestion {
   sortOrder  Int
   flagged    Boolean      @default(false)
   answer     ExamAnswer?
+  error      ExamError?
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
@@ -342,21 +405,60 @@ model ExamAnswer {
 }
 
 model ExamResult {
-  id               String      @id @default(cuid())
-  sessionId        String      @unique
-  session          ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  rawScore         Int
-  percentage       Float
-  correctCount     Int
-  incorrectCount   Int
-  unansweredCount  Int
-  domainBreakdown  Json
-  skillBreakdown   Json
-  deliveryBreakdown Json?
+  id                    String      @id @default(cuid())
+  sessionId             String      @unique
+  session               ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  rawScore              Int
+  percentage            Float
+  correctCount          Int
+  incorrectCount        Int
+  unansweredCount       Int
+  domainBreakdown       Json
+  skillBreakdown        Json
+  deliveryBreakdown     Json?
+  errorBreakdown        Json?
   /// Practice readiness only — NOT official PMI scoring
-  readinessLevel   String
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  readinessLevel        String
+  readinessExplanationFr String?    @db.Text
+  readinessExplanationEn String?    @db.Text
+  scoreTrend            ScoreTrend?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}
+
+/// Deterministic error history for pedagogical profiling (not LLM scoring)
+model ExamError {
+  id                String               @id @default(cuid())
+  userId            String
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId         String
+  session           ExamSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionQuestionId String               @unique
+  sessionQuestion   ExamSessionQuestion  @relation(fields: [sessionQuestionId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          Question             @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  skillSlug         String?
+  domain            PmpDomain?
+  category          ExamErrorCategory
+  /// Optional learner self-tag during review
+  learnerOverride   ExamErrorCategory?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  @@index([userId, category])
+  @@index([userId, skillSlug])
+  @@index([userId, questionId])
+}
+
+/// User pedagogical practice target (not PMI pass threshold)
+model PracticeTarget {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Target practice score percent: 70 | 75 | 80 | 85
+  targetScorePercent Int      @default(75)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model AnswerOption {
@@ -389,6 +491,8 @@ model User {
   conceptMasteries ConceptMastery[]
   learningStreak   LearningStreak?
   examSessions     ExamSession[]
+  examErrors       ExamError[]
+  practiceTarget   PracticeTarget?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
 }

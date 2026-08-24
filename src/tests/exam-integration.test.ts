@@ -22,7 +22,7 @@ describe("PMP exam integration", () => {
     userId = user.id;
 
     const bank = await prisma.question.count({ where: { examBank: true } });
-    expect(bank).toBeGreaterThanOrEqual(100);
+    expect(bank).toBeGreaterThanOrEqual(180);
   });
 
   it("createExam / startExam / answer / flag / submit / result / mastery / recommendations", async () => {
@@ -112,5 +112,38 @@ describe("PMP exam integration", () => {
       fr!.questions.map((q) => q.options.map((o) => o.id))
     );
     expect(en!.questions[0].domain).toBe(fr!.questions[0].domain);
+  });
+
+  it("exam → error analysis → retry → recommendation", async () => {
+    const { createRetrySession, getPmpPerformanceHistory, setPracticeTarget } =
+      await import("@/modules/assessment-engine/exam-service");
+
+    await setPracticeTarget(userId, 80);
+    const session = await createExamSession(userId, "quick-practice", {
+      seed: "phase8-int-1",
+    });
+    const view = await getExamSessionView(userId, session.id, "en");
+    for (const q of view!.questions) {
+      await answerExamQuestion(userId, session.id, q.sessionQuestionId, [
+        q.options[0].id,
+      ]);
+    }
+    const outcome = await submitExamSession(userId, session.id, "en");
+    expect(outcome.errorBreakdown).toBeDefined();
+    expect(outcome.scoreTrend).toBeTruthy();
+    expect(outcome.readinessV2.explanationEn.length).toBeGreaterThan(10);
+
+    const { session: retry } = await createRetrySession(
+      userId,
+      session.id,
+      "RETRY_WEAK_SKILLS",
+      { seed: "phase8-retry" }
+    );
+    expect(retry.retryType).toBe("RETRY_WEAK_SKILLS");
+    expect(retry.parentSessionId).toBe(session.id);
+    expect(retry.questions.length).toBeGreaterThan(0);
+
+    const history = await getPmpPerformanceHistory(userId, "en");
+    expect(history.attempts.length).toBeGreaterThan(0);
   });
 });

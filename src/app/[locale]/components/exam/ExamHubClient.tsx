@@ -81,9 +81,7 @@ export function ExamHubClient({
       )}
 
       <ul className="grid gap-4 md:grid-cols-2">
-        {exams
-          .filter((e) => e.slug !== "full-pmp")
-          .map((exam) => (
+        {exams.map((exam) => (
             <li
               key={exam.id}
               className="rounded-xl border bg-white p-5"

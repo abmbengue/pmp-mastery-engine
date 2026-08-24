@@ -7,9 +7,25 @@ import {
   calculateSkillPerformance,
   evaluateSelectedOptions,
 } from "@/modules/assessment-engine/exam-scoring";
+import {
+  avoidRecentQuestions,
+  buildExamBlueprint,
+  buildExamFromBlueprint,
+  type BlueprintQuestionCandidate,
+} from "@/modules/assessment-engine/exam-blueprint";
+import {
+  buildRetryExam,
+  calculatePmpReadinessV2,
+  calculateScoreTrend,
+  classifyError,
+  type ExamErrorCategoryCode,
+  type RetryTypeCode,
+} from "@/modules/assessment-engine/analytics-engine";
 import type {
   ExamScoreResult,
+  ExamTypeCode,
   PracticeReadinessLevel,
+  PmpDomainCode,
   ScoredExamItem,
 } from "@/modules/assessment-engine/exam-types";
 import { updateConceptMastery } from "@/modules/learning-engine/progress-service";
@@ -19,14 +35,48 @@ import type { Locale } from "@/shared/types/locale";
 import { pickLocalized } from "@/shared/types/locale";
 import prisma from "@/data/prisma-client";
 import type { Prisma } from "@/generated/prisma/client";
+import { randomBytes } from "crypto";
 
-function shuffle<T>(arr: T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+async function loadBankCandidates(domainFilter?: PmpDomainCode | null) {
+  const rows = await prisma.question.findMany({
+    where: {
+      examBank: true,
+      ...(domainFilter ? { pmpDomain: domainFilter } : {}),
+    },
+    include: {
+      skill: true,
+      skillLinks: { include: { skill: true } },
+    },
+  });
+
+  return rows.map((q): BlueprintQuestionCandidate => {
+    const skillSlugs = new Set<string>();
+    if (q.skill?.slug) skillSlugs.add(q.skill.slug);
+    for (const link of q.skillLinks) skillSlugs.add(link.skill.slug);
+    return {
+      id: q.id,
+      domain: (q.pmpDomain ?? "PROCESS") as BlueprintQuestionCandidate["domain"],
+      deliveryApproach: (q.deliveryApproach ??
+        "PREDICTIVE") as BlueprintQuestionCandidate["deliveryApproach"],
+      difficulty: (q.examDifficulty ??
+        "MEDIUM") as BlueprintQuestionCandidate["difficulty"],
+      scenarioType: (q.scenarioType ??
+        "BEST_ACTION") as BlueprintQuestionCandidate["scenarioType"],
+      skillSlugs: [...skillSlugs],
+      learningObjective: (q.learningObjective ??
+        "DECIDE") as BlueprintQuestionCandidate["learningObjective"],
+    };
+  });
+}
+
+async function recentQuestionIdsForUser(userId: string, limitSessions = 3) {
+  const sessions = await prisma.examSession.findMany({
+    where: { userId, status: "COMPLETED" },
+    orderBy: { completedAt: "desc" },
+    take: limitSessions,
+    include: { questions: { select: { questionId: true } } },
+  });
+  return sessions.flatMap((s) => s.questions.map((q) => q.questionId));
 }
 
 export async function ensureExamTemplates() {
@@ -78,29 +128,55 @@ export async function listExams(locale: Locale) {
   }));
 }
 
-export async function createExamSession(userId: string, examSlug: string) {
+export async function createExamSession(
+  userId: string,
+  examSlug: string,
+  options?: { seed?: string }
+) {
   await ensureExamTemplates();
   const exam = await prisma.exam.findUnique({ where: { slug: examSlug } });
   if (!exam || !exam.isActive) {
     throw new Error("Exam not found");
   }
 
-  const where = {
-    examBank: true,
-    ...(exam.domainFilter ? { pmpDomain: exam.domainFilter } : {}),
-  };
-
-  const bank = await prisma.question.findMany({
-    where,
-    select: { id: true },
+  const blueprint = buildExamBlueprint(exam.type as ExamTypeCode, {
+    domainFilter: exam.domainFilter ?? undefined,
+    totalOverride: exam.questionCount,
   });
 
-  if (bank.length === 0) {
+  const candidates = await loadBankCandidates(exam.domainFilter);
+  if (candidates.length === 0) {
     throw new Error("Question bank is empty");
   }
 
-  const count = Math.min(exam.questionCount, bank.length);
-  const picked = shuffle(bank).slice(0, count);
+  if (candidates.length < blueprint.totalQuestions) {
+    throw new Error(
+      `INSUFFICIENT_QUESTION_BANK: need ${blueprint.totalQuestions}, available ${candidates.length}`
+    );
+  }
+
+  const recentIds = await recentQuestionIdsForUser(userId);
+  const avoid = avoidRecentQuestions(
+    candidates.map((c) => c.id),
+    recentIds,
+    blueprint.totalQuestions
+  );
+  const exclude = new Set(
+    avoid.fellBack ? [] : candidates.map((c) => c.id).filter((id) => !avoid.available.includes(id))
+  );
+
+  const seed = options?.seed ?? randomBytes(8).toString("hex");
+  let slots;
+  try {
+    slots = buildExamFromBlueprint(blueprint, candidates, seed, exclude);
+  } catch (err) {
+    // If exclusion made selection impossible, retry without exclusion
+    if (!avoid.fellBack) {
+      slots = buildExamFromBlueprint(blueprint, candidates, seed, new Set());
+    } else {
+      throw err;
+    }
+  }
 
   const remainingSeconds =
     exam.durationMinutes > 0 ? exam.durationMinutes * 60 : null;
@@ -114,9 +190,10 @@ export async function createExamSession(userId: string, examSlug: string) {
       elapsedSeconds: 0,
       remainingSeconds,
       startedAt: new Date(),
+      blueprintSeed: seed,
       questions: {
-        create: picked.map((q, i) => ({
-          questionId: q.id,
+        create: slots.map((s, i) => ({
+          questionId: s.questionId,
           sortOrder: i,
           flagged: false,
         })),
@@ -139,12 +216,13 @@ export async function getExamSessionView(
 ) {
   const session = await prisma.examSession.findFirst({
     where: { id: sessionId, userId },
-    include: {
+      include: {
       exam: true,
       questions: {
         orderBy: { sortOrder: "asc" },
         include: {
           answer: true,
+          error: true,
           question: {
             include: {
               answerOptions: { orderBy: { sortOrder: "asc" } },
@@ -192,9 +270,13 @@ export async function getExamSessionView(
           incorrectCount: session.result.incorrectCount,
           unansweredCount: session.result.unansweredCount,
           readinessLevel: session.result.readinessLevel as PracticeReadinessLevel,
+          readinessExplanationFr: session.result.readinessExplanationFr,
+          readinessExplanationEn: session.result.readinessExplanationEn,
+          scoreTrend: session.result.scoreTrend,
           domainBreakdown: session.result.domainBreakdown,
           skillBreakdown: session.result.skillBreakdown,
           deliveryBreakdown: session.result.deliveryBreakdown,
+          errorBreakdown: session.result.errorBreakdown,
         }
       : null,
     questions: session.questions.map((sq) => {
@@ -213,6 +295,8 @@ export async function getExamSessionView(
         difficulty: q.examDifficulty,
         domain: q.pmpDomain,
         deliveryApproach: q.deliveryApproach,
+        scenarioType: q.scenarioType,
+        learningObjective: q.learningObjective,
         options: q.answerOptions.map((o) => ({
           id: o.id,
           label: pickLocalized(o.labelFr, o.labelEn, locale),
@@ -237,10 +321,14 @@ export async function getExamSessionView(
               correctOptionIds: q.answerOptions
                 .filter((o) => o.isCorrect)
                 .map((o) => o.id),
+              errorCategory: sq.error?.learnerOverride ?? sq.error?.category ?? null,
+              errorId: sq.error?.id ?? null,
             }
           : {}),
       };
     }),
+    retryType: session.retryType,
+    parentSessionId: session.parentSessionId,
   };
 }
 
@@ -468,17 +556,23 @@ export async function submitExamSession(
   const previousResults = await prisma.examResult.findMany({
     where: { session: { userId } },
     orderBy: { createdAt: "desc" },
-    take: 5,
+    take: 8,
     select: { percentage: true },
   });
   const recentPercentages = [
     ...previousResults.map((r) => r.percentage).reverse(),
     score.percentage,
   ];
+  const scoreTrend = calculateScoreTrend(recentPercentages);
+  const averageScore = Math.round(
+    recentPercentages.reduce((a, b) => a + b, 0) / recentPercentages.length
+  );
 
   // Repeated mistakes: same question wrong in prior completed sessions
   let repeatedMistakeCount = 0;
-  const wrongIds = items.filter((i) => !i.isCorrect && !i.unanswered).map((i) => i.questionId);
+  const wrongIds = items
+    .filter((i) => !i.isCorrect && !i.unanswered)
+    .map((i) => i.questionId);
   if (wrongIds.length > 0) {
     const priorWrong = await prisma.quizAttempt.findMany({
       where: {
@@ -492,15 +586,94 @@ export async function submitExamSession(
     repeatedMistakeCount = wrongIds.filter((id) => priorSet.has(id)).length;
   }
 
-  const readiness = calculatePmpReadiness({
+  const retryResults = await prisma.examResult.findMany({
+    where: { session: { userId, retryType: { not: null } } },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+    select: { percentage: true },
+  });
+
+  const target = await getOrCreatePracticeTarget(userId);
+
+  const readinessV2 = calculatePmpReadinessV2({
     recentPercentages,
+    averageScore,
+    scoreTrend,
     domainPerformances: domainBreakdown,
     skillPerformances: skillBreakdown,
     unansweredRate: score.total === 0 ? 0 : score.unanswered / score.total,
     repeatedMistakeCount,
+    retryPercentages: retryResults.map((r) => r.percentage),
+    targetScorePercent: target.targetScorePercent,
   });
 
+  // Keep V1 shape for compatibility callers
+  const readiness = {
+    ...calculatePmpReadiness({
+      recentPercentages,
+      domainPerformances: domainBreakdown,
+      skillPerformances: skillBreakdown,
+      unansweredRate: score.total === 0 ? 0 : score.unanswered / score.total,
+      repeatedMistakeCount,
+    }),
+    level: readinessV2.level,
+    labelEn: readinessV2.labelEn,
+    labelFr: readinessV2.labelFr,
+    score: readinessV2.score,
+    explanationEn: readinessV2.explanationEn,
+    explanationFr: readinessV2.explanationFr,
+    currentAverage: readinessV2.currentAverage,
+    targetScorePercent: readinessV2.targetScorePercent,
+    gap: readinessV2.gap,
+  };
+
   await updateMasteryFromExam(userId, items);
+
+  // Build error records from session questions metadata
+  const sessionQuestions = await prisma.examSessionQuestion.findMany({
+    where: { sessionId },
+    include: {
+      answer: true,
+      question: {
+        include: {
+          skill: true,
+          skillLinks: { include: { skill: true } },
+        },
+      },
+    },
+  });
+
+  const errorRows: Array<{
+    sessionQuestionId: string;
+    questionId: string;
+    skillSlug: string | null;
+    domain: PmpDomainCode | null;
+    category: ExamErrorCategoryCode;
+  }> = [];
+  const errorBreakdown: Record<string, number> = {};
+
+  for (const sq of sessionQuestions) {
+    const item = items.find((i) => i.questionId === sq.questionId);
+    if (!item || item.isCorrect) continue;
+
+    const skillSlugs = item.skillSlugs;
+    const category = classifyError({
+      scenarioType: sq.question.scenarioType,
+      domain: sq.question.pmpDomain,
+      deliveryApproach: sq.question.deliveryApproach,
+      skillSlugs,
+      learningObjective: sq.question.learningObjective,
+      unanswered: item.unanswered,
+    });
+    errorBreakdown[category] = (errorBreakdown[category] ?? 0) + 1;
+    errorRows.push({
+      sessionQuestionId: sq.id,
+      questionId: sq.questionId,
+      skillSlug: skillSlugs[0] ?? sq.question.skill?.slug ?? null,
+      domain: sq.question.pmpDomain,
+      category,
+    });
+  }
 
   const result = await prisma.$transaction(async (tx) => {
     await tx.examSession.update({
@@ -513,6 +686,20 @@ export async function submitExamSession(
       },
     });
 
+    for (const row of errorRows) {
+      await tx.examError.create({
+        data: {
+          userId,
+          sessionId,
+          sessionQuestionId: row.sessionQuestionId,
+          questionId: row.questionId,
+          skillSlug: row.skillSlug,
+          domain: row.domain,
+          category: row.category,
+        },
+      });
+    }
+
     return tx.examResult.create({
       data: {
         sessionId,
@@ -524,7 +711,11 @@ export async function submitExamSession(
         domainBreakdown: domainBreakdown as unknown as Prisma.InputJsonValue,
         skillBreakdown: skillBreakdown as unknown as Prisma.InputJsonValue,
         deliveryBreakdown: deliveryBreakdown as unknown as Prisma.InputJsonValue,
-        readinessLevel: readiness.level,
+        errorBreakdown: errorBreakdown as unknown as Prisma.InputJsonValue,
+        readinessLevel: readinessV2.level,
+        readinessExplanationFr: readinessV2.explanationFr,
+        readinessExplanationEn: readinessV2.explanationEn,
+        scoreTrend,
       },
     });
   });
@@ -537,9 +728,267 @@ export async function submitExamSession(
     domainBreakdown,
     skillBreakdown,
     deliveryBreakdown,
+    errorBreakdown,
+    errors: errorRows,
     readiness,
+    readinessV2,
+    scoreTrend,
     recommendation,
   };
+}
+
+export async function getOrCreatePracticeTarget(userId: string) {
+  return prisma.practiceTarget.upsert({
+    where: { userId },
+    create: { userId, targetScorePercent: 75 },
+    update: {},
+  });
+}
+
+export async function setPracticeTarget(
+  userId: string,
+  targetScorePercent: number
+) {
+  if (![70, 75, 80, 85].includes(targetScorePercent)) {
+    throw new Error("Invalid target — use 70, 75, 80, or 85");
+  }
+  return prisma.practiceTarget.upsert({
+    where: { userId },
+    create: { userId, targetScorePercent },
+    update: { targetScorePercent },
+  });
+}
+
+export async function getPmpPerformanceHistory(userId: string, locale: Locale) {
+  const completed = await prisma.examSession.findMany({
+    where: { userId, status: "COMPLETED", result: { isNot: null } },
+    include: { exam: true, result: true },
+    orderBy: { completedAt: "desc" },
+    take: 5,
+  });
+
+  const attempts = completed.map((s) => ({
+    sessionId: s.id,
+    date: s.completedAt,
+    examType: s.exam.type,
+    examTitle: pickLocalized(s.exam.titleFr, s.exam.titleEn, locale),
+    score: s.result!.percentage,
+    readiness: s.result!.readinessLevel,
+    scoreTrend: s.result!.scoreTrend,
+    domainBreakdown: s.result!.domainBreakdown,
+    retryType: s.retryType,
+  }));
+
+  const chronological = [...attempts].reverse().map((a) => a.score);
+  const trend = calculateScoreTrend(chronological);
+  const scores = attempts.map((a) => a.score);
+  const evolution = [...scores].reverse();
+
+  return {
+    attempts,
+    scoreTrend: trend,
+    evolution,
+    previousScore: evolution.length >= 2 ? evolution[evolution.length - 2] : null,
+    currentScore: evolution.length ? evolution[evolution.length - 1] : null,
+  };
+}
+
+export async function createRetrySession(
+  userId: string,
+  parentSessionId: string,
+  retryType: RetryTypeCode,
+  options?: { seed?: string }
+) {
+  const parent = await prisma.examSession.findFirst({
+    where: { id: parentSessionId, userId, status: "COMPLETED" },
+    include: {
+      exam: true,
+      result: true,
+      questions: {
+        include: {
+          answer: true,
+          question: {
+            include: { skill: true, skillLinks: { include: { skill: true } } },
+          },
+          error: true,
+        },
+      },
+    },
+  });
+  if (!parent) throw new Error("Parent session not found");
+
+  const scored = await buildScoredItems(parentSessionId);
+  const wrongQuestionIds = scored
+    .filter((i) => !i.isCorrect)
+    .map((i) => i.questionId);
+  const skillBreakdown = calculateSkillPerformance(scored);
+  const domainBreakdown = calculateDomainPerformance(scored);
+  const weakSkills = skillBreakdown
+    .filter((s) => s.band === "WEAK")
+    .map((s) => s.skillSlug);
+  const weakDomain = domainBreakdown
+    .filter((d) => d.total > 0)
+    .sort((a, b) => a.percentage - b.percentage)[0]?.domain;
+
+  const errorCategories = [
+    ...new Set(
+      parent.questions
+        .map((q) => q.error?.category)
+        .filter((c): c is ExamErrorCategoryCode => Boolean(c))
+    ),
+  ];
+
+  // Easy fail streak from recent completed sessions
+  const recent = await prisma.examSession.findMany({
+    where: { userId, status: "COMPLETED" },
+    orderBy: { completedAt: "desc" },
+    take: 5,
+    include: {
+      questions: { include: { question: true, answer: true } },
+      result: true,
+    },
+  });
+  let easyFailStreak = 0;
+  for (const s of recent) {
+    const easyWrong = s.questions.filter((q) => {
+      if (q.question.examDifficulty !== "EASY") return false;
+      const selected = (q.answer?.selectedOptionIds as string[] | undefined) ?? [];
+      return selected.length > 0;
+    });
+    // Approximate: if overall score < 60, count as easy struggle
+    if ((s.result?.percentage ?? 100) < 60) easyFailStreak += 1;
+    else break;
+    void easyWrong;
+  }
+
+  const lastRetry = recent.find((s) => s.retryType);
+  const plan = buildRetryExam({
+    type: retryType,
+    wrongQuestionIds,
+    weakSkillSlugs: weakSkills,
+    weakDomain,
+    errorCategories,
+    easyFailStreak,
+    lastRetryPercentage: lastRetry?.result?.percentage ?? null,
+  });
+
+  const allCandidates = await loadBankCandidates(
+    plan.domain ?? parent.exam.domainFilter
+  );
+
+  let filtered = allCandidates;
+  if (plan.skillSlugs.length) {
+    filtered = filtered.filter((c) =>
+      c.skillSlugs.some((s) => plan.skillSlugs.includes(s))
+    );
+  }
+  if (plan.domain) {
+    filtered = filtered.filter((c) => c.domain === plan.domain);
+  }
+  if (plan.errorCategories.length) {
+    filtered = filtered.filter((c) =>
+      plan.errorCategories.includes(
+        classifyError({
+          scenarioType: c.scenarioType,
+          domain: c.domain,
+          deliveryApproach: c.deliveryApproach,
+          skillSlugs: c.skillSlugs,
+          learningObjective: c.learningObjective,
+        })
+      )
+    );
+  }
+  if (plan.includeQuestionIds.length) {
+    const includeSet = new Set(plan.includeQuestionIds);
+    const forced = allCandidates.filter((c) => includeSet.has(c.id));
+    const rest = filtered.filter((c) => !includeSet.has(c.id));
+    filtered = [...forced, ...rest];
+  }
+
+  // Prefer difficulties
+  const preferred = filtered.filter((c) =>
+    plan.preferDifficulties.includes(c.difficulty)
+  );
+  const pool = preferred.length >= plan.questionCount ? preferred : filtered;
+
+  const recentIds = await recentQuestionIdsForUser(userId);
+  const avoid = avoidRecentQuestions(
+    pool.map((c) => c.id),
+    recentIds,
+    plan.questionCount
+  );
+  const availablePool = pool.filter((c) => avoid.available.includes(c.id));
+
+  if (availablePool.length < plan.questionCount && pool.length < plan.questionCount) {
+    throw new Error(
+      `INSUFFICIENT_QUESTION_BANK: need ${plan.questionCount} for retry, available ${pool.length}`
+    );
+  }
+
+  const seed = options?.seed ?? randomBytes(8).toString("hex");
+  const retryBlueprint = buildExamBlueprint("QUICK_PRACTICE", {
+    totalOverride: Math.min(plan.questionCount, availablePool.length || pool.length),
+    domainFilter: plan.domain,
+  });
+  // For retries we may need fewer than blueprint domain mix — use builder with override total
+  const slots = buildExamFromBlueprint(
+    { ...retryBlueprint, totalQuestions: retryBlueprint.totalQuestions },
+    availablePool.length >= retryBlueprint.totalQuestions ? availablePool : pool,
+    seed,
+    new Set()
+  );
+
+  // Reuse quick-practice exam template for timer/config of retries
+  await ensureExamTemplates();
+  const retryExam = await prisma.exam.findUnique({
+    where: { slug: "quick-practice" },
+  });
+  if (!retryExam) throw new Error("Retry exam template missing");
+
+  const durationMinutes = Math.max(
+    10,
+    Math.round((slots.length / 10) * retryExam.durationMinutes)
+  );
+
+  const session = await prisma.examSession.create({
+    data: {
+      userId,
+      examId: retryExam.id,
+      status: "IN_PROGRESS",
+      currentIndex: 0,
+      elapsedSeconds: 0,
+      remainingSeconds: durationMinutes * 60,
+      startedAt: new Date(),
+      blueprintSeed: seed,
+      retryType,
+      parentSessionId: parentSessionId,
+      questions: {
+        create: slots.map((s, i) => ({
+          questionId: s.questionId,
+          sortOrder: i,
+          flagged: false,
+        })),
+      },
+    },
+    include: { exam: true, questions: { orderBy: { sortOrder: "asc" } } },
+  });
+
+  return { session, plan };
+}
+
+export async function overrideExamErrorCategory(
+  userId: string,
+  sessionQuestionId: string,
+  category: ExamErrorCategoryCode
+) {
+  const row = await prisma.examError.findFirst({
+    where: { sessionQuestionId, userId },
+  });
+  if (!row) throw new Error("Error record not found");
+  return prisma.examError.update({
+    where: { id: row.id },
+    data: { learnerOverride: category, category },
+  });
 }
 
 export async function findResumableSession(userId: string, examSlug?: string) {
@@ -597,6 +1046,9 @@ export async function getPmpPracticeDashboard(userId: string, locale: Locale) {
     "NOT_READY";
 
   const inProgress = await findResumableSession(userId);
+  const history = await getPmpPerformanceHistory(userId, locale);
+  const target = await getOrCreatePracticeTarget(userId);
+  const currentAverage = averageScore ?? 0;
 
   return {
     lastExam: last
@@ -613,6 +1065,15 @@ export async function getPmpPracticeDashboard(userId: string, locale: Locale) {
     questionsAnswered: answeredAgg,
     weakestDomain,
     practiceReadiness: readinessLevel,
+    readinessExplanation:
+      locale === "fr"
+        ? last?.result?.readinessExplanationFr
+        : last?.result?.readinessExplanationEn,
+    scoreTrend: history.scoreTrend,
+    evolution: history.evolution,
+    performanceHistory: history.attempts,
+    targetScorePercent: target.targetScorePercent,
+    targetGap: target.targetScorePercent - currentAverage,
     inProgressSession: inProgress
       ? {
           sessionId: inProgress.id,

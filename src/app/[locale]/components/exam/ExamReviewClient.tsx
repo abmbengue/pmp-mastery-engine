@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Link } from "@/modules/localization/navigation";
 import type { Locale } from "@/shared/types/locale";
 
@@ -13,6 +14,7 @@ type ReviewQuestion = {
   scenario: string | null;
   explanation?: string;
   correctOptionIds?: string[];
+  errorCategory?: string | null;
   options: Array<{
     id: string;
     label: string;
@@ -21,31 +23,10 @@ type ReviewQuestion = {
   }>;
 };
 
-type SkillRow = {
-  skillSlug: string;
-  percentage: number;
-  band: string;
-};
-
-type DomainRow = {
-  domain: string;
-  percentage: number;
-  band: string;
-  total: number;
-};
-
-type DeliveryRow = {
-  approach: string;
-  percentage: number;
-  band: string;
-  total: number;
-};
-
-type Recommendation = {
-  title: string;
-  reason: string;
-  path: string;
-} | null;
+type SkillRow = { skillSlug: string; percentage: number; band: string };
+type DomainRow = { domain: string; percentage: number; band: string; total: number };
+type DeliveryRow = { approach: string; percentage: number; band: string; total: number };
+type Recommendation = { title: string; reason: string; path: string } | null;
 
 export function ExamReviewClient({
   locale,
@@ -55,8 +36,10 @@ export function ExamReviewClient({
   domains,
   skills,
   delivery,
+  errorBreakdown,
   questions,
   recommendation,
+  scoreTrend,
   labels,
 }: {
   locale: Locale;
@@ -72,16 +55,21 @@ export function ExamReviewClient({
     level: string;
     label: string;
     limitations: string;
+    explanation?: string | null;
   };
   domains: DomainRow[];
   skills: SkillRow[];
   delivery: DeliveryRow[];
+  errorBreakdown: Record<string, number>;
   questions: ReviewQuestion[];
   recommendation: Recommendation;
+  scoreTrend: string | null;
   labels: Record<string, string>;
 }) {
+  const router = useRouter();
   const [aiByQuestion, setAiByQuestion] = useState<Record<string, string>>({});
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [retryLoading, setRetryLoading] = useState<string | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
 
   const wrong = questions.filter((q) => {
@@ -109,10 +97,11 @@ export function ExamReviewClient({
         questionId: q.questionId,
         selectedOptionIds: q.selectedOptionIds,
         examSessionId: sessionId,
+        errorType: q.errorCategory ?? undefined,
         userMessage:
           locale === "fr"
-            ? "Explique cette question d'examen PMP pédagogique après soumission."
-            : "Explain this educational PMP exam question after submission.",
+            ? "Pourquoi est-ce que je fais ce type d'erreur ?"
+            : "Why do I keep making this type of mistake?",
       }),
     });
     const data = await res.json();
@@ -123,6 +112,26 @@ export function ExamReviewClient({
     }
     setAiByQuestion((prev) => ({ ...prev, [q.questionId]: data.message }));
     setLoadingId(null);
+  }
+
+  async function startRetry(retryType: string) {
+    setRetryLoading(retryType);
+    const res = await fetch("/api/exam/analytics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "start_retry",
+        parentSessionId: sessionId,
+        retryType,
+      }),
+    });
+    const data = await res.json();
+    setRetryLoading(null);
+    if (!res.ok) {
+      setAiError(data.error ?? labels.retryError);
+      return;
+    }
+    router.push(`/${locale}/pmp-exam/${data.sessionId}`);
   }
 
   return (
@@ -156,9 +165,70 @@ export function ExamReviewClient({
         </dl>
         <p className="mt-4 text-sm" data-testid="practice-readiness">
           <span className="font-medium">{readiness.label}</span>
+          {readiness.explanation && (
+            <span className="mt-1 block text-sm text-gray-700" data-testid="readiness-explanation">
+              {readiness.explanation}
+            </span>
+          )}
           <span className="mt-1 block text-xs text-gray-500">{readiness.limitations}</span>
         </p>
+        {scoreTrend && (
+          <p className="mt-2 text-sm" data-testid="score-trend">
+            {labels.scoreTrend}: {scoreTrend}
+          </p>
+        )}
       </header>
+
+      <section aria-labelledby="error-analysis-heading" data-testid="error-analysis">
+        <h2 id="error-analysis-heading" className="mb-3 text-lg font-semibold">
+          {labels.errorAnalysis}
+        </h2>
+        <ul className="flex flex-wrap gap-2">
+          {Object.keys(errorBreakdown).length === 0 ? (
+            <li className="text-sm text-gray-600">{labels.noErrors}</li>
+          ) : (
+            Object.entries(errorBreakdown).map(([cat, count]) => (
+              <li
+                key={cat}
+                className="rounded-full border bg-white px-3 py-1 text-sm"
+                data-testid={`error-cat-${cat}`}
+              >
+                {cat}: {count}
+              </li>
+            ))
+          )}
+        </ul>
+      </section>
+
+      <section aria-labelledby="retry-heading" data-testid="retry-section">
+        <h2 id="retry-heading" className="mb-3 text-lg font-semibold">
+          {labels.targetedRetry}
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          {(
+            [
+              "RETRY_WRONG_QUESTIONS",
+              "RETRY_WEAK_SKILLS",
+              "RETRY_WEAK_DOMAIN",
+              "RETRY_ERROR_TYPE",
+              "RETRY_MIXED",
+            ] as const
+          ).map((type) => (
+            <button
+              key={type}
+              type="button"
+              className="min-h-11 rounded-lg border border-indigo-300 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onClick={() => void startRetry(type)}
+              disabled={retryLoading === type}
+              data-testid={`retry-${type}`}
+            >
+              {retryLoading === type
+                ? labels.starting
+                : labels[`retry_${type}`] ?? type}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <section aria-labelledby="domain-perf-heading" data-testid="domain-performance">
         <h2 id="domain-perf-heading" className="mb-3 text-lg font-semibold">
@@ -276,10 +346,16 @@ export function ExamReviewClient({
                 className="rounded-xl border bg-white p-5"
                 data-testid={`review-q-${q.sortOrder + 1}`}
               >
-                {q.scenario && (
-                  <p className="mb-2 text-sm text-gray-600">{q.scenario}</p>
-                )}
+                {q.scenario && <p className="mb-2 text-sm text-gray-600">{q.scenario}</p>}
                 <h3 className="font-semibold">{q.prompt}</h3>
+                {q.errorCategory && (
+                  <p
+                    className="mt-2 text-xs font-medium text-rose-700"
+                    data-testid={`why-missed-${q.sortOrder + 1}`}
+                  >
+                    {labels.whyMissed}: {q.errorCategory}
+                  </p>
+                )}
                 <ul className="mt-3 space-y-2 text-sm">
                   {q.options.map((o) => {
                     const isUser = selectedSet.has(o.id);

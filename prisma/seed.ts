@@ -53,6 +53,8 @@ async function main() {
   console.log("Seeding database...");
 
   // Clean existing data (order matters for FK constraints)
+  await prisma.examError.deleteMany();
+  await prisma.practiceTarget.deleteMany();
   await prisma.examAnswer.deleteMany();
   await prisma.examResult.deleteMany();
   await prisma.examSessionQuestion.deleteMany();

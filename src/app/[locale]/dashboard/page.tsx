@@ -6,6 +6,7 @@ import { getPmpPracticeDashboard } from "@/modules/assessment-engine/exam-servic
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
 import type { Locale } from "@/shared/types/locale";
+import { PracticeTargetForm } from "@/app/[locale]/components/exam/PracticeTargetForm";
 
 function formatActivity(date: Date | null, locale: Locale): string {
   if (!date) return "—";
@@ -195,6 +196,54 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               {t("resumeExam")}
             </Link>
           )}
+        </div>
+
+        <div className="mt-6 border-t border-indigo-100 pt-4" data-testid="pmp-performance-history">
+          <h3 className="text-sm font-semibold text-gray-900">{t("performanceHistory")}</h3>
+          <p className="mt-1 text-sm" data-testid="pmp-score-trend">
+            {t("scoreTrend")}: {pmpPractice.scoreTrend}
+          </p>
+          <p className="mt-1 text-sm" data-testid="pmp-score-evolution">
+            {t("evolution")}:{" "}
+            {pmpPractice.evolution.length
+              ? pmpPractice.evolution.map((s) => `${s}%`).join(" → ")
+              : "—"}
+          </p>
+          <ul className="mt-2 space-y-1 text-sm text-gray-700">
+            {pmpPractice.performanceHistory.length === 0 ? (
+              <li>{t("noExamYet")}</li>
+            ) : (
+              pmpPractice.performanceHistory.map((a) => (
+                <li key={a.sessionId} data-testid={`pmp-history-${a.sessionId}`}>
+                  {a.examTitle} — {a.score}% — {a.readiness}
+                </li>
+              ))
+            )}
+          </ul>
+          <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+            <div>
+              <dt className="text-gray-500">{t("currentAverage")}</dt>
+              <dd className="font-medium" data-testid="pmp-current-average">
+                {pmpPractice.averageScore == null ? "—" : `${pmpPractice.averageScore}%`}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-gray-500">{t("targetScore")}</dt>
+              <dd className="font-medium" data-testid="pmp-target-score">
+                {pmpPractice.targetScorePercent}%
+              </dd>
+            </div>
+            <div>
+              <dt className="text-gray-500">{t("targetGap")}</dt>
+              <dd className="font-medium" data-testid="pmp-target-gap">
+                {pmpPractice.targetGap}%
+              </dd>
+            </div>
+          </dl>
+          <PracticeTargetForm
+            initialTarget={pmpPractice.targetScorePercent}
+            labels={{ targetScore: t("targetScore"), saveTarget: t("saveTarget") }}
+          />
         </div>
       </section>
 

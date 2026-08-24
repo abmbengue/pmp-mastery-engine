@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { PMP_EXAM_BANK } from "../../prisma/seed/pmp-exam-bank-data";
 
 describe("PMP exam bank FR/EN consistency", () => {
-  it("has at least 100 original bilingual questions", () => {
-    expect(PMP_EXAM_BANK.length).toBeGreaterThanOrEqual(100);
+  it("has at least 180 original bilingual questions", () => {
+    expect(PMP_EXAM_BANK.length).toBeGreaterThanOrEqual(180);
   });
 
   it("keeps stable keys and bilingual fields for every item", () => {
@@ -15,6 +15,8 @@ describe("PMP exam bank FR/EN consistency", () => {
       expect(q.scenarioEn.length).toBeGreaterThan(5);
       expect(q.explanationCorrectFr.length).toBeGreaterThan(10);
       expect(q.explanationCorrectEn.length).toBeGreaterThan(10);
+      expect(q.scenarioType).toBeTruthy();
+      expect(q.learningObjective).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
       expect(q.options.some((o) => o.isCorrect)).toBe(true);
       // FR and EN must both exist; they may differ in wording (not mechanical clones only)

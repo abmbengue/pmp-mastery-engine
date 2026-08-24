@@ -180,6 +180,8 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
           examDifficulty: q.examDifficulty,
           scenarioFr: q.scenarioFr,
           scenarioEn: q.scenarioEn,
+          scenarioType: q.scenarioType,
+          learningObjective: q.learningObjective,
           answerOptions: {
             create: q.options.map((opt, i) => ({
               labelFr: opt.labelFr,
@@ -218,6 +220,8 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
           examDifficulty: q.examDifficulty,
           scenarioFr: q.scenarioFr,
           scenarioEn: q.scenarioEn,
+          scenarioType: q.scenarioType,
+          learningObjective: q.learningObjective,
           answerOptions: {
             create: q.options.map((opt, i) => ({
               labelFr: opt.labelFr,

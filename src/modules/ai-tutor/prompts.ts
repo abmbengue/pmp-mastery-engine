@@ -92,6 +92,28 @@ export function buildAiTutorPrompts(
     if (ctx.simulationSummary) lines.push(`- Result summary: ${ctx.simulationSummary}`);
   }
 
+  if (ctx.errorType) {
+    lines.push(
+      locale === "fr"
+        ? `- Type d'erreur (analytique déterministe) : ${ctx.errorType}`
+        : `- Error type (deterministic analytics): ${ctx.errorType}`
+    );
+  }
+  if (ctx.weakSkill) {
+    lines.push(
+      locale === "fr"
+        ? `- Skill faible : ${ctx.weakSkill}`
+        : `- Weak skill: ${ctx.weakSkill}`
+    );
+  }
+  if (ctx.previousAttemptsSummary) {
+    lines.push(
+      locale === "fr"
+        ? `- Historique récent : ${ctx.previousAttemptsSummary}`
+        : `- Recent attempts: ${ctx.previousAttemptsSummary}`
+    );
+  }
+
   if (ctx.question) {
     lines.push(locale === "fr" ? "- Question :" : "- Question:");
     lines.push(`  ${ctx.question.prompt}`);

@@ -5,9 +5,6 @@ import { getExamSessionView } from "@/modules/assessment-engine/exam-service";
 import { recommendNextLearning } from "@/modules/learning-engine/recommendation-service";
 import { ExamReviewClient } from "@/app/[locale]/components/exam/ExamReviewClient";
 import type { Locale } from "@/shared/types/locale";
-import {
-  calculatePmpReadiness,
-} from "@/modules/assessment-engine/exam-scoring";
 import type {
   DeliveryPerformanceRow,
   DomainPerformanceRow,
@@ -38,25 +35,15 @@ export default async function ExamReviewPage({
   const delivery =
     (view.result.deliveryBreakdown as unknown as DeliveryPerformanceRow[] | null) ??
     [];
-
-  const readiness = calculatePmpReadiness({
-    recentPercentages: [view.result.percentage],
-    domainPerformances: domains,
-    skillPerformances: skills,
-    unansweredRate:
-      view.result.correctCount +
-        view.result.incorrectCount +
-        view.result.unansweredCount ===
-      0
-        ? 0
-        : view.result.unansweredCount /
-          (view.result.correctCount +
-            view.result.incorrectCount +
-            view.result.unansweredCount),
-    repeatedMistakeCount: 0,
-  });
+  const errorBreakdown =
+    (view.result.errorBreakdown as unknown as Record<string, number> | null) ??
+    {};
 
   const recommendation = await recommendNextLearning(session.user.id, loc);
+  const explanation =
+    loc === "fr"
+      ? view.result.readinessExplanationFr
+      : view.result.readinessExplanationEn;
 
   return (
     <ExamReviewClient
@@ -74,12 +61,21 @@ export default async function ExamReviewPage({
       }}
       readiness={{
         level: view.result.readinessLevel,
-        label: loc === "fr" ? readiness.labelFr : readiness.labelEn,
-        limitations: loc === "fr" ? readiness.limitationsFr : readiness.limitationsEn,
+        label:
+          loc === "fr"
+            ? `Préparation pratique : ${view.result.readinessLevel}`
+            : `Practice Readiness: ${view.result.readinessLevel}`,
+        limitations:
+          loc === "fr"
+            ? "Préparation pratique uniquement — pas un score PMI officiel."
+            : "Practice readiness only — not an official PMI score.",
+        explanation,
       }}
       domains={domains}
       skills={skills}
       delivery={delivery}
+      errorBreakdown={errorBreakdown}
+      scoreTrend={view.result.scoreTrend}
       questions={view.questions}
       recommendation={
         recommendation
@@ -115,6 +111,18 @@ export default async function ExamReviewPage({
         aiError: t("aiError"),
         retry: t("retry"),
         dashboard: t("dashboard"),
+        errorAnalysis: t("errorAnalysis"),
+        noErrors: t("noErrors"),
+        whyMissed: t("whyMissed"),
+        targetedRetry: t("targetedRetry"),
+        starting: t("starting"),
+        retryError: t("retryError"),
+        scoreTrend: t("scoreTrend"),
+        retry_RETRY_WRONG_QUESTIONS: t("retryWrong"),
+        retry_RETRY_WEAK_SKILLS: t("retryWeakSkills"),
+        retry_RETRY_WEAK_DOMAIN: t("retryWeakDomain"),
+        retry_RETRY_ERROR_TYPE: t("retryErrorType"),
+        retry_RETRY_MIXED: t("retryMixed"),
       }}
     />
   );

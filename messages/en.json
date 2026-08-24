@@ -114,7 +114,14 @@
     "practiceReadiness": "Practice readiness",
     "startPractice": "Start practice",
     "resumeExam": "Resume exam",
-    "noExamYet": "No exam completed yet."
+    "noExamYet": "No exam completed yet.",
+    "performanceHistory": "PMP performance history",
+    "scoreTrend": "Score trend",
+    "targetScore": "Target practice score",
+    "currentAverage": "Current average",
+    "targetGap": "Gap to target",
+    "saveTarget": "Save target",
+    "evolution": "Score evolution"
   },
   "pmpExam": {
     "title": "PMP Exam Simulator",
@@ -172,7 +179,18 @@
     "aiError": "AI Tutor is temporarily unavailable.",
     "retry": "Practice again",
     "dashboard": "Back to dashboard",
-    "nav": "PMP Exam"
+    "nav": "PMP Exam",
+    "errorAnalysis": "Error analysis",
+    "noErrors": "No classified errors for this attempt.",
+    "whyMissed": "Why you missed it",
+    "targetedRetry": "Targeted retry",
+    "retryError": "Could not start retry.",
+    "scoreTrend": "Score trend",
+    "retryWrong": "Retry wrong questions",
+    "retryWeakSkills": "Retry weak skills",
+    "retryWeakDomain": "Retry weak domain",
+    "retryErrorType": "Retry error type",
+    "retryMixed": "Mixed retry"
   },
   "shorts": {
     "title": "Short Learning",

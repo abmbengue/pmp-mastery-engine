@@ -6,6 +6,8 @@ import prisma from "@/data/prisma-client";
 
 export type RecommendationReasonCode =
   | "WEAK_SKILL"
+  | "REPEATED_ERROR"
+  | "WEAK_DOMAIN"
   | "LEARNING_SKILL"
   | "IN_PROGRESS_LESSON"
   | "NEXT_INCOMPLETE"
@@ -34,6 +36,10 @@ function reasonText(
     switch (code) {
       case "WEAK_SKILL":
         return `Recommandé car votre maîtrise de « ${skillTitle} » est faible.`;
+      case "REPEATED_ERROR":
+        return `Recommandé car vous répétez des erreurs sur « ${skillTitle} ».`;
+      case "WEAK_DOMAIN":
+        return `Recommandé car le domaine « ${skillTitle} » reste faible.`;
       case "LEARNING_SKILL":
         return `Recommandé car vous apprenez encore « ${skillTitle} » (niveau ${masteryLevel ?? "LEARNING"}).`;
       case "IN_PROGRESS_LESSON":
@@ -48,6 +54,10 @@ function reasonText(
   switch (code) {
     case "WEAK_SKILL":
       return `Recommended because your mastery of “${skillTitle}” is currently Weak.`;
+    case "REPEATED_ERROR":
+      return `Recommended because you repeatedly miss items related to “${skillTitle}”.`;
+    case "WEAK_DOMAIN":
+      return `Recommended because the “${skillTitle}” domain remains weak.`;
     case "LEARNING_SKILL":
       return `Recommended because you are still learning “${skillTitle}” (level ${masteryLevel ?? "LEARNING"}).`;
     case "IN_PROGRESS_LESSON":
@@ -108,7 +118,7 @@ async function findLessonForSkill(
 
 /**
  * Deterministic recommendation engine (no ML, no AI).
- * Priority: WEAK → LEARNING → IN_PROGRESS → next incomplete → none
+ * Priority: WEAK skill → repeated error skill → weak domain → LEARNING → IN_PROGRESS → next incomplete → none
  */
 export async function recommendNextLearning(
   userId: string,
@@ -134,11 +144,132 @@ export async function recommendNextLearning(
   const weak = masteries.filter((m) => m.level === "WEAK");
   const learning = masteries.filter((m) => m.level === "LEARNING");
 
-  for (const mastery of [...weak, ...learning]) {
+  // 1) Weak skill mastery
+  for (const mastery of weak) {
     const lesson = await findLessonForSkill(userId, mastery.skillId, enrolledCourseIds);
     if (!lesson) continue;
 
-    const reasonCode = mastery.level === "WEAK" ? "WEAK_SKILL" : "LEARNING_SKILL";
+    const skillTitle = pickLocalized(
+      mastery.skill.titleFr,
+      mastery.skill.titleEn,
+      locale
+    );
+    const path = buildLessonPath({
+      academySlug: lesson.module.course.academy.slug,
+      courseSlug: lesson.module.course.slug,
+      moduleSlug: lesson.module.slug,
+      lessonSlug: lesson.slug,
+    });
+
+    return {
+      reasonCode: "WEAK_SKILL",
+      title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+      reason: reasonText("WEAK_SKILL", locale, skillTitle, mastery.level),
+      path,
+      estimatedMinutes: lesson.estimatedMinutes,
+      academySlug: lesson.module.course.academy.slug,
+      courseSlug: lesson.module.course.slug,
+      skillSlug: mastery.skill.slug,
+      masteryLevel: mastery.level,
+      lessonSlug: lesson.slug,
+    };
+  }
+
+  // 2) Repeated exam errors by skill (weight recommendations without mutating mastery)
+  const errorGroups = await prisma.examError.groupBy({
+    by: ["skillSlug"],
+    where: { userId, skillSlug: { not: null } },
+    _count: { skillSlug: true },
+    orderBy: { _count: { skillSlug: "desc" } },
+    take: 5,
+  });
+  for (const group of errorGroups) {
+    if (!group.skillSlug || group._count.skillSlug < 2) continue;
+    const skill = await prisma.skill.findUnique({
+      where: { slug: group.skillSlug },
+    });
+    if (!skill) continue;
+    const lesson = await findLessonForSkill(userId, skill.id, enrolledCourseIds);
+    if (!lesson) continue;
+    const skillTitle = pickLocalized(skill.titleFr, skill.titleEn, locale);
+    const path = buildLessonPath({
+      academySlug: lesson.module.course.academy.slug,
+      courseSlug: lesson.module.course.slug,
+      moduleSlug: lesson.module.slug,
+      lessonSlug: lesson.slug,
+    });
+    return {
+      reasonCode: "REPEATED_ERROR",
+      title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+      reason: reasonText("REPEATED_ERROR", locale, skillTitle),
+      path,
+      estimatedMinutes: lesson.estimatedMinutes,
+      academySlug: lesson.module.course.academy.slug,
+      courseSlug: lesson.module.course.slug,
+      skillSlug: skill.slug,
+      lessonSlug: lesson.slug,
+    };
+  }
+
+  // 3) Weak domain via recent exam result → map to related skill lesson
+  const lastResult = await prisma.examResult.findFirst({
+    where: { session: { userId } },
+    orderBy: { createdAt: "desc" },
+  });
+  if (lastResult?.domainBreakdown) {
+    const domains = lastResult.domainBreakdown as Array<{
+      domain: string;
+      percentage: number;
+      total: number;
+      band: string;
+    }>;
+    const weakest = domains
+      .filter((d) => d.total > 0)
+      .sort((a, b) => a.percentage - b.percentage)[0];
+    if (weakest && weakest.band === "WEAK") {
+      const domainSkillSlug =
+        weakest.domain === "PEOPLE"
+          ? "pmp-people"
+          : weakest.domain === "BUSINESS_ENVIRONMENT"
+            ? "pmp-business-environment"
+            : "pmp-process";
+      const skill = await prisma.skill.findUnique({
+        where: { slug: domainSkillSlug },
+      });
+      if (skill) {
+        const lesson = await findLessonForSkill(
+          userId,
+          skill.id,
+          enrolledCourseIds
+        );
+        if (lesson) {
+          const path = buildLessonPath({
+            academySlug: lesson.module.course.academy.slug,
+            courseSlug: lesson.module.course.slug,
+            moduleSlug: lesson.module.slug,
+            lessonSlug: lesson.slug,
+          });
+          return {
+            reasonCode: "WEAK_DOMAIN",
+            title: pickLocalized(lesson.titleFr, lesson.titleEn, locale),
+            reason: reasonText("WEAK_DOMAIN", locale, weakest.domain),
+            path,
+            estimatedMinutes: lesson.estimatedMinutes,
+            academySlug: lesson.module.course.academy.slug,
+            courseSlug: lesson.module.course.slug,
+            skillSlug: skill.slug,
+            lessonSlug: lesson.slug,
+          };
+        }
+      }
+    }
+  }
+
+  for (const mastery of learning) {
+    const lesson = await findLessonForSkill(userId, mastery.skillId, enrolledCourseIds);
+    if (!lesson) continue;
+
+    const reasonCode = "LEARNING_SKILL" as const;
     const skillTitle = pickLocalized(
       mastery.skill.titleFr,
       mastery.skill.titleEn,

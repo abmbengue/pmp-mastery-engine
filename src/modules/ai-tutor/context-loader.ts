@@ -19,6 +19,9 @@ export const aiTutorApiBodySchema = z.object({
   simulationSummary: z.string().max(800).optional(),
   /** When set, correct answers are withheld until the exam session is completed */
   examSessionId: z.string().min(1).max(120).optional(),
+  errorType: z.string().max(80).optional(),
+  weakSkill: z.string().max(120).optional(),
+  previousAttemptsSummary: z.string().max(500).optional(),
 });
 
 export type AiTutorApiBody = z.infer<typeof aiTutorApiBodySchema>;
@@ -163,6 +166,11 @@ export async function loadAiTutorContext(
   }
   if (body.simulationScenario) context.simulationScenario = body.simulationScenario;
   if (body.simulationSummary) context.simulationSummary = body.simulationSummary;
+  if (body.errorType) context.errorType = body.errorType;
+  if (body.weakSkill) context.weakSkill = body.weakSkill;
+  if (body.previousAttemptsSummary) {
+    context.previousAttemptsSummary = body.previousAttemptsSummary;
+  }
 
   return context;
 }
