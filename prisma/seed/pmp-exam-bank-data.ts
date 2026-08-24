@@ -4,37 +4,12 @@
  * P1: scenario-specific options — reduced stem reuse; IDs/scenarios/metadata preserved.
  */
 
-import type { ExamDifficultyCode, PmpDeliveryApproachCode, PmpDomainCode } from "@/modules/assessment-engine/exam-types";
-import type { LearningObjectiveCode, PmpScenarioTypeCode } from "@/modules/assessment-engine/exam-blueprint";
+import type { ExamBankQuestionSeed } from "./pmp-exam-bank-types";
+import { applyMisreadScenarioUpgrades } from "./pmp-exam-bank-misread-upgrades";
 
-export type ExamBankOptionSeed = {
-  labelFr: string;
-  labelEn: string;
-  isCorrect: boolean;
-  explanationWrongFr?: string;
-  explanationWrongEn?: string;
-};
+export type { ExamBankOptionSeed, ExamBankQuestionSeed } from "./pmp-exam-bank-types";
 
-export type ExamBankQuestionSeed = {
-  externalKey: string;
-  domain: PmpDomainCode;
-  deliveryApproach: PmpDeliveryApproachCode;
-  processArea: string;
-  examDifficulty: ExamDifficultyCode;
-  scenarioType: PmpScenarioTypeCode;
-  learningObjective: LearningObjectiveCode;
-  skills: string[];
-  type: "SINGLE_CHOICE" | "MULTIPLE_CHOICE" | "TRUE_FALSE";
-  scenarioFr: string;
-  scenarioEn: string;
-  promptFr: string;
-  promptEn: string;
-  explanationCorrectFr: string;
-  explanationCorrectEn: string;
-  options: ExamBankOptionSeed[];
-};
-
-export const PMP_EXAM_BANK: ExamBankQuestionSeed[] =
+const RAW_PMP_EXAM_BANK: ExamBankQuestionSeed[] =
 [
   {
     "externalKey": "pmp-exam-001",
@@ -9377,3 +9352,5 @@ export const PMP_EXAM_BANK: ExamBankQuestionSeed[] =
     ]
   }
 ] as ExamBankQuestionSeed[];
+
+export const PMP_EXAM_BANK = applyMisreadScenarioUpgrades(RAW_PMP_EXAM_BANK);
