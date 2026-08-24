@@ -48,7 +48,6 @@ export class DevPasswordResetEmail implements PasswordResetEmailPort {
     const s = sink();
     s.lastPayload = payload;
     s.history.push(payload);
-    // eslint-disable-next-line no-console -- intentional dev sink
     console.info(
       JSON.stringify({
         event: "password_reset_email_dev",
