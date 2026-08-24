@@ -66,10 +66,10 @@ Every lesson ships `title*`, `description*`, `textBody*`, flashcards, exercises,
 
 | Command | Result |
 |---|---|
-| `npm run lint` | *(run in verification)* |
-| `npm run test` | *(run in verification)* |
-| `npm run build` | *(run in verification)* |
-| `npm run test:e2e` | *(run in verification)* |
+| `npm run lint` | **PASS** |
+| `npm run test` | **223/223 PASS** |
+| `npm run build` | **PASS** |
+| `npm run test:e2e` | **54/54 PASS** |
 
 ## Limits
 

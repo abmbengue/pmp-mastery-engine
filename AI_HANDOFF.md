@@ -50,7 +50,7 @@ PasswordResetToken (hashed token, TTL, single-use)
 
 ## 6–9. Academies
 
-- **Personal Finance** (~29 lessons): foundations, debt, investing, wealth  
+- **Personal Finance** (~53 lessons): foundations, debt, investing, wealth — see `CONTENT_PERSONAL_FINANCE.md`  
 - **Corporate Finance** (~30): statements, WC, valuation, DCF, M&A  
 - **PMP** (~38 original lessons + 200-question bank): People/Process/Business/Agile/Hybrid/Situational  
 
