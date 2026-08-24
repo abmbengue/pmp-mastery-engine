@@ -8,8 +8,8 @@ Grow PLA into a rich **micro-learning** platform without changing core architect
 
 | Academy | Approx. lessons | Modules |
 |---|---|---|
-| Personal Finance | 29 | foundations, debt, saving-investing, wealth-building |
-| Corporate Finance | 30 | financial-statements, working-capital, valuation, dcf, ma-basics |
+| Personal Finance | **53** (expanded) | foundations, debt, saving-investing, wealth-building |
+| Corporate Finance | 30+ | financial-statements, working-capital, valuation, dcf, ma-basics |
 | PMP (original) | 38 | foundations, people, process, business-environment, agile, hybrid, situational-thinking |
 
 Catalogs live under `prisma/seed/content/`.
