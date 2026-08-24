@@ -48,11 +48,18 @@
 
 ## Phase 4 — UI Polish + Content Expansion
 
-- [ ] Responsive design refinement
-- [ ] Accessibility audit (WCAG 2.1 AA)
-- [ ] Expand seed content (more lessons per module)
-- [ ] PMP category structure (People, Process, Business Env, Agile, Hybrid)
-- [ ] Personal Finance full category tree
+- [x] Dashboard V2 (Continue Learning, My Learning, Skills, Stats, Quick Access)
+- [x] Next Lesson Engine (progress-aware)
+- [x] Course Page V2 (statuses, durations, CONTINUE)
+- [x] Micro-learning duration display
+- [x] Short Video architecture (VIDEO + Short metadata, UX foundation)
+- [x] Personal Finance structure (FOUNDATIONS / INVESTING / WEALTH_BUILDING)
+- [x] Corporate Finance academy (ACTIVE, small seed)
+- [x] PMP structure (People / Process / Agile / Hybrid / Situational)
+- [x] ContentDifficulty + Lesson↔Skill M2M
+- [x] Accessibility light audit fixes
+- [x] FR/EN for new surfaces
+- [x] Expanded unit + E2E coverage
 
 ## Phase 5 — Advanced Features
 
@@ -72,12 +79,14 @@
 - [ ] OAuth providers
 - [ ] Mobile-responsive PWA or native app
 
-## Known Limitations (after Phase 3)
+## Known Limitations (after Phase 4)
 
 - No password reset / email verification
 - No role-based access control
-- Video items are placeholders only
+- Video / Short items are placeholders only (no hosting provider)
 - AI Tutor returns stub messages
+- Mark Short completed is UI-ready but deferred for full progress wiring
+- No CMS / payment / simulators / full mock exams
 - 6 academies have no content (PLANNED status)
 - No admin/CMS for content management
 - No CI/CD configured

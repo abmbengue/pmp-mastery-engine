@@ -100,3 +100,49 @@ test("USER ISOLATION: user A progress is not visible to user B", async ({ browse
   await contextA.close();
   await contextB.close();
 });
+
+test("PHASE4 TEST1: Login → Dashboard → Continue Learning → Lesson", async ({ page }) => {
+  const email = uniqueEmail("p4-continue");
+  await register(page, "en", email);
+  await expect(page.getByTestId("continue-learning-section")).toBeVisible();
+  await page.getByTestId("continue-learning-btn").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+});
+
+test("PHASE4 TEST2: Dashboard → Personal Finance → Course → Lesson", async ({ page }) => {
+  const email = uniqueEmail("p4-pf");
+  await register(page, "en", email);
+  await page.getByTestId("quick-access-personal-finance").click();
+  await expect(page.getByTestId("course-page")).toBeVisible();
+  await expect(page.getByTestId("course-title")).toContainText("Personal Finance");
+  await page.getByTestId("continue-course-btn").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+});
+
+test("PHASE4 TEST3: Dashboard → PMP → Course → Lesson", async ({ page }) => {
+  const email = uniqueEmail("p4-pmp");
+  await register(page, "en", email);
+  await page.getByTestId("quick-access-pmp-project-management").click();
+  await expect(page.getByTestId("course-page")).toBeVisible();
+  await page.getByTestId("continue-course-btn").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible();
+});
+
+test("PHASE4 TEST4: Dashboard → Corporate Finance → Course", async ({ page }) => {
+  const email = uniqueEmail("p4-cf");
+  await register(page, "en", email);
+  await page.getByTestId("quick-access-corporate-finance").click();
+  await expect(page.getByTestId("course-page")).toBeVisible();
+  await expect(page.getByTestId("course-title")).toContainText("Corporate Finance");
+  await expect(page.getByTestId("continue-course-btn")).toBeVisible();
+});
+
+test("PHASE4 TEST5: FR → Dashboard → EN → Dashboard", async ({ page }) => {
+  const email = uniqueEmail("p4-locale");
+  await register(page, "fr", email);
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.getByTestId("continue-learning-section")).toContainText("Continuer");
+  await page.goto("/en/dashboard");
+  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.getByTestId("continue-learning-section")).toContainText("Continue");
+});

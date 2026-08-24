@@ -128,6 +128,7 @@ export default async function LessonPage({
             learn: {
               videoComingSoon: tp("learn.videoComingSoon"),
               videoPlaceholder: tp("learn.videoPlaceholder"),
+              shortBadge: tp("learn.shortBadge"),
             },
             practice: {
               exerciseTitle: tp("practice.exerciseTitle"),

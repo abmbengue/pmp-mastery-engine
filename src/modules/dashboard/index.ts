@@ -1,7 +1,6 @@
 /**
- * Dashboard module — V1 stub.
- * Full dashboard UI will be implemented in Phase 3.
- * Business logic for aggregating progress data lives in learning-engine.
+ * Dashboard module — aggregation for Dashboard V2.
  */
 
+export { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
 export { getCourseProgress, getUserMasteries } from "@/modules/learning-engine/progress-service";

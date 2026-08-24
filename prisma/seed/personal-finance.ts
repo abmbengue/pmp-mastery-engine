@@ -276,10 +276,40 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
     titleEn: "Personal finance foundations",
   });
 
+  const skillIncome = await upsertSkill(prisma, {
+    slug: "pf-income",
+    titleFr: "Revenus",
+    titleEn: "Income",
+  });
+
+  const skillBudgeting = await upsertSkill(prisma, {
+    slug: "pf-budgeting",
+    titleFr: "Budget",
+    titleEn: "Budgeting",
+  });
+
   const skillInvesting = await upsertSkill(prisma, {
     slug: "pf-investing",
     titleFr: "Bases de l'investissement",
     titleEn: "Investing basics",
+  });
+
+  const skillInterest = await upsertSkill(prisma, {
+    slug: "pf-interest",
+    titleFr: "Intérêt",
+    titleEn: "Interest",
+  });
+
+  const skillCompounding = await upsertSkill(prisma, {
+    slug: "pf-compounding",
+    titleFr: "Capitalisation",
+    titleEn: "Compounding",
+  });
+
+  const skillWealth = await upsertSkill(prisma, {
+    slug: "pf-wealth-building",
+    titleFr: "Construction de patrimoine",
+    titleEn: "Wealth Building",
   });
 
   const module1 = await prisma.module.create({
@@ -288,15 +318,31 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
       slug: "foundations",
       titleFr: "Fondamentaux",
       titleEn: "Foundations",
-      descriptionFr: "Revenus, dépenses et budget.",
-      descriptionEn: "Income, expenses, and budgeting.",
+      descriptionFr: "Revenus, dépenses, budget, épargne et fonds d'urgence.",
+      descriptionEn: "Income, expenses, budgeting, saving, and emergency fund.",
+      category: "FOUNDATIONS",
       sortOrder: 0,
       estimatedMinutes: 26,
     },
   });
 
   for (const lessonConfig of MODULE_1_LESSONS) {
-    await seedLessonWithContent(prisma, module1.id, skillFoundations.id, lessonConfig);
+    const extras =
+      lessonConfig.slug === "understanding-income"
+        ? [skillIncome.id]
+        : lessonConfig.slug === "building-a-budget"
+          ? [skillBudgeting.id]
+          : [];
+    await seedLessonWithContent(prisma, module1.id, skillFoundations.id, {
+      ...lessonConfig,
+      difficulty: "BEGINNER",
+      isShort: lessonConfig.slug === "understanding-income",
+      shortTopic: "income",
+      shortDurationSeconds: 140,
+    }, {
+      academySlug: "personal-finance",
+      extraSkillIds: extras,
+    });
   }
 
   const module2 = await prisma.module.create({
@@ -305,16 +351,88 @@ export async function seedPersonalFinance(prisma: PrismaClient) {
       slug: "saving-investing",
       titleFr: "Épargne et investissement",
       titleEn: "Saving & Investing",
-      descriptionFr: "Épargne, fonds d'urgence et bases de l'investissement.",
-      descriptionEn: "Saving, emergency funds, and investing basics.",
+      descriptionFr: "Épargne, fonds d'urgence, actions, obligations et diversification.",
+      descriptionEn: "Saving, emergency funds, stocks, bonds, and diversification.",
+      category: "INVESTING",
       sortOrder: 1,
       estimatedMinutes: 26,
     },
   });
 
   for (const lessonConfig of MODULE_2_LESSONS) {
-    await seedLessonWithContent(prisma, module2.id, skillInvesting.id, lessonConfig);
+    await seedLessonWithContent(prisma, module2.id, skillInvesting.id, {
+      ...lessonConfig,
+      difficulty: lessonConfig.slug === "risk-and-return" ? "INTERMEDIATE" : "BEGINNER",
+    }, {
+      academySlug: "personal-finance",
+    });
   }
+
+  const module3 = await prisma.module.create({
+    data: {
+      courseId: course.id,
+      slug: "wealth-building",
+      titleFr: "Construction de patrimoine",
+      titleEn: "Wealth Building",
+      descriptionFr: "Intérêt composé, inflation et objectifs financiers.",
+      descriptionEn: "Compound interest, inflation, and financial goals.",
+      category: "WEALTH_BUILDING",
+      sortOrder: 2,
+      estimatedMinutes: 10,
+    },
+  });
+
+  await seedLessonWithContent(
+    prisma,
+    module3.id,
+    skillWealth.id,
+    {
+      slug: "compound-interest",
+      titleFr: "Intérêt composé",
+      titleEn: "Compound Interest",
+      descriptionFr: "Comprenez comment l'intérêt composé accélère la croissance du capital.",
+      descriptionEn: "Understand how compound interest accelerates capital growth.",
+      sortOrder: 0,
+      estimatedMinutes: 10,
+      difficulty: "INTERMEDIATE",
+      learnMinutes: 3,
+      practiceMinutes: 3,
+      testMinutes: 2,
+      reviewMinutes: 1,
+      masterMinutes: 1,
+      isShort: true,
+      shortTopic: "compound-interest",
+      shortDurationSeconds: 165,
+      textBodyFr:
+        "L'intérêt composé réinvestit les intérêts déjà gagnés. Plus l'horizon est long, plus l'effet de capitalisation devient puissant pour construire un patrimoine.",
+      textBodyEn:
+        "Compound interest reinvests interest already earned. The longer the horizon, the more powerful compounding becomes for building wealth.",
+      videoTitleFr: "L'intérêt composé en 3 minutes",
+      videoTitleEn: "Compound Interest in 3 Minutes",
+      flashcardFrontFr: "Intérêt composé",
+      flashcardFrontEn: "Compound interest",
+      flashcardBackFr: "Intérêts calculés sur le capital et les intérêts antérieurs.",
+      flashcardBackEn: "Interest calculated on principal and previously earned interest.",
+      exercisePromptFr: "Calculez mentalement l'effet approximatif d'un doublement sur 10 ans à ~7 %/an.",
+      exercisePromptEn: "Mentally estimate the effect of doubling over ~10 years at ~7%/year.",
+      question: {
+        type: "TRUE_FALSE",
+        promptFr: "L'intérêt composé croît plus vite que l'intérêt simple sur le long terme.",
+        promptEn: "Compound interest grows faster than simple interest over the long term.",
+        explanationCorrectFr: "Vrai. La capitalisation accélère la croissance avec le temps.",
+        explanationCorrectEn: "True. Compounding accelerates growth over time.",
+        difficulty: 1,
+        options: [
+          { labelFr: "Vrai", labelEn: "True", isCorrect: true },
+          { labelFr: "Faux", labelEn: "False", isCorrect: false },
+        ],
+      },
+    },
+    {
+      academySlug: "personal-finance",
+      extraSkillIds: [skillInterest.id, skillCompounding.id],
+    }
+  );
 
   return { academy, course };
 }

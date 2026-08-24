@@ -1,4 +1,4 @@
-import type { PrismaClient } from "../../src/generated/prisma/client";
+import type { ContentDifficulty, PrismaClient } from "../../src/generated/prisma/client";
 
 export async function upsertSkill(
   prisma: PrismaClient,
@@ -15,6 +15,20 @@ export async function upsertSkill(
     create: data,
     update: data,
   });
+}
+
+export async function linkLessonSkills(
+  prisma: PrismaClient,
+  lessonId: string,
+  skillIds: string[]
+) {
+  for (const skillId of skillIds) {
+    await prisma.lessonSkill.upsert({
+      where: { lessonId_skillId: { lessonId, skillId } },
+      create: { lessonId, skillId },
+      update: {},
+    });
+  }
 }
 
 export async function createQuestionWithOptions(
@@ -72,6 +86,8 @@ export interface LessonSeedConfig {
   descriptionEn: string;
   sortOrder: number;
   estimatedMinutes: number;
+  difficulty?: ContentDifficulty;
+  skillSlugs?: string[];
   learnMinutes: number;
   practiceMinutes: number;
   testMinutes: number;
@@ -81,6 +97,10 @@ export interface LessonSeedConfig {
   textBodyEn: string;
   videoTitleFr: string;
   videoTitleEn: string;
+  /** Mark lesson VIDEO as Short Learning (~3 min) */
+  isShort?: boolean;
+  shortTopic?: string;
+  shortDurationSeconds?: number;
   flashcardFrontFr: string;
   flashcardFrontEn: string;
   flashcardBackFr: string;
@@ -108,8 +128,14 @@ export async function seedLessonWithContent(
   prisma: PrismaClient,
   moduleId: string,
   skillId: string,
-  config: LessonSeedConfig
+  config: LessonSeedConfig,
+  options?: {
+    academySlug?: string;
+    extraSkillIds?: string[];
+  }
 ) {
+  const difficulty = config.difficulty ?? "BEGINNER";
+
   const lesson = await prisma.lesson.create({
     data: {
       moduleId,
@@ -120,6 +146,7 @@ export async function seedLessonWithContent(
       descriptionEn: config.descriptionEn,
       sortOrder: config.sortOrder,
       estimatedMinutes: config.estimatedMinutes,
+      difficulty,
       learnMinutes: config.learnMinutes,
       practiceMinutes: config.practiceMinutes,
       testMinutes: config.testMinutes,
@@ -127,6 +154,11 @@ export async function seedLessonWithContent(
       masterMinutes: config.masterMinutes,
     },
   });
+
+  const allSkillIds = Array.from(
+    new Set([skillId, ...(options?.extraSkillIds ?? [])])
+  );
+  await linkLessonSkills(prisma, lesson.id, allSkillIds);
 
   await prisma.learningItem.create({
     data: {
@@ -141,6 +173,10 @@ export async function seedLessonWithContent(
     },
   });
 
+  const durationSeconds = config.isShort
+    ? (config.shortDurationSeconds ?? 150)
+    : null;
+
   await prisma.learningItem.create({
     data: {
       lessonId: lesson.id,
@@ -149,7 +185,9 @@ export async function seedLessonWithContent(
       difficulty: 1,
       payload: {
         url: null,
-        durationSec: null,
+        videoUrl: null,
+        durationSec: durationSeconds,
+        durationSeconds,
         titleFr: config.videoTitleFr,
         titleEn: config.videoTitleEn,
         language: "both",
@@ -157,6 +195,11 @@ export async function seedLessonWithContent(
         descriptionFr: config.descriptionFr,
         descriptionEn: config.descriptionEn,
         isPlaceholder: true,
+        isShort: config.isShort ?? false,
+        topic: config.shortTopic,
+        difficulty,
+        academySlug: options?.academySlug,
+        relatedSkillSlug: undefined,
       },
     },
   });

@@ -19,7 +19,22 @@
     "active": "Disponible",
     "nextLesson": "Leçon suivante",
     "previousLesson": "Leçon précédente",
-    "continueLearning": "Continuer l'apprentissage"
+    "continueLearning": "Continuer l'apprentissage",
+    "continueCourse": "Continuer le cours",
+    "comingSoon": "Bientôt disponible",
+    "shorts": "Shorts",
+    "viewShorts": "Voir les shorts",
+    "learnInSmallSessions": "Apprenez en petites sessions.",
+    "totalDuration": "Durée totale",
+    "minutes": "min",
+    "statusNotStarted": "Non commencé",
+    "statusInProgress": "En cours",
+    "statusCompleted": "Terminé",
+    "difficultyBeginner": "Débutant",
+    "difficultyIntermediate": "Intermédiaire",
+    "difficultyAdvanced": "Avancé",
+    "lastActivity": "Dernière activité",
+    "nextUp": "À suivre"
   },
   "nav": {
     "home": "Accueil",
@@ -27,7 +42,8 @@
     "dashboard": "Tableau de bord",
     "settings": "Paramètres",
     "login": "Connexion",
-    "register": "Inscription"
+    "register": "Inscription",
+    "skipToContent": "Aller au contenu"
   },
   "auth": {
     "loginTitle": "Connexion",
@@ -59,11 +75,47 @@
     "streak": "Série",
     "recentScores": "Dernier score",
     "continueLearning": "Continuer l'apprentissage",
+    "continue": "Continuer",
+    "myLearning": "Mon apprentissage",
+    "skills": "Compétences",
+    "skillsWeak": "Faibles",
+    "skillsLearning": "En cours",
+    "skillsMastered": "Maîtrisées",
+    "learningStats": "Statistiques",
+    "lessonsCompleted": "Leçons terminées",
+    "quizzesCompleted": "Quiz terminés",
+    "averageScore": "Score moyen",
+    "currentStreak": "Série actuelle",
+    "quickAccess": "Accès rapide",
     "lessonsComplete": "leçons terminées",
     "openCourse": "Ouvrir le cours",
     "weakAreas": "Points faibles",
     "masteredAreas": "Compétences maîtrisées",
-    "noneYet": "Aucune donnée pour le moment"
+    "noneYet": "Aucune donnée pour le moment",
+    "academy": "Académie",
+    "course": "Cours",
+    "module": "Module",
+    "nextLesson": "Prochaine leçon",
+    "progress": "Progression",
+    "lastActivity": "Dernière activité",
+    "noContinue": "Commencez un cours via Accès rapide.",
+    "courseComplete": "Cours terminé",
+    "days": "jours"
+  },
+  "shorts": {
+    "title": "Short Learning",
+    "subtitle": "Vidéos pédagogiques courtes — environ 3 minutes maximum.",
+    "watch": "Regarder",
+    "markCompleted": "Marquer comme terminé",
+    "nextShort": "Short suivant",
+    "placeholder": "La lecture vidéo sera disponible dans une prochaine mise à jour.",
+    "duration": "Durée",
+    "topic": "Thème",
+    "difficulty": "Difficulté",
+    "relatedSkill": "Compétence liée",
+    "empty": "Aucun short disponible pour cette académie.",
+    "backToAcademy": "Retour à l'académie",
+    "comingSoonBadge": "Placeholder"
   },
   "settings": {
     "title": "Paramètres",
@@ -91,7 +143,8 @@
     },
     "learn": {
       "videoComingSoon": "Vidéo disponible prochainement",
-      "videoPlaceholder": "Cette vidéo sera disponible dans une prochaine mise à jour."
+      "videoPlaceholder": "Cette vidéo sera disponible dans une prochaine mise à jour.",
+      "shortBadge": "Short"
     },
     "practice": {
       "exerciseTitle": "Exercice",

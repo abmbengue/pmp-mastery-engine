@@ -46,7 +46,7 @@ export interface LessonPlayerProps {
       startLesson: string;
       finishLesson: string;
       phases: Record<LessonPhase, string>;
-      learn: { videoComingSoon: string; videoPlaceholder: string };
+      learn: { videoComingSoon: string; videoPlaceholder: string; shortBadge: string };
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
       test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
@@ -276,7 +276,11 @@ export function LessonPlayer({
               <VideoBlock
                 payload={videoItem.payload as VideoPayload}
                 locale={locale}
-                labels={{ comingSoon: pl.learn.videoComingSoon, placeholder: pl.learn.videoPlaceholder }}
+                labels={{
+                  comingSoon: pl.learn.videoComingSoon,
+                  placeholder: pl.learn.videoPlaceholder,
+                  shortBadge: pl.learn.shortBadge,
+                }}
               />
             )}
           </div>

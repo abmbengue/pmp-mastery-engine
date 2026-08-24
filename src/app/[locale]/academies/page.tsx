@@ -17,7 +17,8 @@ export default async function AcademiesPage({
 
   return (
     <section data-testid="academies-page">
-      <h1 className="mb-6 text-2xl font-bold">{t("academies")}</h1>
+      <h1 className="mb-2 text-2xl font-bold">{t("academies")}</h1>
+      <p className="mb-6 text-sm text-blue-700">{t("learnInSmallSessions")}</p>
       <ul className="space-y-4">
         {academies.map((academy) => {
           const { title, description } = localizeAcademy(academy, loc);
@@ -34,13 +35,20 @@ export default async function AcademiesPage({
                 {isActive ? t("active") : t("planned")}
               </span>
               {isActive && academy.courses[0] && (
-                <div className="mt-3">
+                <div className="mt-3 flex flex-wrap gap-4">
                   <Link
                     href={`/academies/${academy.slug}/courses/${academy.courses[0].slug}`}
-                    className="text-sm text-blue-600 hover:underline"
+                    className="text-sm font-medium text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
                     data-testid={`academy-link-${academy.slug}`}
                   >
                     {title} →
+                  </Link>
+                  <Link
+                    href={`/academies/${academy.slug}/shorts`}
+                    className="text-sm text-gray-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    data-testid={`academy-shorts-${academy.slug}`}
+                  >
+                    {t("viewShorts")}
                   </Link>
                 </div>
               )}

@@ -24,6 +24,9 @@ export async function findAcademyBySlug(slug: string) {
         include: {
           modules: {
             orderBy: { sortOrder: "asc" },
+            include: {
+              lessons: { orderBy: { sortOrder: "asc" } },
+            },
           },
         },
       },

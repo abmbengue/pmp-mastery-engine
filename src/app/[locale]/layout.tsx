@@ -31,30 +31,51 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <div className="min-h-screen bg-gray-50 text-gray-900">
-        <header className="border-b bg-white px-6 py-4">
+      <div className="min-h-screen bg-slate-50 text-gray-900">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:shadow"
+          data-testid="skip-to-content"
+        >
+          {t("skipToContent")}
+        </a>
+        <header className="border-b border-slate-200 bg-white px-6 py-4">
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
-            <span className="text-lg font-semibold" data-testid="app-title">
+            <Link href="/" className="text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="app-title">
               Professional Learning Academy
-            </span>
-            <nav className="flex flex-wrap items-center gap-4 text-sm">
-              <Link href="/" data-testid="nav-home">{t("home")}</Link>
-              <Link href="/academies" data-testid="nav-academies">{t("academies")}</Link>
+            </Link>
+            <nav className="flex flex-wrap items-center gap-4 text-sm" aria-label="Main">
+              <Link href="/" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-home">
+                {t("home")}
+              </Link>
+              <Link href="/academies" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-academies">
+                {t("academies")}
+              </Link>
               {session?.user ? (
                 <>
-                  <Link href="/dashboard" data-testid="nav-dashboard">{t("dashboard")}</Link>
-                  <Link href="/settings" data-testid="nav-settings">{t("settings")}</Link>
+                  <Link href="/dashboard" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-dashboard">
+                    {t("dashboard")}
+                  </Link>
+                  <Link href="/settings" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-settings">
+                    {t("settings")}
+                  </Link>
                 </>
               ) : (
                 <>
-                  <Link href="/login" data-testid="nav-login">{t("login")}</Link>
-                  <Link href="/register" data-testid="nav-register">{t("register")}</Link>
+                  <Link href="/login" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-login">
+                    {t("login")}
+                  </Link>
+                  <Link href="/register" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500" data-testid="nav-register">
+                    {t("register")}
+                  </Link>
                 </>
               )}
             </nav>
           </div>
         </header>
-        <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
+        <main id="main-content" className="mx-auto max-w-5xl px-6 py-8" tabIndex={-1}>
+          {children}
+        </main>
       </div>
     </NextIntlClientProvider>
   );

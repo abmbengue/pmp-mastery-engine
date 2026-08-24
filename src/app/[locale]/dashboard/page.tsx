@@ -1,49 +1,27 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireSession } from "@/modules/auth/session";
-import { findUserDashboardData } from "@/data/repositories/user-repository";
-import { getCourseProgress } from "@/modules/learning-engine/progress-service";
-import { localizeCourse } from "@/data/repositories/course-repository";
+import { getDashboardV2 } from "@/modules/dashboard/dashboard-service";
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
 import type { Locale } from "@/shared/types/locale";
+
+function formatActivity(date: Date | null, locale: Locale): string {
+  if (!date) return "—";
+  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const session = await requireSession(locale);
   const t = await getTranslations("dashboard");
+  const ta = await getTranslations("app");
   const loc = locale as Locale;
 
-  const data = await findUserDashboardData(session.user.id);
-
-  const enrolledCourses = await Promise.all(
-    data.enrollments.map(async (enrollment) => {
-      const course = enrollment.course;
-      const progress = await getCourseProgress(session.user.id, course.id);
-      const firstModule = course.modules[0];
-      const firstLesson = firstModule?.lessons[0];
-      let nextLessonUrl: string | null = null;
-
-      if (firstLesson) {
-        nextLessonUrl = `/academies/${course.academy.slug}/courses/${course.slug}/modules/${firstModule.slug}/lessons/${firstLesson.slug}`;
-      }
-
-      return {
-        enrollment,
-        progress,
-        courseLabel: localizeCourse(course, loc),
-        nextLessonUrl,
-      };
-    })
-  );
-
-  const totalCompleted = enrolledCourses.reduce((sum, c) => sum + (c.progress?.completedLessons ?? 0), 0);
-  const totalLessons = enrolledCourses.reduce((sum, c) => sum + (c.progress?.totalLessons ?? 0), 0);
-  const globalProgress = totalLessons === 0 ? 0 : Math.round((totalCompleted / totalLessons) * 100);
-
-  const weakAreas = data.masteries.filter((m) => m.level === "WEAK");
-  const masteredAreas = data.masteries.filter((m) => m.level === "MASTERED");
-  const totalLearningTimeSec = enrolledCourses.reduce((sum, c) => sum + (c.progress?.totalTimeSpentSec ?? 0), 0);
+  const data = await getDashboardV2(session.user.id, loc);
 
   async function logoutAction() {
     "use server";
@@ -51,71 +29,280 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   }
 
   return (
-    <section data-testid="dashboard-page">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <section data-testid="dashboard-page" className="space-y-10">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t("welcome")}, {session.user.name ?? session.user.email}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {t("welcome")}, {session.user.name ?? session.user.email}
+          </h1>
           <p className="mt-1 text-sm text-gray-600">{session.user.email}</p>
+          <p className="mt-2 text-sm text-blue-700">{ta("learnInSmallSessions")}</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/settings" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50" data-testid="settings-link">
+          <Link
+            href="/settings"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            data-testid="settings-link"
+          >
             {t("settings")}
           </Link>
           <form action={logoutAction}>
-            <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black" data-testid="logout-button">
+            <button
+              type="submit"
+              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              data-testid="logout-button"
+            >
               {t("logout")}
             </button>
           </form>
         </div>
       </div>
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border bg-white p-5"><p className="text-sm text-gray-500">{t("globalProgress")}</p><p className="mt-2 text-3xl font-bold text-blue-600" data-testid="global-progress">{globalProgress}%</p></div>
-        <div className="rounded-xl border bg-white p-5"><p className="text-sm text-gray-500">{t("learningTime")}</p><p className="mt-2 text-3xl font-bold text-gray-900">{Math.round(totalLearningTimeSec / 60)} min</p></div>
-        <div className="rounded-xl border bg-white p-5"><p className="text-sm text-gray-500">{t("streak")}</p><p className="mt-2 text-3xl font-bold text-gray-900">{data.streak?.currentStreak ?? 0}</p></div>
-        <div className="rounded-xl border bg-white p-5"><p className="text-sm text-gray-500">{t("recentScores")}</p><p className="mt-2 text-3xl font-bold text-gray-900">{data.recentScores[0]?.score ?? 0}%</p></div>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <section className="lg:col-span-2">
-          <h2 className="mb-4 text-xl font-semibold">{t("continueLearning")}</h2>
-          <div className="space-y-4">
-            {enrolledCourses.map(({ enrollment, progress, courseLabel, nextLessonUrl }) => (
-              <div key={enrollment.id} className="rounded-xl border bg-white p-5" data-testid={`dashboard-course-${enrollment.course.slug}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm text-gray-500">{enrollment.course.academy.titleEn}</p>
-                    <h3 className="text-lg font-semibold text-gray-900">{courseLabel.title}</h3>
-                  </div>
-                  <span className="text-sm font-semibold text-blue-600">{progress?.percentage ?? 0}%</span>
-                </div>
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-gray-200">
-                  <div className="h-full rounded-full bg-blue-500" style={{ width: `${progress?.percentage ?? 0}%` }} />
-                </div>
-                <p className="mt-2 text-sm text-gray-500">{progress?.completedLessons ?? 0} / {progress?.totalLessons ?? 0} {t("lessonsComplete")}</p>
-                {nextLessonUrl && (
-                  <Link href={nextLessonUrl} className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline" data-testid={`continue-course-${enrollment.course.slug}`}>
-                    {t("openCourse")}
-                  </Link>
-                )}
+      {/* A. CONTINUE LEARNING */}
+      <section
+        aria-labelledby="continue-learning-heading"
+        className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-6"
+        data-testid="continue-learning-section"
+      >
+        <h2 id="continue-learning-heading" className="text-xl font-semibold text-gray-900">
+          {t("continueLearning")}
+        </h2>
+        {data.continueLearning ? (
+          <div className="mt-4" data-testid="continue-learning-card">
+            <dl className="grid gap-2 text-sm sm:grid-cols-2">
+              <div>
+                <dt className="text-gray-500">{t("academy")}</dt>
+                <dd className="font-medium text-gray-900">{data.continueLearning.academyTitle}</dd>
               </div>
-            ))}
+              <div>
+                <dt className="text-gray-500">{t("course")}</dt>
+                <dd className="font-medium text-gray-900">{data.continueLearning.courseTitle}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">{t("module")}</dt>
+                <dd className="font-medium text-gray-900">{data.continueLearning.moduleTitle ?? "—"}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">{t("nextLesson")}</dt>
+                <dd className="font-medium text-gray-900">{data.continueLearning.nextLessonTitle ?? "—"}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">{t("progress")}</dt>
+                <dd className="font-medium text-blue-700">{data.continueLearning.percentage}%</dd>
+              </div>
+              <div>
+                <dt className="text-gray-500">{t("lastActivity")}</dt>
+                <dd className="font-medium text-gray-900">
+                  {formatActivity(data.continueLearning.lastActivityAt, loc)}
+                </dd>
+              </div>
+            </dl>
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-blue-100">
+              <div
+                className="h-full rounded-full bg-blue-600"
+                style={{ width: `${data.continueLearning.percentage}%` }}
+                role="progressbar"
+                aria-valuenow={data.continueLearning.percentage}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={t("progress")}
+              />
+            </div>
+            {data.continueLearning.nextLessonPath && (
+              <Link
+                href={data.continueLearning.nextLessonPath}
+                className="mt-5 inline-flex rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                data-testid="continue-learning-btn"
+              >
+                {t("continue")}
+              </Link>
+            )}
           </div>
-        </section>
+        ) : (
+          <p className="mt-3 text-sm text-gray-600" data-testid="continue-learning-empty">
+            {t("noContinue")}
+          </p>
+        )}
+      </section>
 
-        <aside className="space-y-6">
-          <section className="rounded-xl border bg-white p-5">
-            <h2 className="mb-3 text-lg font-semibold">{t("weakAreas")}</h2>
-            <ul className="space-y-2 text-sm text-gray-700" data-testid="weak-areas-list">
-              {weakAreas.length === 0 ? <li>{t("noneYet")}</li> : weakAreas.map((area) => <li key={area.id}>• {loc === "fr" ? area.skill.titleFr : area.skill.titleEn}</li>)}
-            </ul>
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="space-y-8 lg:col-span-2">
+          {/* B. MY LEARNING */}
+          <section aria-labelledby="my-learning-heading" data-testid="my-learning-section">
+            <h2 id="my-learning-heading" className="mb-4 text-xl font-semibold">
+              {t("myLearning")}
+            </h2>
+            <div className="space-y-4">
+              {data.myLearning.map((course) => (
+                <article
+                  key={course.enrollmentId}
+                  className="rounded-xl border bg-white p-5"
+                  data-testid={`dashboard-course-${course.courseSlug}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm text-gray-500">{course.academyTitle}</p>
+                      <h3 className="text-lg font-semibold text-gray-900">{course.courseTitle}</h3>
+                    </div>
+                    <span className="text-sm font-semibold text-blue-600">{course.percentage}%</span>
+                  </div>
+                  <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                    <div
+                      className="h-full rounded-full bg-blue-500"
+                      style={{ width: `${course.percentage}%` }}
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500">
+                    {course.completedLessons} / {course.totalLessons} {t("lessonsComplete")}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {t("nextLesson")}: {course.nextLessonTitle ?? t("courseComplete")}
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {t("lastActivity")}: {formatActivity(course.lastActivityAt, loc)}
+                  </p>
+                  {course.nextLessonPath ? (
+                    <Link
+                      href={course.nextLessonPath}
+                      className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      data-testid={`continue-course-${course.courseSlug}`}
+                    >
+                      {t("openCourse")}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/academies/${course.academySlug}/courses/${course.courseSlug}`}
+                      className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      data-testid={`open-course-${course.courseSlug}`}
+                    >
+                      {t("openCourse")}
+                    </Link>
+                  )}
+                </article>
+              ))}
+            </div>
           </section>
 
-          <section className="rounded-xl border bg-white p-5">
-            <h2 className="mb-3 text-lg font-semibold">{t("masteredAreas")}</h2>
-            <ul className="space-y-2 text-sm text-gray-700" data-testid="mastered-areas-list">
-              {masteredAreas.length === 0 ? <li>{t("noneYet")}</li> : masteredAreas.map((area) => <li key={area.id}>• {loc === "fr" ? area.skill.titleFr : area.skill.titleEn}</li>)}
+          {/* E. QUICK ACCESS */}
+          <section aria-labelledby="quick-access-heading" data-testid="quick-access-section">
+            <h2 id="quick-access-heading" className="mb-4 text-xl font-semibold">
+              {t("quickAccess")}
+            </h2>
+            <ul className="grid gap-3 sm:grid-cols-3">
+              {data.quickAccess.map((item) => (
+                <li key={item.academySlug}>
+                  {item.coursePath && !item.comingSoon ? (
+                    <Link
+                      href={item.coursePath}
+                      className="block rounded-xl border bg-white p-4 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      data-testid={`quick-access-${item.academySlug}`}
+                    >
+                      <p className="font-semibold text-gray-900">{item.title}</p>
+                      <p className="mt-1 text-xs text-green-700">{ta("active")}</p>
+                    </Link>
+                  ) : (
+                    <div
+                      className="rounded-xl border border-dashed bg-gray-50 p-4"
+                      data-testid={`quick-access-${item.academySlug}`}
+                    >
+                      <p className="font-semibold text-gray-700">{item.title}</p>
+                      <p className="mt-1 text-xs text-gray-500">{ta("comingSoon")}</p>
+                    </div>
+                  )}
+                </li>
+              ))}
             </ul>
+          </section>
+        </div>
+
+        <aside className="space-y-6">
+          {/* D. LEARNING STATS */}
+          <section
+            aria-labelledby="learning-stats-heading"
+            className="rounded-xl border bg-white p-5"
+            data-testid="learning-stats-section"
+          >
+            <h2 id="learning-stats-heading" className="mb-3 text-lg font-semibold">
+              {t("learningStats")}
+            </h2>
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between gap-2">
+                <dt className="text-gray-500">{t("lessonsCompleted")}</dt>
+                <dd className="font-semibold" data-testid="stat-lessons-completed">
+                  {data.stats.lessonsCompleted}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2">
+                <dt className="text-gray-500">{t("quizzesCompleted")}</dt>
+                <dd className="font-semibold" data-testid="stat-quizzes-completed">
+                  {data.stats.quizzesCompleted}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2">
+                <dt className="text-gray-500">{t("averageScore")}</dt>
+                <dd className="font-semibold" data-testid="stat-average-score">
+                  {data.stats.averageScore}%
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2">
+                <dt className="text-gray-500">{t("learningTime")}</dt>
+                <dd className="font-semibold" data-testid="stat-learning-time">
+                  {data.stats.learningTimeMinutes} {ta("minutes")}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2">
+                <dt className="text-gray-500">{t("currentStreak")}</dt>
+                <dd className="font-semibold" data-testid="stat-streak">
+                  {data.stats.currentStreak} {t("days")}
+                </dd>
+              </div>
+            </dl>
+            <p className="sr-only" data-testid="global-progress">
+              {data.stats.globalProgressPercent}%
+            </p>
+          </section>
+
+          {/* C. SKILLS */}
+          <section
+            aria-labelledby="skills-heading"
+            className="rounded-xl border bg-white p-5"
+            data-testid="skills-section"
+          >
+            <h2 id="skills-heading" className="mb-3 text-lg font-semibold">
+              {t("skills")}
+            </h2>
+            <div className="space-y-4 text-sm">
+              <div>
+                <h3 className="font-medium text-red-700">{t("skillsWeak")}</h3>
+                <ul className="mt-1 space-y-1 text-gray-700" data-testid="weak-areas-list">
+                  {data.skills.weak.length === 0 ? (
+                    <li>{t("noneYet")}</li>
+                  ) : (
+                    data.skills.weak.map((s) => <li key={s.id}>• {s.title}</li>)
+                  )}
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-medium text-amber-700">{t("skillsLearning")}</h3>
+                <ul className="mt-1 space-y-1 text-gray-700" data-testid="learning-areas-list">
+                  {data.skills.learning.length === 0 ? (
+                    <li>{t("noneYet")}</li>
+                  ) : (
+                    data.skills.learning.map((s) => <li key={s.id}>• {s.title}</li>)
+                  )}
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-medium text-green-700">{t("skillsMastered")}</h3>
+                <ul className="mt-1 space-y-1 text-gray-700" data-testid="mastered-areas-list">
+                  {data.skills.mastered.length === 0 ? (
+                    <li>{t("noneYet")}</li>
+                  ) : (
+                    data.skills.mastered.map((s) => <li key={s.id}>• {s.title}</li>)
+                  )}
+                </ul>
+              </div>
+            </div>
           </section>
         </aside>
       </div>

@@ -2,16 +2,9 @@ import bcrypt from "bcryptjs";
 import { prisma } from "./seed/client";
 import { seedPersonalFinance } from "./seed/personal-finance";
 import { seedPmp } from "./seed/pmp";
+import { seedCorporateFinance } from "./seed/corporate-finance";
 
 const PLANNED_ACADEMIES = [
-  {
-    slug: "corporate-finance",
-    titleFr: "Finance d'entreprise",
-    titleEn: "Corporate Finance",
-    descriptionFr: "Finance d'entreprise — contenu à venir.",
-    descriptionEn: "Corporate finance — content coming soon.",
-    sortOrder: 2,
-  },
   {
     slug: "business-strategy",
     titleFr: "Business & Stratégie",
@@ -66,6 +59,7 @@ async function main() {
   await prisma.answerOption.deleteMany();
   await prisma.question.deleteMany();
   await prisma.learningItem.deleteMany();
+  await prisma.lessonSkill.deleteMany();
   await prisma.lesson.deleteMany();
   await prisma.module.deleteMany();
   await prisma.course.deleteMany();
@@ -83,6 +77,7 @@ async function main() {
   // Seed active academies with content
   const pf = await seedPersonalFinance(prisma);
   const pmp = await seedPmp(prisma);
+  const cf = await seedCorporateFinance(prisma);
 
   // Demo user for tests only (never used as default real identity)
   const demoUserPasswordHash = await bcrypt.hash("Demo123!", 12);
@@ -103,12 +98,18 @@ async function main() {
     data: { userId: demoUser.id, courseId: pmp.course.id },
   });
 
+  await prisma.enrollment.create({
+    data: { userId: demoUser.id, courseId: cf.course.id },
+  });
+
   await prisma.learningStreak.create({
     data: { userId: demoUser.id, currentStreak: 0, longestStreak: 0 },
   });
 
   console.log("Seed completed.");
-  console.log(`  Academies: ${PLANNED_ACADEMIES.length + 2} (${2} active, ${PLANNED_ACADEMIES.length} planned)`);
+  console.log(
+    `  Academies: ${PLANNED_ACADEMIES.length + 3} (${3} active, ${PLANNED_ACADEMIES.length} planned)`
+  );
   console.log(`  Demo user: ${demoUser.email}`);
 }
 

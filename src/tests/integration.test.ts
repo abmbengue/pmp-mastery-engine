@@ -49,7 +49,7 @@ describe("content and progression integration", () => {
     const academies = await findAllAcademies();
     expect(academies.length).toBeGreaterThanOrEqual(8);
     const active = academies.filter((a) => a.status === "ACTIVE");
-    expect(active).toHaveLength(2);
+    expect(active).toHaveLength(3);
   });
 
   it("localizes academy content in FR and EN", async () => {
@@ -81,18 +81,21 @@ describe("content and progression integration", () => {
     expect(localizeQuestion(question, "en").prompt).toContain("passive income");
   });
 
-  it("seeds 2 modules and 6 lessons per active academy", async () => {
-    for (const slug of ["personal-finance", "pmp-project-management"]) {
-      const academy = await findAcademyBySlug(slug);
-      const course = academy!.courses[0];
-      const fullCourse = await findCourseBySlug(slug, course.slug);
-      expect(fullCourse!.modules).toHaveLength(2);
-      const lessonCount = fullCourse!.modules.reduce(
-        (sum, m) => sum + m.lessons.length,
-        0
-      );
-      expect(lessonCount).toBe(6);
-    }
+  it("seeds structured modules and lessons for active academies", async () => {
+    const pf = await findCourseBySlug("personal-finance", "essentials");
+    expect(pf!.modules.length).toBeGreaterThanOrEqual(3);
+    const pfLessons = pf!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
+    expect(pfLessons).toBeGreaterThanOrEqual(7);
+
+    const pmp = await findCourseBySlug("pmp-project-management", "foundations");
+    expect(pmp!.modules).toHaveLength(2);
+    const pmpLessons = pmp!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
+    expect(pmpLessons).toBe(6);
+
+    const cf = await findCourseBySlug("corporate-finance", "cf-essentials");
+    expect(cf!.modules).toHaveLength(2);
+    const cfLessons = cf!.modules.reduce((sum, m) => sum + m.lessons.length, 0);
+    expect(cfLessons).toBeGreaterThanOrEqual(4);
   });
 
   it("tracks lesson progress and course completion", async () => {

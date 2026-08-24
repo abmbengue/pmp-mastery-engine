@@ -276,10 +276,46 @@ export async function seedPmp(prisma: PrismaClient) {
     titleEn: "Project management foundations",
   });
 
+  const skillPeople = await upsertSkill(prisma, {
+    slug: "pmp-people",
+    titleFr: "People",
+    titleEn: "People",
+  });
+
+  const skillProcess = await upsertSkill(prisma, {
+    slug: "pmp-process",
+    titleFr: "Process",
+    titleEn: "Process",
+  });
+
+  const skillBusinessEnv = await upsertSkill(prisma, {
+    slug: "pmp-business-environment",
+    titleFr: "Environnement business",
+    titleEn: "Business Environment",
+  });
+
   const skillMethodologies = await upsertSkill(prisma, {
     slug: "pmp-methodologies",
     titleFr: "Méthodologies de projet",
     titleEn: "Project methodologies",
+  });
+
+  const skillAgile = await upsertSkill(prisma, {
+    slug: "pmp-agile",
+    titleFr: "Agile",
+    titleEn: "Agile",
+  });
+
+  const skillHybrid = await upsertSkill(prisma, {
+    slug: "pmp-hybrid",
+    titleFr: "Hybride",
+    titleEn: "Hybrid",
+  });
+
+  const skillSituational = await upsertSkill(prisma, {
+    slug: "pmp-situational-thinking",
+    titleFr: "Pensée situationnelle",
+    titleEn: "Situational Thinking",
   });
 
   const module1 = await prisma.module.create({
@@ -288,15 +324,31 @@ export async function seedPmp(prisma: PrismaClient) {
       slug: "pm-foundations",
       titleFr: "Fondamentaux de la gestion de projet",
       titleEn: "Project Management Foundations",
-      descriptionFr: "Définitions, rôles et cycle de vie.",
-      descriptionEn: "Definitions, roles, and lifecycle.",
+      descriptionFr: "People, Process et Business Environment — définitions, rôles et cycle de vie.",
+      descriptionEn: "People, Process, and Business Environment — definitions, roles, and lifecycle.",
+      category: "PROCESS",
       sortOrder: 0,
       estimatedMinutes: 26,
     },
   });
 
   for (const lessonConfig of MODULE_1_LESSONS) {
-    await seedLessonWithContent(prisma, module1.id, skillFoundations.id, lessonConfig);
+    const extras =
+      lessonConfig.slug === "project-roles"
+        ? [skillPeople.id]
+        : lessonConfig.slug === "project-lifecycle"
+          ? [skillProcess.id, skillBusinessEnv.id]
+          : [skillProcess.id];
+    await seedLessonWithContent(prisma, module1.id, skillFoundations.id, {
+      ...lessonConfig,
+      difficulty: "BEGINNER",
+      isShort: lessonConfig.slug === "what-is-project-management",
+      shortTopic: "project-management",
+      shortDurationSeconds: 155,
+    }, {
+      academySlug: "pmp-project-management",
+      extraSkillIds: extras,
+    });
   }
 
   const module2 = await prisma.module.create({
@@ -305,15 +357,28 @@ export async function seedPmp(prisma: PrismaClient) {
       slug: "methodologies",
       titleFr: "Méthodologies et approches",
       titleEn: "Methodologies & Approaches",
-      descriptionFr: "Prédictif, agile et hybride.",
-      descriptionEn: "Predictive, agile, and hybrid.",
+      descriptionFr: "Agile, hybride et pensée situationnelle.",
+      descriptionEn: "Agile, hybrid, and situational thinking.",
+      category: "AGILE",
       sortOrder: 1,
       estimatedMinutes: 26,
     },
   });
 
   for (const lessonConfig of MODULE_2_LESSONS) {
-    await seedLessonWithContent(prisma, module2.id, skillMethodologies.id, lessonConfig);
+    const extras =
+      lessonConfig.slug === "agile-principles"
+        ? [skillAgile.id]
+        : lessonConfig.slug === "hybrid-project-management"
+          ? [skillHybrid.id, skillSituational.id]
+          : [skillAgile.id];
+    await seedLessonWithContent(prisma, module2.id, skillMethodologies.id, {
+      ...lessonConfig,
+      difficulty: lessonConfig.slug === "hybrid-project-management" ? "INTERMEDIATE" : "BEGINNER",
+    }, {
+      academySlug: "pmp-project-management",
+      extraSkillIds: extras,
+    });
   }
 
   return { academy, course };

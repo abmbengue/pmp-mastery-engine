@@ -19,7 +19,22 @@
     "active": "Available",
     "nextLesson": "Next lesson",
     "previousLesson": "Previous lesson",
-    "continueLearning": "Continue learning"
+    "continueLearning": "Continue learning",
+    "continueCourse": "Continue course",
+    "comingSoon": "Coming soon",
+    "shorts": "Shorts",
+    "viewShorts": "View shorts",
+    "learnInSmallSessions": "Learn in small sessions.",
+    "totalDuration": "Total duration",
+    "minutes": "min",
+    "statusNotStarted": "Not started",
+    "statusInProgress": "In progress",
+    "statusCompleted": "Completed",
+    "difficultyBeginner": "Beginner",
+    "difficultyIntermediate": "Intermediate",
+    "difficultyAdvanced": "Advanced",
+    "lastActivity": "Last activity",
+    "nextUp": "Next up"
   },
   "nav": {
     "home": "Home",
@@ -27,7 +42,8 @@
     "dashboard": "Dashboard",
     "settings": "Settings",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "skipToContent": "Skip to content"
   },
   "auth": {
     "loginTitle": "Login",
@@ -59,11 +75,47 @@
     "streak": "Streak",
     "recentScores": "Latest score",
     "continueLearning": "Continue learning",
+    "continue": "Continue",
+    "myLearning": "My learning",
+    "skills": "Skills",
+    "skillsWeak": "Weak",
+    "skillsLearning": "Learning",
+    "skillsMastered": "Mastered",
+    "learningStats": "Learning stats",
+    "lessonsCompleted": "Lessons completed",
+    "quizzesCompleted": "Quizzes completed",
+    "averageScore": "Average score",
+    "currentStreak": "Current streak",
+    "quickAccess": "Quick access",
     "lessonsComplete": "lessons complete",
     "openCourse": "Open course",
     "weakAreas": "Weak areas",
     "masteredAreas": "Mastered areas",
-    "noneYet": "Nothing yet"
+    "noneYet": "Nothing yet",
+    "academy": "Academy",
+    "course": "Course",
+    "module": "Module",
+    "nextLesson": "Next lesson",
+    "progress": "Progress",
+    "lastActivity": "Last activity",
+    "noContinue": "Start a course from Quick access to begin.",
+    "courseComplete": "Course complete",
+    "days": "days"
+  },
+  "shorts": {
+    "title": "Short Learning",
+    "subtitle": "Short educational videos — about 3 minutes max.",
+    "watch": "Watch",
+    "markCompleted": "Mark completed",
+    "nextShort": "Next short",
+    "placeholder": "Video playback will be available in a future update.",
+    "duration": "Duration",
+    "topic": "Topic",
+    "difficulty": "Difficulty",
+    "relatedSkill": "Related skill",
+    "empty": "No shorts available yet for this academy.",
+    "backToAcademy": "Back to academy",
+    "comingSoonBadge": "Placeholder"
   },
   "settings": {
     "title": "Settings",
@@ -91,7 +143,8 @@
     },
     "learn": {
       "videoComingSoon": "Video coming soon",
-      "videoPlaceholder": "This video will be available in a future update."
+      "videoPlaceholder": "This video will be available in a future update.",
+      "shortBadge": "Short"
     },
     "practice": {
       "exerciseTitle": "Exercise",

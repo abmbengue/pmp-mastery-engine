@@ -44,7 +44,6 @@ export async function enrollUserInActiveV1Courses(userId: string) {
   const activeCourses = await prisma.course.findMany({
     where: {
       academy: {
-        slug: { in: ["personal-finance", "pmp-project-management"] },
         status: "ACTIVE",
       },
     },

@@ -20,11 +20,12 @@ export function TextBlock({ payload, locale }: TextBlockProps) {
 interface VideoBlockProps {
   payload: VideoPayload;
   locale: Locale;
-  labels: { comingSoon: string; placeholder: string };
+  labels: { comingSoon: string; placeholder: string; shortBadge: string };
 }
 
 export function VideoBlock({ payload, locale, labels }: VideoBlockProps) {
   const title = locale === "fr" ? payload.titleFr : payload.titleEn;
+  const duration = payload.durationSeconds ?? payload.durationSec;
 
   return (
     <div
@@ -33,7 +34,17 @@ export function VideoBlock({ payload, locale, labels }: VideoBlockProps) {
     >
       <div className="mb-3 text-4xl" aria-hidden="true">▶</div>
       <p className="text-base font-semibold text-gray-700">{title}</p>
-      <p className="mt-2 text-sm font-medium text-amber-600">{labels.comingSoon}</p>
+      {payload.isShort && (
+        <span className="mt-2 rounded bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-800">
+          {labels.shortBadge}
+        </span>
+      )}
+      {duration != null && (
+        <p className="mt-2 text-xs text-gray-500" data-testid="video-duration">
+          {Math.ceil(duration / 60)} min
+        </p>
+      )}
+      <p className="mt-2 text-sm font-medium text-amber-700">{labels.comingSoon}</p>
       <p className="mt-1 text-xs text-gray-500">{labels.placeholder}</p>
     </div>
   );
