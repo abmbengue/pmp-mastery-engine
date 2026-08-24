@@ -1,34 +1,28 @@
-# Shorts (Phase 10)
+# Shorts
 
 ## Purpose
 
-~3-minute micro-learning VIDEO placeholders (60–180 seconds), bilingual.
+~3-minute micro-learning VIDEO items (60–180s), bilingual, placeholder or external URL via media abstraction.
 
-## Metadata (VIDEO payload)
+## Media
 
-- title / description FR+EN  
-- topic, academy, skill (`relatedSkillSlug`)  
-- difficulty, learningObjective  
-- durationSeconds (≤180 when `isShort`)  
-- relatedLessonSlug  
+Resolved by `resolveMediaAsset()` — see [MEDIA_ARCHITECTURE.md](./MEDIA_ARCHITECTURE.md).
 
-Pedagogical placeholder structure on the watch page:
+## Player
 
-HOOK → CONCEPT → EXAMPLE → KEY TAKEAWAY
+- Placeholder pedagogy (HOOK → CONCEPT → EXAMPLE → TAKEAWAY) or HTML5 `<video>` when URL present  
+- Progress indicator, play/pause, previous/next  
+- Mark completed (`/api/shorts/complete`)  
+- **Learn more** / **Continue lesson** → `relatedLessonSlug` path  
+- **Review this skill** when mastery WEAK or `nextReviewAt` due  
 
-No YouTube/Vimeo hosting in this phase.
+## Discovery
 
-## UX
+Filters: topic, skill, difficulty, language.  
+Sections: Featured, Recommended, Continue watching, For review, Completed, All.
 
-- List + filters (topic / skill / difficulty)  
-- “3 min learning” badge  
-- Watch, mark completed (`/api/shorts/complete` + LessonProgress.metadata)  
-- Previous / next short  
+Recommended / For review reuse ConceptMastery + completion — **not** a second recommendation engine.
 
-## Demo shorts (seed)
+## Docs
 
-PF: compound interest, emergency fund, inflation, diversification  
-CF: EBITDA, enterprise value, WACC, FCF  
-PMP: stakeholder, risk vs issue, agile mindset, change, conflict, hybrid  
-
-Progress reuses existing short-progress services — no parallel tracker.
+[CONTENT_VALIDATION.md](./CONTENT_VALIDATION.md) · [AI_HANDOFF.md](./AI_HANDOFF.md)

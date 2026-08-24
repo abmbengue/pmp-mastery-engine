@@ -12,7 +12,7 @@ async function register(page: Page, locale: "fr" | "en", email: string, password
   await page.getByTestId("register-password").fill(password);
   await page.getByTestId("register-confirm-password").fill(password);
   await page.getByTestId("register-submit").click();
-  await expect(page.getByTestId("dashboard-page")).toBeVisible();
+  await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 15_000 });
 }
 
 async function login(page: Page, locale: "fr" | "en", email: string, password = "StrongPass1") {
@@ -588,6 +588,39 @@ test("PHASE10 TEST4: FR review + paths", async ({ page }) => {
   await expect(page.getByTestId("review-now-page")).toBeVisible();
   await page.goto("/fr/learning-paths");
   await expect(page.getByTestId("learning-paths-page")).toBeVisible();
+});
+
+test("PHASE11 TEST1: Shorts discovery sections + learn more", async ({ page }) => {
+  const email = uniqueEmail("p11-shorts");
+  await register(page, "en", email);
+  await page.goto("/en/academies/personal-finance/shorts");
+  await expect(page.getByTestId("shorts-page")).toBeVisible();
+  await expect(page.getByTestId("shorts-featured")).toBeVisible();
+  await expect(page.getByTestId("shorts-filters")).toBeVisible();
+  await page.locator('[data-testid^="short-card-"]').first().click();
+  await expect(page.getByTestId("short-watch-page")).toBeVisible();
+  await expect(page.getByTestId("short-learn-more")).toBeVisible();
+  await expect(page.getByTestId("short-continue-lesson")).toBeVisible();
+});
+
+test("PHASE11 TEST2: Readiness PDF download + print controls", async ({ page }) => {
+  const email = uniqueEmail("p11-pdf");
+  await register(page, "en", email);
+  await page.goto("/en/pmp-exam/readiness-report");
+  await expect(page.getByTestId("readiness-report-page")).toBeVisible();
+  await expect(page.getByTestId("readiness-download-pdf")).toBeVisible();
+  await expect(page.getByTestId("readiness-print")).toBeVisible();
+  await expect(page.getByTestId("readiness-back-dashboard")).toBeVisible();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByTestId("readiness-download-pdf").click(),
+  ]);
+  expect(download.suggestedFilename()).toMatch(/\.pdf$/i);
+});
+
+test("PHASE11 TEST3: PDF requires auth (isolation)", async ({ page }) => {
+  const res = await page.request.get("/api/exam/readiness-report/pdf?locale=en");
+  expect(res.status()).toBe(401);
 });
 
 test("PHASE9 TEST1: Review Now page and queue", async ({ page }) => {

@@ -206,6 +206,7 @@ export async function seedLessonWithContent(
         relatedLessonSlug: config.slug,
         learningObjective:
           config.learningObjective ?? (config.isShort ? "IDENTIFY" : undefined),
+        provider: "placeholder",
       },
     },
   });

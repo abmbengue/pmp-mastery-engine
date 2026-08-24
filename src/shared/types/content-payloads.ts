@@ -40,10 +40,25 @@ export const videoPayloadSchema = z
     learningObjective: z
       .enum(["IDENTIFY", "APPLY", "ANALYZE", "DECIDE"])
       .optional(),
+    /**
+     * Media provider abstraction (Phase 11).
+     * placeholder = no real file; external = public URL; object-storage/cdn reserved.
+     */
+    provider: z
+      .enum(["placeholder", "external", "object-storage", "cdn"])
+      .optional()
+      .default("placeholder"),
   })
   .transform((data) => {
     const videoUrl = data.videoUrl ?? data.url ?? null;
     const durationSeconds = data.durationSeconds ?? data.durationSec ?? null;
+    const hasUrl = typeof videoUrl === "string" && videoUrl.length > 0;
+    const provider =
+      data.provider && data.provider !== "placeholder"
+        ? data.provider
+        : hasUrl
+          ? "external"
+          : "placeholder";
     return {
       ...data,
       url: videoUrl,
@@ -51,7 +66,8 @@ export const videoPayloadSchema = z
       durationSec: durationSeconds,
       durationSeconds,
       isShort: data.isShort ?? false,
-      isPlaceholder: data.isPlaceholder ?? true,
+      isPlaceholder: data.isPlaceholder ?? !hasUrl,
+      provider,
     };
   })
   .refine(

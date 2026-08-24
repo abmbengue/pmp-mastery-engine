@@ -88,6 +88,6 @@ Port + providers (noop / mock / openai-compatible). Used for hints/explanations;
 
 Financial statements, revenue, EBITDA, EBIT, working capital, FCF, EV / equity value, debt, capital structure, WACC, DCF, trading/transaction multiples, accretion/dilution basics. Existing simulators reused.
 
-## Out of Scope (through Phase 9)
+## Out of Scope (through Phase 11)
 
-Payment, CMS, OAuth, marketplace, native mobile, ML, official PMI scoring/integration, complex video cloud, commercial analytics.
+Payment, CMS, OAuth, marketplace, native mobile, ML, official PMI scoring/integration, mandatory paid video infra, commercial analytics.

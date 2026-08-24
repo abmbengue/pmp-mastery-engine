@@ -15,6 +15,7 @@ Professional Learning Academy (PLA) is a modular, bilingual learning platform de
 │  academies | content | learning-engine      │
 │  assessment-engine | localization | auth    │
 │  ai-tutor | dashboard | simulation-engine   │
+│  media                                      │
 ├─────────────────────────────────────────────┤
 │  Data Layer (src/data/)                     │
 │  Prisma client + repositories               │
@@ -42,9 +43,10 @@ Each `LearningItem` has a `type` (TEXT, VIDEO, EXERCISE, QUIZ, FLASHCARD, SIMULA
 | Progress / mastery | `progress-service.ts`, `ConceptMastery` |
 | Next lesson | `next-lesson-service.ts` |
 | Recommendations (single engine) | `recommendation-service.ts` → `recommendNextLearning()` |
-| Spaced repetition (Phase 9) | `spaced-repetition.ts` + `review-service.ts` |
-| Corrective learning (Phase 9) | `corrective-learning.ts` (extends recommendations) |
+| Spaced repetition | `spaced-repetition.ts` + `review-service.ts` |
+| Corrective learning | `corrective-learning.ts` (extends recommendations) |
 | Shorts | `short-learning-service.ts` + VIDEO payload |
+| Media | `media/media-provider.ts` |
 
 ## Assessment / PMP practice
 
@@ -52,7 +54,7 @@ Each `LearningItem` has a `type` (TEXT, VIDEO, EXERCISE, QUIZ, FLASHCARD, SIMULA
 |---|---|
 | Exam builder / sessions | `exam-service.ts`, blueprint |
 | Analytics / readiness V2 | `analytics-engine.ts` |
-| Readiness report (Phase 9) | `readiness-report-service.ts` |
+| Readiness report + PDF | `readiness-report-service.ts`, `readiness-report-pdf.ts` |
 | Error analysis / retry | existing exam analytics + retry flows |
 
 ## Internationalization Strategy
@@ -82,44 +84,50 @@ See [SPACED_REPETITION.md](./SPACED_REPETITION.md).
 
 Config-only groupings of existing courses — see [LEARNING_PATHS.md](./LEARNING_PATHS.md).
 
-## Shorts (Phase 10)
+## Shorts (Phase 10–11)
 
-VIDEO `isShort` metadata + filtered list UX — see [SHORTS.md](./SHORTS.md).
+VIDEO `isShort` metadata + filtered discovery + media abstraction.  
+See [SHORTS.md](./SHORTS.md) and [MEDIA_ARCHITECTURE.md](./MEDIA_ARCHITECTURE.md).
 
-## PMP Readiness Report (Phase 9)
+## PMP Readiness Report (Phase 9–11)
 
 Synthesizes practice metrics with an explicit **NOT AN OFFICIAL PMI SCORE** disclaimer.  
-Printable export via `window.print()`.  
+Print + PDF export (`/api/exam/readiness-report/pdf`).  
 See [PMP_READINESS_REPORT.md](./PMP_READINESS_REPORT.md).
+
+## Content packs & validation (Phase 11)
+
+Catalogs: `prisma/seed/content/`. Validator: `src/modules/content/`.  
+Handoff: [AI_HANDOFF.md](./AI_HANDOFF.md).
 
 ## Auth & security
 
 Auth.js v5 Credentials + Prisma. Session via `auth()` / `requireSession`.  
 **Never** trust client-supplied `userId` or email as identity.  
-No bank data; no unnecessary sensitive fields.
+PDF and Shorts completion are session-scoped. No bank data.
 
-## VIDEO / Shorts metadata
+## Key design decisions
 
-VIDEO payloads support: academy, topic, skill, difficulty, lesson (`relatedLessonSlug`), language, duration (≤180s for shorts), learning objective. Placeholder playback only — no YouTube/Vimeo hosting in this phase.
-
-## Key Design Decisions
-
-1. PostgreSQL + Prisma from V1  
+1. PostgreSQL + Prisma  
 2. Repository pattern  
 3. Zod-validated LearningItem payloads  
 4. Modular monolith  
-5. Single recommendation engine (`recommendNextLearning`) — extend, never fork  
-6. Deterministic pedagogy (no ML scoring)
+5. Single recommendation engine — extend, never fork  
+6. Deterministic pedagogy (no ML scoring)  
+7. MediaProvider abstraction without vendor lock-in  
 
-## Explicitly out of scope (through Phase 9)
+## Architecture audit notes (Phase 11)
 
-- Payment / subscription  
-- CMS / admin  
-- OAuth  
-- Native mobile app  
-- Real ML  
-- Official PMI scoring / PMI integration  
-- Complex cloud video infrastructure  
-- Commercial analytics  
+- No mass refactor performed.  
+- Known residual: seed uses wipe+create (fine for V1).  
+- Shorts discovery N+1 completion checks are acceptable for current scale.  
+- Prefer keeping business logic out of React client components.
 
-See [ROADMAP.md](./ROADMAP.md).
+## Explicitly out of scope (through Phase 11)
+
+- Payment / subscription / CMS / OAuth / marketplace  
+- Native mobile / ML / official PMI scoring  
+- Paid video infrastructure lock-in  
+- Commercial analytics / ads / social
+
+See [ROADMAP.md](./ROADMAP.md) and [AI_HANDOFF.md](./AI_HANDOFF.md).

@@ -2,18 +2,83 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { findAcademyBySlug, localizeAcademy } from "@/data/repositories/academy-repository";
 import {
+  getShortDiscovery,
   listShortFilterOptions,
   listShortsByAcademy,
+  type ShortLearningCard,
 } from "@/modules/learning-engine/short-learning-service";
+import { requireSession } from "@/modules/auth/session";
 import { Link } from "@/modules/localization/navigation";
 import type { Locale } from "@/shared/types/locale";
+
+function ShortList({
+  title,
+  items,
+  academySlug,
+  empty,
+  testId,
+  threeMin,
+}: {
+  title: string;
+  items: ShortLearningCard[];
+  academySlug: string;
+  empty: string;
+  testId: string;
+  threeMin: string;
+}) {
+  return (
+    <section className="mt-8" aria-labelledby={`${testId}-heading`} data-testid={testId}>
+      <h2 id={`${testId}-heading`} className="text-lg font-semibold text-gray-900">
+        {title}
+      </h2>
+      {items.length === 0 ? (
+        <p className="mt-2 text-sm text-gray-500">{empty}</p>
+      ) : (
+        <ul className="mt-3 space-y-3">
+          {items.map((short) => (
+            <li key={short.id}>
+              <Link
+                href={`/academies/${academySlug}/shorts/${short.id}`}
+                className="block rounded-lg border bg-white p-4 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-testid={`short-card-${short.id}`}
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-semibold text-gray-900">{short.title}</h3>
+                  <span className="rounded bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-900">
+                    {threeMin}
+                  </span>
+                  {short.completed && (
+                    <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-800">
+                      ✓
+                    </span>
+                  )}
+                  {short.reviewSuggested && (
+                    <span className="rounded bg-amber-50 px-2 py-0.5 text-xs text-amber-900">
+                      Review
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-sm text-gray-600">{short.description}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 export default async function AcademyShortsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string; academySlug: string }>;
-  searchParams: Promise<{ topic?: string; skill?: string; difficulty?: string }>;
+  searchParams: Promise<{
+    topic?: string;
+    skill?: string;
+    difficulty?: string;
+    language?: string;
+  }>;
 }) {
   const { locale, academySlug } = await params;
   const filters = await searchParams;
@@ -25,13 +90,15 @@ export default async function AcademyShortsPage({
   const academy = await findAcademyBySlug(academySlug);
   if (!academy || academy.status !== "ACTIVE") notFound();
 
+  const session = await requireSession(locale);
   const { title } = localizeAcademy(academy, loc);
-  const allShorts = await listShortsByAcademy(academySlug, loc);
-  const options = listShortFilterOptions(allShorts);
-  const shorts = await listShortsByAcademy(academySlug, loc, {
+  const unfiltered = await listShortsByAcademy(academySlug, loc);
+  const options = listShortFilterOptions(unfiltered);
+  const discovery = await getShortDiscovery(academySlug, session.user.id, loc, {
     topic: filters.topic,
     skill: filters.skill,
     difficulty: filters.difficulty,
+    language: filters.language,
   });
 
   return (
@@ -99,6 +166,22 @@ export default async function AcademyShortsPage({
             ))}
           </select>
         </label>
+        <label className="text-sm">
+          <span className="mr-2 text-gray-600">{t("language")}</span>
+          <select
+            name="language"
+            defaultValue={filters.language ?? ""}
+            className="min-h-11 rounded border px-2 py-1"
+            aria-label={t("language")}
+          >
+            <option value="">{t("all")}</option>
+            {options.languages.map((lang) => (
+              <option key={lang} value={lang}>
+                {lang}
+              </option>
+            ))}
+          </select>
+        </label>
         <button
           type="submit"
           className="min-h-11 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -107,54 +190,69 @@ export default async function AcademyShortsPage({
         </button>
       </form>
 
-      {shorts.length === 0 ? (
+      {discovery.all.length === 0 ? (
         <p className="mt-8 text-sm text-gray-500" data-testid="shorts-empty">
           {t("empty")}
         </p>
       ) : (
-        <ul className="mt-6 space-y-3" data-testid="shorts-list">
-          {shorts.map((short) => (
-            <li key={short.id}>
-              <Link
-                href={`/academies/${academySlug}/shorts/${short.id}`}
-                className="block rounded-lg border bg-white p-4 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                data-testid={`short-card-${short.id}`}
-              >
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="font-semibold text-gray-900">{short.title}</h2>
-                  <span className="rounded bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-900">
-                    {t("threeMinLearning")}
-                  </span>
-                  {short.isPlaceholder && (
-                    <span className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800">
-                      {t("comingSoonBadge")}
-                    </span>
-                  )}
-                </div>
-                <p className="mt-1 text-sm text-gray-600">{short.description}</p>
-                <p className="mt-2 text-xs text-gray-500">
-                  {short.durationSeconds != null && (
-                    <span>
-                      {t("duration")}: {short.durationSeconds}s
-                    </span>
-                  )}
-                  {short.topic && (
-                    <span>
-                      {" · "}
-                      {t("topic")}: {short.topic}
-                    </span>
-                  )}
-                  {short.difficulty && (
-                    <span>
-                      {" · "}
-                      {t("difficulty")}: {short.difficulty}
-                    </span>
-                  )}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ShortList
+            title={t("featured")}
+            items={discovery.featured}
+            academySlug={academySlug}
+            empty={t("sectionEmpty")}
+            testId="shorts-featured"
+            threeMin={t("threeMinLearning")}
+          />
+          <ShortList
+            title={t("recommended")}
+            items={discovery.recommended}
+            academySlug={academySlug}
+            empty={t("sectionEmpty")}
+            testId="shorts-recommended"
+            threeMin={t("threeMinLearning")}
+          />
+          <ShortList
+            title={t("continueWatching")}
+            items={discovery.continueWatching}
+            academySlug={academySlug}
+            empty={t("sectionEmpty")}
+            testId="shorts-continue"
+            threeMin={t("threeMinLearning")}
+          />
+          <ShortList
+            title={t("forReview")}
+            items={discovery.forReview}
+            academySlug={academySlug}
+            empty={t("sectionEmpty")}
+            testId="shorts-for-review"
+            threeMin={t("threeMinLearning")}
+          />
+          <ShortList
+            title={t("completedSection")}
+            items={discovery.completed}
+            academySlug={academySlug}
+            empty={t("sectionEmpty")}
+            testId="shorts-completed"
+            threeMin={t("threeMinLearning")}
+          />
+          <div className="mt-8" data-testid="shorts-list">
+            <h2 className="text-lg font-semibold">{t("allShorts")}</h2>
+            <ul className="mt-3 space-y-3">
+              {discovery.all.map((short) => (
+                <li key={`all-${short.id}`}>
+                  <Link
+                    href={`/academies/${academySlug}/shorts/${short.id}`}
+                    className="block rounded-lg border bg-white p-4 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <p className="font-semibold">{short.title}</p>
+                    <p className="text-sm text-gray-600">{short.description}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </section>
   );

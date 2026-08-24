@@ -5,49 +5,7 @@ import { seedPmp } from "./seed/pmp";
 import { seedCorporateFinance } from "./seed/corporate-finance";
 import { seedSimulationItems } from "./seed/simulations";
 import { seedPmpExamBank } from "./seed/pmp-exam-bank";
-
-const PLANNED_ACADEMIES = [
-  {
-    slug: "business-strategy",
-    titleFr: "Business & Stratégie",
-    titleEn: "Business & Strategy",
-    descriptionFr: "Stratégie d'entreprise — contenu à venir.",
-    descriptionEn: "Business strategy — content coming soon.",
-    sortOrder: 3,
-  },
-  {
-    slug: "financial-modeling",
-    titleFr: "Modélisation financière",
-    titleEn: "Financial Modeling",
-    descriptionFr: "Modélisation financière — contenu à venir.",
-    descriptionEn: "Financial modeling — content coming soon.",
-    sortOrder: 4,
-  },
-  {
-    slug: "energy-oil-gas",
-    titleFr: "Énergie & Oil & Gas",
-    titleEn: "Energy & Oil & Gas",
-    descriptionFr: "Secteur énergie — contenu à venir.",
-    descriptionEn: "Energy sector — content coming soon.",
-    sortOrder: 5,
-  },
-  {
-    slug: "leadership-management",
-    titleFr: "Leadership & Management",
-    titleEn: "Leadership & Management",
-    descriptionFr: "Leadership — contenu à venir.",
-    descriptionEn: "Leadership — content coming soon.",
-    sortOrder: 6,
-  },
-  {
-    slug: "professional-english",
-    titleFr: "Anglais professionnel",
-    titleEn: "Professional English",
-    descriptionFr: "Anglais professionnel — contenu à venir.",
-    descriptionEn: "Professional English — content coming soon.",
-    sortOrder: 7,
-  },
-];
+import { PLANNED_ACADEMY_CONFIGS } from "../src/modules/content/planned-academies";
 
 async function main() {
   console.log("Seeding database...");
@@ -77,10 +35,18 @@ async function main() {
   await prisma.user.deleteMany();
   await prisma.academy.deleteMany();
 
-  // Seed planned academies (catalogue only)
-  for (const academy of PLANNED_ACADEMIES) {
+  // Seed planned academies (catalogue only — config-driven)
+  for (const academy of PLANNED_ACADEMY_CONFIGS) {
     await prisma.academy.create({
-      data: { ...academy, status: "PLANNED" },
+      data: {
+        slug: academy.slug,
+        titleFr: academy.titleFr,
+        titleEn: academy.titleEn,
+        descriptionFr: academy.descriptionFr,
+        descriptionEn: academy.descriptionEn,
+        sortOrder: academy.sortOrder,
+        status: "PLANNED",
+      },
     });
   }
 
@@ -120,7 +86,7 @@ async function main() {
 
   console.log("Seed completed.");
   console.log(
-    `  Academies: ${PLANNED_ACADEMIES.length + 3} (${3} active, ${PLANNED_ACADEMIES.length} planned)`
+    `  Academies: ${PLANNED_ACADEMY_CONFIGS.length + 3} (${3} active, ${PLANNED_ACADEMY_CONFIGS.length} planned)`
   );
   console.log(`  PMP exam bank: ${examBank.bankCount} questions`);
   console.log(`  Demo user: ${demoUser.email}`);

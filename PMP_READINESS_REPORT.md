@@ -34,11 +34,17 @@ Built by `buildPmpReadinessReport(userId, locale)` in
 - Retry average  
 - Recommended next actions (`recommendNextLearning` + corrective path)  
 
-## Export (V1)
+## Export
 
-Printable view via `window.print()` (`ReadinessReportActions`). No heavy PDF dependency.
+- **Print**: `window.print()` via `ReadinessReportActions`
+- **PDF**: `GET /api/exam/readiness-report/pdf?locale=en|fr`  
+  - Auth required (`auth()`)  
+  - Data from `buildPmpReadinessReport` only (no second scoring)  
+  - Generator: `readiness-report-pdf.ts` + lightweight `simple-pdf.ts` (no heavy PDF vendor)
 
-Responsive for desktop and mobile; print styles hide action buttons.
+## Security
+
+`userId` from session only. Unauthenticated PDF requests return 401.
 
 ## Deterministic vs pedagogical
 

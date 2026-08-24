@@ -31,7 +31,15 @@ export default async function PmpReadinessReportPage({
         <p className="mt-2 text-sm text-gray-700" data-testid="readiness-narrative">
           {report.narrative}
         </p>
-        <ReadinessReportActions labels={{ print: t("print"), back: t("backExam") }} />
+        <ReadinessReportActions
+          locale={locale}
+          labels={{
+            print: t("print"),
+            back: t("backExam"),
+            downloadPdf: t("downloadPdf"),
+            backDashboard: t("backDashboard"),
+          }}
+        />
       </header>
 
       <dl className="grid gap-3 rounded-xl border bg-white p-5 sm:grid-cols-2 lg:grid-cols-3 print:grid-cols-3">

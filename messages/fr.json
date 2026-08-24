@@ -167,6 +167,8 @@
   "readinessReport": {
     "title": "Rapport de préparation PMP",
     "print": "Imprimer / vue export",
+    "downloadPdf": "Télécharger le PDF",
+    "backDashboard": "Retour au tableau de bord",
     "backExam": "Retour à l'examen PMP",
     "practiceReadiness": "Préparation pratique",
     "averageScore": "Score moyen",
@@ -280,7 +282,23 @@
     "pedagogyHook": "ACCROCHE — une question concrète pour capter l'attention.",
     "pedagogyConcept": "CONCEPT — une idée, clairement énoncée.",
     "pedagogyExample": "EXEMPLE — une illustration courte du monde réel.",
-    "pedagogyTakeaway": "À RETENIR — une phrase clé."
+    "pedagogyTakeaway": "À RETENIR — une phrase clé.",
+    "academy": "Académie",
+    "provider": "Fournisseur média",
+    "play": "Lecture",
+    "pause": "Pause",
+    "progress": "Progression",
+    "learnMore": "En savoir plus",
+    "continueLesson": "Continuer la leçon",
+    "reviewThisSkill": "Réviser cette compétence",
+    "language": "Langue",
+    "featured": "À la une",
+    "recommended": "Recommandés",
+    "continueWatching": "Continuer à regarder",
+    "forReview": "À réviser",
+    "completedSection": "Terminés",
+    "allShorts": "Tous les shorts",
+    "sectionEmpty": "Rien dans cette section pour le moment."
   },
   "simulators": {
     "title": "Simulateurs",

@@ -167,6 +167,8 @@
   "readinessReport": {
     "title": "PMP Readiness Report",
     "print": "Print / export view",
+    "downloadPdf": "Download PDF",
+    "backDashboard": "Back to dashboard",
     "backExam": "Back to PMP exam",
     "practiceReadiness": "Practice readiness",
     "averageScore": "Average score",
@@ -280,7 +282,23 @@
     "pedagogyHook": "HOOK — grab attention with one concrete question.",
     "pedagogyConcept": "CONCEPT — one idea, clearly stated.",
     "pedagogyExample": "EXAMPLE — a short real-world illustration.",
-    "pedagogyTakeaway": "KEY TAKEAWAY — remember this one sentence."
+    "pedagogyTakeaway": "KEY TAKEAWAY — remember this one sentence.",
+    "academy": "Academy",
+    "provider": "Media provider",
+    "play": "Play",
+    "pause": "Pause",
+    "progress": "Progress",
+    "learnMore": "Learn more",
+    "continueLesson": "Continue lesson",
+    "reviewThisSkill": "Review this skill",
+    "language": "Language",
+    "featured": "Featured",
+    "recommended": "Recommended",
+    "continueWatching": "Continue watching",
+    "forReview": "For review",
+    "completedSection": "Completed",
+    "allShorts": "All shorts",
+    "sectionEmpty": "Nothing in this section yet."
   },
   "simulators": {
     "title": "Simulators",

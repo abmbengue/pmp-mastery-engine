@@ -73,13 +73,14 @@ Same i18n pattern.
   "topic": "income",
   "difficulty": "BEGINNER",
   "academySlug": "personal-finance",
+  "provider": "placeholder",
   "relatedSkillSlug": "pf-income",
   "relatedLessonSlug": "understanding-income",
   "learningObjective": "IDENTIFY"
 }
 ```
 
-Short Learning = VIDEO with `isShort: true` and duration ≤ ~180 seconds. No YouTube/Vimeo integration yet. Phase 9 prepares metadata linkage to lesson + learning objective.
+Short Learning = VIDEO with `isShort: true` and duration ≤ ~180 seconds. Media resolved via `MediaProvider` (placeholder or external URL). No mandatory paid hosting.
 
 **EXERCISE**: `{ promptFr, promptEn, hintFr?, hintEn? }`
 
