@@ -39,6 +39,9 @@ Shorts discovery completion batched (N+1 removed).
 
 No existing tests deleted. Added Phase 12 content/hardening coverage. E2E uses `DISABLE_RATE_LIMIT=1` so register flood is not blocked.
 
+## J. Build
+`npm run build` PASS.
+
 ## K. Remaining risks
 - No email verification / password reset  
 - In-memory rate limits (not multi-instance)  
