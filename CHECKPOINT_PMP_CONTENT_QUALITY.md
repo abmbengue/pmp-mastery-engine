@@ -1,42 +1,48 @@
-# CHECKPOINT — PMP Content Quality (Mission 1 — AUDIT ONLY)
+# CHECKPOINT — PMP Content Quality (Mission 2 — Enrichissement)
 
-**Branch:** `cursor/pmp-content-quality-audit-e932`  
+**Branch:** `cursor/pmp-content-quality-enrich-e932`  
 **Date:** 2026-08-25  
-**Scope:** Audit pédagogique des 77 leçons PMP — **aucune modification de contenu**
+**Mission:** PMP CONTENT QUALITY — Mission 2 only
 
 ---
 
-## Résumé
+## Périmètre
 
-Mission **lecture seule** sur le contenu PMP. Livrables docs uniquement. Aucun enrichissement démarré. Banque d’examen 200 Q inchangée. Aucun changement Prisma / APIs / moteurs / scoring / Exam Engine / AI Tutor / Lesson Player.
-
----
-
-## Volume & classement
-
-| Métrique | Valeur |
-|----------|--------|
-| Leçons totales | **77** |
-| Questions de leçons | **91** |
-| Exam bank | **200** (non modifiée) |
-| Grade **A** | **19** |
-| Grade **B** | **44** |
-| Grade **C** | **13** |
-| Grade **D** | **1** (`combining-predictive-and-agile`) |
-| Blocs `situation` | **13 / 77** |
-| Leçons à 1 question | **69 / 77** |
-| Prompts principaux définitionnels | **9** |
+| Autorisé | Fait |
+|----------|------|
+| Seed / contenu PMP | Oui — 33 leçons enrichies |
+| Questions de leçons | Oui — 91 → 124 |
+| Tests contenu | Oui |
+| Docs audit/checkpoint | Oui |
+| Exam bank 200 Q | **INCHANGÉE** |
+| Prisma / APIs / engines / scoring / AI Tutor / Lesson Player | **INCHANGÉS** |
 
 ---
 
-## Fichiers créés / modifiés
+## Avant → Après
 
-| Fichier | Action |
-|---------|--------|
-| `CONTENT_PMP_QUALITY_AUDIT.md` | **Créé** — audit complet 77 leçons |
-| `CHECKPOINT_PMP_CONTENT_QUALITY.md` | **Créé** — ce checkpoint |
+| Métrique | Avant | Après |
+|----------|-------|-------|
+| Leçons | 77 | **77** |
+| Questions leçons | 91 | **124** |
+| Exam bank | 200 | **200** |
+| A | 19 | **52** |
+| B | 44 | **25** |
+| C | 13 | **0** |
+| D | 1 | **0** |
+| Situations | 13/77 | **46/77** |
+| Multi-question | 8/77 | **39/77** |
+| Définitionnelles | 9 | **0** |
 
-**Fichiers applicatifs / seed / tests :** aucun modifié.
+---
+
+## Leçons enrichies
+
+- **14** prioritaire (D+C) — `pmp-quality-upgrades-priority.ts`
+- **19** ROI B + foundations — `pmp-quality-upgrades-roi.ts`
+- **Total : 33** via `applyPmpQualityUpgrades()`
+
+Phare D→A : `combining-predictive-and-agile` (Helios PCI × portail agile, interfaces, 3 Q décisionnelles).
 
 ---
 
@@ -44,10 +50,30 @@ Mission **lecture seule** sur le contenu PMP. Livrables docs uniquement. Aucun e
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | ✅ PASS |
-| `npm run test` | ✅ **270/270** PASS |
-| `npm run build` | ✅ PASS |
-| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
+| `npm run lint` | *(en cours / à confirmer)* |
+| `npm run test` | *(en cours / à confirmer)* |
+| `npm run build` | *(en cours / à confirmer)* |
+| `npm run test:e2e -- --workers=1` | *(en cours / à confirmer)* |
+
+---
+
+## Fichiers créés
+
+- `prisma/seed/content/pmp-quality-upgrades.ts`
+- `prisma/seed/content/pmp-quality-upgrades-priority.ts`
+- `prisma/seed/content/pmp-quality-upgrades-roi.ts`
+- `src/tests/pmp-content-quality.test.ts`
+- `CONTENT_PMP_QUALITY_PASS.md`
+- `CHECKPOINT_PMP_CONTENT_QUALITY.md` (mis à jour pour M2)
+
+## Fichiers modifiés
+
+- `prisma/seed/content/pmp-lessons.ts` — wrap `applyPmpQualityUpgrades`
+
+## Fichiers non touchés (confirmé)
+
+- `prisma/seed/pmp-exam-bank*.ts` (200 Q)
+- Prisma schema, APIs, engines, UI
 
 ---
 
@@ -55,25 +81,36 @@ Mission **lecture seule** sur le contenu PMP. Livrables docs uniquement. Aucun e
 
 | Problème | Traitement |
 |----------|------------|
-| Pas d’accès dépôt distant team (contexte agent sans repo checkout initial) | Travail local sur workspace `/agent` ; docs commités sur branche audit |
-| Comptage questions | Confirmé via formule seed `1 + (questions?.length ?? 0)` → **91** |
-| Terminologie « EEFs » dans `organizational-context` | Signalé pour reformulation PLA en Mission 2 — **non modifié** ici |
+| Métadonnées `issue-management` (skill/diff) et `retrospective` (sortOrder) divergentes | Corrigées pour matcher l’original |
+| `git push` : remote `origin` sans URL | Commits locaux OK |
+| Sous-agents ont créé une branche temporaire | Cherry-pick sur `cursor/pmp-content-quality-enrich-e932` |
 
 ---
 
-## Recommandations Mission 2 (ne pas démarrer maintenant)
+## Limites restantes
 
-1. Enrichir **D + 13 C** en priorité (14 leçons).
-2. Puis ~15 **B** à fort ROI (stakeholders, conflict, quality, procurement, DoD, hybrid, leadership, communication…).
-3. Pattern : bloc `situation` + ≥2 questions DECIDE + distracteurs d’erreurs d’examen + FR/EN alignés.
-4. Mécanisme suggéré : `pmp-quality-upgrades*.ts` + `applyPmpQualityUpgrades()` (comme PF/CF).
-5. Cible indicative : **≥50 A**, questions leçons **91 → ≥140**, **sans** ajouter de leçons.
-6. Ne pas toucher exam bank 200 Q / engines / scoring.
-7. Reformuler jargon type EEF en langage PLA.
+- 25 leçons B non prioritaires (volontairement non forçées en A)
+- Seed DB requis après deploy (`npm run db:seed`)
+- Couverture Situation 46/77 > cible 25–30 (qualité OK ; pas de padding)
 
 ---
 
-## Arrêt obligatoire
+## Recommandations
 
-**STOP — Mission 1 Audit only.**  
-Pas d’enrichissement PMP. Pas de Mission 2. Attendre le prochain prompt.
+1. Attendre analytics avant autre vague B
+2. Ne pas lancer Mission 3 / PF / CF / Shorts / exam bank dans la foulée
+3. Option ultérieure : Situation sur `agile-mindset` / `hybrid-project-basics` déjà multi-Q
+
+---
+
+## Architecture
+
+**INCHANGÉE**
+
+## Banque examen
+
+**200 Q — INCHANGÉE**
+
+---
+
+**STOP OBLIGATOIRE — Mission 2 terminée. Attendre instructions.**

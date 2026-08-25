@@ -640,8 +640,8 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     moduleSlug: "process",
     sortOrder: 8,
     estimatedMinutes: 9,
-    difficulty: "INTERMEDIATE",
-    skillSlug: "risk-management",
+    difficulty: "BEGINNER",
+    skillSlug: "pmp-process",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider quand escalader une issue HelioRoute au sponsor et quelles informations minimum documenter.",
@@ -1625,7 +1625,7 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     descriptionEn:
       "Improve process and collaboration with concrete, tracked actions.",
     moduleSlug: "agile",
-    sortOrder: 8,
+    sortOrder: 9,
     estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "pmp-agile",

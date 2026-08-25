@@ -12,6 +12,7 @@ import { PMP_BUSINESS_LESSONS } from "./pmp-business";
 import { PMP_AGILE_LESSONS } from "./pmp-agile";
 import { PMP_HYBRID_LESSONS } from "./pmp-hybrid";
 import { PMP_SITUATIONAL_LESSONS } from "./pmp-situational";
+import { applyPmpQualityUpgrades } from "./pmp-quality-upgrades";
 
 export const PMP_MODULES = [
   {
@@ -79,7 +80,7 @@ export const PMP_MODULES = [
   },
 ] as const;
 
-export const PMP_LESSONS: PmpLesson[] = [
+export const PMP_LESSONS: PmpLesson[] = applyPmpQualityUpgrades([
   ...PMP_FOUNDATIONS_LESSONS,
   ...PMP_PEOPLE_LESSONS,
   ...PMP_PROCESS_LESSONS,
@@ -87,4 +88,4 @@ export const PMP_LESSONS: PmpLesson[] = [
   ...PMP_AGILE_LESSONS,
   ...PMP_HYBRID_LESSONS,
   ...PMP_SITUATIONAL_LESSONS,
-];
+]);
