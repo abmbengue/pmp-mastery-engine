@@ -27,10 +27,12 @@
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | *(à confirmer)* |
-| `npm run test` | *(à confirmer)* |
-| `npm run build` | *(à confirmer)* |
-| `npm run test:e2e -- --workers=1` | *(à confirmer)* |
+| `npm run lint` | ✅ PASS |
+| `npm run test` | ✅ **281/281** PASS (+4) |
+| `npm run build` | ✅ PASS |
+| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
+
+Note : flaky DB race possible en parallèle (`exam-integration`) — hors polish contenu ; passe au re-run / isolation. Non contourné.
 
 ---
 
