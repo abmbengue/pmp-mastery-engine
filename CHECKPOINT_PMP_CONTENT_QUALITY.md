@@ -50,10 +50,10 @@ Phare D→A : `combining-predictive-and-agile` (Helios PCI × portail agile, int
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | *(en cours / à confirmer)* |
-| `npm run test` | *(en cours / à confirmer)* |
-| `npm run build` | *(en cours / à confirmer)* |
-| `npm run test:e2e -- --workers=1` | *(en cours / à confirmer)* |
+| `npm run lint` | ✅ PASS |
+| `npm run test` | ✅ **277/277** PASS (+7) |
+| `npm run build` | ✅ PASS |
+| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
 
 ---
 
