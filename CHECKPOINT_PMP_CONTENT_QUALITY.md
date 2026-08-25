@@ -44,10 +44,10 @@ Mission **lecture seule** sur le contenu PMP. Livrables docs uniquement. Aucun e
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | *(à compléter après exécution)* |
-| `npm run test` | *(à compléter)* |
-| `npm run build` | *(à compléter)* |
-| `npm run test:e2e -- --workers=1` | *(à compléter)* |
+| `npm run lint` | ✅ PASS |
+| `npm run test` | ✅ **270/270** PASS |
+| `npm run build` | ✅ PASS |
+| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
 
 ---
 
