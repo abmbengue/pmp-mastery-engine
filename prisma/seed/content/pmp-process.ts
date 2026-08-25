@@ -1103,7 +1103,7 @@ export const PMP_PROCESS_LESSONS: PmpLesson[] = [
     descriptionEn:
       "Coordinate all domains for coherent delivery and explicit trade-offs.",
     moduleSlug: MOD,
-    sortOrder: 14,
+    sortOrder: 15,
     estimatedMinutes: 10,
     difficulty: "ADVANCED",
     skillSlug: "integration",
@@ -1173,7 +1173,7 @@ export const PMP_PROCESS_LESSONS: PmpLesson[] = [
     descriptionEn:
       "Capture and reuse learnings throughout the project, not only at closing.",
     moduleSlug: MOD,
-    sortOrder: 15,
+    sortOrder: 14,
     estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "pmp-process",

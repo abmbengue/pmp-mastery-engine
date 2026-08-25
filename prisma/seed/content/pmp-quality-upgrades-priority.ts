@@ -37,7 +37,7 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     sortOrder: 2,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider la première action d'intégration quand le stream PCI Helios (prédictif) et le portail développeur (agile) entrent en conflit de gouvernance.",
@@ -779,7 +779,7 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     descriptionEn:
       "Capture and reuse learnings throughout the project, not only at closing.",
     moduleSlug: "process",
-    sortOrder: 15,
+    sortOrder: 14,
     estimatedMinutes: 8,
     difficulty: "BEGINNER",
     skillSlug: "pmp-process",
@@ -1583,33 +1583,40 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
       q({
         type: "SINGLE_CHOICE",
         promptFr:
-          "Quel élément distingue le goal FlowMart sprint 4 « abandon 34→25 % » d'une mauvaise planification ?",
+          "FlowMart sprint 4 : le directeur veut 15 tickets « Must » sans indicateur. Quelle est la meilleure prochaine action du PO ?",
         promptEn:
-          "What distinguishes FlowMart sprint 4 goal “drop 34→25%” from bad planning?",
+          "FlowMart sprint 4: the director wants 15 “Must” tickets with no indicator. What is the PO’s best next action?",
         explanationCorrectFr:
-          "Objectif cohérent avec indicateur — stories sélectionnées pour ce goal.",
+          "Reformuler un goal mesurable (abandon 34→25 %) puis lier/couper les stories — le volume seul n'est pas un plan.",
         explanationCorrectEn:
-          "Coherent objective with indicator — stories selected for this goal.",
+          "Reframe a measurable goal (drop 34→25%) then link/cut stories — volume alone is not a plan.",
         difficulty: 2,
         options: [
           opt(
-            "Goal mesurable liant les stories sélectionnées",
-            "Measurable goal linking selected stories",
+            "Reformuler un goal mesurable (abandon 34→25 %) et ne garder que les stories qui y contribuent",
+            "Reframe a measurable goal (drop 34→25%) and keep only stories that contribute to it",
             true
           ),
           opt(
-            "Maximum de stories possibles",
-            "Maximum possible stories",
+            "Prendre le maximum de stories possibles pour « montrer l'ambition »",
+            "Take the maximum possible stories to “show ambition”",
             false,
-            "Volume ≠ goal cohérent.",
-            "Volume ≠ coherent goal."
+            "Volume ≠ goal cohérent — dépasse la capacité et dilue le focus.",
+            "Volume ≠ coherent goal — exceeds capacity and dilutes focus."
           ),
           opt(
-            "Reprise de tout le backlog",
-            "Take entire backlog",
+            "Engager tout le backlog pour clôturer le sujet",
+            "Commit the entire backlog to close the topic",
             false,
-            "Dépasse capacité et dilue focus.",
-            "Exceeds capacity and dilutes focus."
+            "Dépasse la capacité et transforme le sprint en liste sans priorité.",
+            "Exceeds capacity and turns the sprint into an unprioritized list."
+          ),
+          opt(
+            "Accepter la liste Must et compresser les tests en fin de sprint",
+            "Accept the Must list and compress testing at sprint end",
+            false,
+            "Couper la qualité en silence crée de la dette et rate l'objectif mesurable.",
+            "Silently cutting quality creates debt and misses the measurable goal."
           ),
         ],
       }),
@@ -1769,7 +1776,7 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     sortOrder: 4,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider quel workstream Helios reçoit quel modèle de livraison (prédictif, agile, hotfix) selon incertitude et régulation.",
@@ -1910,7 +1917,7 @@ export const PMP_PRIORITY_QUALITY_UPGRADES: PmpLesson[] = [
     sortOrder: 7,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider l'alignement entre comité stage-gate Helios et attentes du Product Owner portail sur rythme et messages.",

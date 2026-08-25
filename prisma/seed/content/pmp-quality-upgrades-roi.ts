@@ -2140,7 +2140,7 @@ export const PMP_ROI_QUALITY_UPGRADES: PmpLesson[] = [
     sortOrder: 1,
     estimatedMinutes: 9,
     difficulty: "BEGINNER",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider hybride vs prédictif vs agile pur sur trois scénarios Helios.",
@@ -2289,7 +2289,7 @@ export const PMP_ROI_QUALITY_UPGRADES: PmpLesson[] = [
     sortOrder: 9,
     estimatedMinutes: 9,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider comment communiquer un changement de cadence portail Helios avant le gate Q2.",

@@ -108,7 +108,7 @@ export const PMP_PEOPLE_LESSONS: PmpLesson[] = [
     sortOrder: 1,
     estimatedMinutes: 8,
     difficulty: "BEGINNER",
-    skillSlug: "pmp-people",
+    skillSlug: "team-development",
     learningObjective: "ANALYZE",
     objectiveFr:
       "Identifier la phase de développement d'une équipe projet et proposer une intervention adaptée.",

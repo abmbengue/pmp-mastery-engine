@@ -16,7 +16,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 0,
     estimatedMinutes: 7,
     difficulty: "BEGINNER",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "IDENTIFY",
     isShort: true,
     shortDurationSeconds: 140,
@@ -136,7 +136,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 1,
     estimatedMinutes: 9,
     difficulty: "BEGINNER",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider hybride vs prédictif vs agile pur sur 3 scénarios Helios.",
@@ -207,7 +207,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 2,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "APPLY",
     objectiveFr:
       "Définir les interfaces entre stream prédictif infra et stream agile portail Helios.",
@@ -276,7 +276,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 3,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "ANALYZE",
     objectiveFr:
       "Tracer une boundary chart Helios : horizon prédictif vs rolling agile.",
@@ -343,7 +343,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 4,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "APPLY",
     objectiveFr:
       "Aligner release train portail et jalon infra Helios sur une cadence commune.",
@@ -414,7 +414,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 5,
     estimatedMinutes: 9,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Décider quels artefacts PMO garder, simplifier ou remplacer en hybride.",
@@ -480,7 +480,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 6,
     estimatedMinutes: 10,
     difficulty: "ADVANCED",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "ANALYZE",
     objectiveFr:
       "Définir ce qui est décidé au gate programme vs en sprint planning Helios.",
@@ -551,7 +551,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 7,
     estimatedMinutes: 10,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "APPLY",
     objectiveFr:
       "Construire une matrice stakeholders Helios (infra vs portail) avec cadence adaptée.",
@@ -622,7 +622,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 8,
     estimatedMinutes: 10,
     difficulty: "ADVANCED",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "ANALYZE",
     objectiveFr:
       "Classer risques Helios : programme (prédictif) vs produit (agile) avec propriétaires.",
@@ -693,7 +693,7 @@ export const PMP_HYBRID_LESSONS: PmpLesson[] = [
     sortOrder: 9,
     estimatedMinutes: 9,
     difficulty: "INTERMEDIATE",
-    skillSlug: "hybrid-delivery",
+    skillSlug: "pmp-hybrid",
     learningObjective: "DECIDE",
     objectiveFr:
       "Rédiger une stratégie de livraison Helios : gates majeurs + incréments continus.",
