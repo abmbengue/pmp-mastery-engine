@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "date": "2026-08-26",
+  "exam": {
+    "people_pct": 33,
+    "process_pct": 41,
+    "business_environment_pct": 26,
+    "questions": 180,
+    "minutes": 240,
+    "predictive_approx_pct": 40,
+    "adaptive_agile_hybrid_approx_pct": 60
+  },
+  "eco": {
+    "people": [
+      "Develop a common vision",
+      "Manage conflicts",
+      "Lead the project team",
+      "Engage stakeholders",
+      "Align stakeholder expectations",
+      "Manage stakeholder expectations"
+    ],
+    "process": [
+      "Develop an integrated project management plan and plan delivery",
+      "Develop and manage project scope",
+      "Help ensure value-based delivery",
+      "Plan and manage resources",
+      "Plan and manage procurement",
+      "Plan and manage finance",
+      "Plan and optimize quality of products/deliverables",
+      "Plan and manage schedule",
+      "Evaluate project status",
+      "Manage project closure"
+    ],
+    "business_environment": [
+      "Define and establish project governance",
+      "Plan and manage project compliance",
+      "Manage and control changes",
+      "Remove impediments and manage issues",
+      "Plan and manage risk",
+      "Continuous improvement",
+      "Support organizational change",
+      "Evaluate external business environment changes"
+    ]
+  },
+  "pmbok8_performance_domains": [
+    "Governance",
+    "Scope",
+    "Schedule",
+    "Finance",
+    "Stakeholders",
+    "Resources",
+    "Risk"
+  ],
+  "protected_exam_bank": {
+    "count": 200,
+    "external_keys": "pmp-exam-001..pmp-exam-200"
+  }
+}
