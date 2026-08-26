@@ -2,6 +2,7 @@ import type { PrismaClient } from "../../src/generated/prisma/client";
 import { EXAM_TEMPLATES } from "../../src/modules/assessment-engine/exam-types";
 import { upsertSkill } from "./helpers";
 import { PMP_EXAM_BANK } from "./pmp-exam-bank-data";
+import { PMP_QUESTION_MASTERY_METADATA } from "./pmp-question-mastery-metadata";
 
 const EXAM_SKILLS = [
   {
@@ -247,12 +248,67 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
       }
       created += 1;
     }
+
+    const meta = PMP_QUESTION_MASTERY_METADATA.find((m) => m.externalKey === q.externalKey);
+    if (meta) {
+      const questionRow = await prisma.question.findUnique({
+        where: { externalKey: q.externalKey },
+        select: { id: true },
+      });
+      await prisma.questionMasteryMetadata.upsert({
+        where: { externalKey: q.externalKey },
+        create: {
+          externalKey: q.externalKey,
+          questionId: questionRow?.id ?? null,
+          ecoDomain: meta.ecoDomain,
+          ecoTaskId: meta.ecoTaskId,
+          ecoTaskIdsSecondary: meta.ecoTaskIdsSecondary,
+          pmbokPerformanceDomain: meta.pmbokPerformanceDomain ?? null,
+          pmbokPerformanceDomainsSecondary: meta.pmbokPerformanceDomainsSecondary,
+          crossCutting: meta.crossCutting,
+          primaryConceptId: meta.primaryConceptId,
+          secondaryConceptIds: meta.secondaryConceptIds,
+          primarySkillId: meta.primarySkillId ?? null,
+          secondarySkillIds: meta.secondarySkillIds,
+          cognitiveLevel: meta.cognitiveLevel,
+          difficulty: meta.difficulty,
+          approach: meta.approach,
+          misconceptionIds: meta.misconceptionIds,
+          mappingStatus: meta.mappingStatus,
+          mappingConfidence: meta.mappingConfidence,
+          sourceType: meta.sourceType,
+          sourceConfidence: meta.sourceConfidence,
+        },
+        update: {
+          questionId: questionRow?.id ?? null,
+          ecoDomain: meta.ecoDomain,
+          ecoTaskId: meta.ecoTaskId,
+          ecoTaskIdsSecondary: meta.ecoTaskIdsSecondary,
+          pmbokPerformanceDomain: meta.pmbokPerformanceDomain ?? null,
+          pmbokPerformanceDomainsSecondary: meta.pmbokPerformanceDomainsSecondary,
+          crossCutting: meta.crossCutting,
+          primaryConceptId: meta.primaryConceptId,
+          secondaryConceptIds: meta.secondaryConceptIds,
+          primarySkillId: meta.primarySkillId ?? null,
+          secondarySkillIds: meta.secondarySkillIds,
+          cognitiveLevel: meta.cognitiveLevel,
+          difficulty: meta.difficulty,
+          approach: meta.approach,
+          misconceptionIds: meta.misconceptionIds,
+          mappingStatus: meta.mappingStatus,
+          mappingConfidence: meta.mappingConfidence,
+          sourceType: meta.sourceType,
+          sourceConfidence: meta.sourceConfidence,
+        },
+      });
+    }
   }
 
+  const metaCount = await prisma.questionMasteryMetadata.count();
   const bankCount = await prisma.question.count({ where: { examBank: true } });
   console.log(
-    `PMP exam bank ready: ${bankCount} questions (${created} newly created), ${EXAM_TEMPLATES.length} exam templates.`
+    `PMP exam bank ready: ${bankCount} questions (${created} newly created), ${EXAM_TEMPLATES.length} exam templates, ${metaCount} mastery metadata rows.`
   );
 
-  return { bankCount, skillIds };
+  return { bankCount, skillIds, metaCount };
 }

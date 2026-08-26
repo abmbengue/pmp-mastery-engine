@@ -302,6 +302,7 @@ model Question {
   ecoTaskCode          String?
   /// PLA mastery concept slug (Phase B)
   conceptSlug          String?
+  masteryMetadata      QuestionMasteryMetadata?
   answerOptions        AnswerOption[]
   quizAttempts         QuizAttempt[]
   skillLinks           QuestionSkill[]
@@ -315,6 +316,38 @@ model Question {
   @@index([examBank, scenarioType])
   @@index([examBank, ecoTaskCode])
   @@index([conceptSlug])
+}
+
+/// Phase B: external mastery mapping — stems/options remain on Question unchanged
+model QuestionMasteryMetadata {
+  id                            String   @id @default(cuid())
+  externalKey                   String   @unique
+  questionId                    String?  @unique
+  question                      Question? @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  ecoDomain                     String
+  ecoTaskId                     String
+  ecoTaskIdsSecondary           Json?
+  pmbokPerformanceDomain        String?
+  pmbokPerformanceDomainsSecondary Json?
+  crossCutting                  Json?
+  primaryConceptId              String
+  secondaryConceptIds           Json?
+  primarySkillId                String?
+  secondarySkillIds             Json?
+  cognitiveLevel                String
+  difficulty                    String
+  approach                      String
+  misconceptionIds              Json?
+  mappingStatus                 String
+  mappingConfidence             String
+  sourceType                    String
+  sourceConfidence              String
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+
+  @@index([ecoTaskId])
+  @@index([primaryConceptId])
+  @@index([mappingStatus])
 }
 
 /// Extra skills linked to a question (in addition to primary skillId)
@@ -405,6 +438,8 @@ model ExamAnswer {
   sessionQuestionId String               @unique
   sessionQuestion   ExamSessionQuestion  @relation(fields: [sessionQuestionId], references: [id], onDelete: Cascade)
   selectedOptionIds Json
+  /// Optional learner confidence (Phase B mastery engine)
+  confidenceLevel   String?
   answeredAt        DateTime             @default(now())
   createdAt         DateTime             @default(now())
   updatedAt         DateTime             @updatedAt
@@ -562,6 +597,8 @@ model QuizAttempt {
   answers        Json
   attemptNo      Int      @default(1)
   isCorrect      Boolean
+  /// Optional learner confidence (Phase B mastery engine)
+  confidenceLevel String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

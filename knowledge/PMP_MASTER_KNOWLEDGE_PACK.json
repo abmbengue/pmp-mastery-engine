@@ -1,0 +1,3943 @@
+{
+  "version": "1.0.0-phase-b",
+  "generatedAt": "2026-08-26T21:54:13.137Z",
+  "sourceNotice": "PLA mastery knowledge pack. ECO structure from PMI ECO July 2026 (FR PDF in uploads). PMBOK 8 PD paraphrases from mission spec — verify when full PMBOK pack is imported. NOT official PMI certification content.",
+  "eco": {
+    "domainWeights": {
+      "PEOPLE": 0.33,
+      "PROCESS": 0.41,
+      "BUSINESS": 0.26
+    },
+    "deliverySplit": {
+      "predictive": 0.4,
+      "adaptiveAgileHybrid": 0.6
+    },
+    "tasks": [
+      {
+        "id": "PEOPLE-T01",
+        "domainId": "PEOPLE",
+        "sortOrder": 1,
+        "titleEn": "Develop a common vision",
+        "titleFr": "Développer une vision commune",
+        "legacyCode": "PE-01",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "shared-vision",
+          "alignment",
+          "root-cause-misunderstanding"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T02",
+        "domainId": "PEOPLE",
+        "sortOrder": 2,
+        "titleEn": "Manage conflicts",
+        "titleFr": "Gérer les conflits",
+        "legacyCode": "PE-02",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "conflict-sources",
+          "resolution",
+          "ground-rules"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T03",
+        "domainId": "PEOPLE",
+        "sortOrder": 3,
+        "titleEn": "Lead the project team",
+        "titleFr": "Diriger l'équipe de projet",
+        "legacyCode": "PE-03",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "expectations",
+          "empowerment",
+          "roles",
+          "leadership-style"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T04",
+        "domainId": "PEOPLE",
+        "sortOrder": 4,
+        "titleEn": "Engage stakeholders",
+        "titleFr": "Impliquer les parties prenantes",
+        "legacyCode": "PE-04",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "identify",
+          "analyze",
+          "engagement-plan",
+          "trust",
+          "influence"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T05",
+        "domainId": "PEOPLE",
+        "sortOrder": 5,
+        "titleEn": "Align stakeholder expectations",
+        "titleFr": "Aligner les attentes des parties prenantes",
+        "legacyCode": "PE-05",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "categorize",
+          "facilitate-alignment",
+          "mentoring"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T06",
+        "domainId": "PEOPLE",
+        "sortOrder": 6,
+        "titleEn": "Manage stakeholder expectations",
+        "titleFr": "Gérer les attentes des parties prenantes",
+        "legacyCode": "PE-06",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "customer-expectations",
+          "satisfaction",
+          "outcome-alignment"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T07",
+        "domainId": "PEOPLE",
+        "sortOrder": 7,
+        "titleEn": "Ensure knowledge transfer",
+        "titleFr": "Assurer le transfert des connaissances",
+        "legacyCode": "PE-07",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "critical-knowledge",
+          "learning-environment",
+          "handover"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PEOPLE-T08",
+        "domainId": "PEOPLE",
+        "sortOrder": 8,
+        "titleEn": "Plan and manage communication",
+        "titleFr": "Planifier et gérer la communication",
+        "legacyCode": "PE-08",
+        "plaExamDomain": "PEOPLE",
+        "focusKeywords": [
+          "communication-strategy",
+          "feedback",
+          "reporting",
+          "transparency"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T01",
+        "domainId": "PROCESS",
+        "sortOrder": 1,
+        "titleEn": "Integrated plan and delivery approach",
+        "titleFr": "Plan intégré et approche de livraison",
+        "legacyCode": "PR-01",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "tailoring",
+          "predictive-agile-hybrid",
+          "integrated-plan"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T02",
+        "domainId": "PROCESS",
+        "sortOrder": 2,
+        "titleEn": "Develop and manage scope",
+        "titleFr": "Développer et gérer le périmètre",
+        "legacyCode": "PR-02",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "scope-definition",
+          "agreement",
+          "decomposition"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T03",
+        "domainId": "PROCESS",
+        "sortOrder": 3,
+        "titleEn": "Value-based delivery",
+        "titleFr": "Livraison axée sur la valeur",
+        "legacyCode": "PR-03",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "value-components",
+          "prioritization",
+          "benefits-tracking"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T04",
+        "domainId": "PROCESS",
+        "sortOrder": 4,
+        "titleEn": "Plan and manage resources",
+        "titleFr": "Planifier et gérer les ressources",
+        "legacyCode": "PR-04",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "resource-plan",
+          "availability",
+          "optimization"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T05",
+        "domainId": "PROCESS",
+        "sortOrder": 5,
+        "titleEn": "Plan and manage procurement",
+        "titleFr": "Planifier et gérer les approvisionnements",
+        "legacyCode": "PR-05",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "contracts",
+          "vendor-performance",
+          "negotiation"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T06",
+        "domainId": "PROCESS",
+        "sortOrder": 6,
+        "titleEn": "Plan and manage finance",
+        "titleFr": "Planifier et gérer les finances",
+        "legacyCode": "PR-06",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "budget",
+          "contingency",
+          "reserves",
+          "cost-tracking"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T07",
+        "domainId": "PROCESS",
+        "sortOrder": 7,
+        "titleEn": "Plan and optimize quality of deliverables",
+        "titleFr": "Planifier et optimiser la qualité des livrables",
+        "legacyCode": "PR-07",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "quality-requirements",
+          "qa-qc",
+          "continuous-improvement"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T08",
+        "domainId": "PROCESS",
+        "sortOrder": 8,
+        "titleEn": "Plan and manage schedule",
+        "titleFr": "Planifier et gérer l'échéancier",
+        "legacyCode": "PR-08",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "baseline",
+          "estimates",
+          "dependencies",
+          "variance"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T09",
+        "domainId": "PROCESS",
+        "sortOrder": 9,
+        "titleEn": "Evaluate project status",
+        "titleFr": "Évaluer l'état du projet",
+        "legacyCode": "PR-09",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "metrics",
+          "artifacts",
+          "status-communication"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "PROCESS-T10",
+        "domainId": "PROCESS",
+        "sortOrder": 10,
+        "titleEn": "Manage project closure",
+        "titleFr": "Gérer la clôture du projet",
+        "legacyCode": "PR-10",
+        "plaExamDomain": "PROCESS",
+        "focusKeywords": [
+          "acceptance",
+          "transition",
+          "closeout",
+          "lessons"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T01",
+        "domainId": "BUSINESS",
+        "sortOrder": 1,
+        "titleEn": "Define and establish project governance",
+        "titleFr": "Définir et établir la gouvernance du projet",
+        "legacyCode": "BE-01",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "governance-structure",
+          "success-metrics",
+          "escalation"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T02",
+        "domainId": "BUSINESS",
+        "sortOrder": 2,
+        "titleEn": "Plan and manage compliance",
+        "titleFr": "Planifier et gérer la conformité",
+        "legacyCode": "BE-02",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "regulatory",
+          "sustainability",
+          "controls"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T03",
+        "domainId": "BUSINESS",
+        "sortOrder": 3,
+        "titleEn": "Manage and control changes",
+        "titleFr": "Gérer et maîtriser les changements",
+        "legacyCode": "BE-03",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "change-process",
+          "approved-changes",
+          "documentation"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T04",
+        "domainId": "BUSINESS",
+        "sortOrder": 4,
+        "titleEn": "Remove impediments and manage issues",
+        "titleFr": "Éliminer les obstacles et gérer les points à traiter",
+        "legacyCode": "BE-04",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "impediments",
+          "issues",
+          "risk-to-issue",
+          "escalation"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T05",
+        "domainId": "BUSINESS",
+        "sortOrder": 5,
+        "titleEn": "Plan and manage risk",
+        "titleFr": "Planifier et gérer les risques",
+        "legacyCode": "BE-05",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "identify",
+          "analyze",
+          "response",
+          "risk-register"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T06",
+        "domainId": "BUSINESS",
+        "sortOrder": 6,
+        "titleEn": "Continuous improvement",
+        "titleFr": "Amélioration continue",
+        "legacyCode": "BE-06",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "lessons-learned",
+          "process-updates",
+          "opa"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T07",
+        "domainId": "BUSINESS",
+        "sortOrder": 7,
+        "titleEn": "Support organizational change",
+        "titleFr": "Soutenir le changement organisationnel",
+        "legacyCode": "BE-07",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "culture",
+          "adoption",
+          "org-change-impact"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "id": "BUSINESS-T08",
+        "domainId": "BUSINESS",
+        "sortOrder": 8,
+        "titleEn": "Evaluate external business environment changes",
+        "titleFr": "Évaluer l'environnement commercial externe",
+        "legacyCode": "BE-08",
+        "plaExamDomain": "BUSINESS_ENVIRONMENT",
+        "focusKeywords": [
+          "market",
+          "regulatory",
+          "geopolitical",
+          "backlog-impact"
+        ],
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      }
+    ]
+  },
+  "pmbok8": {
+    "performanceDomains": [
+      {
+        "id": "PD-GOVERNANCE",
+        "nameEn": "Governance",
+        "nameFr": "Gouvernance",
+        "descriptionEn": "Structures, policies, and decision rights that guide project work and accountability.",
+        "descriptionFr": "Structures, politiques et droits de décision qui orientent le travail projet et la responsabilité.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM",
+        "note": "Paraphrase — verify against imported PMBOK 8 when available"
+      },
+      {
+        "id": "PD-SCOPE",
+        "nameEn": "Scope",
+        "nameFr": "Périmètre",
+        "descriptionEn": "Defining and controlling what is and is not included in the project.",
+        "descriptionFr": "Définir et maîtriser ce qui est inclus ou exclu du projet.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      },
+      {
+        "id": "PD-SCHEDULE",
+        "nameEn": "Schedule",
+        "nameFr": "Échéancier",
+        "descriptionEn": "Planning, sequencing, and controlling time to deliver outcomes.",
+        "descriptionFr": "Planifier, séquencer et maîtriser le temps de livraison.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      },
+      {
+        "id": "PD-FINANCE",
+        "nameEn": "Finance",
+        "nameFr": "Finances",
+        "descriptionEn": "Planning, estimating, budgeting, and controlling project finances.",
+        "descriptionFr": "Planifier, estimer, budgétiser et maîtriser les finances du projet.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      },
+      {
+        "id": "PD-STAKEHOLDERS",
+        "nameEn": "Stakeholders",
+        "nameFr": "Parties prenantes",
+        "descriptionEn": "Identifying, engaging, and collaborating with people affected by the project.",
+        "descriptionFr": "Identifier, impliquer et collaborer avec les personnes impactées par le projet.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      },
+      {
+        "id": "PD-RESOURCES",
+        "nameEn": "Resources",
+        "nameFr": "Ressources",
+        "descriptionEn": "Planning, acquiring, and optimizing people, materials, and capacity.",
+        "descriptionFr": "Planifier, acquérir et optimiser les personnes, matériaux et capacités.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      },
+      {
+        "id": "PD-RISK",
+        "nameEn": "Risk",
+        "nameFr": "Risques",
+        "descriptionEn": "Identifying and responding to uncertainty that may affect objectives.",
+        "descriptionFr": "Identifier et répondre à l'incertitude pouvant affecter les objectifs.",
+        "sourceType": "PMBOK8",
+        "sourceConfidence": "MEDIUM"
+      }
+    ],
+    "crossCutting": {
+      "id": "KN-QUALITY",
+      "nameEn": "Quality",
+      "nameFr": "Qualité",
+      "descriptionEn": "Cross-cutting knowledge area — requirements, prevention/appraisal/failure costs, QA vs QC. Linked to ECO Process Task 7.",
+      "descriptionFr": "Domaine transversal — exigences, coûts prévention/appraisal/échec, AQ vs CQ. Lié à la tâche ECO Processus 7.",
+      "linkedEcoTaskLegacy": "PR-07",
+      "sourceType": "PMBOK8",
+      "sourceConfidence": "MEDIUM"
+    }
+  },
+  "concepts": [
+    {
+      "id": "stakeholders",
+      "nameEn": "Stakeholders",
+      "nameFr": "Parties prenantes",
+      "descriptionEn": "People and groups who affect or are affected by the project.",
+      "descriptionFr": "Personnes et groupes qui influencent ou sont influencés par le projet.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04",
+        "PEOPLE-T05",
+        "PEOPLE-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "subConceptIds": [
+        "stakeholder-identification",
+        "stakeholder-analysis",
+        "stakeholder-engagement",
+        "communication-vs-engagement",
+        "stakeholder-influence",
+        "stakeholder-trust",
+        "expectation-alignment",
+        "expectation-management"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "communication-planning",
+        "governance"
+      ],
+      "commonlyConfusedWith": [
+        "communication-planning"
+      ],
+      "skillIds": [
+        "skill-identify-stakeholder",
+        "skill-analyze-stakeholder",
+        "skill-engagement-strategy",
+        "skill-distinguish-communication-engagement"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "PMBOK8",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "stakeholder-engagement",
+      "nameEn": "Stakeholder engagement",
+      "nameFr": "Implication des parties prenantes",
+      "descriptionEn": "Building commitment and collaboration — not merely sending information.",
+      "descriptionFr": "Créer engagement et collaboration — pas seulement transmettre de l'information.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholders",
+      "subConceptIds": [
+        "communication-vs-engagement",
+        "stakeholder-trust",
+        "stakeholder-influence"
+      ],
+      "prerequisiteConceptIds": [
+        "stakeholder-identification"
+      ],
+      "relatedConceptIds": [
+        "communication-planning"
+      ],
+      "commonlyConfusedWith": [
+        "communication-planning"
+      ],
+      "skillIds": [
+        "skill-engagement-strategy",
+        "skill-build-trust",
+        "skill-influence-stakeholders",
+        "skill-distinguish-communication-engagement"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "stakeholder-identification",
+      "nameEn": "Stakeholder identification",
+      "nameFr": "Identification des parties prenantes",
+      "descriptionEn": "Discovering who may influence or be impacted by the work.",
+      "descriptionFr": "Découvrir qui peut influencer ou être impacté par le travail.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholders",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "stakeholder-analysis"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-identify-stakeholder"
+      ],
+      "difficulty": "BEGINNER",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "stakeholder-analysis",
+      "nameEn": "Stakeholder analysis",
+      "nameFr": "Analyse des parties prenantes",
+      "descriptionEn": "Understanding interests, influence, and engagement needs.",
+      "descriptionFr": "Comprendre intérêts, influence et besoins d'implication.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholders",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-identification"
+      ],
+      "relatedConceptIds": [
+        "expectation-alignment"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-analyze-stakeholder"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "communication-vs-engagement",
+      "nameEn": "Communication vs engagement",
+      "nameFr": "Communication vs engagement",
+      "descriptionEn": "Information flow differs from building commitment and participation.",
+      "descriptionFr": "Le flux d'information diffère de la création d'engagement et de participation.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04",
+        "PEOPLE-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholder-engagement",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-engagement",
+        "communication-planning"
+      ],
+      "relatedConceptIds": [
+        "communication-planning"
+      ],
+      "commonlyConfusedWith": [
+        "communication-planning"
+      ],
+      "skillIds": [
+        "skill-distinguish-communication-engagement"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "communication-planning",
+      "nameEn": "Communication planning",
+      "nameFr": "Planification de la communication",
+      "descriptionEn": "Strategy, channels, feedback loops, and reporting aligned to needs.",
+      "descriptionFr": "Stratégie, canaux, boucles de retour et rapports alignés aux besoins.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-analysis"
+      ],
+      "relatedConceptIds": [
+        "stakeholder-engagement"
+      ],
+      "commonlyConfusedWith": [
+        "stakeholder-engagement"
+      ],
+      "skillIds": [
+        "skill-communication-strategy",
+        "skill-tailor-communication"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "expectation-alignment",
+      "nameEn": "Expectation alignment",
+      "nameFr": "Alignement des attentes",
+      "descriptionEn": "Facilitating shared understanding of what success means.",
+      "descriptionFr": "Faciliter une compréhension partagée de la réussite.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T05"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholders",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-analysis"
+      ],
+      "relatedConceptIds": [
+        "expectation-management"
+      ],
+      "commonlyConfusedWith": [
+        "requirements-management"
+      ],
+      "skillIds": [
+        "skill-align-expectations"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "expectation-management",
+      "nameEn": "Expectation management",
+      "nameFr": "Pilotage des attentes",
+      "descriptionEn": "Monitoring satisfaction and adjusting outcomes vs expectations.",
+      "descriptionFr": "Suivre la satisfaction et ajuster résultats vs attentes.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholders",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "expectation-alignment"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "expectation-alignment"
+      ],
+      "skillIds": [
+        "skill-manage-expectations"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "shared-vision",
+      "nameEn": "Shared vision",
+      "nameFr": "Vision partagée",
+      "descriptionEn": "Common understanding of purpose and direction among key stakeholders.",
+      "descriptionFr": "Compréhension commune du but et de la direction.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "stakeholder-engagement"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-promote-shared-vision"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "PMI_ECO_2026",
+      "sourceConfidence": "HIGH",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "conflict-management",
+      "nameEn": "Conflict management",
+      "nameFr": "Gestion des conflits",
+      "descriptionEn": "Identifying, analyzing, and resolving disagreements constructively.",
+      "descriptionFr": "Identifier, analyser et résoudre les désaccords de façon constructive.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS",
+        "PD-RESOURCES"
+      ],
+      "subConceptIds": [
+        "conflict-vs-issue",
+        "root-cause-vs-symptom"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "team-leadership"
+      ],
+      "commonlyConfusedWith": [
+        "issue-management"
+      ],
+      "skillIds": [
+        "skill-identify-conflict-source",
+        "skill-select-conflict-response",
+        "skill-facilitate-resolution"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "team-leadership",
+      "nameEn": "Team leadership",
+      "nameFr": "Direction d'équipe",
+      "descriptionEn": "Leading, empowering, and supporting the project team.",
+      "descriptionFr": "Diriger, responsabiliser et soutenir l'équipe projet.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "subConceptIds": [
+        "leadership-vs-authority",
+        "coaching-vs-directing",
+        "empowerment-vs-delegation"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "conflict-management",
+        "knowledge-transfer"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-set-team-expectations",
+        "skill-empower-team",
+        "skill-select-leadership-style"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "knowledge-transfer",
+      "nameEn": "Knowledge transfer",
+      "nameFr": "Transfert de connaissances",
+      "descriptionEn": "Ensuring critical knowledge is captured and shared.",
+      "descriptionFr": "Garantir que les connaissances critiques sont capturées et partagées.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "continuous-improvement"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-enable-knowledge-transfer"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "integrated-planning",
+      "nameEn": "Integrated planning",
+      "nameFr": "Planification intégrée",
+      "descriptionEn": "Tailoring approach and consolidating plans for delivery.",
+      "descriptionFr": "Adapter l'approche et consolider les plans de livraison.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE",
+        "PD-SCOPE"
+      ],
+      "subConceptIds": [
+        "predictive-vs-adaptive",
+        "adaptive-vs-hybrid",
+        "tailoring"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "scope-management",
+        "value-delivery"
+      ],
+      "commonlyConfusedWith": [
+        "governance"
+      ],
+      "skillIds": [
+        "skill-recommend-delivery-approach",
+        "skill-integrated-plan"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "scope-management",
+      "nameEn": "Scope management",
+      "nameFr": "Gestion du périmètre",
+      "descriptionEn": "Defining, agreeing, and controlling what will be delivered.",
+      "descriptionFr": "Définir, valider et maîtriser ce qui sera livré.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T02"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "subConceptIds": [
+        "scope-vs-change-control",
+        "requested-vs-approved-change"
+      ],
+      "prerequisiteConceptIds": [
+        "integrated-planning"
+      ],
+      "relatedConceptIds": [
+        "change-control",
+        "value-delivery"
+      ],
+      "commonlyConfusedWith": [
+        "change-control"
+      ],
+      "skillIds": [
+        "skill-define-scope",
+        "skill-decompose-scope"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "value-delivery",
+      "nameEn": "Value-based delivery",
+      "nameFr": "Livraison axée valeur",
+      "descriptionEn": "Prioritizing and demonstrating outcomes that matter to stakeholders.",
+      "descriptionFr": "Prioriser et démontrer des résultats importants pour les parties prenantes.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "subConceptIds": [
+        "output-vs-outcome",
+        "output-vs-value"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "scope-management"
+      ],
+      "commonlyConfusedWith": [
+        "scope-management"
+      ],
+      "skillIds": [
+        "skill-prioritize-by-value",
+        "skill-track-benefits"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "resource-management",
+      "nameEn": "Resource management",
+      "nameFr": "Gestion des ressources",
+      "descriptionEn": "Planning and optimizing people, tools, and capacity.",
+      "descriptionFr": "Planifier et optimiser personnes, outils et capacités.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "subConceptIds": [
+        "resource-availability-vs-utilization"
+      ],
+      "prerequisiteConceptIds": [
+        "integrated-planning"
+      ],
+      "relatedConceptIds": [
+        "team-leadership"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-plan-resources",
+        "skill-optimize-resources"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "procurement",
+      "nameEn": "Procurement",
+      "nameFr": "Approvisionnements",
+      "descriptionEn": "Planning, contracting, and managing vendors.",
+      "descriptionFr": "Planifier, contractualiser et gérer les fournisseurs.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T05"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "integrated-planning"
+      ],
+      "relatedConceptIds": [
+        "risk-management"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-select-contract-type",
+        "skill-manage-vendors"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "project-finance",
+      "nameEn": "Project finance / cost",
+      "nameFr": "Finances / coûts du projet",
+      "descriptionEn": "Budgeting, tracking variances, reserves, and financial governance.",
+      "descriptionFr": "Budget, écarts, réserves et gouvernance financière.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-FINANCE"
+      ],
+      "subConceptIds": [
+        "reserve-vs-budget",
+        "status-vs-forecast"
+      ],
+      "prerequisiteConceptIds": [
+        "integrated-planning"
+      ],
+      "relatedConceptIds": [
+        "project-status"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-plan-budget",
+        "skill-manage-reserves",
+        "skill-track-cost-variance"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "quality-management",
+      "nameEn": "Quality management",
+      "nameFr": "Gestion de la qualité",
+      "descriptionEn": "Requirements, prevention/appraisal/failure costs, QA vs QC.",
+      "descriptionFr": "Exigences, coûts prévention/appraisal/échec, AQ vs CQ.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "crossCutting": [
+        "KN-QUALITY"
+      ],
+      "subConceptIds": [
+        "quality-vs-inspection",
+        "prevention-vs-appraisal-cost",
+        "failure-cost-types"
+      ],
+      "prerequisiteConceptIds": [
+        "scope-management"
+      ],
+      "relatedConceptIds": [
+        "compliance"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-plan-quality",
+        "skill-distinguish-qa-qc"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "PMBOK8",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "schedule-management",
+      "nameEn": "Schedule management",
+      "nameFr": "Gestion de l'échéancier",
+      "descriptionEn": "Estimating, baselining, and controlling time.",
+      "descriptionFr": "Estimer, établir une référence et maîtriser le temps.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCHEDULE"
+      ],
+      "subConceptIds": [
+        "effort-vs-duration",
+        "activity-vs-milestone"
+      ],
+      "prerequisiteConceptIds": [
+        "integrated-planning"
+      ],
+      "relatedConceptIds": [
+        "project-status"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-build-schedule",
+        "skill-analyze-schedule-variance"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "project-status",
+      "nameEn": "Project status assessment",
+      "nameFr": "Évaluation de l'état du projet",
+      "descriptionEn": "Metrics, artifacts, progress, and status communication.",
+      "descriptionFr": "Métriques, artefacts, progrès et communication d'état.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T09"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [
+        "status-vs-forecast"
+      ],
+      "prerequisiteConceptIds": [
+        "schedule-management",
+        "project-finance"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "project-finance"
+      ],
+      "skillIds": [
+        "skill-define-metrics",
+        "skill-communicate-status"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "project-closure",
+      "nameEn": "Project closure",
+      "nameFr": "Clôture du projet",
+      "descriptionEn": "Acceptance, transition, and formal closeout.",
+      "descriptionFr": "Acceptation, transition et clôture formelle.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T10"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "project-status"
+      ],
+      "relatedConceptIds": [
+        "continuous-improvement"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-close-project",
+        "skill-transition-operations"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "governance",
+      "nameEn": "Project governance",
+      "nameFr": "Gouvernance de projet",
+      "descriptionEn": "Decision rights, escalation, success metrics, and oversight.",
+      "descriptionFr": "Droits de décision, escalade, métriques de réussite et supervision.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [
+        "governance-vs-project-management"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "compliance",
+        "change-control"
+      ],
+      "commonlyConfusedWith": [
+        "integrated-planning"
+      ],
+      "skillIds": [
+        "skill-establish-governance",
+        "skill-define-success-metrics"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "compliance",
+      "nameEn": "Compliance",
+      "nameFr": "Conformité",
+      "descriptionEn": "Regulatory, safety, sustainability, and control requirements.",
+      "descriptionFr": "Exigences réglementaires, sécurité, durabilité et contrôles.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T02"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "governance"
+      ],
+      "relatedConceptIds": [
+        "quality-management"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-assess-compliance",
+        "skill-mitigate-noncompliance"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "change-control",
+      "nameEn": "Change control",
+      "nameFr": "Maîtrise des changements",
+      "descriptionEn": "Evaluating, approving, and implementing controlled changes.",
+      "descriptionFr": "Évaluer, approuver et mettre en œuvre des changements maîtrisés.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE",
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [
+        "requested-vs-approved-change",
+        "scope-vs-change-control"
+      ],
+      "prerequisiteConceptIds": [
+        "governance",
+        "scope-management"
+      ],
+      "relatedConceptIds": [
+        "organizational-change"
+      ],
+      "commonlyConfusedWith": [
+        "scope-management"
+      ],
+      "skillIds": [
+        "skill-evaluate-change",
+        "skill-implement-approved-change"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "issue-management",
+      "nameEn": "Issues and impediments",
+      "nameFr": "Points à traiter et obstacles",
+      "descriptionEn": "Current problems blocking progress — distinct from future risks.",
+      "descriptionFr": "Problèmes actuels bloquant le progrès — distincts des risques futurs.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RISK"
+      ],
+      "subConceptIds": [
+        "conflict-vs-issue",
+        "impediment-vs-issue",
+        "risk-vs-issue"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "conflict-management",
+        "risk-management"
+      ],
+      "commonlyConfusedWith": [
+        "conflict-management",
+        "risk-management"
+      ],
+      "skillIds": [
+        "skill-prioritize-impediments",
+        "skill-resolve-issues"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "risk-management",
+      "nameEn": "Risk management",
+      "nameFr": "Gestion des risques",
+      "descriptionEn": "Uncertainty that may affect objectives — proactive response.",
+      "descriptionFr": "Incertitude pouvant affecter les objectifs — réponse proactive.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T05"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RISK"
+      ],
+      "subConceptIds": [
+        "risk-vs-issue",
+        "risk-response-vs-issue-response"
+      ],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "issue-management"
+      ],
+      "commonlyConfusedWith": [
+        "issue-management"
+      ],
+      "skillIds": [
+        "skill-identify-risks",
+        "skill-analyze-risks",
+        "skill-respond-risks"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "continuous-improvement",
+      "nameEn": "Continuous improvement",
+      "nameFr": "Amélioration continue",
+      "descriptionEn": "Lessons learned and updating organizational assets.",
+      "descriptionFr": "Retours d'expérience et mise à jour des actifs organisationnels.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "knowledge-transfer",
+        "project-closure"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-capture-lessons",
+        "skill-update-process-assets"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "organizational-change",
+      "nameEn": "Organizational change support",
+      "nameFr": "Soutien au changement organisationnel",
+      "descriptionEn": "Helping the organization adopt outcomes of the project.",
+      "descriptionFr": "Aider l'organisation à adopter les résultats du projet.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-engagement"
+      ],
+      "relatedConceptIds": [
+        "change-control"
+      ],
+      "commonlyConfusedWith": [
+        "change-control"
+      ],
+      "skillIds": [
+        "skill-assess-culture",
+        "skill-support-adoption"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "external-environment",
+      "nameEn": "External business environment",
+      "nameFr": "Environnement commercial externe",
+      "descriptionEn": "Market, regulatory, and macro changes affecting scope/backlog.",
+      "descriptionFr": "Changements marché/réglementation/macros affectant périmètre/backlog.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "value-delivery",
+        "governance"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-scan-external-environment",
+        "skill-reprioritize-backlog"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "conflict-vs-issue",
+      "nameEn": "Conflict vs issue",
+      "nameFr": "Conflit vs point à traiter",
+      "descriptionEn": "Interpersonal disagreement vs logged problem requiring action.",
+      "descriptionFr": "Désaccord interpersonnel vs problème consigné nécessitant action.",
+      "ecoDomains": [
+        "PEOPLE",
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02",
+        "BUSINESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS",
+        "PD-RISK"
+      ],
+      "parentConceptId": "issue-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "conflict-management",
+        "issue-management"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "conflict-management"
+      ],
+      "skillIds": [
+        "skill-distinguish-conflict-issue"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "risk-vs-issue",
+      "nameEn": "Risk vs issue",
+      "nameFr": "Risque vs point à traiter",
+      "descriptionEn": "Future uncertainty vs present problem.",
+      "descriptionFr": "Incertitude future vs problème présent.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04",
+        "BUSINESS-T05"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RISK"
+      ],
+      "parentConceptId": "risk-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "risk-management",
+        "issue-management"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "issue-management"
+      ],
+      "skillIds": [
+        "skill-distinguish-risk-issue"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "root-cause-vs-symptom",
+      "nameEn": "Root cause vs symptom",
+      "nameFr": "Cause profonde vs symptôme",
+      "descriptionEn": "Fix the underlying cause, not only visible effects.",
+      "descriptionFr": "Corriger la cause profonde, pas seulement les effets visibles.",
+      "ecoDomains": [
+        "PEOPLE",
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02",
+        "BUSINESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "conflict-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-distinguish-root-cause-symptom"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "predictive-vs-adaptive",
+      "nameEn": "Predictive vs adaptive",
+      "nameFr": "Prédictif vs adaptatif",
+      "descriptionEn": "Approach choice depends on uncertainty and stability — not ideology.",
+      "descriptionFr": "Le choix dépend de l'incertitude et de la stabilité — pas d'idéologie.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "integrated-planning",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "adaptive-vs-hybrid"
+      ],
+      "commonlyConfusedWith": [
+        "adaptive-vs-hybrid"
+      ],
+      "skillIds": [
+        "skill-recommend-delivery-approach"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "adaptive-vs-hybrid",
+      "nameEn": "Adaptive vs hybrid",
+      "nameFr": "Adaptatif vs hybride",
+      "descriptionEn": "Hybrid combines elements by context — not a single fixed recipe.",
+      "descriptionFr": "L'hybride combine des éléments selon le contexte.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "integrated-planning",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "predictive-vs-adaptive"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "predictive-vs-adaptive"
+      ],
+      "skillIds": [
+        "skill-recommend-delivery-approach"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "tailoring",
+      "nameEn": "Tailoring",
+      "nameFr": "Adaptation (tailoring)",
+      "descriptionEn": "Right-size processes and artifacts for context.",
+      "descriptionFr": "Adapter processus et artefacts au contexte.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "integrated-planning",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-tailor-approach"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "requirements-management",
+      "nameEn": "Requirements vs expectations",
+      "nameFr": "Exigences vs attentes",
+      "descriptionEn": "Documented need vs stakeholder belief about outcomes.",
+      "descriptionFr": "Besoin documenté vs croyance sur les résultats.",
+      "ecoDomains": [
+        "PEOPLE",
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T05",
+        "PROCESS-T02"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE",
+        "PD-STAKEHOLDERS"
+      ],
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "expectation-alignment"
+      ],
+      "relatedConceptIds": [
+        "scope-management"
+      ],
+      "commonlyConfusedWith": [
+        "expectation-alignment"
+      ],
+      "skillIds": [
+        "skill-distinguish-requirement-expectation"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "stakeholder-trust",
+      "nameEn": "Stakeholder trust",
+      "nameFr": "Confiance des parties prenantes",
+      "descriptionEn": "Trust enables influence and alignment.",
+      "descriptionFr": "La confiance permet influence et alignement.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholder-engagement",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-build-trust"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "stakeholder-influence",
+      "nameEn": "Stakeholder influence",
+      "nameFr": "Influence des parties prenantes",
+      "descriptionEn": "Using appropriate influence strategies ethically.",
+      "descriptionFr": "Utiliser des stratégies d'influence appropriées et éthiques.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "stakeholder-engagement",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "stakeholder-analysis"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-influence-stakeholders"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "leadership-vs-authority",
+      "nameEn": "Leadership vs authority",
+      "nameFr": "Leadership vs autorité",
+      "descriptionEn": "Influence without positional power vs formal decision rights.",
+      "descriptionFr": "Influence sans pouvoir formel vs droits de décision.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "parentConceptId": "team-leadership",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "governance"
+      ],
+      "commonlyConfusedWith": [
+        "governance"
+      ],
+      "skillIds": [
+        "skill-select-leadership-style"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "coaching-vs-directing",
+      "nameEn": "Coaching vs directing",
+      "nameFr": "Coaching vs direction",
+      "descriptionEn": "Developing capability vs giving instructions.",
+      "descriptionFr": "Développer les capacités vs donner des instructions.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "parentConceptId": "team-leadership",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-coach-team"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "empowerment-vs-delegation",
+      "nameEn": "Empowerment vs delegation",
+      "nameFr": "Autonomisation vs délégation",
+      "descriptionEn": "Shared ownership vs assigning tasks with accountability.",
+      "descriptionFr": "Propriété partagée vs assignation de tâches avec responsabilité.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "parentConceptId": "team-leadership",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-empower-team"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "quality-vs-inspection",
+      "nameEn": "Quality management vs inspection",
+      "nameFr": "Gestion qualité vs inspection",
+      "descriptionEn": "Building quality in vs detecting defects after the fact.",
+      "descriptionFr": "Construire la qualité vs détecter les défauts après coup.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "crossCutting": [
+        "KN-QUALITY"
+      ],
+      "parentConceptId": "quality-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "quality-management"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-distinguish-qa-qc"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "prevention-vs-appraisal-cost",
+      "nameEn": "Prevention vs appraisal cost",
+      "nameFr": "Coût prévention vs appraisal",
+      "descriptionEn": "Cost of preventing defects vs cost of measuring quality.",
+      "descriptionFr": "Coût de prévention vs coût de mesure de la qualité.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-FINANCE"
+      ],
+      "crossCutting": [
+        "KN-QUALITY"
+      ],
+      "parentConceptId": "quality-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "failure-cost-types"
+      ],
+      "skillIds": [
+        "skill-explain-cost-of-quality"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "failure-cost-types",
+      "nameEn": "Failure cost types",
+      "nameFr": "Types de coûts d'échec",
+      "descriptionEn": "Internal vs external failure — distinct from prevention/appraisal.",
+      "descriptionFr": "Échec interne vs externe — distinct de prévention/appraisal.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-FINANCE"
+      ],
+      "crossCutting": [
+        "KN-QUALITY"
+      ],
+      "parentConceptId": "quality-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "prevention-vs-appraisal-cost"
+      ],
+      "skillIds": [
+        "skill-explain-cost-of-quality"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "scope-vs-change-control",
+      "nameEn": "Scope vs change control",
+      "nameFr": "Périmètre vs maîtrise des changements",
+      "descriptionEn": "Defining scope vs governing how changes enter the baseline.",
+      "descriptionFr": "Définir le périmètre vs gouverner l'entrée des changements.",
+      "ecoDomains": [
+        "PROCESS",
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T02",
+        "BUSINESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "parentConceptId": "change-control",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "scope-management",
+        "change-control"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "change-control"
+      ],
+      "skillIds": [
+        "skill-evaluate-change"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "requested-vs-approved-change",
+      "nameEn": "Requested vs approved change",
+      "nameFr": "Changement demandé vs approuvé",
+      "descriptionEn": "A request is not authorization to implement.",
+      "descriptionFr": "Une demande n'est pas une autorisation de mise en œuvre.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "change-control",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "change-control"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-implement-approved-change"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "impediment-vs-issue",
+      "nameEn": "Impediment vs issue",
+      "nameFr": "Obstacle vs point à traiter",
+      "descriptionEn": "Blockers may be operational impediments or formal issues.",
+      "descriptionFr": "Les blocages peuvent être obstacles opérationnels ou points formels.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RISK"
+      ],
+      "parentConceptId": "issue-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "issue-management"
+      ],
+      "skillIds": [
+        "skill-prioritize-impediments"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "governance-vs-project-management",
+      "nameEn": "Governance vs project management",
+      "nameFr": "Gouvernance vs management de projet",
+      "descriptionEn": "Oversight and decision forums vs day-to-day delivery leadership.",
+      "descriptionFr": "Supervision et instances de décision vs direction opérationnelle.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T01"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "governance",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "integrated-planning"
+      ],
+      "commonlyConfusedWith": [
+        "integrated-planning"
+      ],
+      "skillIds": [
+        "skill-establish-governance"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "effort-vs-duration",
+      "nameEn": "Effort vs duration",
+      "nameFr": "Effort vs durée",
+      "descriptionEn": "Person-hours differ from calendar elapsed time.",
+      "descriptionFr": "Heures-personnes différentes du temps calendaire écoulé.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCHEDULE"
+      ],
+      "parentConceptId": "schedule-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-estimate-work"
+      ],
+      "difficulty": "BEGINNER",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "activity-vs-milestone",
+      "nameEn": "Activity vs milestone",
+      "nameFr": "Activité vs jalon",
+      "descriptionEn": "Work packages vs zero-duration checkpoints.",
+      "descriptionFr": "Lots de travail vs points de contrôle sans durée.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T08"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCHEDULE"
+      ],
+      "parentConceptId": "schedule-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-build-schedule"
+      ],
+      "difficulty": "BEGINNER",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "resource-availability-vs-utilization",
+      "nameEn": "Resource availability vs utilization",
+      "nameFr": "Disponibilité vs utilisation des ressources",
+      "descriptionEn": "Capacity on calendar vs assigned load.",
+      "descriptionFr": "Capacité calendaire vs charge assignée.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T04"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RESOURCES"
+      ],
+      "parentConceptId": "resource-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-optimize-resources"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "output-vs-outcome",
+      "nameEn": "Output vs outcome",
+      "nameFr": "Output vs outcome",
+      "descriptionEn": "Deliverable produced vs result experienced by stakeholders.",
+      "descriptionFr": "Livrable produit vs résultat vécu par les parties prenantes.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "parentConceptId": "value-delivery",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "output-vs-value"
+      ],
+      "commonlyConfusedWith": [
+        "output-vs-value"
+      ],
+      "skillIds": [
+        "skill-track-benefits"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "output-vs-value",
+      "nameEn": "Output vs value",
+      "nameFr": "Output vs valeur",
+      "descriptionEn": "Shipping features vs delivering measurable value.",
+      "descriptionFr": "Livrer des fonctionnalités vs créer de la valeur mesurable.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T03"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-SCOPE"
+      ],
+      "parentConceptId": "value-delivery",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "output-vs-outcome"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [
+        "scope-management"
+      ],
+      "skillIds": [
+        "skill-prioritize-by-value"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "status-vs-forecast",
+      "nameEn": "Status vs forecast",
+      "nameFr": "État vs prévision",
+      "descriptionEn": "What happened vs what is expected to happen.",
+      "descriptionFr": "Ce qui s'est passé vs ce qui est attendu.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T09",
+        "PROCESS-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-FINANCE",
+        "PD-GOVERNANCE"
+      ],
+      "parentConceptId": "project-status",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [
+        "reserve-vs-budget"
+      ],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-communicate-status"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "reserve-vs-budget",
+      "nameEn": "Reserve vs budget",
+      "nameFr": "Réserve vs budget",
+      "descriptionEn": "Contingency/management reserves vs baseline budget.",
+      "descriptionFr": "Réserves vs budget de référence.",
+      "ecoDomains": [
+        "PROCESS"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T06"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-FINANCE"
+      ],
+      "parentConceptId": "project-finance",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-manage-reserves"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "risk-response-vs-issue-response",
+      "nameEn": "Risk response vs issue response",
+      "nameFr": "Réponse risque vs réponse point à traiter",
+      "descriptionEn": "Proactive uncertainty handling vs reactive problem resolution.",
+      "descriptionFr": "Gestion proactive de l'incertitude vs résolution réactive.",
+      "ecoDomains": [
+        "BUSINESS"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04",
+        "BUSINESS-T05"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-RISK"
+      ],
+      "parentConceptId": "risk-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [
+        "risk-vs-issue"
+      ],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-respond-risks",
+        "skill-resolve-issues"
+      ],
+      "difficulty": "ADVANCED",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "collaboration-vs-compromise",
+      "nameEn": "Collaboration vs compromise",
+      "nameFr": "Collaboration vs compromis",
+      "descriptionEn": "Conflict modes — win-win vs split-the-difference.",
+      "descriptionFr": "Modes de conflit — gagnant-gagnant vs partage.",
+      "ecoDomains": [
+        "PEOPLE"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02"
+      ],
+      "pmbokPerformanceDomains": [
+        "PD-STAKEHOLDERS"
+      ],
+      "parentConceptId": "conflict-management",
+      "subConceptIds": [],
+      "prerequisiteConceptIds": [],
+      "relatedConceptIds": [],
+      "commonlyConfusedWith": [],
+      "skillIds": [
+        "skill-select-conflict-response"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM",
+      "status": "ACTIVE"
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-identify-stakeholder",
+      "conceptId": "stakeholder-identification",
+      "nameEn": "Identify stakeholders",
+      "nameFr": "Identifier les parties prenantes",
+      "descriptionEn": "Discover affected parties early.",
+      "descriptionFr": "Découvrir tôt les parties impactées.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "BEGINNER",
+      "cognitiveLevel": "RECOGNITION",
+      "plaSkillSlug": "stakeholder-engagement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-analyze-stakeholder",
+      "conceptId": "stakeholder-analysis",
+      "nameEn": "Analyze stakeholders",
+      "nameFr": "Analyser les parties prenantes",
+      "descriptionEn": "Assess interest, influence, and engagement needs.",
+      "descriptionFr": "Évaluer intérêt, influence et besoins.",
+      "prerequisiteSkillIds": [
+        "skill-identify-stakeholder"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "stakeholder-engagement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-engagement-strategy",
+      "conceptId": "stakeholder-engagement",
+      "nameEn": "Determine engagement strategy",
+      "nameFr": "Déterminer la stratégie d'engagement",
+      "descriptionEn": "Choose actions that improve commitment.",
+      "descriptionFr": "Choisir des actions qui améliorent l'engagement.",
+      "prerequisiteSkillIds": [
+        "skill-analyze-stakeholder"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "stakeholder-engagement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-communication-engagement",
+      "conceptId": "communication-vs-engagement",
+      "nameEn": "Distinguish communication from engagement",
+      "nameFr": "Distinguer communication et engagement",
+      "descriptionEn": "Select engagement actions vs information-only steps.",
+      "descriptionFr": "Choisir engagement vs simple information.",
+      "prerequisiteSkillIds": [
+        "skill-engagement-strategy"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "communication",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-build-trust",
+      "conceptId": "stakeholder-trust",
+      "nameEn": "Build stakeholder trust",
+      "nameFr": "Instaurer la confiance",
+      "descriptionEn": "Act transparently to enable influence.",
+      "descriptionFr": "Agir avec transparence pour influencer.",
+      "prerequisiteSkillIds": [
+        "skill-analyze-stakeholder"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "stakeholder-engagement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-influence-stakeholders",
+      "conceptId": "stakeholder-influence",
+      "nameEn": "Influence stakeholders",
+      "nameFr": "Influencer les parties prenantes",
+      "descriptionEn": "Apply ethical influence toward project goals.",
+      "descriptionFr": "Influencer éthiquement vers les objectifs.",
+      "prerequisiteSkillIds": [
+        "skill-build-trust"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "stakeholder-engagement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-align-expectations",
+      "conceptId": "expectation-alignment",
+      "nameEn": "Align expectations",
+      "nameFr": "Aligner les attentes",
+      "descriptionEn": "Facilitate shared success criteria.",
+      "descriptionFr": "Faciliter des critères de réussite partagés.",
+      "prerequisiteSkillIds": [
+        "skill-analyze-stakeholder"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-manage-expectations",
+      "conceptId": "expectation-management",
+      "nameEn": "Manage expectations",
+      "nameFr": "Piloter les attentes",
+      "descriptionEn": "Monitor and adjust vs stakeholder satisfaction.",
+      "descriptionFr": "Suivre et ajuster vs satisfaction.",
+      "prerequisiteSkillIds": [
+        "skill-align-expectations"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-communication-strategy",
+      "conceptId": "communication-planning",
+      "nameEn": "Design communication strategy",
+      "nameFr": "Concevoir la stratégie de communication",
+      "descriptionEn": "Plan channels, cadence, and feedback.",
+      "descriptionFr": "Planifier canaux, cadence et retours.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "communication",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-tailor-communication",
+      "conceptId": "communication-planning",
+      "nameEn": "Tailor communication",
+      "nameFr": "Adapter la communication",
+      "descriptionEn": "Match message to stakeholder needs.",
+      "descriptionFr": "Adapter le message aux besoins.",
+      "prerequisiteSkillIds": [
+        "skill-communication-strategy"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "communication",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-promote-shared-vision",
+      "conceptId": "shared-vision",
+      "nameEn": "Promote shared vision",
+      "nameFr": "Promouvoir la vision partagée",
+      "descriptionEn": "Keep vision current and understood.",
+      "descriptionFr": "Maintenir une vision comprise et à jour.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "leadership",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-identify-conflict-source",
+      "conceptId": "conflict-management",
+      "nameEn": "Identify conflict source",
+      "nameFr": "Identifier la source du conflit",
+      "descriptionEn": "Find underlying disagreement drivers.",
+      "descriptionFr": "Trouver les drivers du désaccord.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "conflict-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-select-conflict-response",
+      "conceptId": "conflict-management",
+      "nameEn": "Select conflict response",
+      "nameFr": "Choisir la réponse au conflit",
+      "descriptionEn": "Pick mode appropriate to context.",
+      "descriptionFr": "Choisir le mode adapté au contexte.",
+      "prerequisiteSkillIds": [
+        "skill-identify-conflict-source"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "conflict-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-facilitate-resolution",
+      "conceptId": "conflict-management",
+      "nameEn": "Facilitate resolution",
+      "nameFr": "Faciliter la résolution",
+      "descriptionEn": "Guide parties to agreed path.",
+      "descriptionFr": "Guider vers une voie convenue.",
+      "prerequisiteSkillIds": [
+        "skill-select-conflict-response"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-conflict-issue",
+      "conceptId": "conflict-vs-issue",
+      "nameEn": "Distinguish conflict from issue",
+      "nameFr": "Distinguer conflit et point à traiter",
+      "descriptionEn": "Interpersonal vs logged problem.",
+      "descriptionFr": "Interpersonnel vs problème consigné.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "pmp-situational-thinking",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-root-cause-symptom",
+      "conceptId": "root-cause-vs-symptom",
+      "nameEn": "Distinguish root cause from symptom",
+      "nameFr": "Distinguer cause profonde et symptôme",
+      "descriptionEn": "Address underlying cause first.",
+      "descriptionFr": "Traiter la cause profonde d'abord.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "pmp-situational-thinking",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-set-team-expectations",
+      "conceptId": "team-leadership",
+      "nameEn": "Set team expectations",
+      "nameFr": "Fixer les attentes d'équipe",
+      "descriptionEn": "Clarify roles and norms.",
+      "descriptionFr": "Clarifier rôles et normes.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "BEGINNER",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "team-development",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-empower-team",
+      "conceptId": "team-leadership",
+      "nameEn": "Empower the team",
+      "nameFr": "Responsabiliser l'équipe",
+      "descriptionEn": "Enable ownership within boundaries.",
+      "descriptionFr": "Permettre la propriété dans les limites.",
+      "prerequisiteSkillIds": [
+        "skill-set-team-expectations"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "leadership",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-select-leadership-style",
+      "conceptId": "team-leadership",
+      "nameEn": "Select leadership style",
+      "nameFr": "Choisir le style de leadership",
+      "descriptionEn": "Adapt style to situation.",
+      "descriptionFr": "Adapter le style à la situation.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "leadership",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-coach-team",
+      "conceptId": "coaching-vs-directing",
+      "nameEn": "Coach vs direct appropriately",
+      "nameFr": "Coacher vs diriger",
+      "descriptionEn": "Develop vs instruct as needed.",
+      "descriptionFr": "Développer vs instruire selon le besoin.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "JUDGMENT",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-enable-knowledge-transfer",
+      "conceptId": "knowledge-transfer",
+      "nameEn": "Enable knowledge transfer",
+      "nameFr": "Permettre le transfert de connaissances",
+      "descriptionEn": "Capture and share critical knowledge.",
+      "descriptionFr": "Capturer et partager les connaissances.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-recommend-delivery-approach",
+      "conceptId": "integrated-planning",
+      "nameEn": "Recommend delivery approach",
+      "nameFr": "Recommander l'approche de livraison",
+      "descriptionEn": "Tailor predictive/agile/hybrid to context.",
+      "descriptionFr": "Adapter prédictif/agile/hybride au contexte.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "pmp-hybrid",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-integrated-plan",
+      "conceptId": "integrated-planning",
+      "nameEn": "Build integrated plan",
+      "nameFr": "Construire le plan intégré",
+      "descriptionEn": "Consolidate subsidiary plans.",
+      "descriptionFr": "Consolider les plans subsidiaires.",
+      "prerequisiteSkillIds": [
+        "skill-recommend-delivery-approach"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "pmp-process",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-tailor-approach",
+      "conceptId": "tailoring",
+      "nameEn": "Tailor processes",
+      "nameFr": "Adapter les processus",
+      "descriptionEn": "Right-size governance and artifacts.",
+      "descriptionFr": "Dimensionner gouvernance et artefacts.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "JUDGMENT",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-define-scope",
+      "conceptId": "scope-management",
+      "nameEn": "Define scope",
+      "nameFr": "Définir le périmètre",
+      "descriptionEn": "Establish boundaries and deliverables.",
+      "descriptionFr": "Établir limites et livrables.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-decompose-scope",
+      "conceptId": "scope-management",
+      "nameEn": "Decompose scope",
+      "nameFr": "Décomposer le périmètre",
+      "descriptionEn": "Break down into manageable components.",
+      "descriptionFr": "Décomposer en composants gérables.",
+      "prerequisiteSkillIds": [
+        "skill-define-scope"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-prioritize-by-value",
+      "conceptId": "value-delivery",
+      "nameEn": "Prioritize by value",
+      "nameFr": "Prioriser par la valeur",
+      "descriptionEn": "Order work by stakeholder value.",
+      "descriptionFr": "Ordonner le travail par valeur.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "business-value",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-track-benefits",
+      "conceptId": "value-delivery",
+      "nameEn": "Track benefits",
+      "nameFr": "Suivre les bénéfices",
+      "descriptionEn": "Measure value realization.",
+      "descriptionFr": "Mesurer la réalisation de valeur.",
+      "prerequisiteSkillIds": [
+        "skill-prioritize-by-value"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "business-value",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-plan-resources",
+      "conceptId": "resource-management",
+      "nameEn": "Plan resources",
+      "nameFr": "Planifier les ressources",
+      "descriptionEn": "Match capacity to work.",
+      "descriptionFr": "Aligner capacité et travail.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-optimize-resources",
+      "conceptId": "resource-management",
+      "nameEn": "Optimize resources",
+      "nameFr": "Optimiser les ressources",
+      "descriptionEn": "Balance availability and utilization.",
+      "descriptionFr": "Équilibrer disponibilité et utilisation.",
+      "prerequisiteSkillIds": [
+        "skill-plan-resources"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-select-contract-type",
+      "conceptId": "procurement",
+      "nameEn": "Select contract type",
+      "nameFr": "Choisir le type de contrat",
+      "descriptionEn": "Match contract to risk allocation.",
+      "descriptionFr": "Adapter le contrat au partage des risques.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "procurement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-manage-vendors",
+      "conceptId": "procurement",
+      "nameEn": "Manage vendors",
+      "nameFr": "Gérer les fournisseurs",
+      "descriptionEn": "Monitor vendor performance.",
+      "descriptionFr": "Suivre la performance fournisseur.",
+      "prerequisiteSkillIds": [
+        "skill-select-contract-type"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "procurement",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-plan-budget",
+      "conceptId": "project-finance",
+      "nameEn": "Plan project budget",
+      "nameFr": "Planifier le budget",
+      "descriptionEn": "Estimate and baseline costs.",
+      "descriptionFr": "Estimer et référencer les coûts.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "cost",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-manage-reserves",
+      "conceptId": "project-finance",
+      "nameEn": "Manage reserves",
+      "nameFr": "Gérer les réserves",
+      "descriptionEn": "Use contingency appropriately.",
+      "descriptionFr": "Utiliser les réserves correctement.",
+      "prerequisiteSkillIds": [
+        "skill-plan-budget"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "cost",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-track-cost-variance",
+      "conceptId": "project-finance",
+      "nameEn": "Track cost variance",
+      "nameFr": "Suivre les écarts de coût",
+      "descriptionEn": "Compare actuals to baseline.",
+      "descriptionFr": "Comparer réel vs référence.",
+      "prerequisiteSkillIds": [
+        "skill-plan-budget"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "cost",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-plan-quality",
+      "conceptId": "quality-management",
+      "nameEn": "Plan quality",
+      "nameFr": "Planifier la qualité",
+      "descriptionEn": "Define quality requirements and processes.",
+      "descriptionFr": "Définir exigences et processus qualité.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "quality",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-qa-qc",
+      "conceptId": "quality-vs-inspection",
+      "nameEn": "Distinguish QA from QC",
+      "nameFr": "Distinguer AQ et CQ",
+      "descriptionEn": "Prevention vs inspection focus.",
+      "descriptionFr": "Prévention vs inspection.",
+      "prerequisiteSkillIds": [
+        "skill-plan-quality"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "UNDERSTANDING",
+      "plaSkillSlug": "quality",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-explain-cost-of-quality",
+      "conceptId": "quality-management",
+      "nameEn": "Explain cost of quality",
+      "nameFr": "Expliquer le coût de la qualité",
+      "descriptionEn": "Classify prevention/appraisal/failure costs.",
+      "descriptionFr": "Classer coûts prévention/appraisal/échec.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "UNDERSTANDING",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-build-schedule",
+      "conceptId": "schedule-management",
+      "nameEn": "Build schedule",
+      "nameFr": "Construire l'échéancier",
+      "descriptionEn": "Sequence activities and milestones.",
+      "descriptionFr": "Séquencer activités et jalons.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "schedule",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-estimate-work",
+      "conceptId": "effort-vs-duration",
+      "nameEn": "Estimate effort and duration",
+      "nameFr": "Estimer effort et durée",
+      "descriptionEn": "Separate person-effort from calendar time.",
+      "descriptionFr": "Séparer effort-personnes et temps calendaire.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "BEGINNER",
+      "cognitiveLevel": "UNDERSTANDING",
+      "plaSkillSlug": "schedule",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-analyze-schedule-variance",
+      "conceptId": "schedule-management",
+      "nameEn": "Analyze schedule variance",
+      "nameFr": "Analyser les écarts d'échéancier",
+      "descriptionEn": "Interpret slip and dependencies.",
+      "descriptionFr": "Interpréter retards et dépendances.",
+      "prerequisiteSkillIds": [
+        "skill-build-schedule"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "schedule",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-define-metrics",
+      "conceptId": "project-status",
+      "nameEn": "Define project metrics",
+      "nameFr": "Définir les métriques projet",
+      "descriptionEn": "Select meaningful KPIs.",
+      "descriptionFr": "Sélectionner des KPI pertinents.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-communicate-status",
+      "conceptId": "project-status",
+      "nameEn": "Communicate status",
+      "nameFr": "Communiquer l'état",
+      "descriptionEn": "Report progress vs forecast clearly.",
+      "descriptionFr": "Rapporter progrès vs prévision.",
+      "prerequisiteSkillIds": [
+        "skill-define-metrics"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-close-project",
+      "conceptId": "project-closure",
+      "nameEn": "Close project",
+      "nameFr": "Clore le projet",
+      "descriptionEn": "Obtain acceptance and close contracts.",
+      "descriptionFr": "Obtenir acceptation et clore contrats.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-transition-operations",
+      "conceptId": "project-closure",
+      "nameEn": "Transition to operations",
+      "nameFr": "Transition vers opérations",
+      "descriptionEn": "Validate readiness for handover.",
+      "descriptionFr": "Valider la préparation au transfert.",
+      "prerequisiteSkillIds": [
+        "skill-close-project"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-establish-governance",
+      "conceptId": "governance",
+      "nameEn": "Establish governance",
+      "nameFr": "Établir la gouvernance",
+      "descriptionEn": "Define decision rights and escalation.",
+      "descriptionFr": "Définir droits de décision et escalade.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "governance",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-define-success-metrics",
+      "conceptId": "governance",
+      "nameEn": "Define success metrics",
+      "nameFr": "Définir les métriques de réussite",
+      "descriptionEn": "Align metrics to value.",
+      "descriptionFr": "Aligner métriques et valeur.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "governance",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-assess-compliance",
+      "conceptId": "compliance",
+      "nameEn": "Assess compliance",
+      "nameFr": "Évaluer la conformité",
+      "descriptionEn": "Identify regulatory requirements.",
+      "descriptionFr": "Identifier exigences réglementaires.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-mitigate-noncompliance",
+      "conceptId": "compliance",
+      "nameEn": "Mitigate noncompliance",
+      "nameFr": "Atténuer la non-conformité",
+      "descriptionEn": "Respond to compliance threats.",
+      "descriptionFr": "Répondre aux menaces de conformité.",
+      "prerequisiteSkillIds": [
+        "skill-assess-compliance"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-evaluate-change",
+      "conceptId": "change-control",
+      "nameEn": "Evaluate change requests",
+      "nameFr": "Évaluer les demandes de changement",
+      "descriptionEn": "Analyze impact before approval.",
+      "descriptionFr": "Analyser l'impact avant approbation.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "change-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-implement-approved-change",
+      "conceptId": "change-control",
+      "nameEn": "Implement approved changes",
+      "nameFr": "Mettre en œuvre les changements approuvés",
+      "descriptionEn": "Update docs after approval only.",
+      "descriptionFr": "Mettre à jour docs après approbation seulement.",
+      "prerequisiteSkillIds": [
+        "skill-evaluate-change"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "plaSkillSlug": "change-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-prioritize-impediments",
+      "conceptId": "issue-management",
+      "nameEn": "Prioritize impediments",
+      "nameFr": "Prioriser les obstacles",
+      "descriptionEn": "Focus on highest impact blockers.",
+      "descriptionFr": "Cibler les blocages à fort impact.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "pmp-situational-thinking",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-resolve-issues",
+      "conceptId": "issue-management",
+      "nameEn": "Resolve issues",
+      "nameFr": "Résoudre les points à traiter",
+      "descriptionEn": "Take corrective action on logged issues.",
+      "descriptionFr": "Agir sur les points consignés.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-identify-risks",
+      "conceptId": "risk-management",
+      "nameEn": "Identify risks",
+      "nameFr": "Identifier les risques",
+      "descriptionEn": "Surface future uncertainties.",
+      "descriptionFr": "Faire émerger les incertitudes futures.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "RECOGNITION",
+      "plaSkillSlug": "risk-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-analyze-risks",
+      "conceptId": "risk-management",
+      "nameEn": "Analyze risks",
+      "nameFr": "Analyser les risques",
+      "descriptionEn": "Assess probability and impact.",
+      "descriptionFr": "Évaluer probabilité et impact.",
+      "prerequisiteSkillIds": [
+        "skill-identify-risks"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "ANALYSIS",
+      "plaSkillSlug": "risk-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-respond-risks",
+      "conceptId": "risk-management",
+      "nameEn": "Respond to risks",
+      "nameFr": "Répondre aux risques",
+      "descriptionEn": "Select and execute risk responses.",
+      "descriptionFr": "Choisir et exécuter les réponses.",
+      "prerequisiteSkillIds": [
+        "skill-analyze-risks"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "risk-management",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-risk-issue",
+      "conceptId": "risk-vs-issue",
+      "nameEn": "Distinguish risk from issue",
+      "nameFr": "Distinguer risque et point à traiter",
+      "descriptionEn": "Future uncertainty vs present problem.",
+      "descriptionFr": "Incertitude future vs problème présent.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "pmp-situational-thinking",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-capture-lessons",
+      "conceptId": "continuous-improvement",
+      "nameEn": "Capture lessons learned",
+      "nameFr": "Capturer les leçons apprises",
+      "descriptionEn": "Document insights for reuse.",
+      "descriptionFr": "Documenter pour réutilisation.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-update-process-assets",
+      "conceptId": "continuous-improvement",
+      "nameEn": "Update process assets",
+      "nameFr": "Mettre à jour les actifs de processus",
+      "descriptionEn": "Improve organizational knowledge.",
+      "descriptionFr": "Améliorer les connaissances organisationnelles.",
+      "prerequisiteSkillIds": [
+        "skill-capture-lessons"
+      ],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-assess-culture",
+      "conceptId": "organizational-change",
+      "nameEn": "Assess organizational culture",
+      "nameFr": "Évaluer la culture organisationnelle",
+      "descriptionEn": "Understand adoption context.",
+      "descriptionFr": "Comprendre le contexte d'adoption.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-support-adoption",
+      "conceptId": "organizational-change",
+      "nameEn": "Support adoption",
+      "nameFr": "Soutenir l'adoption",
+      "descriptionEn": "Enable org change for outcomes.",
+      "descriptionFr": "Permettre le changement org pour les résultats.",
+      "prerequisiteSkillIds": [
+        "skill-assess-culture"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "APPLICATION",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-scan-external-environment",
+      "conceptId": "external-environment",
+      "nameEn": "Scan external environment",
+      "nameFr": "Analyser l'environnement externe",
+      "descriptionEn": "Monitor market/regulatory shifts.",
+      "descriptionFr": "Surveiller marché/réglementation.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "ANALYSIS",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-reprioritize-backlog",
+      "conceptId": "external-environment",
+      "nameEn": "Reprioritize backlog",
+      "nameFr": "Reprioriser le backlog",
+      "descriptionEn": "Adjust scope for external change.",
+      "descriptionFr": "Ajuster périmètre selon changements externes.",
+      "prerequisiteSkillIds": [
+        "skill-scan-external-environment"
+      ],
+      "difficulty": "ADVANCED",
+      "cognitiveLevel": "JUDGMENT",
+      "plaSkillSlug": "business-value",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    },
+    {
+      "id": "skill-distinguish-requirement-expectation",
+      "conceptId": "requirements-management",
+      "nameEn": "Distinguish requirement from expectation",
+      "nameFr": "Distinguer exigence et attente",
+      "descriptionEn": "Documented need vs belief.",
+      "descriptionFr": "Besoin documenté vs croyance.",
+      "prerequisiteSkillIds": [],
+      "difficulty": "INTERMEDIATE",
+      "cognitiveLevel": "UNDERSTANDING",
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "MEDIUM"
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "mc-communication-engagement",
+      "nameEn": "Communication equals engagement",
+      "nameFr": "Communication = engagement",
+      "explanationEn": "Sending updates is not the same as improving stakeholder commitment.",
+      "explanationFr": "Envoyer des mises à jour n'améliore pas automatiquement l'engagement.",
+      "confusionType": "terminology",
+      "conceptAId": "communication-planning",
+      "conceptBId": "stakeholder-engagement",
+      "affectedSkillIds": [
+        "skill-distinguish-communication-engagement"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T04",
+        "PEOPLE-T08"
+      ],
+      "errorKinds": [
+        "misconception",
+        "stakeholder-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-expectation-requirement",
+      "nameEn": "Expectation equals requirement",
+      "nameFr": "Attente = exigence",
+      "explanationEn": "Stakeholder beliefs may differ from documented requirements.",
+      "explanationFr": "Les attentes peuvent différer des exigences documentées.",
+      "confusionType": "terminology",
+      "conceptAId": "expectation-alignment",
+      "conceptBId": "requirements-management",
+      "affectedSkillIds": [
+        "skill-distinguish-requirement-expectation"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T05",
+        "PROCESS-T02"
+      ],
+      "errorKinds": [
+        "conceptual-gap",
+        "stakeholder-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-conflict-issue",
+      "nameEn": "Conflict equals issue",
+      "nameFr": "Conflit = point à traiter",
+      "explanationEn": "Interpersonal tension differs from a logged issue requiring resolution.",
+      "explanationFr": "Tension interpersonnelle ≠ point consigné à résoudre.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "conflict-management",
+      "conceptBId": "issue-management",
+      "affectedSkillIds": [
+        "skill-distinguish-conflict-issue"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02",
+        "BUSINESS-T04"
+      ],
+      "errorKinds": [
+        "misconception",
+        "stakeholder-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-risk-issue",
+      "nameEn": "Risk equals issue",
+      "nameFr": "Risque = point à traiter",
+      "explanationEn": "Future uncertainty is not the same as a problem that already occurred.",
+      "explanationFr": "Incertitude future ≠ problème déjà survenu.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "risk-management",
+      "conceptBId": "issue-management",
+      "affectedSkillIds": [
+        "skill-distinguish-risk-issue"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04",
+        "BUSINESS-T05"
+      ],
+      "errorKinds": [
+        "risk-confusion",
+        "misconception"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-impediment-issue",
+      "nameEn": "Impediment equals issue",
+      "nameFr": "Obstacle = point à traiter",
+      "explanationEn": "Operational blockers may or may not become formal issues.",
+      "explanationFr": "Blocage opérationnel ≠ toujours un point formel.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "issue-management",
+      "conceptBId": "impediment-vs-issue",
+      "affectedSkillIds": [
+        "skill-prioritize-impediments"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04"
+      ],
+      "errorKinds": [
+        "application-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-governance-pm",
+      "nameEn": "Governance equals project management",
+      "nameFr": "Gouvernance = management de projet",
+      "explanationEn": "Oversight forums differ from day-to-day delivery leadership.",
+      "explanationFr": "Supervision ≠ direction opérationnelle quotidienne.",
+      "confusionType": "role-vs-activity",
+      "conceptAId": "governance",
+      "conceptBId": "integrated-planning",
+      "affectedSkillIds": [
+        "skill-establish-governance"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T01",
+        "PROCESS-T01"
+      ],
+      "errorKinds": [
+        "conceptual-gap"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-leadership-authority",
+      "nameEn": "Leadership equals authority",
+      "nameFr": "Leadership = autorité",
+      "explanationEn": "Influence without positional power is still leadership.",
+      "explanationFr": "Influencer sans pouvoir formel reste du leadership.",
+      "confusionType": "role-vs-activity",
+      "conceptAId": "team-leadership",
+      "conceptBId": "leadership-vs-authority",
+      "affectedSkillIds": [
+        "skill-select-leadership-style"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "errorKinds": [
+        "misconception"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-coaching-directing",
+      "nameEn": "Coaching equals directing",
+      "nameFr": "Coaching = direction",
+      "explanationEn": "Developing capability differs from giving orders.",
+      "explanationFr": "Développer ≠ donner des ordres.",
+      "confusionType": "role-vs-activity",
+      "conceptAId": "coaching-vs-directing",
+      "conceptBId": "team-leadership",
+      "affectedSkillIds": [
+        "skill-coach-team"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "errorKinds": [
+        "application-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-empowerment-delegation",
+      "nameEn": "Empowerment equals delegation",
+      "nameFr": "Autonomisation = délégation",
+      "explanationEn": "Shared ownership differs from task assignment.",
+      "explanationFr": "Propriété partagée ≠ simple délégation.",
+      "confusionType": "terminology",
+      "conceptAId": "empowerment-vs-delegation",
+      "conceptBId": "team-leadership",
+      "affectedSkillIds": [
+        "skill-empower-team"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T03"
+      ],
+      "errorKinds": [
+        "misconception"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-quality-inspection",
+      "nameEn": "Quality management equals inspection",
+      "nameFr": "Gestion qualité = inspection",
+      "explanationEn": "Building quality in differs from detecting defects after delivery.",
+      "explanationFr": "Construire la qualité ≠ inspecter après coup.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "quality-management",
+      "conceptBId": "quality-vs-inspection",
+      "affectedSkillIds": [
+        "skill-distinguish-qa-qc"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "errorKinds": [
+        "misconception"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-prevention-appraisal",
+      "nameEn": "Prevention cost equals appraisal cost",
+      "nameFr": "Coût prévention = coût appraisal",
+      "explanationEn": "Preventing defects vs measuring quality are different cost categories.",
+      "explanationFr": "Prévenir ≠ mesurer — catégories de coût différentes.",
+      "confusionType": "terminology",
+      "conceptAId": "prevention-vs-appraisal-cost",
+      "conceptBId": "quality-management",
+      "affectedSkillIds": [
+        "skill-explain-cost-of-quality"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "errorKinds": [
+        "knowledge-recall"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-failure-prevention",
+      "nameEn": "Failure cost equals prevention/appraisal",
+      "nameFr": "Coût d'échec = prévention/appraisal",
+      "explanationEn": "Internal/external failure costs differ from prevention and appraisal.",
+      "explanationFr": "Coûts d'échec ≠ prévention/appraisal.",
+      "confusionType": "terminology",
+      "conceptAId": "failure-cost-types",
+      "conceptBId": "prevention-vs-appraisal-cost",
+      "affectedSkillIds": [
+        "skill-explain-cost-of-quality"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T07"
+      ],
+      "errorKinds": [
+        "knowledge-recall"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-scope-change",
+      "nameEn": "Scope change equals change control",
+      "nameFr": "Changement de périmètre = maîtrise des changements",
+      "explanationEn": "Defining scope differs from governing how changes enter the baseline.",
+      "explanationFr": "Définir le périmètre ≠ gouverner les changements.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "scope-management",
+      "conceptBId": "change-control",
+      "affectedSkillIds": [
+        "skill-evaluate-change"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T02",
+        "BUSINESS-T03"
+      ],
+      "errorKinds": [
+        "scope-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-requested-approved",
+      "nameEn": "Requested change equals approved change",
+      "nameFr": "Changement demandé = approuvé",
+      "explanationEn": "A request is not authorization to implement.",
+      "explanationFr": "Demande ≠ autorisation de mise en œuvre.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "requested-vs-approved-change",
+      "conceptBId": "change-control",
+      "affectedSkillIds": [
+        "skill-implement-approved-change"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T03"
+      ],
+      "errorKinds": [
+        "application-error",
+        "scope-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-predictive-adaptive",
+      "nameEn": "Predictive equals adaptive",
+      "nameFr": "Prédictif = adaptatif",
+      "explanationEn": "Approach choice depends on context — not interchangeable labels.",
+      "explanationFr": "Le choix dépend du contexte — pas interchangeable.",
+      "confusionType": "terminology",
+      "conceptAId": "predictive-vs-adaptive",
+      "conceptBId": "adaptive-vs-hybrid",
+      "affectedSkillIds": [
+        "skill-recommend-delivery-approach"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "errorKinds": [
+        "strategy-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-adaptive-hybrid",
+      "nameEn": "Adaptive equals hybrid",
+      "nameFr": "Adaptatif = hybride",
+      "explanationEn": "Hybrid combines elements by context — not synonymous with agile.",
+      "explanationFr": "Hybride combine selon contexte — ≠ agile seul.",
+      "confusionType": "terminology",
+      "conceptAId": "adaptive-vs-hybrid",
+      "conceptBId": "predictive-vs-adaptive",
+      "affectedSkillIds": [
+        "skill-recommend-delivery-approach"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T01"
+      ],
+      "errorKinds": [
+        "strategy-error",
+        "application-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-effort-duration",
+      "nameEn": "Effort equals duration",
+      "nameFr": "Effort = durée",
+      "explanationEn": "Person-hours differ from calendar elapsed time.",
+      "explanationFr": "Heures-personnes ≠ temps calendaire.",
+      "confusionType": "terminology",
+      "conceptAId": "effort-vs-duration",
+      "conceptBId": "schedule-management",
+      "affectedSkillIds": [
+        "skill-estimate-work"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T08"
+      ],
+      "errorKinds": [
+        "knowledge-recall"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-activity-milestone",
+      "nameEn": "Activity equals milestone",
+      "nameFr": "Activité = jalon",
+      "explanationEn": "Work packages have duration; milestones are checkpoints.",
+      "explanationFr": "Activités ont durée; jalons sont des points de contrôle.",
+      "confusionType": "terminology",
+      "conceptAId": "activity-vs-milestone",
+      "conceptBId": "schedule-management",
+      "affectedSkillIds": [
+        "skill-build-schedule"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T08"
+      ],
+      "errorKinds": [
+        "knowledge-recall"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-availability-utilization",
+      "nameEn": "Availability equals utilization",
+      "nameFr": "Disponibilité = utilisation",
+      "explanationEn": "Calendar capacity differs from assigned load.",
+      "explanationFr": "Capacité calendaire ≠ charge assignée.",
+      "confusionType": "terminology",
+      "conceptAId": "resource-availability-vs-utilization",
+      "conceptBId": "resource-management",
+      "affectedSkillIds": [
+        "skill-optimize-resources"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T04"
+      ],
+      "errorKinds": [
+        "application-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-output-outcome",
+      "nameEn": "Output equals outcome",
+      "nameFr": "Output = outcome",
+      "explanationEn": "Deliverable produced vs result experienced differ.",
+      "explanationFr": "Livrable produit ≠ résultat vécu.",
+      "confusionType": "output-vs-outcome",
+      "conceptAId": "output-vs-outcome",
+      "conceptBId": "value-delivery",
+      "affectedSkillIds": [
+        "skill-track-benefits"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T03"
+      ],
+      "errorKinds": [
+        "conceptual-gap"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-output-value",
+      "nameEn": "Output equals value",
+      "nameFr": "Output = valeur",
+      "explanationEn": "Shipping features does not guarantee stakeholder value.",
+      "explanationFr": "Livrer ≠ créer de la valeur.",
+      "confusionType": "output-vs-outcome",
+      "conceptAId": "output-vs-value",
+      "conceptBId": "value-delivery",
+      "affectedSkillIds": [
+        "skill-prioritize-by-value"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T03"
+      ],
+      "errorKinds": [
+        "conceptual-gap",
+        "strategy-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-status-forecast",
+      "nameEn": "Status equals forecast",
+      "nameFr": "État = prévision",
+      "explanationEn": "Past performance reporting differs from future projection.",
+      "explanationFr": "Rapport passé ≠ projection future.",
+      "confusionType": "process-vs-event",
+      "conceptAId": "status-vs-forecast",
+      "conceptBId": "project-status",
+      "affectedSkillIds": [
+        "skill-communicate-status"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T09",
+        "PROCESS-T06"
+      ],
+      "errorKinds": [
+        "application-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-reserve-budget",
+      "nameEn": "Reserve equals budget",
+      "nameFr": "Réserve = budget",
+      "explanationEn": "Contingency/management reserves are not the same as baseline budget.",
+      "explanationFr": "Réserves ≠ budget de référence.",
+      "confusionType": "terminology",
+      "conceptAId": "reserve-vs-budget",
+      "conceptBId": "project-finance",
+      "affectedSkillIds": [
+        "skill-manage-reserves"
+      ],
+      "ecoTaskIds": [
+        "PROCESS-T06"
+      ],
+      "errorKinds": [
+        "knowledge-recall"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-risk-response-issue",
+      "nameEn": "Risk response equals issue response",
+      "nameFr": "Réponse risque = réponse point à traiter",
+      "explanationEn": "Proactive uncertainty handling differs from reactive problem fixing.",
+      "explanationFr": "Proactif (risque) ≠ réactif (point à traiter).",
+      "confusionType": "process-vs-event",
+      "conceptAId": "risk-response-vs-issue-response",
+      "conceptBId": "risk-vs-issue",
+      "affectedSkillIds": [
+        "skill-respond-risks",
+        "skill-resolve-issues"
+      ],
+      "ecoTaskIds": [
+        "BUSINESS-T04",
+        "BUSINESS-T05"
+      ],
+      "errorKinds": [
+        "risk-confusion"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-collaboration-compromise",
+      "nameEn": "Collaboration equals compromise",
+      "nameFr": "Collaboration = compromis",
+      "explanationEn": "Win-win collaboration differs from split-the-difference compromise.",
+      "explanationFr": "Collaboration gagnant-gagnant ≠ compromis partagé.",
+      "confusionType": "terminology",
+      "conceptAId": "collaboration-vs-compromise",
+      "conceptBId": "conflict-management",
+      "affectedSkillIds": [
+        "skill-select-conflict-response"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02"
+      ],
+      "errorKinds": [
+        "misconception"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    },
+    {
+      "id": "mc-root-cause-symptom",
+      "nameEn": "Symptom treated as root cause",
+      "nameFr": "Symptôme traité comme cause profonde",
+      "explanationEn": "Fixing visible effects may leave underlying cause intact.",
+      "explanationFr": "Corriger le symptôme peut laisser la cause intacte.",
+      "confusionType": "symptom-vs-cause",
+      "conceptAId": "root-cause-vs-symptom",
+      "conceptBId": "conflict-management",
+      "affectedSkillIds": [
+        "skill-distinguish-root-cause-symptom"
+      ],
+      "ecoTaskIds": [
+        "PEOPLE-T02",
+        "BUSINESS-T04"
+      ],
+      "errorKinds": [
+        "application-error",
+        "strategy-error"
+      ],
+      "sourceType": "DERIVED_PEDAGOGICAL",
+      "sourceConfidence": "HIGH"
+    }
+  ],
+  "counts": {
+    "ecoTasks": 26,
+    "pmbokDomains": 7,
+    "concepts": 58,
+    "skills": 64,
+    "misconceptions": 26
+  }
+}
