@@ -45,10 +45,10 @@
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | *(pending run)* |
-| `npm run test` | *(pending run)* |
-| `npm run build` | *(pending run)* |
-| `npm run test:e2e -- --workers=1` | *(pending run)* |
+| `npm run lint` | ✅ PASS |
+| `npm run test` | ✅ **281/281** PASS |
+| `npm run build` | ✅ PASS |
+| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
 
 ---
 
