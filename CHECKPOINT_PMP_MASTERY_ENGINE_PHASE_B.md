@@ -26,7 +26,7 @@
 | ECO-proxy tasks | 26 |
 | Mastery concepts | 26 |
 | Exam bank | 200 (tagged) |
-| Primary-task MISSING | 15 |
+| Primary-task MISSING | 10 |
 | Lessons | 77 (untouched) |
 
 ---
@@ -35,10 +35,18 @@
 
 | Commande | Résultat |
 |----------|----------|
-| `npm run lint` | (pending run) |
-| `npm run test` | (pending run) |
-| `npm run build` | (pending run) |
-| `npm run test:e2e -- --workers=1` | (pending run) |
+| `npm run lint` | ✅ PASS |
+| `npm run test` | ✅ **292/292** PASS |
+| `npm run build` | ✅ PASS |
+| `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
+
+---
+
+## Files created / modified
+
+See `PMP_MASTERY_ENGINE_PHASE_B.md`.
+
+**Push note:** `origin` remote URL unavailable in this environment — commit is local on `cursor/pmp-mastery-engine-phase-b-e932`.
 
 ---
 

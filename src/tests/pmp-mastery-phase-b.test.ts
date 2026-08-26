@@ -102,15 +102,16 @@ describe("PMP Mastery Engine Phase B — exam bank ECO tags", () => {
       expect.arrayContaining([
         "PE-01",
         "PE-07",
-        "PR-04",
-        "PR-05",
         "PR-06",
         "PR-09",
         "PR-10",
+        "BE-01",
         "BE-04",
         "BE-06",
       ])
     );
+    expect(report.missingTaskCodes).not.toContain("PR-05");
+    expect(report.missingTaskCodes).not.toContain("PR-04");
     // Risk/Change tagged BE while bank domain still PROCESS → mismatches expected
     expect(report.domainMismatchCount).toBeGreaterThan(0);
   });

@@ -67,11 +67,13 @@ Secondary tags (skills → PE-08, PR-05, PR-06, BE-01, …) enrich metadata with
 
 ## Coverage holes (primary task = 0) — Phase D backlog
 
-`PE-01`, `PE-05`, `PE-06`, `PE-07`, `PE-08`,  
-`PR-01`, `PR-04`, `PR-05`, `PR-06`, `PR-09`, `PR-10`,  
-`BE-01`, `BE-04`, `BE-06`, `BE-08`
+`PE-01`, `PE-05`, `PE-06`, `PE-07`,  
+`PR-06`, `PR-09`, `PR-10`,  
+`BE-01`, `BE-04`, `BE-06`
 
-Highest pedagogical priority for next expansion batch: **PR-05 procurement**, **PR-06 cost/finance**, **PR-04 resources**, **PR-09 status/metrics**, **PE-01 vision**, **BE-04 issues vs risk**.
+(After misread-upgrade processArea labels, primary coverage also reaches PR-01/04/05, PE-08, BE-08.)
+
+Highest pedagogical priority for next expansion batch: **PR-06 cost/finance**, **PR-09 status/metrics**, **PR-10 closure**, **PE-01 vision**, **BE-04 issues vs risk**, **BE-01 governance** as primary.
 
 ---
 
