@@ -182,6 +182,8 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
           scenarioEn: q.scenarioEn,
           scenarioType: q.scenarioType,
           learningObjective: q.learningObjective,
+          ecoTaskCode: q.ecoTaskCode ?? null,
+          conceptSlug: q.conceptSlug ?? null,
           answerOptions: {
             create: q.options.map((opt, i) => ({
               labelFr: opt.labelFr,
@@ -222,6 +224,8 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
           scenarioEn: q.scenarioEn,
           scenarioType: q.scenarioType,
           learningObjective: q.learningObjective,
+          ecoTaskCode: q.ecoTaskCode ?? null,
+          conceptSlug: q.conceptSlug ?? null,
           answerOptions: {
             create: q.options.map((opt, i) => ({
               labelFr: opt.labelFr,

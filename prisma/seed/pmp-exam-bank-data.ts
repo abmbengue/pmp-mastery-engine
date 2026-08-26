@@ -5,6 +5,7 @@
  */
 
 import type { ExamBankQuestionSeed } from "./pmp-exam-bank-types";
+import { applyEcoProxyTags } from "./pmp-exam-eco-tags";
 import { applyMisreadScenarioUpgrades } from "./pmp-exam-bank-misread-upgrades";
 
 export type { ExamBankOptionSeed, ExamBankQuestionSeed } from "./pmp-exam-bank-types";
@@ -9353,4 +9354,8 @@ const RAW_PMP_EXAM_BANK: ExamBankQuestionSeed[] =
   }
 ] as ExamBankQuestionSeed[];
 
-export const PMP_EXAM_BANK = applyMisreadScenarioUpgrades(RAW_PMP_EXAM_BANK);
+/** Stem-stable bank after misread upgrades, before ECO-proxy metadata. */
+export const PMP_EXAM_BANK_STEMS = applyMisreadScenarioUpgrades(RAW_PMP_EXAM_BANK);
+
+/** Misread upgrades first (stem-safe historical fixes), then ECO-proxy metadata only. */
+export const PMP_EXAM_BANK = applyEcoProxyTags(PMP_EXAM_BANK_STEMS);

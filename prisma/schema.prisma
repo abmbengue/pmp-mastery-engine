@@ -298,6 +298,10 @@ model Question {
   /// Pedagogical scenario category (PLA Learning Blueprint — not PMI)
   scenarioType         PmpScenarioType?
   learningObjective    LearningObjective?
+  /// PLA ECO-proxy task code (e.g. PE-04) — not official PMI ECO text
+  ecoTaskCode          String?
+  /// PLA mastery concept slug (Phase B)
+  conceptSlug          String?
   answerOptions        AnswerOption[]
   quizAttempts         QuizAttempt[]
   skillLinks           QuestionSkill[]
@@ -309,6 +313,8 @@ model Question {
   @@index([examBank, pmpDomain])
   @@index([examBank, deliveryApproach])
   @@index([examBank, scenarioType])
+  @@index([examBank, ecoTaskCode])
+  @@index([conceptSlug])
 }
 
 /// Extra skills linked to a question (in addition to primary skillId)

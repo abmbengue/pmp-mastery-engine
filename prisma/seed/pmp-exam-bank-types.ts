@@ -1,3 +1,4 @@
+import type { EcoTaskCode } from "@/modules/assessment-engine/eco-proxy-2026";
 import type { ExamDifficultyCode, PmpDeliveryApproachCode, PmpDomainCode } from "@/modules/assessment-engine/exam-types";
 import type { LearningObjectiveCode, PmpScenarioTypeCode } from "@/modules/assessment-engine/exam-blueprint";
 
@@ -26,4 +27,11 @@ export type ExamBankQuestionSeed = {
   explanationCorrectFr: string;
   explanationCorrectEn: string;
   options: ExamBankOptionSeed[];
+  /**
+   * Phase B mastery metadata — PLA ECO-proxy codes.
+   * Optional on raw seeds; applied by `applyEcoProxyTags` without stem edits.
+   */
+  ecoTaskCode?: EcoTaskCode;
+  ecoTaskCodesSecondary?: EcoTaskCode[];
+  conceptSlug?: string;
 };
