@@ -162,7 +162,9 @@ No global UI redesign.
 | `npm run lint` | PASS |
 | `npm test` | **335** PASS |
 | `npm run build` | PASS |
-| `npm run test:e2e` | **58/58** PASS |
+| `npm run test:e2e` | **57/58** — flaky `PASSWORD RESET` (passes in isolation; unrelated to lesson content). Re-run alone: PASS |
+
+Bank fingerprint verified unchanged after B.3.1.
 
 ---
 
