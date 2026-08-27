@@ -17,3 +17,4 @@ export * from "./weakness-model";
 export * from "./coverage-matrix";
 export * from "./duplicate-detection";
 export * from "./knowledge-pack";
+export * from "./integrity";

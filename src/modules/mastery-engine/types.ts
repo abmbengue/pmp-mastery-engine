@@ -70,6 +70,14 @@ export type DeliveryApproachTag =
 
 export type MappingStatus = "VERIFIED" | "PARTIAL" | "UNVERIFIED";
 
+/**
+ * Distinguishes bank legacy domain (Question.pmpDomain / seed domain)
+ * from ECO mastery domain (People / Process / Business task ownership).
+ * Do not collapse these — PARTIAL mappings often reflect this duality.
+ */
+export type LegacyBankDomain = "PEOPLE" | "PROCESS" | "BUSINESS_ENVIRONMENT";
+export type EcoMasteryDomain = EcoDomainStableId;
+
 export type MappingConfidence = "HIGH" | "MEDIUM" | "LOW" | "UNVERIFIED";
 
 export type CoverageStatus = "GREEN" | "YELLOW" | "RED";

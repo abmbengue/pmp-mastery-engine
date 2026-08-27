@@ -201,7 +201,11 @@ export const CONCEPTS: readonly ConceptRecord[] = [
     ecoDomains: ["PEOPLE"],
     ecoTaskIds: ["PEOPLE-T02"],
     pmbokPerformanceDomains: ["PD-STAKEHOLDERS", "PD-RESOURCES"],
-    subConceptIds: ["conflict-vs-issue", "root-cause-vs-symptom"],
+    subConceptIds: [
+      "conflict-vs-issue",
+      "root-cause-vs-symptom",
+      "collaboration-vs-compromise",
+    ],
     prerequisiteConceptIds: [],
     relatedConceptIds: ["team-leadership"],
     commonlyConfusedWith: ["issue-management"],

@@ -2,11 +2,12 @@
 
 **Branch:** `cursor/pmp-mastery-engine-phase-b-e932`  
 **Date:** 2026-08-27  
-**Phase:** B foundation + **B.1 Knowledge Pack source correction**  
+**Phase:** B foundation + B.1 Knowledge Pack + **B.2 Mastery Model Audit**  
 **Implementation docs:**  
 - `PMP_MASTERY_ENGINE_PHASE_B_IMPLEMENTATION.md`  
 - `PMP_MASTERY_ENGINE_PHASE_B_ECO_SOURCE_AUDIT.md`  
-- `PMP_MASTERY_ENGINE_PHASE_B1_KNOWLEDGE_PACK_CORRECTION.md`
+- `PMP_MASTERY_ENGINE_PHASE_B1_KNOWLEDGE_PACK_CORRECTION.md`  
+- `PMP_MASTERY_ENGINE_PHASE_B2_MASTERY_MODEL_AUDIT.md`
 
 ---
 
@@ -24,8 +25,11 @@
 | Code taxonomy | ✅ Correct (unchanged in B.1) |
 | Generated pack | ✅ Regenerated from mastery-engine |
 | 200 exam stems | ✅ UNCHANGED |
-| Adaptive engine | ❌ Not started (Phase C) |
+| Adaptive engine | ❌ Not started (Phase C) — **gate: B after P1 fixes** |
 | Question generation 201–1000 | ❌ Not started (Phase D) |
+| Architectural readiness | **64/100** (PLA-internal) |
+| Masterability ECO | YES 11 / PARTIAL 9 / NO 6 |
+| Protected bank fingerprint | ✅ Locked SHA-256 aggregate |
 
 ---
 
@@ -92,7 +96,7 @@ I. Semantic duplicate detection improvements
 | Command | Result |
 |---------|--------|
 | `npm run lint` | ✅ PASS |
-| `npm run test` | ✅ **312/312** PASS |
+| `npm run test` | ✅ **318/318** PASS |
 | `npm run build` | ✅ PASS |
 | `npm run test:e2e -- --workers=1` | ✅ **58/58** PASS |
 

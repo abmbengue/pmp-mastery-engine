@@ -35,6 +35,8 @@ export type AttemptMasteryInput = {
   misconceptionId?: string;
   errorCategory?: ExamErrorCategoryCode;
   answeredAt: Date;
+  /** Optional item key for distinct-question evidence (not required for all callers) */
+  questionExternalKey?: string;
 };
 
 function difficultyWeight(d: "EASY" | "MEDIUM" | "HARD"): number {
@@ -147,12 +149,40 @@ export function buildSkillMasterySnapshot(input: {
   const recentPerformance = computeWeightedPerformance(recent);
   const historicalPerformance = computeWeightedPerformance(attempts);
   const last = attempts[attempts.length - 1];
+  const first = attempts[0];
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysSinceFirstExposure =
+    first && last
+      ? Math.max(
+          0,
+          Math.floor(
+            (last.answeredAt.getTime() - first.answeredAt.getTime()) / msPerDay
+          )
+        )
+      : 0;
+  const distinctKeys = new Set(
+    attempts
+      .map((a) => a.questionExternalKey)
+      .filter((k): k is string => typeof k === "string" && k.length > 0)
+  );
+  const maxCognitive = attempts.reduce<CognitiveLevel>((acc, a) => {
+    const rank: Record<CognitiveLevel, number> = {
+      RECOGNITION: 1,
+      UNDERSTANDING: 2,
+      APPLICATION: 3,
+      ANALYSIS: 4,
+      JUDGMENT: 5,
+      TRANSFER: 6,
+    };
+    return rank[a.cognitiveLevel] > rank[acc] ? a.cognitiveLevel : acc;
+  }, last?.cognitiveLevel ?? "RECOGNITION");
   const evidence: MasteryEvidenceInput = {
     attempts: attempts.length,
     weightedCorrectRate: historicalPerformance,
-    distinctQuestionCount: attempts.length,
-    maxCognitiveAchieved: last?.cognitiveLevel ?? "RECOGNITION",
-    daysSinceFirstExposure: 0,
+    distinctQuestionCount:
+      distinctKeys.size > 0 ? distinctKeys.size : attempts.length,
+    maxCognitiveAchieved: maxCognitive,
+    daysSinceFirstExposure,
     recentIncorrectStreak: attempts
       .slice(-3)
       .filter((a) => !a.correct).length,
