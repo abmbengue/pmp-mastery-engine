@@ -103,10 +103,11 @@ Dashboard / Nav
 
 | Check | Result |
 |-------|--------|
-| Unit `pmp-mastery-phase-b32-ui.test.ts` | Study wiring + bank lock |
-| `npm run lint` | (see CI run) |
-| `npm test` | (see CI run) |
-| `npm run build` | (see CI run) |
+| `npm run lint` | PASS |
+| `npm test` | 340 PASS / 1 FAIL unrelated |
+| Unrelated failure | `integration.test.ts` — `totalTimeSpentSec` expected ≥300 got 120 (pre-existing / flaky; not touched) |
+| B.3.2 + B.3.1 + B.3 unit | 23/23 PASS |
+| `npm run build` | PASS (routes include `/pmp-study/**`) |
 | Protected bank fingerprint | `d18c86618e8cba16c623e8982f362f00e930a8ed5ea8b9c53abb8b5b0df0b1e2` |
 | Q201+ | 0 created |
 | ECO | 26 tasks; T04 ≠ T07 ≠ T08 |
@@ -158,5 +159,5 @@ Dashboard / Nav
 - [x] No protected question changed
 - [x] No Q201+ created
 - [x] ECO remains 26 tasks
-- [ ] lint / tests / build — verified in implementation run
+- [x] lint / tests / build — lint PASS; build PASS; 340 unit PASS; 1 unrelated integration flake noted
 - [x] B.3.2 report created

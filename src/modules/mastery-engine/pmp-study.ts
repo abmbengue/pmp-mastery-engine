@@ -16,14 +16,18 @@ import {
 } from "./critical-distinctions";
 import {
   entriesForEcoTask,
-  type LessonEcoCoverageType,
 } from "./lesson-eco-map";
 import {
   getPmpLessonCatalogEntry,
   PMP_ACADEMY_SLUG,
   PMP_COURSE_SLUG,
 } from "./pmp-lesson-catalog";
-import type { EcoDomainStableId, EcoTaskRecord, EcoTaskStableId } from "./types";
+import type {
+  EcoDomainStableId,
+  EcoTaskRecord,
+  EcoTaskStableId,
+  LessonEcoCoverageType,
+} from "./types";
 
 export const ECO_DOMAINS: readonly {
   id: EcoDomainStableId;
