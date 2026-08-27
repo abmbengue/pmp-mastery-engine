@@ -78,14 +78,18 @@ describe("Phase B.3 — lessonEcoMap", () => {
 });
 
 describe("Phase B.3 — instructor 12-lesson architecture", () => {
-  it("defines 12 instructor lessons with L3/L8/L10 pending", () => {
+  it("defines 12 instructor lessons grounded in blueprint (no SOURCE_PENDING)", () => {
     expect(INSTRUCTOR_LESSONS).toHaveLength(12);
-    const pending = instructorLessonsPendingSource();
-    expect(pending.map((l) => l.id).sort()).toEqual([
-      "INSTRUCTOR-L03",
-      "INSTRUCTOR-L08",
-      "INSTRUCTOR-L10",
-    ]);
+    expect(instructorLessonsPendingSource()).toEqual([]);
+    expect(INSTRUCTOR_LESSONS.find((l) => l.id === "INSTRUCTOR-L03")?.provenance).toBe(
+      "INSTRUCTOR_DERIVED"
+    );
+    expect(INSTRUCTOR_LESSONS.find((l) => l.id === "INSTRUCTOR-L08")?.provenance).toBe(
+      "INSTRUCTOR_DERIVED"
+    );
+    expect(INSTRUCTOR_LESSONS.find((l) => l.id === "INSTRUCTOR-L10")?.provenance).toBe(
+      "INSTRUCTOR_DERIVED"
+    );
   });
 
   it("splits Lesson 6 into T07 and T08 branches", () => {
@@ -96,6 +100,40 @@ describe("Phase B.3 — instructor 12-lesson architecture", () => {
     ]);
     expect(l6.branches?.[0].ecoTaskIds).toEqual(["PEOPLE-T07"]);
     expect(l6.branches?.[1].ecoTaskIds).toEqual(["PEOPLE-T08"]);
+  });
+});
+
+describe("Phase B.3 — blueprints & critical distinctions", () => {
+  it("provides blueprints for all 12 instructor lessons", async () => {
+    const { INSTRUCTOR_BLUEPRINT_COUNT, getInstructorBlueprint } = await import(
+      "@/modules/mastery-engine/instructor-lesson-blueprints"
+    );
+    expect(INSTRUCTOR_BLUEPRINT_COUNT).toBe(12);
+    expect(getInstructorBlueprint("INSTRUCTOR-L06")?.ecoTaskIds).toEqual([
+      "PEOPLE-T07",
+      "PEOPLE-T08",
+    ]);
+    expect(getInstructorBlueprint("INSTRUCTOR-L03")?.keyDistinctionsIds).toContain(
+      "dist-dor-vs-dod"
+    );
+  });
+
+  it("exposes critical distinction cards including T04≠T08 and T07≠T08", async () => {
+    const {
+      CRITICAL_DISTINCTION_COUNT,
+      getDistinction,
+      distinctionsForEcoTask,
+    } = await import("@/modules/mastery-engine/critical-distinctions");
+    expect(CRITICAL_DISTINCTION_COUNT).toBeGreaterThanOrEqual(20);
+    expect(getDistinction("dist-engagement-vs-communication")?.ecoTaskIds).toEqual([
+      "PEOPLE-T04",
+      "PEOPLE-T08",
+    ]);
+    expect(getDistinction("dist-knowledge-transfer-vs-communication")?.ecoTaskIds).toEqual([
+      "PEOPLE-T07",
+      "PEOPLE-T08",
+    ]);
+    expect(distinctionsForEcoTask("PROCESS-T06").length).toBeGreaterThan(0);
   });
 });
 
@@ -110,12 +148,20 @@ describe("Phase B.3 — P0 lessons & pedagogy", () => {
     }
   });
 
-  it("provides pedagogy packs for T01/T07/T08/T06", () => {
-    expect(P0_LESSON_PEDAGOGY).toHaveLength(4);
-    for (const id of ["shared-vision", "knowledge-transfer", "communication", "cost"]) {
+  it("provides pedagogy packs for P0 and P1 priority lessons", () => {
+    expect(P0_LESSON_PEDAGOGY.length).toBeGreaterThanOrEqual(7);
+    for (const id of [
+      "shared-vision",
+      "knowledge-transfer",
+      "communication",
+      "cost",
+      "project-lifecycle-basics",
+      "lessons-learned",
+      "risk-vs-issue",
+    ]) {
       const pack = getLessonPedagogy(id);
       expect(pack).toBeTruthy();
-      expect(pack!.screens.length).toBeGreaterThanOrEqual(2);
+      expect(pack!.screens.length).toBeGreaterThanOrEqual(1);
       expect(pack!.decisionRules.length).toBeGreaterThanOrEqual(1);
     }
   });

@@ -472,6 +472,204 @@ export const P0_LESSON_PEDAGOGY: readonly LessonPedagogyPack[] = [
       noteEn: "Mastery = decide from indicators, not recite formulas.",
     },
   },
+  {
+    lessonId: "project-lifecycle-basics",
+    ecoTaskIds: ["PROCESS-T10"],
+    provenance: "INSTRUCTOR_DERIVED",
+    objectiveFr:
+      "Vérifier les conditions de clôture et préparer la transition avant de libérer les ressources.",
+    objectiveEn:
+      "Verify closure conditions and prepare transition before releasing resources.",
+    whyItMattersFr:
+      "Clôturer trop tôt laisse obligations, bénéfices et readiness non traités.",
+    whyItMattersEn:
+      "Closing too early leaves obligations, benefits, and readiness unaddressed.",
+    concepts: ["project-closure"],
+    skills: ["skill-close-project", "skill-transition-operations"],
+    distinctions: [
+      {
+        a: "Acceptance livrable",
+        b: "Transition readiness",
+        ruleFr: "Accepté ≠ ops/users prêts. Vérifier readiness client/support.",
+        ruleEn: "Accepted ≠ ops/users ready. Verify client/support readiness.",
+      },
+    ],
+    misconceptions: [
+      {
+        wrongFr: "Livrables Done = projet clos.",
+        wrongEn: "Deliverables Done = project closed.",
+        rightFr: "Il faut acceptation, contrats, finances, transition, archives, LL.",
+        rightEn: "Need acceptance, contracts, finance, transition, archives, LL.",
+      },
+    ],
+    decisionRules: [
+      {
+        fr: "Ne pas clôturer sans acceptation / obligations résolues",
+        en: "Do not close without acceptance / obligations resolved",
+      },
+      {
+        fr: "Inclure transfert de connaissances client dans la clôture",
+        en: "Include client knowledge transfer in closure",
+      },
+    ],
+    visualModel: {
+      id: "closure-checklist",
+      linesFr: [
+        "Acceptation",
+        "→ Transition readiness",
+        "→ Finances / contrats",
+        "→ Archives + LL",
+        "→ Libération ressources",
+      ],
+      linesEn: [
+        "Acceptance",
+        "→ Transition readiness",
+        "→ Finance / contracts",
+        "→ Archives + LL",
+        "→ Release resources",
+      ],
+    },
+    screens: [
+      {
+        intent: "MINI_CASE",
+        titleFr: "Clôturer ?",
+        titleEn: "Close?",
+        bodyFr: "Livrables acceptés ; ops non prêtes. Sponsor veut clôturer. Ensuite ?",
+        bodyEn: "Deliverables accepted; ops not ready. Sponsor wants to close. Next?",
+        choices: [
+          { id: "a", labelFr: "Clôturer immédiatement", labelEn: "Close immediately" },
+          {
+            id: "b",
+            labelFr: "Évaluer readiness et planifier la transition",
+            labelEn: "Assess readiness and plan transition",
+            correct: true,
+          },
+          { id: "c", labelFr: "Ignorer ops", labelEn: "Ignore ops" },
+          { id: "d", labelFr: "Rouvrir le scope entier", labelEn: "Reopen full scope" },
+        ],
+      },
+    ],
+    masteryHooks: {
+      conceptIds: ["project-closure"],
+      skillIds: ["skill-close-project", "skill-transition-operations"],
+      noteFr: "Blueprint L10 — body PLA encore thin ; enrichissement seed ultérieur possible.",
+      noteEn: "L10 blueprint — PLA body still thin; later seed enrichment possible.",
+    },
+  },
+  {
+    lessonId: "lessons-learned",
+    ecoTaskIds: ["BUSINESS-T06", "PEOPLE-T07"],
+    provenance: "INSTRUCTOR_DERIVED",
+    objectiveFr:
+      "Transformer les lessons learned en amélioration organisationnelle, pas en archive morte.",
+    objectiveEn:
+      "Turn lessons learned into organizational improvement, not a dead archive.",
+    whyItMattersFr: "Archiver sans action = même erreur sur le prochain projet.",
+    whyItMattersEn: "Archiving without action = same error on the next project.",
+    concepts: ["continuous-improvement", "knowledge-transfer"],
+    skills: ["skill-capture-lessons", "skill-update-process-assets"],
+    distinctions: [
+      {
+        a: "OPA",
+        b: "EEF",
+        ruleFr: "OPA = actifs internes. EEF = facteurs environnementaux externes/influents.",
+        ruleEn: "OPA = internal assets. EEF = influencing environmental factors.",
+      },
+    ],
+    misconceptions: [
+      {
+        wrongFr: "LL uniquement à la clôture.",
+        wrongEn: "LL only at closure.",
+        rightFr: "Collecter tout au long ; intégrer aux processus et OPA.",
+        rightEn: "Collect throughout; integrate into processes and OPA.",
+      },
+    ],
+    decisionRules: [
+      {
+        fr: "LESSON LEARNED → ANALYSIS → IMPROVEMENT → ORGANIZATIONAL LEARNING",
+        en: "LESSON LEARNED → ANALYSIS → IMPROVEMENT → ORGANIZATIONAL LEARNING",
+      },
+    ],
+    visualModel: {
+      id: "ci-loop",
+      linesFr: ["Data/Feedback", "→ Root cause", "→ Experiment", "→ Improve", "→ Standardize/Share"],
+      linesEn: ["Data/Feedback", "→ Root cause", "→ Experiment", "→ Improve", "→ Standardize/Share"],
+    },
+    screens: [
+      {
+        intent: "DECISION_RULE",
+        titleFr: "Ne pas archiver pour oublier",
+        titleEn: "Do not archive to forget",
+        bodyFr: "Chaque LL actionnable doit avoir un owner et une mise à jour OPA/pratique.",
+        bodyEn: "Each actionable LL needs an owner and an OPA/practice update.",
+      },
+    ],
+    masteryHooks: {
+      conceptIds: ["continuous-improvement"],
+      skillIds: ["skill-capture-lessons", "skill-update-process-assets"],
+      noteFr: "Preuves = amélioration réelle, pas lecture seule.",
+      noteEn: "Evidence = real improvement, not reading alone.",
+    },
+  },
+  {
+    lessonId: "risk-vs-issue",
+    ecoTaskIds: ["BUSINESS-T04", "BUSINESS-T05"],
+    provenance: "INSTRUCTOR_DERIVED",
+    objectiveFr: "Classifier risk / issue / impediment et choisir la bonne réponse.",
+    objectiveEn: "Classify risk / issue / impediment and choose the right response.",
+    whyItMattersFr: "Mauvaise classification → mauvaise action (CCB vs unblock vs risk response).",
+    whyItMattersEn: "Wrong classification → wrong action (CCB vs unblock vs risk response).",
+    concepts: ["risk-vs-issue", "risk-management", "issue-management"],
+    skills: ["skill-distinguish-risk-issue", "skill-respond-risks", "skill-resolve-issues"],
+    distinctions: [
+      {
+        a: "Risk",
+        b: "Issue / Impediment",
+        ruleFr: "Risk = futur. Issue = maintenant. Impediment = bloque l'équipe maintenant.",
+        ruleEn: "Risk = future. Issue = now. Impediment = blocks the team now.",
+      },
+      {
+        a: "Predictive change",
+        b: "Adaptive change",
+        ruleFr: "CCB formel vs backlog/PO — lire l'approche d'abord.",
+        ruleEn: "Formal CCB vs backlog/PO — read the approach first.",
+      },
+    ],
+    misconceptions: [
+      {
+        wrongFr: "Tout problème = risque à mitiger.",
+        wrongEn: "Every problem = a risk to mitigate.",
+        rightFr: "Si c'est déjà là → issue/impediment.",
+        rightEn: "If it is already here → issue/impediment.",
+      },
+    ],
+    decisionRules: [
+      {
+        fr: "Lire predictive/adaptive avant le processus de changement",
+        en: "Read predictive/adaptive before the change process",
+      },
+    ],
+    visualModel: {
+      id: "risk-issue-change",
+      linesFr: ["Futur? → Risk", "Présent? → Issue", "Bloque équipe? → Impediment", "Changement? → lire l'approche"],
+      linesEn: ["Future? → Risk", "Present? → Issue", "Blocks team? → Impediment", "Change? → read approach"],
+    },
+    screens: [
+      {
+        intent: "DISTINCTION",
+        titleFr: "Risk ≠ Issue ≠ Impediment",
+        titleEn: "Risk ≠ Issue ≠ Impediment",
+        bodyFr: "Trois objets, trois leviers.",
+        bodyEn: "Three objects, three levers.",
+      },
+    ],
+    masteryHooks: {
+      conceptIds: ["risk-vs-issue"],
+      skillIds: ["skill-distinguish-risk-issue"],
+      noteFr: "Maîtrise = classification + action adaptée au contexte.",
+      noteEn: "Mastery = classification + context-fit action.",
+    },
+  },
 ];
 
 export function getLessonPedagogy(lessonId: string): LessonPedagogyPack | undefined {

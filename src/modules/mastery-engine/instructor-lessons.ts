@@ -1,7 +1,6 @@
 /**
  * Instructor 12-lesson pedagogical architecture (Phase B.3).
- * Condensé source-grounded from prompt (substitute for inaccessible PDFs).
- * Lessons 3, 8, 10 marked SOURCE_PENDING — do not invent instructor content.
+ * Condensé source-grounded from authorized prompt blueprint (not a claim of PDF access).
  */
 
 import type { ContentProvenance, EcoTaskStableId } from "./types";
@@ -93,19 +92,20 @@ export const INSTRUCTOR_LESSONS: readonly InstructorLessonRecord[] = [
     id: "INSTRUCTOR-L03",
     sortOrder: 3,
     part: "LAUNCH_AND_PLAN",
-    titleFr: "Définir le périmètre, la valeur et les critères de réussite",
-    titleEn: "Define scope, value, and success criteria",
-    provenance: "SOURCE_PENDING_INSTRUCTOR_LESSON_3",
-    ecoTaskIds: ["PROCESS-T02", "PROCESS-T03"],
+    titleFr: "Périmètre, valeur et conformité",
+    titleEn: "Scope, value, and compliance",
+    provenance: "INSTRUCTOR_DERIVED",
+    ecoTaskIds: ["PROCESS-T02", "PROCESS-T03", "BUSINESS-T02"],
     plaLessonIds: [
       "scope",
       "requirements-basics",
       "business-value",
       "benefits",
       "definition-of-done",
+      "compliance",
     ],
     notes:
-      "Instructor PDF unavailable. Structure from ECO + Knowledge Pack + PLA only.",
+      "Blueprint-authorized condensé (prompt). Project vs product scope, DoR/DoD, value chain, compliance.",
   },
   {
     id: "INSTRUCTOR-L04",
@@ -198,7 +198,7 @@ export const INSTRUCTOR_LESSONS: readonly InstructorLessonRecord[] = [
     part: "EXECUTE_AND_MONITOR",
     titleFr: "Gestion des risques, des changements et des problèmes",
     titleEn: "Manage risks, changes, and issues",
-    provenance: "SOURCE_PENDING_INSTRUCTOR_LESSON_8",
+    provenance: "INSTRUCTOR_DERIVED",
     ecoTaskIds: ["BUSINESS-T03", "BUSINESS-T04", "BUSINESS-T05"],
     plaLessonIds: [
       "risk-management-hybrid",
@@ -209,20 +209,22 @@ export const INSTRUCTOR_LESSONS: readonly InstructorLessonRecord[] = [
       "issue-management",
       "impediments-management",
     ],
-    notes: "Instructor PDF unavailable. ECO + KP + PLA only.",
+    notes:
+      "Blueprint-authorized condensé. Risk≠issue≠impediment; predictive≠adaptive change.",
   },
   {
     id: "INSTRUCTOR-L09",
     sortOrder: 9,
     part: "EXECUTE_AND_MONITOR",
-    titleFr: "Suivre les progrès et maintenir l'alignement",
-    titleEn: "Track progress and keep alignment",
+    titleFr: "Attentes client et statut / performance",
+    titleEn: "Customer expectations and status / performance",
     provenance: "INSTRUCTOR_DERIVED",
-    ecoTaskIds: ["PROCESS-T09"],
+    ecoTaskIds: ["PEOPLE-T06", "PROCESS-T09"],
     plaLessonIds: [
       "project-controls-metrics",
       "velocity-and-flow",
       "cost",
+      "stakeholders-basics",
     ],
   },
   {
@@ -231,14 +233,16 @@ export const INSTRUCTOR_LESSONS: readonly InstructorLessonRecord[] = [
     part: "CLOSE_AND_IMPROVE",
     titleFr: "Clôturer le projet avec succès",
     titleEn: "Close the project successfully",
-    provenance: "SOURCE_PENDING_INSTRUCTOR_LESSON_10",
+    provenance: "INSTRUCTOR_DERIVED",
     ecoTaskIds: ["PROCESS-T10"],
     plaLessonIds: [
       "project-lifecycle-basics",
       "lessons-learned",
       "knowledge-transfer",
+      "benefits-realization",
     ],
-    notes: "Instructor PDF unavailable. Reuse L6/L9/L11 established content only.",
+    notes:
+      "Blueprint-authorized condensé. Acceptance, transition readiness, benefits sustainment.",
   },
   {
     id: "INSTRUCTOR-L11",
@@ -266,7 +270,7 @@ export const INSTRUCTOR_LESSONS: readonly InstructorLessonRecord[] = [
     ecoTaskIds: [],
     plaLessonIds: ["exam-reasoning-integration", "pla-situational-method"],
     notes:
-      "Pedagogical transition LEARNING→PRACTICE→WEAKNESS→REVIEW→RETENTION→MOCKS — not a heavy theory lesson.",
+      "Pedagogical transition LEARNING→PRACTICE→WEAKNESS→REVIEW→RETENTION→MOCKS. Use official ECO 2026 exam params if course numbers diverge.",
   },
 ];
 
@@ -276,6 +280,7 @@ export function getInstructorLesson(
   return INSTRUCTOR_LESSONS.find((l) => l.id === id);
 }
 
+/** Kept for compatibility — should be empty after blueprint authorization. */
 export function instructorLessonsPendingSource(): InstructorLessonRecord[] {
   return INSTRUCTOR_LESSONS.filter((l) =>
     String(l.provenance).startsWith("SOURCE_PENDING")

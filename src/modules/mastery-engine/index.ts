@@ -20,4 +20,6 @@ export * from "./knowledge-pack";
 export * from "./integrity";
 export * from "./lesson-eco-map";
 export * from "./instructor-lessons";
+export * from "./instructor-lesson-blueprints";
+export * from "./critical-distinctions";
 export * from "./lesson-pedagogy";
