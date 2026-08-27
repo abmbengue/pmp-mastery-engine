@@ -13,6 +13,7 @@ import { PMP_AGILE_LESSONS } from "./pmp-agile";
 import { PMP_HYBRID_LESSONS } from "./pmp-hybrid";
 import { PMP_SITUATIONAL_LESSONS } from "./pmp-situational";
 import { applyPmpQualityUpgrades } from "./pmp-quality-upgrades";
+import { PMP_PHASE_B3_LESSONS } from "./pmp-phase-b3-lessons";
 
 export const PMP_MODULES = [
   {
@@ -88,4 +89,5 @@ export const PMP_LESSONS: PmpLesson[] = applyPmpQualityUpgrades([
   ...PMP_AGILE_LESSONS,
   ...PMP_HYBRID_LESSONS,
   ...PMP_SITUATIONAL_LESSONS,
+  ...PMP_PHASE_B3_LESSONS,
 ]);

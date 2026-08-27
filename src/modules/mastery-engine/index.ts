@@ -18,3 +18,6 @@ export * from "./coverage-matrix";
 export * from "./duplicate-detection";
 export * from "./knowledge-pack";
 export * from "./integrity";
+export * from "./lesson-eco-map";
+export * from "./instructor-lessons";
+export * from "./lesson-pedagogy";

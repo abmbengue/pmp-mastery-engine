@@ -63,7 +63,7 @@ describe("Phase B.2 — graph integrity & masterability", () => {
     expect(report.ecoTasks.yes + report.ecoTasks.partial + report.ecoTasks.no).toBe(
       26
     );
-    expect(report.skills.yes + report.skills.partial + report.skills.no).toBe(64);
+    expect(report.skills.yes + report.skills.partial + report.skills.no).toBe(67);
     expect(masterabilityForEcoTask("PEOPLE-T07", PMP_EXAM_BANK)).toBe("NO");
     expect(masterabilityForEcoTask("BUSINESS-T05", PMP_EXAM_BANK)).toBe("YES");
   });

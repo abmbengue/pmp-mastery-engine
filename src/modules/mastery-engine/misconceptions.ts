@@ -353,6 +353,39 @@ export const MISCONCEPTIONS: readonly MisconceptionRecord[] = [
     ecoTaskIds: ["PEOPLE-T02", "BUSINESS-T04"],
     errorKinds: ["application-error", "strategy-error"],
   }),
+  m({
+    id: "mc-knowledge-transfer-communication",
+    nameEn: "Knowledge transfer equals communication",
+    nameFr: "Transfert de connaissances = communication",
+    explanationEn:
+      "Circulating information (T08) is not the same as transferring capability/know-how (T07).",
+    explanationFr:
+      "Faire circuler l'information (T08) n'équivaut pas à transférer savoir/capacité (T07).",
+    confusionType: "terminology",
+    conceptAId: "knowledge-transfer",
+    conceptBId: "communication-planning",
+    affectedSkillIds: [
+      "skill-enable-knowledge-transfer",
+      "skill-distinguish-communication-engagement",
+    ],
+    ecoTaskIds: ["PEOPLE-T07", "PEOPLE-T08"],
+    errorKinds: ["misconception", "communication-error"],
+  }),
+  m({
+    id: "mc-documenting-equals-transfer",
+    nameEn: "Documenting equals knowledge transfer",
+    nameFr: "Documenter = transfert de connaissances",
+    explanationEn:
+      "Tacit knowledge requires interaction, coaching, or observation — not documents alone.",
+    explanationFr:
+      "Le savoir tacite exige interaction, coaching ou observation — pas la seule documentation.",
+    confusionType: "process-vs-event",
+    conceptAId: "tacit-vs-explicit-knowledge",
+    conceptBId: "knowledge-transfer",
+    affectedSkillIds: ["skill-choose-knowledge-transfer-method"],
+    ecoTaskIds: ["PEOPLE-T07"],
+    errorKinds: ["misconception", "application-error"],
+  }),
 ];
 
 const BY_ID = new Map(MISCONCEPTIONS.map((x) => [x.id, x] as const));

@@ -9,8 +9,8 @@ import { validateLessonCatalog } from "@/modules/content/content-validator";
 import { PMP_EXAM_BANK } from "../../prisma/seed/pmp-exam-bank-data";
 
 describe("PMP content quality pass (Mission 2 + Mission 4 polish)", () => {
-  it("keeps 77 lessons and seven modules", () => {
-    expect(PMP_LESSONS.length).toBe(77);
+  it("keeps 79 lessons (77 preserved + 2 B.3 P0) and seven modules", () => {
+    expect(PMP_LESSONS.length).toBe(79);
     expect(PMP_MODULES.map((m) => m.slug)).toEqual([
       "foundations",
       "people",
@@ -24,7 +24,7 @@ describe("PMP content quality pass (Mission 2 + Mission 4 polish)", () => {
   });
 
   it("applies quality upgrades including Mission 4 polish set", () => {
-    expect(PMP_QUALITY_UPGRADE_SLUGS.length).toBe(43);
+    expect(PMP_QUALITY_UPGRADE_SLUGS.length).toBe(45);
     expect(PMP_PRIORITY_UPGRADE_SLUGS).toContain("combining-predictive-and-agile");
     expect(PMP_POLISH_UPGRADE_SLUGS.length).toBe(10);
     for (const slug of PMP_QUALITY_UPGRADE_SLUGS) {

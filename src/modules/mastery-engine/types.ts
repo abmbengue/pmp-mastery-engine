@@ -7,11 +7,45 @@ export type SourceType =
   | "PMI_ECO_2026"
   | "PMBOK8"
   | "PMBOK8_FR"
+  | "PMP_LESSON_1"
   | "PMP_LESSON_2"
+  | "PMP_LESSON_3"
+  | "PMP_LESSON_4"
   | "PMP_LESSON_5"
+  | "PMP_LESSON_6"
   | "PMP_LESSON_7"
+  | "PMP_LESSON_8"
+  | "PMP_LESSON_9"
+  | "PMP_LESSON_10"
+  | "PMP_LESSON_11"
+  | "PMP_LESSON_12"
   | "PLA_INTERNAL"
-  | "DERIVED_PEDAGOGICAL";
+  | "DERIVED_PEDAGOGICAL"
+  | "ECO_VERIFIED"
+  | "INSTRUCTOR_DERIVED"
+  | "PMBOK_REFERENCE"
+  | "SOURCE_PENDING";
+
+/** Provenance tag for lesson / pedagogy content (Phase B.3). */
+export type ContentProvenance =
+  | "ECO_VERIFIED"
+  | "INSTRUCTOR_DERIVED"
+  | "PMBOK_REFERENCE"
+  | "DERIVED_PEDAGOGICAL"
+  | "PLA_INTERNAL"
+  | "SOURCE_PENDING"
+  | "SOURCE_PENDING_INSTRUCTOR_LESSON_3"
+  | "SOURCE_PENDING_INSTRUCTOR_LESSON_8"
+  | "SOURCE_PENDING_INSTRUCTOR_LESSON_10";
+
+export type LessonEcoCoverageType = "PRIMARY" | "SECONDARY" | "SUPPORTING";
+
+export type LessonAuditClass =
+  | "PRIMARY"
+  | "SUPPORTING"
+  | "REDUNDANT"
+  | "THIN"
+  | "UNMAPPED";
 
 export type SourceConfidence = "HIGH" | "MEDIUM" | "LOW" | "UNVERIFIED";
 
