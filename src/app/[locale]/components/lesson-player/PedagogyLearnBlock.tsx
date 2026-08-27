@@ -86,10 +86,7 @@ function MiniCase({
               <li key={choice.id}>
                 <button
                   type="button"
-                  onClick={() => {
-                    setSelected(choice.id);
-                    setShowWhy(true);
-                  }}
+                  onClick={() => setSelected(choice.id)}
                   className={`min-h-11 w-full rounded-lg border px-3 py-2.5 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                     !reveal
                       ? "border-gray-300 bg-white hover:bg-gray-50"
@@ -149,6 +146,8 @@ export function PedagogyLearnBlock({
   );
   const visualLines =
     locale === "fr" ? pack.visualModel.linesFr : pack.visualModel.linesEn;
+  const packOnlyDistinctions =
+    criticalDistinctions.length > 0 ? [] : pack.distinctions;
 
   return (
     <div className="space-y-4" data-testid="pedagogy-learn-block">
@@ -208,7 +207,7 @@ export function PedagogyLearnBlock({
         </Card>
       )}
 
-      {(criticalDistinctions.length > 0 || pack.distinctions.length > 0) && (
+      {(criticalDistinctions.length > 0 || packOnlyDistinctions.length > 0) && (
         <Card title={labels.distinctions} testId="pedagogy-distinctions">
           {criticalDistinctions.map((d) => (
             <div
@@ -228,7 +227,7 @@ export function PedagogyLearnBlock({
               </p>
             </div>
           ))}
-          {pack.distinctions.map((d, idx) => (
+          {packOnlyDistinctions.map((d, idx) => (
             <div
               key={`pack-${idx}`}
               className="mb-3 rounded-md border border-slate-200 bg-slate-50 p-3 last:mb-0"

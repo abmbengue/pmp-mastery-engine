@@ -326,7 +326,7 @@ export function LessonPlayer({
       <div className="min-h-48">
         {currentPhase === "LEARN" && (
           <div className="space-y-5" data-testid="phase-learn">
-            {pedagogyPack ? (
+            {pedagogyPack && (
               <PedagogyLearnBlock
                 pack={pedagogyPack}
                 locale={locale}
@@ -334,8 +334,16 @@ export function LessonPlayer({
                 criticalDistinctions={pedagogyDistinctions}
                 labels={pl.learn.pedagogy ?? defaultPedagogyLabels}
               />
-            ) : (
-              textItem && (
+            )}
+            {textItem && (
+              pedagogyPack ? (
+                <section className="space-y-3" data-testid="pedagogy-lesson-body">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-700">
+                    {(pl.learn.pedagogy ?? defaultPedagogyLabels).continueReading}
+                  </h3>
+                  <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+                </section>
+              ) : (
                 <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
               )
             )}
