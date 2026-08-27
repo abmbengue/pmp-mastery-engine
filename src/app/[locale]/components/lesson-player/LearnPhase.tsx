@@ -4,7 +4,8 @@ import type { TextPayload, VideoPayload } from "@/shared/types/content-payloads"
 import type { Locale } from "@/shared/types/locale";
 
 export { PedagogyLearnBlock } from "./PedagogyLearnBlock";
-export type { PedagogyLabels } from "./PedagogyLearnBlock";
+export type { PedagogyLabels, SteppedPedagogyLabels } from "./PedagogyLearnBlock";
+export { PedagogySteppedLearn } from "./PedagogySteppedLearn";
 
 interface TextBlockProps {
   payload: TextPayload;

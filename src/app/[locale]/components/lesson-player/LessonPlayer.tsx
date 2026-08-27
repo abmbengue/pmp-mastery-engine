@@ -8,7 +8,7 @@ import { LESSON_PHASES, getNextPhase, getPrevPhase } from "@/modules/learning-en
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import { PhaseProgressBar } from "./PhaseProgressBar";
 import { TextBlock, VideoBlock, PedagogyLearnBlock } from "./LearnPhase";
-import type { PedagogyLabels } from "./LearnPhase";
+import type { PedagogyLabels, SteppedPedagogyLabels } from "./LearnPhase";
 import { ExerciseBlock, FlashcardBlock } from "./PracticePhase";
 import { TestPhase } from "./TestPhase";
 import type { QuizQuestion, QuizResult } from "./TestPhase";
@@ -300,6 +300,46 @@ export function LessonPlayer({
     hideRationale: locale === "fr" ? "Masquer le raisonnement" : "Hide rationale",
     continueReading: locale === "fr" ? "Continuer" : "Continue",
   };
+  const pedagogyFromMessages = pl.learn.pedagogy ?? defaultPedagogyLabels;
+  const steppedPedagogyLabels: SteppedPedagogyLabels = {
+    ...pedagogyFromMessages,
+    what:
+      pedagogyFromMessages.whatStepped ??
+      (locale === "fr"
+        ? "Qu'est-ce que je dois comprendre ?"
+        : "What do I need to understand?"),
+    why:
+      pedagogyFromMessages.whyStepped ??
+      (locale === "fr"
+        ? "Pourquoi cela compte dans un projet ?"
+        : "Why does this matter on a project?"),
+    continue: pedagogyFromMessages.continue ?? pedagogyFromMessages.continueReading,
+    recognize:
+      pedagogyFromMessages.recognize ??
+      (locale === "fr"
+        ? "Comment reconnaître cette situation dans un scénario PMP ?"
+        : "How do you recognize this in a PMP scenario?"),
+    decide:
+      pedagogyFromMessages.decide ??
+      (locale === "fr"
+        ? "Quelle est la bonne logique de décision ?"
+        : "What is the right decision logic?"),
+    reflectPrompt:
+      pedagogyFromMessages.reflectPrompt ??
+      (locale === "fr"
+        ? "Prenez un moment pour réfléchir avant de voir les options."
+        : "Take a moment to think before seeing the options."),
+    miniCasePrompt:
+      pedagogyFromMessages.miniCasePrompt ??
+      (locale === "fr" ? "Que ferais-tu en premier ?" : "What would you do first?"),
+    mindsetAssess: pedagogyFromMessages.mindsetAssess ?? "ASSESS",
+    mindsetAlign: pedagogyFromMessages.mindsetAlign ?? "ALIGN",
+    mindsetDecide: pedagogyFromMessages.mindsetDecide ?? "DECIDE",
+    mindsetAct: pedagogyFromMessages.mindsetAct ?? "ACT",
+    stepOf:
+      pedagogyFromMessages.stepOf ??
+      (locale === "fr" ? "Étape {current} / {total}" : "Step {current} / {total}"),
+  };
 
   return (
     <div className="mx-auto max-w-2xl" data-testid="lesson-player">
@@ -332,14 +372,15 @@ export function LessonPlayer({
                 locale={locale}
                 takeaway={pedagogyTakeaway}
                 criticalDistinctions={pedagogyDistinctions}
-                labels={pl.learn.pedagogy ?? defaultPedagogyLabels}
+                labels={pedagogyFromMessages}
+                steppedLabels={steppedPedagogyLabels}
               />
             )}
             {textItem && (
               pedagogyPack ? (
                 <section className="space-y-3" data-testid="pedagogy-lesson-body">
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-700">
-                    {(pl.learn.pedagogy ?? defaultPedagogyLabels).continueReading}
+                    {pedagogyFromMessages.continueReading}
                   </h3>
                   <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
                 </section>

@@ -4,19 +4,36 @@ import { useState, type ReactNode } from "react";
 import type { Locale } from "@/shared/types/locale";
 import type { LessonPedagogyPack, PedagogyScreen } from "@/modules/mastery-engine/lesson-pedagogy";
 import type { CriticalDistinctionCard } from "@/modules/mastery-engine/critical-distinctions";
+import { usesSteppedLearn } from "@/modules/mastery-engine/pedagogy-shared-vision-steps";
+import {
+  PedagogySteppedLearn,
+  type SteppedPedagogyLabels,
+} from "./PedagogySteppedLearn";
 
 type PedagogyLabels = {
   what: string;
+  whatStepped?: string;
   why: string;
+  whyStepped?: string;
   when: string;
   how: string;
   howToDecide: string;
+  recognize?: string;
+  decide?: string;
   scenario: string;
   distinctions: string;
   takeaway: string;
   showRationale: string;
   hideRationale: string;
   continueReading: string;
+  continue?: string;
+  reflectPrompt?: string;
+  miniCasePrompt?: string;
+  mindsetAssess?: string;
+  mindsetAlign?: string;
+  mindsetDecide?: string;
+  mindsetAct?: string;
+  stepOf?: string;
 };
 
 type PedagogyLearnBlockProps = {
@@ -25,6 +42,7 @@ type PedagogyLearnBlockProps = {
   takeaway?: string | null;
   criticalDistinctions?: CriticalDistinctionCard[];
   labels: PedagogyLabels;
+  steppedLabels?: SteppedPedagogyLabels;
 };
 
 function pick(locale: Locale, fr: string, en: string) {
@@ -139,7 +157,20 @@ export function PedagogyLearnBlock({
   takeaway,
   criticalDistinctions = [],
   labels,
+  steppedLabels,
 }: PedagogyLearnBlockProps) {
+  if (usesSteppedLearn(pack.lessonId) && steppedLabels) {
+    return (
+      <PedagogySteppedLearn
+        pack={pack}
+        locale={locale}
+        takeaway={takeaway}
+        criticalDistinctions={criticalDistinctions}
+        labels={steppedLabels}
+      />
+    );
+  }
+
   const miniCases = pack.screens.filter((s) => s.intent === "MINI_CASE");
   const whenHowScreens = pack.screens.filter(
     (s) => s.intent === "CONCEPT" || s.intent === "RECOGNIZE" || s.intent === "VISUAL"
@@ -255,3 +286,4 @@ export function PedagogyLearnBlock({
 }
 
 export type { PedagogyLabels };
+export type { SteppedPedagogyLabels } from "./PedagogySteppedLearn";

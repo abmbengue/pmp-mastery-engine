@@ -403,16 +403,28 @@
       "shortBadge": "Short",
       "pedagogy": {
         "what": "Quoi",
+        "whatStepped": "Qu'est-ce que je dois comprendre ?",
         "why": "Pourquoi",
+        "whyStepped": "Pourquoi cela compte dans un projet ?",
         "when": "Quand",
         "how": "Comment",
         "howToDecide": "Comment décider",
+        "recognize": "Comment reconnaître cette situation dans un scénario PMP ?",
+        "decide": "Quelle est la bonne logique de décision ?",
         "scenario": "Scénario",
         "distinctions": "Distinctions critiques",
         "takeaway": "À retenir",
         "showRationale": "Voir le raisonnement",
         "hideRationale": "Masquer le raisonnement",
-        "continueReading": "Continuer"
+        "continueReading": "Continuer",
+        "continue": "Continuer",
+        "reflectPrompt": "Prenez un moment pour réfléchir avant de voir les options.",
+        "miniCasePrompt": "Que ferais-tu en premier ?",
+        "mindsetAssess": "ASSESS",
+        "mindsetAlign": "ALIGN",
+        "mindsetDecide": "DECIDE",
+        "mindsetAct": "ACT",
+        "stepOf": "Étape {current} / {total}"
       }
     },
     "practice": {

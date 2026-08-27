@@ -403,16 +403,28 @@
       "shortBadge": "Short",
       "pedagogy": {
         "what": "What",
+        "whatStepped": "What do I need to understand?",
         "why": "Why",
+        "whyStepped": "Why does this matter on a project?",
         "when": "When",
         "how": "How",
         "howToDecide": "How to decide",
+        "recognize": "How do you recognize this in a PMP scenario?",
+        "decide": "What is the right decision logic?",
         "scenario": "Scenario",
         "distinctions": "Critical distinctions",
         "takeaway": "Key takeaway",
         "showRationale": "Show rationale",
         "hideRationale": "Hide rationale",
-        "continueReading": "Continue"
+        "continueReading": "Continue",
+        "continue": "Continue",
+        "reflectPrompt": "Take a moment to think before seeing the options.",
+        "miniCasePrompt": "What would you do first?",
+        "mindsetAssess": "ASSESS",
+        "mindsetAlign": "ALIGN",
+        "mindsetDecide": "DECIDE",
+        "mindsetAct": "ACT",
+        "stepOf": "Step {current} / {total}"
       }
     },
     "practice": {
