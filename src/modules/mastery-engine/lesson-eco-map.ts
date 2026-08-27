@@ -63,7 +63,14 @@ export const LESSON_ECO_MAP: readonly LessonEcoMapEntry[] = [
   m("project-roles", "PEOPLE-T03", "SUPPORTING", 2, "PLA_INTERNAL"),
   m("project-roles", "BUSINESS-T01", "SECONDARY", 2, "PLA_INTERNAL"),
   m("project-lifecycle-basics", "PROCESS-T01", "SECONDARY", 3, "PLA_INTERNAL"),
-  m("project-lifecycle-basics", "PROCESS-T10", "SUPPORTING", 2, "PLA_INTERNAL"),
+  m(
+    "project-lifecycle-basics",
+    "PROCESS-T10",
+    "PRIMARY",
+    3,
+    "SOURCE_PENDING_INSTRUCTOR_LESSON_10",
+    "Closure vehicle pending instructor Lesson 10 PDF"
+  ),
 
   // —— People ——
   m("leadership", "PEOPLE-T03", "PRIMARY", 4, "PLA_INTERNAL", undefined, ["team-leadership"], ["skill-select-leadership-style"]),
@@ -90,8 +97,8 @@ export const LESSON_ECO_MAP: readonly LessonEcoMapEntry[] = [
     "Communication supports engagement but is not engagement"
   ),
   m("stakeholders-basics", "PEOPLE-T04", "PRIMARY", 4, "INSTRUCTOR_DERIVED", "Instructor Lesson 2"),
-  m("stakeholders-basics", "PEOPLE-T05", "SECONDARY", 3, "INSTRUCTOR_DERIVED"),
-  m("stakeholders-basics", "PEOPLE-T06", "SECONDARY", 3, "INSTRUCTOR_DERIVED"),
+  m("stakeholders-basics", "PEOPLE-T05", "PRIMARY", 4, "INSTRUCTOR_DERIVED", "Expectation alignment — Lesson 2"),
+  m("stakeholders-basics", "PEOPLE-T06", "PRIMARY", 3, "INSTRUCTOR_DERIVED", "Expectation management — Lesson 2"),
   m("emotional-intelligence-pm", "PEOPLE-T03", "SECONDARY", 3, "PLA_INTERNAL"),
   m("emotional-intelligence-pm", "PEOPLE-T02", "SUPPORTING", 2, "PLA_INTERNAL"),
   m("servant-leadership", "PEOPLE-T03", "PRIMARY", 4, "INSTRUCTOR_DERIVED", "Instructor Lesson 7"),
