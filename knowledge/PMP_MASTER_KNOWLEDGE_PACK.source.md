@@ -1,16 +1,15 @@
 # PMP MASTER KNOWLEDGE PACK — CURSOR
-Version 1.0 — 26 Aug 2026
+Version 1.1 — 27 Aug 2026 (Phase B.1 source correction)
 
 ## Purpose
 Compact, paraphrased source-derived knowledge for Cursor when the original PMP PDFs are too large to ingest directly.
 
 SOURCE SET
-- PMBOK 8 English
-- PMBOK 8 French
+- PMI PMP ECO — July 2026 (**PRIMARY for exam domains/tasks**) — `ECO_2026_398a.pdf` (FR)
+- PMBOK 8 English / French (when available)
 - PMP Lesson 2 — common vision, stakeholders, governance
 - PMP Lesson 5 — procurement, quality, schedule
 - PMP Lesson 7 — conflict, team leadership
-- PMI PMP ECO — July 2026
 
 RULES
 - This is a knowledge layer, not a reproduction of copyrighted source text.
@@ -18,6 +17,18 @@ RULES
 - Current July 2026 ECO controls current exam-domain/task claims.
 - PMBOK 8 controls PMBOK 8 conceptual claims.
 - Existing 200 exam questions are PROTECTED.
+- English ECO task titles below are **PLA paraphrases (DERIVED)** of the French primary ECO unless an English ECO PDF is present in the workspace.
+- `DERIVED_PEDAGOGICAL` ≠ PMI official.
+
+## GOVERNANCE CORRECTION (Phase B.1)
+
+**v1.0 defect:** Listed People = 6 tasks / Total = 24 ECO tasks; omitted People T7 and T8.
+
+**Primary ECO July 2026 verification:** People = **8**, Process = **10**, Business Environment = **8**, Total = **26**.
+
+**Code taxonomy** (`PEOPLE-T01`…`T08`, etc.) was already correct. Do **not** regress to 24 tasks.
+
+**Audit:** `PMP_MASTERY_ENGINE_PHASE_B_ECO_SOURCE_AUDIT.md`
 
 ## 1. CURRENT PMP EXAM — JULY 2026 ECO
 Domains:
@@ -27,82 +38,124 @@ Domains:
 - Approximately 40% predictive; 60% adaptive/agile + hybrid.
 - 180 questions / 240 minutes.
 
-## 2. PEOPLE — 6 TASKS
+Source: `PMI_ECO_2026` · Confidence: HIGH · Pages 6–7 of ECO FR PDF.
 
-### Task 1 — Develop a common vision
+## 2. PEOPLE — 8 TASKS
+Source: `PMI_ECO_2026` · Confidence: HIGH · ECO FR pages 8–9.
+
+English titles: DERIVED paraphrases of French primary wording.
+
+### Task 1 — PEOPLE-T01 / PE-01 — Develop a common vision
+FR primary: Développer une vision commune.
 Shared vision, promotion, keeping vision current, root-cause analysis of misunderstanding.
 
-### Task 2 — Manage conflicts
+### Task 2 — PEOPLE-T02 / PE-02 — Manage conflicts
+FR primary: Gérer les conflits.
 Identify source, analyze context, implement resolution, communicate principles, establish/maintain ground rules.
 
-### Task 3 — Lead the project team
+### Task 3 — PEOPLE-T03 / PE-03 — Lead the project team
+FR primary: Diriger l'équipe de projet.
 Set expectations, empower, solve problems, represent team voice, support varied perspectives, choose leadership style, clarify roles.
 
-### Task 4 — Engage stakeholders
+### Task 4 — PEOPLE-T04 / PE-04 — Engage stakeholders
+FR primary: Impliquer les parties prenantes.
 Identify/analyze stakeholders, tailor communication, execute engagement, align needs/expectations/objectives, build trust and influence.
 
-### Task 5 — Align stakeholder expectations
+**Critical distinction:** T4 = **ENGAGEMENT** (participation, alignment, relationship). Related to but **not the same as** T8 communication planning.
+
+### Task 5 — PEOPLE-T05 / PE-05 — Align stakeholder expectations
+FR primary: Aligner les attentes des parties prenantes.
 Categorize stakeholders, identify expectations, facilitate alignment discussions, mentoring opportunities.
 
-### Task 6 — Manage stakeholder expectations
+### Task 6 — PEOPLE-T06 / PE-06 — Manage stakeholder expectations
+FR primary: Gérer les attentes des parties prenantes.
 Identify customer expectations, maintain outcome alignment, monitor satisfaction/expectations and respond.
 
-## 3. PROCESS — 10 TASKS
+### Task 7 — PEOPLE-T07 / PE-07 — Ensure knowledge transfer
+FR primary: Assurer le transfert des connaissances.
+Source: `PMI_ECO_2026` · Page 9 · Confidence: HIGH.
 
-### Task 1 — Develop an integrated project management plan and plan delivery
+Enablers (paraphrased from ECO catalyseurs):
+- identify knowledge essential to the project
+- acquire knowledge
+- foster an environment that supports knowledge transfer
+
+Do **not** demote T7 to a non-ECO theme because knowledge also appears in PMBOK/closure contexts.
+
+### Task 8 — PEOPLE-T08 / PE-08 — Plan and manage communication
+FR primary: Planifier et gérer la communication.
+Source: `PMI_ECO_2026` · Page 9 · Confidence: HIGH.
+
+Enablers (paraphrased from ECO catalyseurs):
+- establish a communication strategy
+- promote transparency and collaboration
+- establish a feedback loop
+- understand reporting requirements
+- create reports aligned with sponsor and stakeholder expectations
+- support reporting and governance processes
+
+**Critical distinction:** T8 = **COMMUNICATION** planning/management as a **separate ECO task**. Communication may support engagement (T4), but T8 is not a sub-concept of T4.
+
+Mastery pair: communication ≠ engagement (`mc-communication-engagement`).
+
+## 3. PROCESS — 10 TASKS
+Source: `PMI_ECO_2026` · Confidence: HIGH · ECO FR pages 10–11.
+
+### Task 1 — PROCESS-T01 / PR-01 — Develop an integrated project management plan and plan delivery
 Assess needs/complexity, choose predictive/adaptive/hybrid approach, identify critical information, execution strategy, integrated plan, effort/resources, dependencies/gaps/value, data-informed decisions.
 
-### Task 2 — Develop and manage project scope
+### Task 2 — PROCESS-T02 / PR-02 — Develop and manage project scope
 Define scope, obtain stakeholder agreement, break down scope.
 
-### Task 3 — Help ensure value-based delivery
+### Task 3 — PROCESS-T03 / PR-03 — Help ensure value-based delivery
 Identify value, prioritize using value/feedback, incremental delivery, monitor business value, benefits measurement, delivery options.
 
-### Task 4 — Plan and manage resources
+### Task 4 — PROCESS-T04 / PR-04 — Plan and manage resources
 Define/plan resources; manage and optimize needs and availability.
 
-### Task 5 — Plan and manage procurement
+### Task 5 — PROCESS-T05 / PR-05 — Plan and manage procurement
 Plan procurement, execute procurement management, select contract types, evaluate vendors, verify agreement objectives, negotiate, manage suppliers/contracts, procurement strategy, delivery solution.
 
-### Task 6 — Plan and manage finance
+### Task 6 — PROCESS-T06 / PR-06 — Plan and manage finance
 Financial needs, contingency/risk allocations, spend tracking, reporting, future finance challenges, financial variations/governance, reserves.
 
-### Task 7 — Plan and optimize quality of products/deliverables
+### Task 7 — PROCESS-T07 / PR-07 — Plan and optimize quality of products/deliverables
 Quality requirements, processes/tools, quality plan, regulatory compliance, cost of quality/sustainability, ongoing reviews, continuous improvement.
 
-### Task 8 — Plan and manage schedule
+### Task 8 — PROCESS-T08 / PR-08 — Plan and manage schedule
 Schedule by development approach, coordination, estimates, milestones/dependencies/story points, benchmarks/history, schedule creation/baseline, management, variance analysis.
 
-### Task 9 — Evaluate project status
+### Task 9 — PROCESS-T09 / PR-09 — Evaluate project status
 Metrics, analysis/reconciliation, artifact tailoring and management, accessibility, progress assessment, metric updates, status communication.
 
-### Task 10 — Manage project closure
+### Task 10 — PROCESS-T10 / PR-10 — Manage project closure
 Stakeholder approval, closure criteria, transition readiness, lessons learned/retrospectives, procurement/financial/resource closeout.
 
 ## 4. BUSINESS ENVIRONMENT — 8 TASKS
+Source: `PMI_ECO_2026` · Confidence: HIGH · ECO FR pages 12–13.
 
-### Task 1 — Define and establish project governance
+### Task 1 — BUSINESS-T01 / BE-01 — Define and establish project governance
 Structure, rules, procedures, reporting, ethics/policies, OPAs, success metrics, escalation paths/thresholds.
 
-### Task 2 — Plan and manage project compliance
+### Task 2 — BUSINESS-T02 / BE-02 — Plan and manage project compliance
 Security, health/safety, sustainability/regulatory compliance; classify requirements, threats, methods, consequences, actions, measurement.
 
-### Task 3 — Manage and control changes
+### Task 3 — BUSINESS-T03 / BE-03 — Manage and control changes
 Change control, proposed-change status, approved changes, documentation updates.
 
-### Task 4 — Remove impediments and manage issues
+### Task 4 — BUSINESS-T04 / BE-04 — Remove impediments and manage issues
 Evaluate/prioritize impediments, intervention, continual reassessment, recognize risk-to-issue transition, collaborate on issue resolution.
 
-### Task 5 — Plan and manage risk
+### Task 5 — BUSINESS-T05 / BE-05 — Plan and manage risk
 Identify/analyze/monitor risks, risk plan, risk register, responses, communicate risk impact/status.
 
-### Task 6 — Continuous improvement
+### Task 6 — BUSINESS-T06 / BE-06 — Continuous improvement
 Use lessons learned, update improvement processes, update OPAs.
 
-### Task 7 — Support organizational change
+### Task 7 — BUSINESS-T07 / BE-07 — Support organizational change
 Assess culture, evaluate organizational-change impact, determine actions.
 
-### Task 8 — Evaluate external business environment changes
+### Task 8 — BUSINESS-T08 / BE-08 — Evaluate external business environment changes
 Scan regulation/technology/geopolitics/market, assess and prioritize scope/backlog impact, continuously review.
 
 ## 5. PMBOK 8 — SEVEN PERFORMANCE DOMAINS
@@ -140,6 +193,7 @@ Identification, analysis, engagement, communication linkages, negotiation, confl
 Critical distinction:
 Communication = information exchange.
 Engagement = participation/alignment/relationship needed to accomplish objectives.
+ECO maps these to **separate tasks** T4 (engagement) and T8 (communication).
 
 ### Resources
 Human + physical/virtual resources; availability, acquisition, utilization, maintenance, team effectiveness, motivation, empowerment, skills, professional/ethical behavior, organizational/cultural/geographic context.
@@ -290,14 +344,16 @@ Future selection should use:
 ECO-task weakness, concept weakness, recent/historical errors, time since exposure, difficulty, question type, approach, language, retention and confidence calibration.
 Do not simply repeat the weakest lesson; target the underlying misconception.
 
-## 18. CURRENT GAPS FROM PHASE A
-Prioritize:
+## 18. CURRENT GAPS FROM PHASE A / B
+Prioritize (do not implement in B.1):
 - cost/EVM
 - procurement depth
 - integration
 - resources
 - engagement vs communication
 - conflict vs issue
+- PEOPLE-T07 coverage (0 current exam questions)
+- 80 PARTIAL metadata mappings
 - item-level retention
 - initial adaptive selection
 - distractor-aware errors
@@ -318,6 +374,7 @@ Protected:
 
 ## 20. IMPLEMENTATION ORDER
 B: mastery model + concept graph + weaknesses + retention hooks
+B.1: Knowledge Pack source correction (this version)
 B.5: source-alignment verification
 C: adaptive initial selection
 C.5: pilot with existing 200
@@ -328,7 +385,13 @@ G: multi-signal readiness
 H: full regression
 
 ## SOURCE REFERENCES
-PMBOK 8:
+PMI ECO July 2026 (FR PDF `ECO_2026_398a.pdf`):
+- Domain weights: page 6
+- People tasks 1–8: pages 8–9
+- Process tasks 1–10: pages 10–11
+- Business Environment tasks 1–8: pages 12–13
+
+PMBOK 8 (when available):
 - §2.1 Governance
 - §2.2 Scope
 - §2.3 Schedule

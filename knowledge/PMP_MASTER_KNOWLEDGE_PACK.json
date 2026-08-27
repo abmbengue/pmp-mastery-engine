@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0-phase-b",
-  "generatedAt": "2026-08-26T21:54:13.137Z",
-  "sourceNotice": "PLA mastery knowledge pack. ECO structure from PMI ECO July 2026 (FR PDF in uploads). PMBOK 8 PD paraphrases from mission spec — verify when full PMBOK pack is imported. NOT official PMI certification content.",
+  "version": "1.1.0-phase-b1",
+  "generatedAt": "2026-08-27T05:18:49.846Z",
+  "sourceNotice": "PLA mastery knowledge pack (Phase B.1). ECO structure VERIFIED against PMI ECO July 2026 (ECO_2026_398a.pdf): People 8 / Process 10 / Business 8 = 26 tasks including PEOPLE-T07 knowledge transfer and PEOPLE-T08 communication. Corrected source pack: knowledge/PMP_MASTER_KNOWLEDGE_PACK.source.*. English titles are DERIVED paraphrases. PMBOK 8 PD paraphrases — verify when full PMBOK is imported. NOT official PMI certification content.",
   "eco": {
     "domainWeights": {
       "PEOPLE": 0.33,

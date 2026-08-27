@@ -1,6 +1,15 @@
 {
-  "version": "1.0",
-  "date": "2026-08-26",
+  "version": "1.1",
+  "date": "2026-08-27",
+  "phase": "B.1",
+  "governance": {
+    "priorVersionDefect": "v1.0 listed People=6 / Total=24 and omitted PEOPLE-T07 and PEOPLE-T08",
+    "correctedTotalEcoTasks": 26,
+    "correctedPeopleTasks": 8,
+    "primarySource": "PMI PMP Examination Content Outline — July 2026 (ECO_2026_398a.pdf)",
+    "codeTaxonomyStatus": "CORRECT — do not regress to 24 tasks",
+    "auditReport": "PMP_MASTERY_ENGINE_PHASE_B_ECO_SOURCE_AUDIT.md"
+  },
   "exam": {
     "people_pct": 33,
     "process_pct": 41,
@@ -8,38 +17,249 @@
     "questions": 180,
     "minutes": 240,
     "predictive_approx_pct": 40,
-    "adaptive_agile_hybrid_approx_pct": 60
+    "adaptive_agile_hybrid_approx_pct": 60,
+    "sourceType": "PMI_ECO_2026",
+    "sourceConfidence": "HIGH",
+    "sourcePages": "6"
   },
   "eco": {
+    "totalTasks": 26,
     "people": [
-      "Develop a common vision",
-      "Manage conflicts",
-      "Lead the project team",
-      "Engage stakeholders",
-      "Align stakeholder expectations",
-      "Manage stakeholder expectations"
+      {
+        "stableId": "PEOPLE-T01",
+        "legacyCode": "PE-01",
+        "titleEn": "Develop a common vision",
+        "titleFr": "Développer une vision commune",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 8
+      },
+      {
+        "stableId": "PEOPLE-T02",
+        "legacyCode": "PE-02",
+        "titleEn": "Manage conflicts",
+        "titleFr": "Gérer les conflits",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 8
+      },
+      {
+        "stableId": "PEOPLE-T03",
+        "legacyCode": "PE-03",
+        "titleEn": "Lead the project team",
+        "titleFr": "Diriger l'équipe de projet",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 8
+      },
+      {
+        "stableId": "PEOPLE-T04",
+        "legacyCode": "PE-04",
+        "titleEn": "Engage stakeholders",
+        "titleFr": "Impliquer les parties prenantes",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 8,
+        "role": "ENGAGEMENT",
+        "note": "Distinct from PEOPLE-T08 communication planning"
+      },
+      {
+        "stableId": "PEOPLE-T05",
+        "legacyCode": "PE-05",
+        "titleEn": "Align stakeholder expectations",
+        "titleFr": "Aligner les attentes des parties prenantes",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 8
+      },
+      {
+        "stableId": "PEOPLE-T06",
+        "legacyCode": "PE-06",
+        "titleEn": "Manage stakeholder expectations",
+        "titleFr": "Gérer les attentes des parties prenantes",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 9
+      },
+      {
+        "stableId": "PEOPLE-T07",
+        "legacyCode": "PE-07",
+        "titleEn": "Ensure knowledge transfer",
+        "titleFr": "Assurer le transfert des connaissances",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 9,
+        "enablersParaphrased": [
+          "identify knowledge essential to the project",
+          "acquire knowledge",
+          "foster an environment that supports knowledge transfer"
+        ]
+      },
+      {
+        "stableId": "PEOPLE-T08",
+        "legacyCode": "PE-08",
+        "titleEn": "Plan and manage communication",
+        "titleFr": "Planifier et gérer la communication",
+        "titleEnClassification": "DERIVED",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH",
+        "sourcePage": 9,
+        "role": "COMMUNICATION",
+        "note": "Distinct ECO task from PEOPLE-T04 engagement; not a sub-concept of T04",
+        "enablersParaphrased": [
+          "establish a communication strategy",
+          "promote transparency and collaboration",
+          "establish a feedback loop",
+          "understand reporting requirements",
+          "create reports aligned with sponsor and stakeholder expectations",
+          "support reporting and governance processes"
+        ]
+      }
     ],
     "process": [
-      "Develop an integrated project management plan and plan delivery",
-      "Develop and manage project scope",
-      "Help ensure value-based delivery",
-      "Plan and manage resources",
-      "Plan and manage procurement",
-      "Plan and manage finance",
-      "Plan and optimize quality of products/deliverables",
-      "Plan and manage schedule",
-      "Evaluate project status",
-      "Manage project closure"
+      {
+        "stableId": "PROCESS-T01",
+        "legacyCode": "PR-01",
+        "titleEn": "Develop an integrated project management plan and plan delivery",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T02",
+        "legacyCode": "PR-02",
+        "titleEn": "Develop and manage project scope",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T03",
+        "legacyCode": "PR-03",
+        "titleEn": "Help ensure value-based delivery",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T04",
+        "legacyCode": "PR-04",
+        "titleEn": "Plan and manage resources",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T05",
+        "legacyCode": "PR-05",
+        "titleEn": "Plan and manage procurement",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T06",
+        "legacyCode": "PR-06",
+        "titleEn": "Plan and manage finance",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T07",
+        "legacyCode": "PR-07",
+        "titleEn": "Plan and optimize quality of products/deliverables",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T08",
+        "legacyCode": "PR-08",
+        "titleEn": "Plan and manage schedule",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T09",
+        "legacyCode": "PR-09",
+        "titleEn": "Evaluate project status",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "PROCESS-T10",
+        "legacyCode": "PR-10",
+        "titleEn": "Manage project closure",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      }
     ],
     "business_environment": [
-      "Define and establish project governance",
-      "Plan and manage project compliance",
-      "Manage and control changes",
-      "Remove impediments and manage issues",
-      "Plan and manage risk",
-      "Continuous improvement",
-      "Support organizational change",
-      "Evaluate external business environment changes"
+      {
+        "stableId": "BUSINESS-T01",
+        "legacyCode": "BE-01",
+        "titleEn": "Define and establish project governance",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T02",
+        "legacyCode": "BE-02",
+        "titleEn": "Plan and manage project compliance",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T03",
+        "legacyCode": "BE-03",
+        "titleEn": "Manage and control changes",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T04",
+        "legacyCode": "BE-04",
+        "titleEn": "Remove impediments and manage issues",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T05",
+        "legacyCode": "BE-05",
+        "titleEn": "Plan and manage risk",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T06",
+        "legacyCode": "BE-06",
+        "titleEn": "Continuous improvement",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T07",
+        "legacyCode": "BE-07",
+        "titleEn": "Support organizational change",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      },
+      {
+        "stableId": "BUSINESS-T08",
+        "legacyCode": "BE-08",
+        "titleEn": "Evaluate external business environment changes",
+        "sourceType": "PMI_ECO_2026",
+        "sourceConfidence": "HIGH"
+      }
+    ],
+    "criticalDistinctions": [
+      {
+        "a": "PEOPLE-T04",
+        "b": "PEOPLE-T08",
+        "label": "engagement vs communication",
+        "rule": "Related but distinct ECO tasks; do not collapse T08 into T04"
+      }
     ]
   },
   "pmbok8_performance_domains": [
@@ -51,8 +271,16 @@
     "Resources",
     "Risk"
   ],
+  "crossCutting": {
+    "quality": {
+      "notAPerformanceDomainHeading": true,
+      "ecoLink": "PROCESS-T07",
+      "note": "Quality remains major; represented as KN-QUALITY in mastery engine"
+    }
+  },
   "protected_exam_bank": {
     "count": 200,
-    "external_keys": "pmp-exam-001..pmp-exam-200"
+    "external_keys": "pmp-exam-001..pmp-exam-200",
+    "stemsUnchanged": true
   }
 }

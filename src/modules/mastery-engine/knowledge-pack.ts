@@ -14,7 +14,7 @@ import { CONCEPTS, CONCEPT_COUNT } from "./concept-graph";
 import { MASTERY_SKILLS, MASTERY_SKILL_COUNT } from "./mastery-skills";
 import { MISCONCEPTIONS, MISCONCEPTION_COUNT } from "./misconceptions";
 
-export const KNOWLEDGE_PACK_VERSION = "1.0.0-phase-b" as const;
+export const KNOWLEDGE_PACK_VERSION = "1.1.0-phase-b1" as const;
 
 export type KnowledgePack = {
   version: typeof KNOWLEDGE_PACK_VERSION;
@@ -46,9 +46,11 @@ export function buildKnowledgePack(): KnowledgePack {
     version: KNOWLEDGE_PACK_VERSION,
     generatedAt: new Date().toISOString(),
     sourceNotice:
-      "PLA mastery knowledge pack. ECO structure from PMI ECO July 2026 (FR PDF in uploads). " +
-      "PMBOK 8 PD paraphrases from mission spec — verify when full PMBOK pack is imported. " +
-      "NOT official PMI certification content.",
+      "PLA mastery knowledge pack (Phase B.1). ECO structure VERIFIED against PMI ECO July 2026 " +
+      "(ECO_2026_398a.pdf): People 8 / Process 10 / Business 8 = 26 tasks including PEOPLE-T07 " +
+      "knowledge transfer and PEOPLE-T08 communication. Corrected source pack: " +
+      "knowledge/PMP_MASTER_KNOWLEDGE_PACK.source.*. English titles are DERIVED paraphrases. " +
+      "PMBOK 8 PD paraphrases — verify when full PMBOK is imported. NOT official PMI certification content.",
     eco: {
       domainWeights: ECO_DOMAIN_WEIGHTS,
       deliverySplit: ECO_DELIVERY_SPLIT,
