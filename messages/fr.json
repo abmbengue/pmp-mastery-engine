@@ -45,6 +45,7 @@
     "register": "Inscription",
     "skipToContent": "Aller au contenu",
     "pmpExam": "Examen PMP",
+    "pmpStudy": "Étude PMP",
     "review": "Révision",
     "readinessReport": "Rapport de préparation",
     "learningPaths": "Parcours"
@@ -155,7 +156,27 @@
     "viewAllPaths": "Voir tous les parcours",
     "shortsPersonalFinance": "Shorts Finance Perso",
     "shortsCorporateFinance": "Shorts Finance Entr.",
-    "shortsPmp": "Shorts PMP"
+    "shortsPmp": "Shorts PMP",
+    "pmpStudy": "Étude PMP (ECO)",
+    "openPmpStudy": "Étudier par tâche ECO"
+  },
+  "pmpStudy": {
+    "eyebrow": "PMP Mastery",
+    "title": "Étude PMP",
+    "subtitle": "Étudiez par domaine et tâche ECO — {count} tâches officielles. Mobile-first.",
+    "domainsNav": "Domaines ECO",
+    "domainMeta": "{tasks} tâches · {weight}% du poids examen",
+    "flowHint": "Domaine → Tâche ECO → Leçon → Apprendre → Pratiquer → Tester → Réviser → Maîtriser",
+    "domainTasksTitle": "Tâches ECO",
+    "domainTasksSubtitle": "Choisissez une tâche pour voir les leçons liées et les distinctions critiques.",
+    "mappedLessons": "{count, plural, =0 {Aucune leçon liée} one {# leçon liée} other {# leçons liées}}",
+    "startHint": "Ouvrir la leçon primaire dans le lecteur existant.",
+    "startLesson": "Démarrer la leçon",
+    "openLesson": "Ouvrir",
+    "noLessons": "Aucune leçon n'est encore liée à cette tâche.",
+    "lessonsHeading": "Leçons liées",
+    "distinctionsHeading": "Distinctions critiques",
+    "pedagogyBadge": "Pack pédagogique"
   },
   "review": {
     "title": "Réviser maintenant",
@@ -379,7 +400,20 @@
     "learn": {
       "videoComingSoon": "Vidéo disponible prochainement",
       "videoPlaceholder": "Cette vidéo sera disponible dans une prochaine mise à jour.",
-      "shortBadge": "Short"
+      "shortBadge": "Short",
+      "pedagogy": {
+        "what": "Quoi",
+        "why": "Pourquoi",
+        "when": "Quand",
+        "how": "Comment",
+        "howToDecide": "Comment décider",
+        "scenario": "Scénario",
+        "distinctions": "Distinctions critiques",
+        "takeaway": "À retenir",
+        "showRationale": "Voir le raisonnement",
+        "hideRationale": "Masquer le raisonnement",
+        "continueReading": "Continuer"
+      }
     },
     "practice": {
       "exerciseTitle": "Exercice",

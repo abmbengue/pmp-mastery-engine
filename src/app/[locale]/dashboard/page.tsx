@@ -261,6 +261,15 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         <h2 id="pmp-practice-heading" className="text-xl font-semibold text-gray-900">
           {t("pmpPractice")}
         </h2>
+        <div className="mt-3">
+          <Link
+            href="/pmp-study"
+            className="inline-flex min-h-11 items-center rounded-lg border border-indigo-300 bg-white px-4 py-2 text-sm font-semibold text-indigo-900 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            data-testid="dashboard-pmp-study-link"
+          >
+            {t("openPmpStudy")} →
+          </Link>
+        </div>
         <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <dt className="text-gray-500">{t("lastExam")}</dt>

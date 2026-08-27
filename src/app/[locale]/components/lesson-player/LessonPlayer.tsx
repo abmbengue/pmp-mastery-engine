@@ -7,7 +7,8 @@ import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import { LESSON_PHASES, getNextPhase, getPrevPhase } from "@/modules/learning-engine/lesson-phases";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import { PhaseProgressBar } from "./PhaseProgressBar";
-import { TextBlock, VideoBlock } from "./LearnPhase";
+import { TextBlock, VideoBlock, PedagogyLearnBlock } from "./LearnPhase";
+import type { PedagogyLabels } from "./LearnPhase";
 import { ExerciseBlock, FlashcardBlock } from "./PracticePhase";
 import { TestPhase } from "./TestPhase";
 import type { QuizQuestion, QuizResult } from "./TestPhase";
@@ -18,6 +19,22 @@ import type { AiTutorPanelLabels } from "@/app/[locale]/components/ai-tutor/AiTu
 import type { TextPayload, VideoPayload, ExercisePayload, FlashcardPayload, SimulationPayload } from "@/shared/types/content-payloads";
 import { SimulatorWorkbench } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
 import type { SimulatorLabels } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
+import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
+import { distinctionsForEcoTask } from "@/modules/mastery-engine/critical-distinctions";
+
+function extractTakeawayFromTextBody(body: string | null | undefined): string | null {
+  if (!body) return null;
+  const markers = ["À retenir", "Key takeaway"];
+  for (const marker of markers) {
+    const idx = body.indexOf(marker);
+    if (idx < 0) continue;
+    const after = body.slice(idx + marker.length).replace(/^\n+/, "");
+    const nextBreak = after.search(/\n\n+/);
+    const chunk = (nextBreak >= 0 ? after.slice(0, nextBreak) : after).trim();
+    if (chunk) return chunk;
+  }
+  return null;
+}
 
 export interface LessonItem {
   id: string;
@@ -50,7 +67,12 @@ export interface LessonPlayerProps {
       startLesson: string;
       finishLesson: string;
       phases: Record<LessonPhase, string>;
-      learn: { videoComingSoon: string; videoPlaceholder: string; shortBadge: string };
+      learn: {
+        videoComingSoon: string;
+        videoPlaceholder: string;
+        shortBadge: string;
+        pedagogy?: PedagogyLabels;
+      };
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
       test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
@@ -251,6 +273,34 @@ export function LessonPlayer({
   const simulationItem = items.find((i) => i.type === "SIMULATION");
   const quizItem = items.find((i) => i.type === "QUIZ");
 
+  const pedagogyPack = getLessonPedagogy(lessonSlug);
+  const pedagogyDistinctions = pedagogyPack
+    ? Array.from(
+        new Map(
+          pedagogyPack.ecoTaskIds
+            .flatMap((taskId) => distinctionsForEcoTask(taskId))
+            .map((d) => [d.id, d] as const)
+        ).values()
+      )
+    : [];
+  const textPayload = textItem?.payload as TextPayload | undefined;
+  const pedagogyTakeaway = extractTakeawayFromTextBody(
+    textPayload ? (locale === "fr" ? textPayload.bodyFr : textPayload.bodyEn) : null
+  );
+  const defaultPedagogyLabels: PedagogyLabels = {
+    what: locale === "fr" ? "Quoi" : "What",
+    why: locale === "fr" ? "Pourquoi" : "Why",
+    when: locale === "fr" ? "Quand" : "When",
+    how: locale === "fr" ? "Comment" : "How",
+    howToDecide: locale === "fr" ? "Comment décider" : "How to decide",
+    scenario: locale === "fr" ? "Scénario" : "Scenario",
+    distinctions: locale === "fr" ? "Distinctions critiques" : "Critical distinctions",
+    takeaway: locale === "fr" ? "À retenir" : "Key takeaway",
+    showRationale: locale === "fr" ? "Voir le raisonnement" : "Show rationale",
+    hideRationale: locale === "fr" ? "Masquer le raisonnement" : "Hide rationale",
+    continueReading: locale === "fr" ? "Continuer" : "Continue",
+  };
+
   return (
     <div className="mx-auto max-w-2xl" data-testid="lesson-player">
       {/* Header */}
@@ -276,8 +326,18 @@ export function LessonPlayer({
       <div className="min-h-48">
         {currentPhase === "LEARN" && (
           <div className="space-y-5" data-testid="phase-learn">
-            {textItem && (
-              <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+            {pedagogyPack ? (
+              <PedagogyLearnBlock
+                pack={pedagogyPack}
+                locale={locale}
+                takeaway={pedagogyTakeaway}
+                criticalDistinctions={pedagogyDistinctions}
+                labels={pl.learn.pedagogy ?? defaultPedagogyLabels}
+              />
+            ) : (
+              textItem && (
+                <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+              )
             )}
             {videoItem && (
               <VideoBlock

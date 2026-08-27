@@ -23,3 +23,5 @@ export * from "./instructor-lessons";
 export * from "./instructor-lesson-blueprints";
 export * from "./critical-distinctions";
 export * from "./lesson-pedagogy";
+export * from "./pmp-lesson-catalog";
+export * from "./pmp-study";

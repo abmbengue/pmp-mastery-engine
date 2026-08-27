@@ -45,6 +45,7 @@
     "register": "Register",
     "skipToContent": "Skip to content",
     "pmpExam": "PMP Exam",
+    "pmpStudy": "PMP Study",
     "review": "Review",
     "readinessReport": "Readiness report",
     "learningPaths": "Paths"
@@ -155,7 +156,27 @@
     "viewAllPaths": "View all paths",
     "shortsPersonalFinance": "PF Shorts",
     "shortsCorporateFinance": "CF Shorts",
-    "shortsPmp": "PMP Shorts"
+    "shortsPmp": "PMP Shorts",
+    "pmpStudy": "PMP Study (ECO)",
+    "openPmpStudy": "Study by ECO task"
+  },
+  "pmpStudy": {
+    "eyebrow": "PMP Mastery",
+    "title": "PMP Study",
+    "subtitle": "Study by ECO domain and task — {count} official tasks. Mobile-first.",
+    "domainsNav": "ECO domains",
+    "domainMeta": "{tasks} tasks · {weight}% exam weight",
+    "flowHint": "Domain → ECO Task → Lesson → Learn → Practice → Test → Review → Master",
+    "domainTasksTitle": "ECO tasks",
+    "domainTasksSubtitle": "Choose a task to see mapped lessons and critical distinctions.",
+    "mappedLessons": "{count, plural, =0 {No mapped lessons} one {# mapped lesson} other {# mapped lessons}}",
+    "startHint": "Open the primary lesson in the existing player.",
+    "startLesson": "Start lesson",
+    "openLesson": "Open",
+    "noLessons": "No lessons are mapped to this task yet.",
+    "lessonsHeading": "Mapped lessons",
+    "distinctionsHeading": "Critical distinctions",
+    "pedagogyBadge": "Pedagogy pack"
   },
   "review": {
     "title": "Review Now",
@@ -379,7 +400,20 @@
     "learn": {
       "videoComingSoon": "Video coming soon",
       "videoPlaceholder": "This video will be available in a future update.",
-      "shortBadge": "Short"
+      "shortBadge": "Short",
+      "pedagogy": {
+        "what": "What",
+        "why": "Why",
+        "when": "When",
+        "how": "How",
+        "howToDecide": "How to decide",
+        "scenario": "Scenario",
+        "distinctions": "Critical distinctions",
+        "takeaway": "Key takeaway",
+        "showRationale": "Show rationale",
+        "hideRationale": "Hide rationale",
+        "continueReading": "Continue"
+      }
     },
     "practice": {
       "exerciseTitle": "Exercise",
