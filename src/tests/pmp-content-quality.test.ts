@@ -24,7 +24,7 @@ describe("PMP content quality pass (Mission 2 + Mission 4 polish)", () => {
   });
 
   it("applies quality upgrades including Mission 4 polish set", () => {
-    expect(PMP_QUALITY_UPGRADE_SLUGS.length).toBe(45);
+    expect(PMP_QUALITY_UPGRADE_SLUGS.length).toBe(56);
     expect(PMP_PRIORITY_UPGRADE_SLUGS).toContain("combining-predictive-and-agile");
     expect(PMP_POLISH_UPGRADE_SLUGS.length).toBe(10);
     for (const slug of PMP_QUALITY_UPGRADE_SLUGS) {
