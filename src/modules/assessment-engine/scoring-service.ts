@@ -1,6 +1,7 @@
 import prisma from "@/data/prisma-client";
 import type { QuestionType } from "@/generated/prisma/client";
 import { updateConceptMastery } from "@/modules/learning-engine/progress-service";
+import type { ConfidenceLevel } from "@/modules/mastery-engine/types";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 
 export interface AnswerValidationInput {
@@ -73,7 +74,8 @@ export async function recordQuizAttempt(
   userId: string,
   questionId: string,
   selectedOptionIds: string[],
-  learningItemId?: string
+  learningItemId?: string,
+  confidenceLevel?: ConfidenceLevel | null
 ) {
   const validation = await validateAnswer({ questionId, selectedOptionIds });
 
@@ -90,6 +92,7 @@ export async function recordQuizAttempt(
       answers: selectedOptionIds,
       attemptNo: previousAttempts + 1,
       isCorrect: validation.isCorrect,
+      confidenceLevel: confidenceLevel ?? null,
     },
   });
 

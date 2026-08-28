@@ -450,7 +450,13 @@
       "trueOrFalse": "True or False",
       "submit": "Submit answers",
       "correct": "Correct!",
-      "incorrect": "Incorrect"
+      "incorrect": "Incorrect",
+      "confidencePrompt": "How confident are you in this answer?",
+      "confidenceLevel1": "1 — Not at all confident",
+      "confidenceLevel2": "2 — Slightly confident",
+      "confidenceLevel3": "3 — Moderately confident",
+      "confidenceLevel4": "4 — Confident",
+      "confidenceLevel5": "5 — Very confident"
     },
     "review": {
       "title": "Review",

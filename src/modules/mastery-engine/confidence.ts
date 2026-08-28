@@ -54,3 +54,28 @@ export function inferWeaknessFromCalibration(
   if (calibration === "UNKNOWN") return "none";
   return "none";
 }
+
+const CONFIDENCE_LEVELS: readonly ConfidenceLevel[] = [
+  "VERY_LOW",
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "VERY_HIGH",
+];
+
+export function isConfidenceLevel(value: string): value is ConfidenceLevel {
+  return (CONFIDENCE_LEVELS as readonly string[]).includes(value);
+}
+
+/** Maps API/UI input (1–5 or canonical level) to ConfidenceLevel; null when absent. */
+export function parseConfidenceInput(
+  value: number | string | null | undefined
+): ConfidenceLevel | null {
+  if (value == null) return null;
+  if (typeof value === "number") {
+    if (!Number.isInteger(value) || value < 1 || value > 5) return null;
+    return numericToConfidence(value as 1 | 2 | 3 | 4 | 5);
+  }
+  if (typeof value === "string" && isConfidenceLevel(value)) return value;
+  return null;
+}

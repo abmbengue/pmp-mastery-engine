@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { recordQuizAttempt, computeQuizScore } from "@/modules/assessment-engine/scoring-service";
+import { parseConfidenceInput } from "@/modules/mastery-engine/confidence";
 import prisma from "@/data/prisma-client";
+
+const confidenceLevelSchema = z.union([
+  z.number().int().min(1).max(5),
+  z.enum(["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]),
+]);
 
 const bodySchema = z.object({
   learningItemId: z.string(),
@@ -10,6 +16,7 @@ const bodySchema = z.object({
     z.object({
       questionId: z.string(),
       selectedOptionIds: z.array(z.string()),
+      confidenceLevel: confidenceLevelSchema.optional(),
     })
   ),
 });
@@ -27,13 +34,22 @@ export async function POST(request: Request) {
   }
   const { learningItemId, answers } = parsed.data;
 
+  for (const a of answers) {
+    if (a.confidenceLevel != null && parseConfidenceInput(a.confidenceLevel) == null) {
+      return NextResponse.json({ error: "Invalid confidence level" }, { status: 400 });
+    }
+  }
+
   const results = await Promise.all(
     answers.map(async (a) => {
+      const confidence = parseConfidenceInput(a.confidenceLevel);
+
       const { validation } = await recordQuizAttempt(
         session.user.id,
         a.questionId,
         a.selectedOptionIds,
-        learningItemId
+        learningItemId,
+        confidence
       );
       const question = await prisma.question.findUnique({
         where: { id: a.questionId },
@@ -45,6 +61,7 @@ export async function POST(request: Request) {
         score: validation.score,
         correctOptionIds: validation.correctOptionIds,
         selectedOptionIds: a.selectedOptionIds,
+        confidenceLevel: confidence,
         question,
       };
     })

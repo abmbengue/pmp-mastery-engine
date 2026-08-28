@@ -450,7 +450,13 @@
       "trueOrFalse": "Vrai ou Faux",
       "submit": "Valider mes réponses",
       "correct": "Bonne réponse !",
-      "incorrect": "Réponse incorrecte"
+      "incorrect": "Réponse incorrecte",
+      "confidencePrompt": "À quel point êtes-vous confiant dans cette réponse ?",
+      "confidenceLevel1": "1 — Pas du tout confiant",
+      "confidenceLevel2": "2 — Peu confiant",
+      "confidenceLevel3": "3 — Moyennement confiant",
+      "confidenceLevel4": "4 — Confiant",
+      "confidenceLevel5": "5 — Très confiant"
     },
     "review": {
       "title": "Révision",

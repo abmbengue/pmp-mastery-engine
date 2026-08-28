@@ -11,7 +11,7 @@ import { TextBlock, VideoBlock, PedagogyLearnBlock } from "./LearnPhase";
 import type { PedagogyLabels, SteppedPedagogyLabels } from "./LearnPhase";
 import { ExerciseBlock, FlashcardBlock } from "./PracticePhase";
 import { TestPhase } from "./TestPhase";
-import type { QuizQuestion, QuizResult } from "./TestPhase";
+import type { QuizQuestion, QuizResult, QuizAnswerSubmission } from "./TestPhase";
 import { ReviewPhase } from "./ReviewPhase";
 import { MasterPhase } from "./MasterPhase";
 import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
@@ -74,7 +74,7 @@ export interface LessonPlayerProps {
         pedagogy?: PedagogyLabels;
       };
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
-      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string };
+      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string; confidencePrompt: string; confidenceLevel: (level: number) => string };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
       master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string };
       aiTutor: AiTutorPanelLabels;
@@ -167,14 +167,21 @@ export function LessonPlayer({
 
   // Submit quiz answers
   const handleQuizSubmit = useCallback(
-    async (answers: { questionId: string; selectedOptionIds: string[] }[]) => {
+    async (answers: QuizAnswerSubmission[]) => {
       const quizItem = items.find((i) => i.type === "QUIZ");
       if (!quizItem) return;
 
       const res = await fetch("/api/quiz/attempt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ learningItemId: quizItem.id, answers }),
+        body: JSON.stringify({
+          learningItemId: quizItem.id,
+          answers: answers.map((a) => ({
+            questionId: a.questionId,
+            selectedOptionIds: a.selectedOptionIds,
+            confidenceLevel: a.confidenceLevel,
+          })),
+        }),
       });
       const data = await res.json();
       const score: number = data.score;
@@ -452,6 +459,8 @@ export function LessonPlayer({
               selectMultiple: pl.test.selectMultiple,
               trueOrFalse: pl.test.trueOrFalse,
               submit: pl.test.submit,
+              confidencePrompt: pl.test.confidencePrompt,
+              confidenceLevel: pl.test.confidenceLevel,
             }}
           />
         )}

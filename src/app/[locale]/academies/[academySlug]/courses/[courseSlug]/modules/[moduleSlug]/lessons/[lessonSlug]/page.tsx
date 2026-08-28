@@ -197,6 +197,17 @@ export default async function LessonPage({
               submit: tp("test.submit"),
               correct: tp("test.correct"),
               incorrect: tp("test.incorrect"),
+              confidencePrompt: tp("test.confidencePrompt"),
+              confidenceLevel: (level: number) => {
+                const labels: Record<number, string> = {
+                  1: tp("test.confidenceLevel1"),
+                  2: tp("test.confidenceLevel2"),
+                  3: tp("test.confidenceLevel3"),
+                  4: tp("test.confidenceLevel4"),
+                  5: tp("test.confidenceLevel5"),
+                };
+                return labels[level] ?? String(level);
+              },
             },
             review: {
               title: tp("review.title"),

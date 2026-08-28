@@ -15,8 +15,10 @@ export async function answerLessonQuiz(page: Page) {
   const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
   const count = await fieldsets.count();
   for (let i = 0; i < count; i++) {
-    const input = fieldsets.nth(i).locator('input[type="radio"]').first();
+    const fieldset = fieldsets.nth(i);
+    const input = fieldset.locator('input[type="radio"]').first();
     await input.click();
+    await fieldset.getByTestId(/confidence-.*-3/).click();
   }
   await page.getByTestId("submit-quiz").click();
 }
