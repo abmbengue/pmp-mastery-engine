@@ -9,6 +9,13 @@ import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import type { LessonItem } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import { LessonPlayer } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import type { QuizQuestion } from "@/app/[locale]/components/lesson-player/TestPhase";
+import type { QuizResult } from "@/app/[locale]/components/lesson-player/TestPhase";
+import {
+  countLatestQuizAttemptsForLearningItem,
+  loadLessonReviewRehydrateData,
+  resolveReviewRehydrateContract,
+} from "@/modules/learning-engine/review-rehydrate";
+import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
 import { Link } from "@/modules/localization/navigation";
 import {
   PMP_ACADEMY_SLUG,
@@ -46,11 +53,59 @@ export default async function LessonPage({
   const session = await requireSession(locale);
   let initialPhase: LessonPhase = "LEARN";
   let initialQuizScore: number | null = null;
+  let initialQuizResults: QuizResult[] = [];
+  let initialSkillSnapshots: SkillMasterySnapshotView[] = [];
 
   const lessonSession = await getLessonSession(session.user.id, lesson.id);
   if (!lessonSession.isCompleted) {
     initialPhase = lessonSession.currentPhase;
     initialQuizScore = lessonSession.quizScore;
+
+    const quizItem = lesson.learningItems.find((item) => item.type === "QUIZ");
+    const questionIds = quizItem?.questions.map((question) => question.id) ?? [];
+    const latestAttemptCount = quizItem
+      ? await countLatestQuizAttemptsForLearningItem(
+          session.user.id,
+          quizItem.id,
+          questionIds
+        )
+      : 0;
+
+    const contract = resolveReviewRehydrateContract({
+      currentPhase: initialPhase,
+      quizScore: initialQuizScore,
+      learningItemId: quizItem?.id ?? null,
+      expectedQuestionCount: questionIds.length,
+      latestAttemptCount,
+    });
+
+    if (contract.canRehydrateReview && quizItem) {
+      const rehydrated = await loadLessonReviewRehydrateData(
+        session.user.id,
+        quizItem.id,
+        loc,
+        questionIds
+      );
+      if (rehydrated) {
+        initialQuizResults = rehydrated.quizResults;
+        initialSkillSnapshots = rehydrated.skillSnapshots;
+        initialQuizScore = rehydrated.quizScore;
+        initialPhase = contract.effectivePhase ?? initialPhase;
+      } else {
+        initialPhase = "TEST";
+        initialQuizScore = null;
+        initialQuizResults = [];
+        initialSkillSnapshots = [];
+      }
+    } else if (
+      initialPhase === "REVIEW" ||
+      initialPhase === "MASTER"
+    ) {
+      initialPhase = "TEST";
+      initialQuizScore = null;
+      initialQuizResults = [];
+      initialSkillSnapshots = [];
+    }
   }
 
   // Next lesson navigation
@@ -137,6 +192,8 @@ export default async function LessonPage({
         items={items}
         initialPhase={initialPhase}
         initialQuizScore={initialQuizScore}
+        initialQuizResults={initialQuizResults}
+        initialSkillSnapshots={initialSkillSnapshots}
         nextLesson={nextLesson}
         labels={{
           player: {

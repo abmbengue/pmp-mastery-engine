@@ -12,6 +12,7 @@ import type { PedagogyLabels, SteppedPedagogyLabels } from "./LearnPhase";
 import { ExerciseBlock, FlashcardBlock } from "./PracticePhase";
 import { TestPhase } from "./TestPhase";
 import type { QuizQuestion, QuizResult, QuizAnswerSubmission } from "./TestPhase";
+import { mapQuizAttemptApiResultsToLessonQuizResults } from "@/modules/learning-engine/quiz-result-mapper";
 import { ReviewPhase } from "./ReviewPhase";
 import { MasterPhase } from "./MasterPhase";
 import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
@@ -57,6 +58,8 @@ export interface LessonPlayerProps {
   items: LessonItem[];
   initialPhase: LessonPhase;
   initialQuizScore: number | null;
+  initialQuizResults?: QuizResult[];
+  initialSkillSnapshots?: SkillMasterySnapshotView[];
   nextLesson: { slug: string; moduleSlug: string } | null;
   labels: {
     player: {
@@ -98,14 +101,18 @@ export function LessonPlayer({
   items,
   initialPhase,
   initialQuizScore,
+  initialQuizResults = [],
+  initialSkillSnapshots = [],
   nextLesson,
   labels,
 }: LessonPlayerProps) {
   const router = useRouter();
   const [currentPhase, setCurrentPhase] = useState<LessonPhase>(initialPhase);
   const [quizScore, setQuizScore] = useState<number | null>(initialQuizScore);
-  const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
-  const [skillSnapshots, setSkillSnapshots] = useState<SkillMasterySnapshotView[]>([]);
+  const [quizResults, setQuizResults] = useState<QuizResult[]>(initialQuizResults);
+  const [skillSnapshots, setSkillSnapshots] = useState<SkillMasterySnapshotView[]>(
+    initialSkillSnapshots
+  );
   const [courseProgress, setCourseProgress] = useState<{ completedLessons: number; totalLessons: number; percentage: number } | null>(null);
   const startedAtRef = useRef<number>(Date.now());
   const timeSpentSecRef = useRef<number>(0);
@@ -190,41 +197,7 @@ export function LessonPlayer({
       const score: number = data.score;
       const level = computeMasteryLevelFromScore(score);
 
-      // Map server results to QuizResult shape
-      const results: QuizResult[] = (data.results as Array<{
-        questionId: string;
-        isCorrect: boolean;
-        score: number;
-        correctOptionIds: string[];
-        selectedOptionIds: string[];
-        question: {
-          id: string;
-          type: string;
-          promptFr: string;
-          promptEn: string;
-          explanationCorrectFr: string;
-          explanationCorrectEn: string;
-          answerOptions: Array<{ id: string; labelFr: string; labelEn: string; isCorrect: boolean; explanationWrongFr?: string | null; explanationWrongEn?: string | null }>;
-        };
-      }>).map((r) => ({
-        questionId: r.questionId,
-        isCorrect: r.isCorrect,
-        score: r.score,
-        selectedOptionIds: r.selectedOptionIds,
-        correctOptionIds: r.correctOptionIds,
-        question: {
-          id: r.question.id,
-          type: r.question.type as QuizQuestion["type"],
-          prompt: locale === "fr" ? r.question.promptFr : r.question.promptEn,
-          explanationCorrect: locale === "fr" ? r.question.explanationCorrectFr : r.question.explanationCorrectEn,
-          options: r.question.answerOptions.map((o) => ({
-            id: o.id,
-            label: locale === "fr" ? o.labelFr : o.labelEn,
-            isCorrect: o.isCorrect,
-            explanationWrong: locale === "fr" ? (o.explanationWrongFr ?? undefined) : (o.explanationWrongEn ?? undefined),
-          })),
-        },
-      }));
+      const results = mapQuizAttemptApiResultsToLessonQuizResults(data.results, locale);
 
       setQuizScore(score);
       setQuizResults(results);
