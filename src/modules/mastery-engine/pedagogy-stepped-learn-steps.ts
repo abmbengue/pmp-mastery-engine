@@ -56,11 +56,14 @@ export const STEPPED_LEARN_LESSON_IDS = [
   "shared-vision",
   "knowledge-transfer",
   "communication",
+  "risk-vs-issue",
 ] as const;
 
 export type SteppedLearnLessonId = (typeof STEPPED_LEARN_LESSON_IDS)[number];
 
-const MINI_CASE_CHOICE_ORDER: Record<SteppedLearnLessonId, readonly string[]> = {
+const MINI_CASE_CHOICE_ORDER: Partial<
+  Record<SteppedLearnLessonId, readonly string[]>
+> = {
   "shared-vision": ["b", "a", "c"],
   "knowledge-transfer": ["b", "a", "c"],
   communication: ["b", "a", "c"],
@@ -87,6 +90,7 @@ export function selectSteppedMiniCaseChoices(
 ): SteppedMiniCaseChoice[] {
   if (!screen.choices?.length) return [];
   const order = MINI_CASE_CHOICE_ORDER[lessonId];
+  if (!order?.length) return screen.choices.slice(0, 3);
   const byId = new Map(screen.choices.map((c) => [c.id, c] as const));
   const ordered = order.map((id) => byId.get(id)).filter(
     (c): c is NonNullable<typeof c> => c != null
