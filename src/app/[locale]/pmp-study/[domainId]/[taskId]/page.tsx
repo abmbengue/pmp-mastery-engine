@@ -62,7 +62,7 @@ export default async function PmpStudyTaskPage({
   const t = await getTranslations("pmpStudy");
 
   return (
-    <section className="mx-auto max-w-2xl space-y-6" data-testid="pmp-study-task">
+    <section className="mx-auto max-w-2xl space-y-6 overflow-x-hidden" data-testid="pmp-study-task">
       <nav className="text-sm text-gray-500" aria-label="Breadcrumb">
         <Link
           href="/pmp-study"
@@ -196,7 +196,7 @@ export default async function PmpStudyTaskPage({
                 className="rounded-lg border border-amber-200 bg-amber-50/50 p-4"
                 data-testid={`task-distinction-${d.id}`}
               >
-                <p className="font-semibold text-amber-950">
+                <p className="break-words font-semibold text-amber-950">
                   {locale === "fr" ? d.leftFr : d.leftEn}
                   {d.middleFr
                     ? ` · ${locale === "fr" ? d.middleFr : d.middleEn}`

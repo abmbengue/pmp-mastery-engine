@@ -106,6 +106,26 @@ describe("Phase B.3.2 PMP study UI wiring", () => {
       domainId: "PEOPLE",
       href: "/pmp-study/PEOPLE/PEOPLE-T08",
     });
+    expect(resolvePmpStudyTaskBackLink("risk-vs-issue")).toEqual({
+      taskId: "BUSINESS-T05",
+      domainId: "BUSINESS",
+      href: "/pmp-study/BUSINESS/BUSINESS-T05",
+    });
+    expect(resolvePmpStudyTaskBackLink("cost")).toEqual({
+      taskId: "PROCESS-T06",
+      domainId: "PROCESS",
+      href: "/pmp-study/PROCESS/PROCESS-T06",
+    });
+    expect(resolvePmpStudyTaskBackLink("project-lifecycle-basics")).toEqual({
+      taskId: "PROCESS-T10",
+      domainId: "PROCESS",
+      href: "/pmp-study/PROCESS/PROCESS-T10",
+    });
+    expect(resolvePmpStudyTaskBackLink("lessons-learned")).toEqual({
+      taskId: "BUSINESS-T06",
+      domainId: "BUSINESS",
+      href: "/pmp-study/BUSINESS/BUSINESS-T06",
+    });
     expect(buildPmpStudyTaskHref("PEOPLE-T01")).toBe(
       "/pmp-study/PEOPLE/PEOPLE-T01"
     );

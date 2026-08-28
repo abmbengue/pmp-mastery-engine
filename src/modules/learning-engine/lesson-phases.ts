@@ -29,3 +29,17 @@ export function isLastPhase(phase: LessonPhase): boolean {
 export function phaseIndex(phase: LessonPhase): number {
   return LESSON_PHASES.indexOf(phase);
 }
+
+/** Validates persisted phase metadata (task progress + lesson resume). */
+export function parseLessonPhase(value: unknown): LessonPhase | null {
+  if (
+    value === "LEARN" ||
+    value === "PRACTICE" ||
+    value === "TEST" ||
+    value === "REVIEW" ||
+    value === "MASTER"
+  ) {
+    return value;
+  }
+  return null;
+}

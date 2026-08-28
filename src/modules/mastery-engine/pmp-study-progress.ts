@@ -4,7 +4,7 @@
  */
 
 import prisma from "@/data/prisma-client";
-import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
+import { parseLessonPhase, type LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import type { LessonProgressStatusValue } from "@/modules/learning-engine/next-lesson-service";
 import {
   PMP_ACADEMY_SLUG,
@@ -49,17 +49,7 @@ function primaryLesson(lessons: StudyLessonRef[]): StudyLessonRef | undefined {
 
 function parseCurrentPhase(metadata: unknown): LessonPhase | null {
   if (!metadata || typeof metadata !== "object") return null;
-  const phase = (metadata as Record<string, unknown>).currentPhase;
-  if (
-    phase === "LEARN" ||
-    phase === "PRACTICE" ||
-    phase === "TEST" ||
-    phase === "REVIEW" ||
-    phase === "MASTER"
-  ) {
-    return phase;
-  }
-  return null;
+  return parseLessonPhase((metadata as Record<string, unknown>).currentPhase);
 }
 
 function emptySnapshot(): TaskLessonProgressSnapshot {

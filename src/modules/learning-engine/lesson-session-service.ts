@@ -2,6 +2,7 @@ import prisma from "@/data/prisma-client";
 import { completeLesson, getLessonProgress, getCourseProgress, updateConceptMastery } from "./progress-service";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import type { LessonPhase } from "./lesson-phases";
+import { parseLessonPhase } from "./lesson-phases";
 
 export interface LessonSessionState {
   lessonId: string;
@@ -40,7 +41,7 @@ export async function getLessonSession(
   return {
     lessonId,
     userId,
-    currentPhase: (meta?.currentPhase as LessonPhase) ?? "LEARN",
+    currentPhase: parseLessonPhase(meta?.currentPhase) ?? "LEARN",
     quizScore: (meta?.quizScore as number) ?? null,
     masteryLevel: (meta?.masteryLevel as string) ?? null,
     isCompleted: progress.status === "COMPLETED",

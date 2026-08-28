@@ -121,6 +121,28 @@ describe("resolveTaskContinueLesson", () => {
     expect(resolution?.lessonSlug).toBe(primary?.slug);
   });
 
+  it("with IN_PROGRESS and invalid currentPhase metadata → Continue with null phase", () => {
+    const [first] = lessons;
+    expect(first).toBeDefined();
+
+    const resolution = resolveTaskContinueLesson(lessons, {
+      [first!.slug]: snap({
+        status: "IN_PROGRESS",
+        updatedAtMs: 3_000,
+        hasProgressRecord: true,
+        currentPhase: null,
+      }),
+    });
+
+    expect(resolution?.action).toBe("CONTINUE");
+    expect(resolution?.reason).toBe("IN_PROGRESS_RECENT");
+    expect(resolution?.currentPhase).toBeNull();
+  });
+
+  it("returns null for empty lesson list", () => {
+    expect(resolveTaskContinueLesson([], {})).toBeNull();
+  });
+
   it("enriches lesson list with progress badges and continue target", () => {
     const [first] = lessons;
     expect(first).toBeDefined();

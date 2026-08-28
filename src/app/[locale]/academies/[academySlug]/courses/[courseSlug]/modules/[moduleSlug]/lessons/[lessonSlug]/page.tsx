@@ -95,7 +95,7 @@ export default async function LessonPage({
       : null;
 
   return (
-    <div data-testid="lesson-page">
+    <div data-testid="lesson-page" className="max-w-full overflow-x-hidden">
       {/* Breadcrumb */}
       <nav className="mb-6 flex flex-wrap gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
         <Link href="/academies" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
