@@ -21,6 +21,7 @@ import {
 } from "./weakness-model";
 import { buildSkillMasterySnapshotViews } from "./mastery-snapshot";
 import type { SkillMasterySnapshotView } from "./mastery-snapshot-view";
+import { deriveSkillReviewScheduleInput } from "./mastery-review-schedule";
 
 export type { SkillMasterySnapshotView } from "./mastery-snapshot-view";
 
@@ -31,10 +32,17 @@ export type QuizMasteryRuntimeResult = {
   skillSnapshots: SkillMasterySnapshotView[];
 };
 
+export type QuizMasteryRuntimeOptions = {
+  /** Injectable clock for deterministic tests */
+  now?: Date;
+};
+
 export async function processQuizMasteryForAttempts(
   userId: string,
-  attemptIds: string[]
+  attemptIds: string[],
+  options?: QuizMasteryRuntimeOptions
 ): Promise<QuizMasteryRuntimeResult> {
+  const now = options?.now ?? new Date();
   if (attemptIds.length === 0) {
     return { weaknessSignals: [], updatedSkillIds: [], skillSnapshots: [] };
   }
@@ -159,8 +167,14 @@ export async function processQuizMasteryForAttempts(
     attemptsBySkillId[skillId] = skillInputs;
     const weightedPerf = computeWeightedPerformance(skillInputs);
     const level = computeMasteryLevelFromScore(weightedPerf);
+    const schedule = deriveSkillReviewScheduleInput(skillInputs, now);
 
-    await updateConceptMastery(userId, skillId, level);
+    await updateConceptMastery(userId, skillId, level, {
+      lastReviewedAt: schedule.lastReviewedAt,
+      lastAttemptAt: schedule.lastAttemptAt,
+      recentErrorCount: schedule.recentErrorCount,
+      now,
+    });
     updatedSkillIds.push(skillId);
   }
 

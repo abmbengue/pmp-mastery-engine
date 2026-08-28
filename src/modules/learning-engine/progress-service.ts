@@ -87,18 +87,30 @@ export async function getCourseProgress(userId: string, courseId: string) {
   };
 }
 
+export type ConceptMasteryScheduleOptions = {
+  lastReviewedAt?: Date;
+  lastAttemptAt?: Date | null;
+  recentErrorCount?: number;
+  now?: Date;
+};
+
 export async function updateConceptMastery(
   userId: string,
   skillId: string,
-  level: MasteryLevel
+  level: MasteryLevel,
+  schedule?: ConceptMasteryScheduleOptions
 ) {
-  const now = new Date();
+  const now = schedule?.now ?? new Date();
+  const lastReviewedAt = schedule?.lastReviewedAt ?? now;
+  const lastAttemptAt = schedule?.lastAttemptAt ?? now;
+  const recentErrorCount = schedule?.recentErrorCount ?? 0;
+
   const nextReviewAt = getNextReviewDate(
     {
       masteryLevel: level,
-      lastReviewedAt: now,
-      lastAttemptAt: now,
-      recentErrorCount: 0,
+      lastReviewedAt,
+      lastAttemptAt,
+      recentErrorCount,
     },
     now
   );
@@ -109,12 +121,12 @@ export async function updateConceptMastery(
       userId,
       skillId,
       level,
-      lastReviewedAt: now,
+      lastReviewedAt,
       nextReviewAt,
     },
     update: {
       level,
-      lastReviewedAt: now,
+      lastReviewedAt,
       nextReviewAt,
     },
   });
