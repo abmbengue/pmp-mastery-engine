@@ -158,7 +158,22 @@
     "shortsCorporateFinance": "Shorts Finance Entr.",
     "shortsPmp": "Shorts PMP",
     "pmpStudy": "Étude PMP (ECO)",
-    "openPmpStudy": "Étudier par tâche ECO"
+    "openPmpStudy": "Étudier par tâche ECO",
+    "weaknessDashboardTitle": "Focus faiblesses PMP",
+    "weaknessDashboardSubtitle": "Compétences à renforcer, par domaine ECO — à partir de vos quiz.",
+    "weaknessDashboardEmpty": "Terminez un quiz de leçon pour voir vos faiblesses personnalisées.",
+    "weakestSkills": "Compétences les plus fragiles",
+    "weaknessNoneDetected": "Aucune faiblesse détectée sur l'activité récente. Continuez à pratiquer !",
+    "ecoOverview": "Vue ECO",
+    "ecoTasks": "tâches ECO",
+    "ecoDomainClear": "Aucune faiblesse dans ce domaine pour l'instant.",
+    "ecoTaskLabel": "Tâche ECO",
+    "recentPerformance": "Performance récente",
+    "masteryLevel": "Maîtrise",
+    "reviewDueBadge": "Révision due",
+    "weaknessReviewDue": "Révisions dues (tableau de bord)",
+    "weaknessReviewDueEmpty": "Aucune compétence due selon votre planning de révision.",
+    "workOnSkill": "Travailler cette compétence"
   },
   "pmpStudy": {
     "eyebrow": "PMP Mastery",

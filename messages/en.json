@@ -158,7 +158,22 @@
     "shortsCorporateFinance": "CF Shorts",
     "shortsPmp": "PMP Shorts",
     "pmpStudy": "PMP Study (ECO)",
-    "openPmpStudy": "Study by ECO task"
+    "openPmpStudy": "Study by ECO task",
+    "weaknessDashboardTitle": "PMP weakness focus",
+    "weaknessDashboardSubtitle": "Skills needing attention, grouped by ECO domain — from your quiz activity.",
+    "weaknessDashboardEmpty": "Complete a lesson quiz to see personalized weakness insights.",
+    "weakestSkills": "Weakest skills",
+    "weaknessNoneDetected": "No weak skills detected from recent activity. Keep practicing!",
+    "ecoOverview": "ECO overview",
+    "ecoTasks": "ECO tasks",
+    "ecoDomainClear": "No weak skills in this domain right now.",
+    "ecoTaskLabel": "ECO task",
+    "recentPerformance": "Recent performance",
+    "masteryLevel": "Mastery",
+    "reviewDueBadge": "Review due",
+    "weaknessReviewDue": "Review due (weakness dashboard)",
+    "weaknessReviewDueEmpty": "No skills due for review from your mastery schedule.",
+    "workOnSkill": "Work on this skill"
   },
   "pmpStudy": {
     "eyebrow": "PMP Mastery",
