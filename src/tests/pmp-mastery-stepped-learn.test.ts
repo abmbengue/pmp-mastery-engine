@@ -1,10 +1,11 @@
 /**
- * Phase B.3.2 — stepped interactive LEARN (People P0 + risk-vs-issue).
+ * Phase B.3.2 — stepped interactive LEARN (all P0 pedagogy packs).
  */
 
 import { describe, expect, it } from "vitest";
 import {
   getLessonPedagogy,
+  P0_LESSON_PEDAGOGY,
   type LessonPedagogyPack,
 } from "@/modules/mastery-engine/lesson-pedagogy";
 import {
@@ -14,6 +15,7 @@ import {
 import {
   buildSteppedLearnSteps,
   selectSteppedMiniCaseChoices,
+  STEPPED_LEARN_LESSON_IDS,
   usesSteppedLearn,
 } from "@/modules/mastery-engine/pedagogy-stepped-learn-steps";
 import { buildStudyTaskView } from "@/modules/mastery-engine/pmp-study";
@@ -68,16 +70,40 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /predictive|adaptive|change/i,
     hasMiniCase: false,
   },
+  {
+    slug: "cost" as const,
+    distinctionIds: [
+      "dist-contingency-vs-management-reserve",
+      "dist-cpi-vs-spi",
+      "dist-eac-vs-etc",
+      "dist-pv-ev-ac",
+    ],
+    mindsetAssessEn: /CPI|BAC\/CPI|EAC/i,
+    miniCaseCorrectId: "b",
+    hasMiniCase: true,
+  },
+  {
+    slug: "project-lifecycle-basics" as const,
+    distinctionIds: [] as string[],
+    mindsetAssessEn: /acceptance|obligations|close/i,
+    miniCaseCorrectId: "b",
+    hasMiniCase: true,
+  },
+  {
+    slug: "lessons-learned" as const,
+    distinctionIds: ["dist-knowledge-transfer-vs-communication", "dist-opa-vs-eef"],
+    mindsetAssessEn: /LESSON LEARNED|ANALYSIS|IMPROVEMENT/i,
+    hasMiniCase: false,
+  },
 ];
 
 describe("stepped interactive LEARN", () => {
-  it("enables stepped flow for People P0 lessons and risk-vs-issue", () => {
-    expect(usesSteppedLearn("shared-vision")).toBe(true);
-    expect(usesSteppedLearn("knowledge-transfer")).toBe(true);
-    expect(usesSteppedLearn("communication")).toBe(true);
-    expect(usesSteppedLearn("risk-vs-issue")).toBe(true);
-    expect(usesSteppedLearn("cost")).toBe(false);
-    expect(usesSteppedLearn("lessons-learned")).toBe(false);
+  it("enables stepped flow for all P0 pedagogy packs", () => {
+    for (const pack of P0_LESSON_PEDAGOGY) {
+      expect(usesSteppedLearn(pack.lessonId)).toBe(true);
+    }
+    expect(STEPPED_LEARN_LESSON_IDS).toHaveLength(P0_LESSON_PEDAGOGY.length);
+    expect(usesSteppedLearn("planning")).toBe(false);
   });
 
   it.each(STEPPED_LESSONS)(
@@ -128,12 +154,15 @@ describe("stepped interactive LEARN", () => {
     }
   );
 
-  it("risk-vs-issue omits mini-case when pack has no MINI_CASE screen", () => {
-    const pack = getLessonPedagogy("risk-vs-issue")!;
-    expect(pack.screens.some((s) => s.intent === "MINI_CASE")).toBe(false);
-    const steps = buildSteppedLearnSteps(pack, distinctionsForPedagogyPack(pack));
-    expect(steps.some((s) => s.kind === "mini_case")).toBe(false);
-  });
+  it.each(STEPPED_LESSONS.filter((l) => !l.hasMiniCase))(
+    "$slug omits mini-case when pack has no MINI_CASE screen",
+    ({ slug }) => {
+      const pack = getLessonPedagogy(slug)!;
+      expect(pack.screens.some((s) => s.intent === "MINI_CASE")).toBe(false);
+      const steps = buildSteppedLearnSteps(pack, distinctionsForPedagogyPack(pack));
+      expect(steps.some((s) => s.kind === "mini_case")).toBe(false);
+    }
+  );
 
   it.each(STEPPED_LESSONS)(
     "$slug frames ASSESS → ALIGN → DECIDE → ACT from pack content",
@@ -154,19 +183,15 @@ describe("stepped interactive LEARN", () => {
     }
   );
 
-  it("risk-vs-issue recognize cues include misconception and dist-risk-vs-issue exam cue", () => {
-    const pack = getLessonPedagogy("risk-vs-issue")!;
-    const distinctions = distinctionsForPedagogyPack(pack);
-    const steps = buildSteppedLearnSteps(pack, distinctions);
-    const recognize = steps.find((s) => s.kind === "recognize");
-    expect(recognize?.kind).toBe("recognize");
-    if (recognize?.kind !== "recognize") return;
-    const enCues = recognize.cues.map((c) => c.en).join(" ");
-    expect(enCues).toMatch(/Trap:.*Every problem/i);
-    expect(enCues).toMatch(/already happened/i);
-    const riskDistinction = distinctions.find((d) => d.id === "dist-risk-vs-issue");
-    expect(riskDistinction).toBeDefined();
-    expect(enCues).toContain(riskDistinction!.examCueEn);
+  it("lessons-learned DECIDE uses canonical DECISION_RULE screen body", () => {
+    const pack = getLessonPedagogy("lessons-learned")!;
+    const decisionScreen = pack.screens.find((s) => s.intent === "DECISION_RULE");
+    expect(decisionScreen).toBeDefined();
+    const steps = buildSteppedLearnSteps(pack, distinctionsForPedagogyPack(pack));
+    const decide = steps.find((s) => s.kind === "decide");
+    expect(decide?.kind).toBe("decide");
+    if (decide?.kind !== "decide") return;
+    expect(decide.mindset[2].bodyEn).toBe(decisionScreen!.bodyEn);
   });
 
   it("preserves T07 ≠ T08 distinction mapping", () => {

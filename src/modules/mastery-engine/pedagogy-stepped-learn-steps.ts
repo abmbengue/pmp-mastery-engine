@@ -57,6 +57,9 @@ export const STEPPED_LEARN_LESSON_IDS = [
   "knowledge-transfer",
   "communication",
   "risk-vs-issue",
+  "cost",
+  "project-lifecycle-basics",
+  "lessons-learned",
 ] as const;
 
 export type SteppedLearnLessonId = (typeof STEPPED_LEARN_LESSON_IDS)[number];
@@ -67,6 +70,8 @@ const MINI_CASE_CHOICE_ORDER: Partial<
   "shared-vision": ["b", "a", "c"],
   "knowledge-transfer": ["b", "a", "c"],
   communication: ["b", "a", "c"],
+  cost: ["b", "a", "c"],
+  "project-lifecycle-basics": ["b", "a", "c"],
 };
 
 export function usesSteppedLearn(lessonId: string): lessonId is SteppedLearnLessonId {
