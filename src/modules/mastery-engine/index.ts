@@ -28,3 +28,5 @@ export * from "./pmp-study";
 export * from "./pmp-study-progress";
 export * from "./attempt-adapter";
 export * from "./mastery-runtime-service";
+export * from "./mastery-snapshot-view";
+export * from "./mastery-snapshot";

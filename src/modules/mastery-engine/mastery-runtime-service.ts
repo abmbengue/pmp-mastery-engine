@@ -19,10 +19,16 @@ import {
   computeWeightedPerformance,
   type WeaknessSignal,
 } from "./weakness-model";
+import { buildSkillMasterySnapshotViews } from "./mastery-snapshot";
+import type { SkillMasterySnapshotView } from "./mastery-snapshot-view";
+
+export type { SkillMasterySnapshotView } from "./mastery-snapshot-view";
 
 export type QuizMasteryRuntimeResult = {
   weaknessSignals: WeaknessSignal[];
   updatedSkillIds: string[];
+  /** Display-only 7-state views — never written to DB */
+  skillSnapshots: SkillMasterySnapshotView[];
 };
 
 export async function processQuizMasteryForAttempts(
@@ -30,7 +36,7 @@ export async function processQuizMasteryForAttempts(
   attemptIds: string[]
 ): Promise<QuizMasteryRuntimeResult> {
   if (attemptIds.length === 0) {
-    return { weaknessSignals: [], updatedSkillIds: [] };
+    return { weaknessSignals: [], updatedSkillIds: [], skillSnapshots: [] };
   }
 
   const batchAttempts = await prisma.quizAttempt.findMany({
@@ -68,7 +74,7 @@ export async function processQuizMasteryForAttempts(
   });
 
   if (batchAttempts.length === 0) {
-    return { weaknessSignals: [], updatedSkillIds: [] };
+    return { weaknessSignals: [], updatedSkillIds: [], skillSnapshots: [] };
   }
 
   const skillIds = [
@@ -138,6 +144,8 @@ export async function processQuizMasteryForAttempts(
   const weaknessSignals = buildWeaknessSignals(weaknessInputs);
 
   const updatedSkillIds: string[] = [];
+  const attemptsBySkillId: Record<string, ReturnType<typeof quizAttemptsToMasteryInputs>> = {};
+
   for (const skillId of skillIds) {
     const skillAttempts = allSkillAttempts.filter((a) => a.question.skillId === skillId);
     const observations: QuizAttemptObservation[] = skillAttempts.map((a) => ({
@@ -148,6 +156,7 @@ export async function processQuizMasteryForAttempts(
     }));
 
     const skillInputs = quizAttemptsToMasteryInputs(observations, questionsById);
+    attemptsBySkillId[skillId] = skillInputs;
     const weightedPerf = computeWeightedPerformance(skillInputs);
     const level = computeMasteryLevelFromScore(weightedPerf);
 
@@ -155,5 +164,7 @@ export async function processQuizMasteryForAttempts(
     updatedSkillIds.push(skillId);
   }
 
-  return { weaknessSignals, updatedSkillIds };
+  const skillSnapshots = buildSkillMasterySnapshotViews(skillIds, attemptsBySkillId);
+
+  return { weaknessSignals, updatedSkillIds, skillSnapshots };
 }

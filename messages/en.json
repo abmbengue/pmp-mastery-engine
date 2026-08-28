@@ -492,7 +492,15 @@
       "nextLesson": "Next lesson",
       "backToCourse": "Back to course",
       "courseProgress": "Course progress",
-      "lessonsCompleted": "lesson(s) completed out of"
+      "lessonsCompleted": "lesson(s) completed out of",
+      "masteryDepth": "Learning depth (computed)",
+      "stateUnknown": "Not yet assessed",
+      "stateExposed": "First exposure",
+      "stateDeveloping": "Developing",
+      "stateFragile": "Fragile knowledge",
+      "stateFunctional": "Functional",
+      "stateStrong": "Strong",
+      "stateMastered": "Fully mastered"
     }
   }
 }

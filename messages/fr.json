@@ -492,7 +492,15 @@
       "nextLesson": "Leçon suivante",
       "backToCourse": "Retour au cours",
       "courseProgress": "Progression du cours",
-      "lessonsCompleted": "leçon(s) complétée(s) sur"
+      "lessonsCompleted": "leçon(s) complétée(s) sur",
+      "masteryDepth": "Profondeur d'apprentissage (calculée)",
+      "stateUnknown": "Pas encore évalué",
+      "stateExposed": "Première exposition",
+      "stateDeveloping": "En développement",
+      "stateFragile": "Connaissance fragile",
+      "stateFunctional": "Fonctionnel",
+      "stateStrong": "Solide",
+      "stateMastered": "Pleinement maîtrisé"
     }
   }
 }

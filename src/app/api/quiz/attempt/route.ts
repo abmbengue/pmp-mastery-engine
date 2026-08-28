@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     })
   );
 
-  await processQuizMasteryForAttempts(
+  const masteryResult = await processQuizMasteryForAttempts(
     session.user.id,
     results.map((r) => r.attemptId)
   );
@@ -78,5 +78,9 @@ export async function POST(request: Request) {
     results.map((r) => ({ isCorrect: r.isCorrect, score: r.score, correctOptionIds: r.correctOptionIds }))
   );
 
-  return NextResponse.json({ score: overallScore, results });
+  return NextResponse.json({
+    score: overallScore,
+    results,
+    skillSnapshots: masteryResult.skillSnapshots,
+  });
 }

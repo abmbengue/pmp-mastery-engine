@@ -21,6 +21,8 @@ import { SimulatorWorkbench } from "@/app/[locale]/components/simulators/Simulat
 import type { SimulatorLabels } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
 import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
 import { distinctionsForEcoTask } from "@/modules/mastery-engine/critical-distinctions";
+import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
+import type { MasteryState } from "@/modules/mastery-engine/types";
 
 function extractTakeawayFromTextBody(body: string | null | undefined): string | null {
   if (!body) return null;
@@ -76,7 +78,7 @@ export interface LessonPlayerProps {
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
       test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string; confidencePrompt: string; confidenceLevel: (level: number) => string };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
-      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string };
+      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string; masteryDepth: string; masteryState: (state: MasteryState) => string };
       aiTutor: AiTutorPanelLabels;
       simulators: SimulatorLabels;
     };
@@ -103,6 +105,7 @@ export function LessonPlayer({
   const [currentPhase, setCurrentPhase] = useState<LessonPhase>(initialPhase);
   const [quizScore, setQuizScore] = useState<number | null>(initialQuizScore);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
+  const [skillSnapshots, setSkillSnapshots] = useState<SkillMasterySnapshotView[]>([]);
   const [courseProgress, setCourseProgress] = useState<{ completedLessons: number; totalLessons: number; percentage: number } | null>(null);
   const startedAtRef = useRef<number>(Date.now());
   const timeSpentSecRef = useRef<number>(0);
@@ -225,6 +228,11 @@ export function LessonPlayer({
 
       setQuizScore(score);
       setQuizResults(results);
+      setSkillSnapshots(
+        Array.isArray(data.skillSnapshots)
+          ? (data.skillSnapshots as SkillMasterySnapshotView[])
+          : []
+      );
       await saveProgress("REVIEW", score, level);
       setCurrentPhase("REVIEW");
     },
@@ -255,6 +263,7 @@ export function LessonPlayer({
   function handleRetry() {
     setQuizScore(null);
     setQuizResults([]);
+    setSkillSnapshots([]);
     setCurrentPhase("TEST");
   }
 
@@ -493,6 +502,7 @@ export function LessonPlayer({
           <MasterPhase
             score={quizScore ?? 0}
             masteryLevel={masteryLevel}
+            skillSnapshots={skillSnapshots}
             courseProgress={courseProgress}
             hasNextLesson={!!nextLesson}
             onNextLesson={handleNextLesson}

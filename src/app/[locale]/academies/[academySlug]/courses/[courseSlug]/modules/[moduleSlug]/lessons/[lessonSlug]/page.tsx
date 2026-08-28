@@ -231,6 +231,19 @@ export default async function LessonPage({
               backToCourse: tp("master.backToCourse"),
               courseProgress: tp("master.courseProgress"),
               lessonsCompleted: tp("master.lessonsCompleted"),
+              masteryDepth: tp("master.masteryDepth"),
+              masteryState: (state: import("@/modules/mastery-engine/types").MasteryState) => {
+                const labels: Record<string, string> = {
+                  UNKNOWN: tp("master.stateUnknown"),
+                  EXPOSED: tp("master.stateExposed"),
+                  DEVELOPING: tp("master.stateDeveloping"),
+                  FRAGILE: tp("master.stateFragile"),
+                  FUNCTIONAL: tp("master.stateFunctional"),
+                  STRONG: tp("master.stateStrong"),
+                  MASTERED: tp("master.stateMastered"),
+                };
+                return labels[state] ?? state;
+              },
             },
             aiTutor: {
               title: tp("aiTutor.title"),
