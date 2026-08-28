@@ -10,6 +10,11 @@ import type { LessonItem } from "@/app/[locale]/components/lesson-player/LessonP
 import { LessonPlayer } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import type { QuizQuestion } from "@/app/[locale]/components/lesson-player/TestPhase";
 import { Link } from "@/modules/localization/navigation";
+import {
+  PMP_ACADEMY_SLUG,
+  PMP_COURSE_SLUG,
+} from "@/modules/mastery-engine/pmp-lesson-catalog";
+import { resolvePmpStudyTaskBackLink } from "@/modules/mastery-engine/pmp-study";
 
 export default async function LessonPage({
   params,
@@ -25,10 +30,11 @@ export default async function LessonPage({
   const { locale, academySlug, courseSlug, moduleSlug, lessonSlug } = await params;
   setRequestLocale(locale);
 
-  const [t, tp, ts] = await Promise.all([
+  const [t, tp, ts, tPmpStudy] = await Promise.all([
     getTranslations("app"),
     getTranslations("player"),
     getTranslations("simulators"),
+    getTranslations("pmpStudy"),
   ]);
 
   const lesson = await findLessonBySlug(academySlug, courseSlug, moduleSlug, lessonSlug);
@@ -83,6 +89,11 @@ export default async function LessonPage({
     MASTER: tp("phases.MASTER"),
   };
 
+  const ecoTaskBackLink =
+    academySlug === PMP_ACADEMY_SLUG && courseSlug === PMP_COURSE_SLUG
+      ? resolvePmpStudyTaskBackLink(lessonSlug)
+      : null;
+
   return (
     <div data-testid="lesson-page">
       {/* Breadcrumb */}
@@ -101,6 +112,18 @@ export default async function LessonPage({
         <span aria-hidden="true">/</span>
         <span className="font-medium text-gray-800">{title}</span>
       </nav>
+
+      {ecoTaskBackLink ? (
+        <div className="mb-4">
+          <Link
+            href={ecoTaskBackLink.href}
+            className="inline-flex min-h-11 items-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            data-testid="back-to-eco-task-link"
+          >
+            ← {tPmpStudy("backToEcoTask")}
+          </Link>
+        </div>
+      ) : null}
 
       <LessonPlayer
         locale={loc}

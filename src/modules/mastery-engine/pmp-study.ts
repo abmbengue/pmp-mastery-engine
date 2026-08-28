@@ -16,6 +16,7 @@ import {
 } from "./critical-distinctions";
 import {
   entriesForEcoTask,
+  entriesForLesson,
 } from "./lesson-eco-map";
 import {
   getPmpLessonCatalogEntry,
@@ -163,4 +164,44 @@ export function enrichLessonPedagogyFlags(
   hasPack: (slug: string) => boolean
 ): StudyLessonRef[] {
   return lessons.map((l) => ({ ...l, hasPedagogyPack: hasPack(l.slug) }));
+}
+
+export type PmpStudyTaskBackLink = {
+  taskId: EcoTaskStableId;
+  domainId: EcoDomainStableId;
+  href: string;
+};
+
+export function buildPmpStudyTaskHref(taskId: EcoTaskStableId): string {
+  const task = getEcoTaskById(taskId);
+  return `/pmp-study/${task.domainId}/${taskId}`;
+}
+
+/**
+ * Resolves the best ECO task back-link for a lesson slug (PRIMARY preferred).
+ * Returns null when the lesson has no canonical eco mapping.
+ */
+export function resolvePmpStudyTaskBackLink(
+  lessonSlug: string
+): PmpStudyTaskBackLink | null {
+  const entries = entriesForLesson(lessonSlug);
+  if (entries.length === 0) return null;
+
+  const order: Record<LessonEcoCoverageType, number> = {
+    PRIMARY: 0,
+    SECONDARY: 1,
+    SUPPORTING: 2,
+  };
+  const best = [...entries].sort((a, b) => {
+    const byType = order[a.coverageType] - order[b.coverageType];
+    if (byType !== 0) return byType;
+    return b.coverageStrength - a.coverageStrength;
+  })[0];
+
+  const task = getEcoTaskById(best.ecoTaskId);
+  return {
+    taskId: best.ecoTaskId,
+    domainId: task.domainId,
+    href: buildPmpStudyTaskHref(best.ecoTaskId),
+  };
 }

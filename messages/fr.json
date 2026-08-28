@@ -178,6 +178,7 @@
     "lessonStatusNotStarted": "Non commencée",
     "lessonStatusInProgress": "En cours",
     "lessonStatusCompleted": "Terminée",
+    "backToEcoTask": "Retour à la tâche ECO",
     "openLesson": "Ouvrir",
     "noLessons": "Aucune leçon n'est encore liée à cette tâche.",
     "lessonsHeading": "Leçons liées",

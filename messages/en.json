@@ -178,6 +178,7 @@
     "lessonStatusNotStarted": "Not started",
     "lessonStatusInProgress": "In progress",
     "lessonStatusCompleted": "Completed",
+    "backToEcoTask": "Back to ECO task",
     "openLesson": "Open",
     "noLessons": "No lessons are mapped to this task yet.",
     "lessonsHeading": "Mapped lessons",

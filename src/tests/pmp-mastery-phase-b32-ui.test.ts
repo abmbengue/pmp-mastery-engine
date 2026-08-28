@@ -14,10 +14,12 @@ import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
 import { distinctionsForEcoTask } from "@/modules/mastery-engine/critical-distinctions";
 import {
   buildPmpLessonHref,
+  buildPmpStudyTaskHref,
   buildStudyTaskView,
   ECO_DOMAINS,
   isEcoDomainId,
   isEcoTaskId,
+  resolvePmpStudyTaskBackLink,
 } from "@/modules/mastery-engine/pmp-study";
 import { PMP_LESSON_CATALOG } from "@/modules/mastery-engine/pmp-lesson-catalog";
 
@@ -86,5 +88,30 @@ describe("Phase B.3.2 PMP study UI wiring", () => {
     expect(buildProtectedBankFingerprint(PMP_EXAM_BANK_STEMS).aggregate).toBe(
       PROTECTED_BANK_AGGREGATE
     );
+  });
+
+  it("builds ECO task back links from canonical lesson mappings", () => {
+    expect(resolvePmpStudyTaskBackLink("shared-vision")).toEqual({
+      taskId: "PEOPLE-T01",
+      domainId: "PEOPLE",
+      href: "/pmp-study/PEOPLE/PEOPLE-T01",
+    });
+    expect(resolvePmpStudyTaskBackLink("knowledge-transfer")).toEqual({
+      taskId: "PEOPLE-T07",
+      domainId: "PEOPLE",
+      href: "/pmp-study/PEOPLE/PEOPLE-T07",
+    });
+    expect(resolvePmpStudyTaskBackLink("communication")).toEqual({
+      taskId: "PEOPLE-T08",
+      domainId: "PEOPLE",
+      href: "/pmp-study/PEOPLE/PEOPLE-T08",
+    });
+    expect(buildPmpStudyTaskHref("PEOPLE-T01")).toBe(
+      "/pmp-study/PEOPLE/PEOPLE-T01"
+    );
+  });
+
+  it("returns null for lessons without eco mapping", () => {
+    expect(resolvePmpStudyTaskBackLink("not-a-real-lesson-slug")).toBeNull();
   });
 });
