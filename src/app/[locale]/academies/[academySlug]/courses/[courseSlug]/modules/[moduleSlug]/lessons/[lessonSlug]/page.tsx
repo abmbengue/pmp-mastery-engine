@@ -176,7 +176,8 @@ export default async function LessonPage({
                 mindsetAlign: tp("learn.pedagogy.mindsetAlign"),
                 mindsetDecide: tp("learn.pedagogy.mindsetDecide"),
                 mindsetAct: tp("learn.pedagogy.mindsetAct"),
-                stepOf: tp("learn.pedagogy.stepOf"),
+                stepOf:
+                  loc === "fr" ? "Étape {current} / {total}" : "Step {current} / {total}",
               },
             },
             practice: {
