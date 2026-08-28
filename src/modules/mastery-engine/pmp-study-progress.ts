@@ -1,142 +1,46 @@
 /**
- * Task-scoped lesson progress for PMP Study (Phase B.3.2 P1).
+ * Task-scoped lesson progress for PMP Study (Phase B.3.2 P1 + Phase C adaptive).
  * Reuses LessonProgress — no new progression system.
  */
 
 import prisma from "@/data/prisma-client";
-import { parseLessonPhase, type LessonPhase } from "@/modules/learning-engine/lesson-phases";
-import type { LessonProgressStatusValue } from "@/modules/learning-engine/next-lesson-service";
 import {
   PMP_ACADEMY_SLUG,
   PMP_COURSE_SLUG,
 } from "./pmp-lesson-catalog";
-import type { StudyLessonRef } from "./pmp-study";
+import type { EcoTaskStableId } from "./types";
+import type { AdaptiveTaskHints } from "./adaptive-task-resolver";
+import { quizAttemptsToMasteryInputs } from "./attempt-adapter";
+import type { QuestionMasteryContext } from "./attempt-adapter";
+import { buildReviewQueue } from "@/modules/learning-engine/spaced-repetition";
+import { buildWeaknessSignals } from "./weakness-model";
+import {
+  emptyTaskProgressSnapshot,
+  enrichLessonsWithTaskProgress,
+  parseTaskLessonCurrentPhase,
+  resolveTaskContinueLesson,
+  type StudyLessonWithProgress,
+  type TaskContinueReason,
+  type TaskContinueResolution,
+  type TaskLessonAction,
+  type TaskLessonProgressSnapshot,
+  type TaskLessonProgressStatus,
+} from "./task-continue-resolver";
 
-export type TaskLessonProgressStatus = LessonProgressStatusValue;
-
-export type TaskLessonProgressSnapshot = {
-  status: TaskLessonProgressStatus;
-  updatedAtMs: number | null;
-  currentPhase: LessonPhase | null;
-  /** True when a LessonProgress row exists in DB. */
-  hasProgressRecord: boolean;
+export {
+  emptyTaskProgressSnapshot,
+  enrichLessonsWithTaskProgress,
+  resolveTaskContinueLesson,
+  type StudyLessonWithProgress,
+  type TaskContinueReason,
+  type TaskContinueResolution,
+  type TaskLessonAction,
+  type TaskLessonProgressSnapshot,
+  type TaskLessonProgressStatus,
 };
 
-export type TaskLessonAction = "CONTINUE" | "START";
-
-export type TaskContinueReason =
-  | "IN_PROGRESS_RECENT"
-  | "FIRST_INCOMPLETE_WITH_PROGRESS"
-  | "FIRST_INCOMPLETE_NO_PROGRESS"
-  | "ALL_COMPLETE_PRIMARY";
-
-export type TaskContinueResolution = {
-  action: TaskLessonAction;
-  lessonSlug: string;
-  reason: TaskContinueReason;
-  currentPhase: LessonPhase | null;
-};
-
-export type StudyLessonWithProgress = StudyLessonRef & {
-  progressStatus: TaskLessonProgressStatus;
-  currentPhase: LessonPhase | null;
-  isContinueTarget: boolean;
-};
-
-function primaryLesson(lessons: StudyLessonRef[]): StudyLessonRef | undefined {
-  return lessons.find((l) => l.coverageType === "PRIMARY") ?? lessons[0];
-}
-
-function parseCurrentPhase(metadata: unknown): LessonPhase | null {
-  if (!metadata || typeof metadata !== "object") return null;
-  return parseLessonPhase((metadata as Record<string, unknown>).currentPhase);
-}
-
-function emptySnapshot(): TaskLessonProgressSnapshot {
-  return {
-    status: "NOT_STARTED",
-    updatedAtMs: null,
-    currentPhase: null,
-    hasProgressRecord: false,
-  };
-}
-
-/**
- * Pure task-scoped Continue/Start resolution from canonical lesson order + progress map.
- */
-export function resolveTaskContinueLesson(
-  lessons: StudyLessonRef[],
-  progressBySlug: Record<string, TaskLessonProgressSnapshot | undefined>
-): TaskContinueResolution | null {
-  if (lessons.length === 0) return null;
-
-  const inProgress = lessons
-    .map((lesson) => ({ lesson, progress: progressBySlug[lesson.slug] }))
-    .filter(({ progress }) => progress?.status === "IN_PROGRESS")
-    .sort((a, b) => {
-      const aTime = a.progress?.updatedAtMs ?? 0;
-      const bTime = b.progress?.updatedAtMs ?? 0;
-      return bTime - aTime;
-    });
-
-  if (inProgress.length > 0) {
-    const { lesson, progress } = inProgress[0];
-    return {
-      action: "CONTINUE",
-      lessonSlug: lesson.slug,
-      reason: "IN_PROGRESS_RECENT",
-      currentPhase: progress?.currentPhase ?? null,
-    };
-  }
-
-  const firstIncomplete = lessons.find(
-    (lesson) => progressBySlug[lesson.slug]?.status !== "COMPLETED"
-  );
-
-  if (firstIncomplete) {
-    const progress = progressBySlug[firstIncomplete.slug] ?? emptySnapshot();
-    if (progress.hasProgressRecord) {
-      return {
-        action: "CONTINUE",
-        lessonSlug: firstIncomplete.slug,
-        reason: "FIRST_INCOMPLETE_WITH_PROGRESS",
-        currentPhase: progress.currentPhase,
-      };
-    }
-    return {
-      action: "START",
-      lessonSlug: firstIncomplete.slug,
-      reason: "FIRST_INCOMPLETE_NO_PROGRESS",
-      currentPhase: null,
-    };
-  }
-
-  const primary = primaryLesson(lessons);
-  if (!primary) return null;
-
-  return {
-    action: "START",
-    lessonSlug: primary.slug,
-    reason: "ALL_COMPLETE_PRIMARY",
-    currentPhase: null,
-  };
-}
-
-export function enrichLessonsWithTaskProgress(
-  lessons: StudyLessonRef[],
-  progressBySlug: Record<string, TaskLessonProgressSnapshot | undefined>,
-  continueTargetSlug: string | null
-): StudyLessonWithProgress[] {
-  return lessons.map((lesson) => {
-    const progress = progressBySlug[lesson.slug] ?? emptySnapshot();
-    return {
-      ...lesson,
-      progressStatus: progress.status,
-      currentPhase: progress.currentPhase,
-      isContinueTarget: continueTargetSlug === lesson.slug,
-    };
-  });
-}
+export { resolveAdaptiveTaskContinueLesson } from "./adaptive-task-resolver";
+export type { AdaptiveTaskHints, AdaptiveSkillHint } from "./adaptive-task-resolver";
 
 /**
  * Load existing LessonProgress for mapped task lessons (server-side only).
@@ -148,7 +52,7 @@ export async function loadTaskLessonProgressMap(
   const uniqueSlugs = [...new Set(lessonSlugs)];
   const result: Record<string, TaskLessonProgressSnapshot> = {};
   for (const slug of uniqueSlugs) {
-    result[slug] = emptySnapshot();
+    result[slug] = emptyTaskProgressSnapshot();
   }
   if (uniqueSlugs.length === 0) return result;
 
@@ -185,10 +89,198 @@ export async function loadTaskLessonProgressMap(
     result[slug] = {
       status: record.status as TaskLessonProgressStatus,
       updatedAtMs: record.updatedAt.getTime(),
-      currentPhase: parseCurrentPhase(record.metadata),
+      currentPhase: parseTaskLessonCurrentPhase(record.metadata),
       hasProgressRecord: true,
     };
   }
 
   return result;
+}
+
+async function loadLessonSkillIdsBySlug(
+  lessonSlugs: string[]
+): Promise<Record<string, string[]>> {
+  const result: Record<string, string[]> = {};
+  for (const slug of lessonSlugs) {
+    result[slug] = [];
+  }
+  if (lessonSlugs.length === 0) return result;
+
+  const dbLessons = await prisma.lesson.findMany({
+    where: {
+      slug: { in: lessonSlugs },
+      module: {
+        course: {
+          slug: PMP_COURSE_SLUG,
+          academy: { slug: PMP_ACADEMY_SLUG },
+        },
+      },
+    },
+    select: {
+      slug: true,
+      skills: { select: { skillId: true } },
+      learningItems: {
+        select: {
+          questions: { select: { skillId: true } },
+        },
+      },
+    },
+  });
+
+  for (const lesson of dbLessons) {
+    const ids = new Set<string>();
+    for (const link of lesson.skills) {
+      if (link.skillId) ids.add(link.skillId);
+    }
+    for (const item of lesson.learningItems) {
+      for (const q of item.questions) {
+        if (q.skillId) ids.add(q.skillId);
+      }
+    }
+    result[lesson.slug] = [...ids];
+  }
+
+  return result;
+}
+
+/**
+ * Read-only adaptive hints for a PMP Study task (weakness signals + review due).
+ * Does not write mastery state; 7-state is never persisted here.
+ */
+export async function loadAdaptiveTaskHints(
+  userId: string,
+  ecoTaskId: EcoTaskStableId,
+  lessonSlugs: string[]
+): Promise<AdaptiveTaskHints> {
+  const lessonSkillIds = await loadLessonSkillIdsBySlug(lessonSlugs);
+  const allSkillIds = [...new Set(Object.values(lessonSkillIds).flat())];
+
+  if (allSkillIds.length === 0) {
+    return { skillHints: [], lessonSkillIds };
+  }
+
+  const skillHints: AdaptiveTaskHints["skillHints"] = [];
+  const seenSkills = new Set<string>();
+
+  const attempts = await prisma.quizAttempt.findMany({
+    where: {
+      userId,
+      question: { skillId: { in: allSkillIds } },
+    },
+    orderBy: { createdAt: "asc" },
+    select: {
+      questionId: true,
+      isCorrect: true,
+      confidenceLevel: true,
+      createdAt: true,
+      question: {
+        select: {
+          id: true,
+          externalKey: true,
+          skillId: true,
+          conceptSlug: true,
+          ecoTaskCode: true,
+          examDifficulty: true,
+          difficulty: true,
+          learningObjective: true,
+          masteryMetadata: {
+            select: {
+              ecoTaskId: true,
+              primaryConceptId: true,
+              primarySkillId: true,
+              cognitiveLevel: true,
+              difficulty: true,
+              misconceptionIds: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const questionsById: Record<string, QuestionMasteryContext> = {};
+  for (const row of attempts) {
+    questionsById[row.question.id] = {
+      ...row.question,
+      masteryMetadata: row.question.masteryMetadata,
+    };
+  }
+
+  const weaknessInputs = quizAttemptsToMasteryInputs(
+    attempts.map((a) => ({
+      questionId: a.questionId,
+      isCorrect: a.isCorrect,
+      confidenceLevel: a.confidenceLevel,
+      answeredAt: a.createdAt,
+    })),
+    questionsById
+  );
+
+  const weaknessSignals = buildWeaknessSignals(weaknessInputs);
+  for (const signal of weaknessSignals) {
+    if (!signal.skillId || !allSkillIds.includes(signal.skillId)) continue;
+    if (signal.ecoTaskId && signal.ecoTaskId !== ecoTaskId) continue;
+    if (seenSkills.has(signal.skillId)) continue;
+    seenSkills.add(signal.skillId);
+    skillHints.push({
+      skillId: signal.skillId,
+      source: "WEAKNESS",
+      priority: signal.priority,
+    });
+  }
+
+  const masteries = await prisma.conceptMastery.findMany({
+    where: { userId, skillId: { in: allSkillIds } },
+    include: { skill: true },
+  });
+
+  const now = new Date();
+  const reviewQueue = buildReviewQueue(
+    masteries.map((m) => ({
+      skillId: m.skillId,
+      skillSlug: m.skill.slug,
+      masteryLevel: m.level,
+      lastReviewedAt: m.lastReviewedAt,
+      nextReviewAt: m.nextReviewAt,
+      attemptCount: 0,
+      recentErrorCount: 0,
+      lastAttemptAt: m.lastReviewedAt,
+      lastAttemptCorrect: null,
+    })),
+    now
+  );
+
+  for (const item of reviewQueue) {
+    if (seenSkills.has(item.skillId)) continue;
+    if (
+      item.reasonCode !== "DUE_TODAY" &&
+      item.reasonCode !== "DUE_SOON" &&
+      item.reasonCode !== "WEAK_MASTERY"
+    ) {
+      continue;
+    }
+    seenSkills.add(item.skillId);
+    skillHints.push({
+      skillId: item.skillId,
+      source: item.reasonCode === "WEAK_MASTERY" ? "WEAK_MASTERY" : "REVIEW_DUE",
+      priority: item.priority,
+    });
+  }
+
+  for (const mastery of masteries) {
+    if (mastery.level !== "WEAK" || seenSkills.has(mastery.skillId)) continue;
+    seenSkills.add(mastery.skillId);
+    skillHints.push({
+      skillId: mastery.skillId,
+      source: "WEAK_MASTERY",
+      priority: 50 + skillHints.length,
+    });
+  }
+
+  skillHints.sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority;
+    return a.skillId.localeCompare(b.skillId);
+  });
+
+  return { skillHints, lessonSkillIds };
 }

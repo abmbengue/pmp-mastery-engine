@@ -30,3 +30,5 @@ export * from "./attempt-adapter";
 export * from "./mastery-runtime-service";
 export * from "./mastery-snapshot-view";
 export * from "./mastery-snapshot";
+export * from "./adaptive-task-resolver";
+export * from "./task-continue-resolver";

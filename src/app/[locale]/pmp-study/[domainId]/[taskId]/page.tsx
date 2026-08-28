@@ -5,8 +5,9 @@ import { Link } from "@/modules/localization/navigation";
 import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
 import {
   enrichLessonsWithTaskProgress,
+  loadAdaptiveTaskHints,
   loadTaskLessonProgressMap,
-  resolveTaskContinueLesson,
+  resolveAdaptiveTaskContinueLesson,
 } from "@/modules/mastery-engine/pmp-study-progress";
 import {
   buildStudyTaskView,
@@ -49,7 +50,16 @@ export default async function PmpStudyTaskPage({
     session.user.id,
     lessons.map((lesson) => lesson.slug)
   );
-  const resolution = resolveTaskContinueLesson(lessons, progressBySlug);
+  const adaptiveHints = await loadAdaptiveTaskHints(
+    session.user.id,
+    taskId,
+    lessons.map((lesson) => lesson.slug)
+  );
+  const resolution = resolveAdaptiveTaskContinueLesson(
+    lessons,
+    progressBySlug,
+    adaptiveHints
+  );
   const lessonsWithProgress = enrichLessonsWithTaskProgress(
     lessons,
     progressBySlug,
