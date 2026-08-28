@@ -28,11 +28,13 @@ async function answerAllQuizQuestions(page: Page, pick: "first" | "last" = "firs
   const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
   const n = await fieldsets.count();
   for (let i = 0; i < n; i++) {
-    const inputs = fieldsets.nth(i).locator('input[type="radio"], input[type="checkbox"]');
+    const fieldset = fieldsets.nth(i);
+    const inputs = fieldset.locator('input[type="radio"], input[type="checkbox"]');
     const count = await inputs.count();
     if (count === 0) continue;
     const idx = pick === "last" ? count - 1 : 0;
     await inputs.nth(idx).click();
+    await fieldset.getByTestId(/confidence-.*-3/).click();
   }
 }
 
