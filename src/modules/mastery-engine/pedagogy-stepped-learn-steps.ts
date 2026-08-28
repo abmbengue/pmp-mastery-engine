@@ -1,5 +1,5 @@
 /**
- * Step builder for shared-vision interactive LEARN (Phase B.3.2 P1).
+ * Step builder for interactive LEARN (Phase B.3.2 P1+).
  * Composes existing pack + canonical critical-distinctions only — no new pedagogy content.
  */
 
@@ -8,14 +8,14 @@ import type { LessonPedagogyPack, PedagogyScreen } from "./lesson-pedagogy";
 
 export type PedagogyMindsetPhase = "ASSESS" | "ALIGN" | "DECIDE" | "ACT";
 
-export type SharedVisionMiniCaseChoice = {
+export type SteppedMiniCaseChoice = {
   id: string;
   labelFr: string;
   labelEn: string;
   correct?: boolean;
 };
 
-export type SharedVisionLearnStep =
+export type SteppedLearnStep =
   | { kind: "what"; bodyFr: string; bodyEn: string }
   | { kind: "why"; bodyFr: string; bodyEn: string }
   | {
@@ -45,22 +45,30 @@ export type SharedVisionLearnStep =
       promptEn: string;
       reflectFr: string;
       reflectEn: string;
-      choices: SharedVisionMiniCaseChoice[];
+      choices: SteppedMiniCaseChoice[];
       rationaleFr: string;
       rationaleEn: string;
     }
   | { kind: "takeaway"; bodyFr: string; bodyEn: string };
 
-/** Lessons that use the stepped interactive LEARN flow (Phase B.3.2 P1). */
-export const STEPPED_LEARN_LESSON_IDS = ["shared-vision"] as const;
+/** Lessons using the stepped interactive LEARN flow (mobile one-card-at-a-time). */
+export const STEPPED_LEARN_LESSON_IDS = [
+  "shared-vision",
+  "knowledge-transfer",
+  "communication",
+] as const;
 
 export type SteppedLearnLessonId = (typeof STEPPED_LEARN_LESSON_IDS)[number];
+
+const MINI_CASE_CHOICE_ORDER: Record<SteppedLearnLessonId, readonly string[]> = {
+  "shared-vision": ["b", "a", "c"],
+  "knowledge-transfer": ["b", "a", "c"],
+  communication: ["b", "a", "c"],
+};
 
 export function usesSteppedLearn(lessonId: string): lessonId is SteppedLearnLessonId {
   return (STEPPED_LEARN_LESSON_IDS as readonly string[]).includes(lessonId);
 }
-
-const MINI_CASE_CHOICE_ORDER = ["b", "a", "c"] as const;
 
 function pickMiniCaseScreen(pack: LessonPedagogyPack): PedagogyScreen | undefined {
   return pack.screens.find((s) => s.intent === "MINI_CASE");
@@ -72,17 +80,25 @@ function pickDecisionRuleScreen(pack: LessonPedagogyPack): PedagogyScreen | unde
 
 /**
  * Limits mini-case to 3 conceptual choices (pedagogical — not exam bank).
- * Prefers workshop / rush / escalate over freeze-scope for clearer PMP reasoning.
  */
-export function selectSharedVisionMiniCaseChoices(
+export function selectSteppedMiniCaseChoices(
+  lessonId: SteppedLearnLessonId,
   screen: PedagogyScreen
-): SharedVisionMiniCaseChoice[] {
+): SteppedMiniCaseChoice[] {
   if (!screen.choices?.length) return [];
+  const order = MINI_CASE_CHOICE_ORDER[lessonId];
   const byId = new Map(screen.choices.map((c) => [c.id, c] as const));
-  const ordered = MINI_CASE_CHOICE_ORDER.map((id) => byId.get(id)).filter(
+  const ordered = order.map((id) => byId.get(id)).filter(
     (c): c is NonNullable<typeof c> => c != null
   );
   return ordered.slice(0, 3);
+}
+
+/** @deprecated Use selectSteppedMiniCaseChoices */
+export function selectSharedVisionMiniCaseChoices(
+  screen: PedagogyScreen
+): SteppedMiniCaseChoice[] {
+  return selectSteppedMiniCaseChoices("shared-vision", screen);
 }
 
 function buildRecognizeCues(
@@ -145,21 +161,21 @@ function buildMindsetFrames(
   ];
 }
 
-export function buildSharedVisionLearnSteps(
+export function buildSteppedLearnSteps(
   pack: LessonPedagogyPack,
   criticalDistinctions: CriticalDistinctionCard[],
   takeaway?: string | null
-): SharedVisionLearnStep[] {
-  if (pack.lessonId !== "shared-vision") {
-    throw new Error(`buildSharedVisionLearnSteps: expected shared-vision, got ${pack.lessonId}`);
+): SteppedLearnStep[] {
+  if (!usesSteppedLearn(pack.lessonId)) {
+    throw new Error(`buildSteppedLearnSteps: unsupported lesson ${pack.lessonId}`);
   }
 
+  const lessonId = pack.lessonId;
   const miniCase = pickMiniCaseScreen(pack);
   const decisionScreen = pickDecisionRuleScreen(pack);
-  const distinctions = criticalDistinctions;
-  const recognizeCues = buildRecognizeCues(pack, distinctions);
+  const recognizeCues = buildRecognizeCues(pack, criticalDistinctions);
 
-  const steps: SharedVisionLearnStep[] = [
+  const steps: SteppedLearnStep[] = [
     { kind: "what", bodyFr: pack.objectiveFr, bodyEn: pack.objectiveEn },
     { kind: "why", bodyFr: pack.whyItMattersFr, bodyEn: pack.whyItMattersEn },
     { kind: "recognize", cues: recognizeCues },
@@ -170,7 +186,7 @@ export function buildSharedVisionLearnSteps(
       visualLinesFr: pack.visualModel.linesFr,
       visualLinesEn: pack.visualModel.linesEn,
     },
-    { kind: "distinctions", distinctions },
+    { kind: "distinctions", distinctions: criticalDistinctions },
   ];
 
   if (miniCase) {
@@ -180,10 +196,9 @@ export function buildSharedVisionLearnSteps(
       scenarioEn: miniCase.bodyEn,
       promptFr: "Que ferais-tu en premier ?",
       promptEn: "What would you do first?",
-      reflectFr:
-        "Prenez un moment pour réfléchir avant de voir les options.",
+      reflectFr: "Prenez un moment pour réfléchir avant de voir les options.",
       reflectEn: "Take a moment to think before seeing the options.",
-      choices: selectSharedVisionMiniCaseChoices(miniCase),
+      choices: selectSteppedMiniCaseChoices(lessonId, miniCase),
       rationaleFr: miniCase.whyFr ?? "",
       rationaleEn: miniCase.whyEn ?? "",
     });
@@ -199,3 +214,15 @@ export function buildSharedVisionLearnSteps(
 
   return steps;
 }
+
+/** @deprecated Use buildSteppedLearnSteps */
+export function buildSharedVisionLearnSteps(
+  pack: LessonPedagogyPack,
+  criticalDistinctions: CriticalDistinctionCard[],
+  takeaway?: string | null
+): SteppedLearnStep[] {
+  return buildSteppedLearnSteps(pack, criticalDistinctions, takeaway);
+}
+
+export type SharedVisionLearnStep = SteppedLearnStep;
+export type SharedVisionMiniCaseChoice = SteppedMiniCaseChoice;

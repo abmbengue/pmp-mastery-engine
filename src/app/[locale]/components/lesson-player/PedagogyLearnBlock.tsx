@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import type { Locale } from "@/shared/types/locale";
 import type { LessonPedagogyPack, PedagogyScreen } from "@/modules/mastery-engine/lesson-pedagogy";
 import type { CriticalDistinctionCard } from "@/modules/mastery-engine/critical-distinctions";
-import { usesSteppedLearn } from "@/modules/mastery-engine/pedagogy-shared-vision-steps";
+import { usesSteppedLearn } from "@/modules/mastery-engine/pedagogy-stepped-learn-steps";
 import {
   PedagogySteppedLearn,
   type SteppedPedagogyLabels,

@@ -5,10 +5,10 @@ import type { Locale } from "@/shared/types/locale";
 import type { LessonPedagogyPack } from "@/modules/mastery-engine/lesson-pedagogy";
 import type { CriticalDistinctionCard } from "@/modules/mastery-engine/critical-distinctions";
 import {
-  buildSharedVisionLearnSteps,
-  type SharedVisionLearnStep,
+  buildSteppedLearnSteps,
+  type SteppedLearnStep,
   type PedagogyMindsetPhase,
-} from "@/modules/mastery-engine/pedagogy-shared-vision-steps";
+} from "@/modules/mastery-engine/pedagogy-stepped-learn-steps";
 import type { PedagogyLabels } from "./PedagogyLearnBlock";
 
 export type SteppedPedagogyLabels = PedagogyLabels & {
@@ -79,7 +79,7 @@ function MiniCaseStep({
   labels,
   onComplete,
 }: {
-  step: Extract<SharedVisionLearnStep, { kind: "mini_case" }>;
+  step: Extract<SteppedLearnStep, { kind: "mini_case" }>;
   locale: Locale;
   labels: SteppedPedagogyLabels;
   onComplete: () => void;
@@ -167,7 +167,7 @@ function MiniCaseStep({
 }
 
 function renderStepContent(
-  step: SharedVisionLearnStep,
+  step: SteppedLearnStep,
   locale: Locale,
   labels: SteppedPedagogyLabels,
   onMiniCaseComplete: () => void
@@ -297,7 +297,7 @@ export function PedagogySteppedLearn({
   labels,
 }: PedagogySteppedLearnProps) {
   const steps = useMemo(
-    () => buildSharedVisionLearnSteps(pack, criticalDistinctions, takeaway),
+    () => buildSteppedLearnSteps(pack, criticalDistinctions, takeaway),
     [pack, criticalDistinctions, takeaway]
   );
   const [stepIndex, setStepIndex] = useState(0);
