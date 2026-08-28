@@ -195,8 +195,11 @@ export function buildSteppedLearnSteps(
       visualLinesFr: pack.visualModel.linesFr,
       visualLinesEn: pack.visualModel.linesEn,
     },
-    { kind: "distinctions", distinctions: criticalDistinctions },
   ];
+
+  if (criticalDistinctions.length > 0) {
+    steps.push({ kind: "distinctions", distinctions: criticalDistinctions });
+  }
 
   if (miniCase) {
     steps.push({

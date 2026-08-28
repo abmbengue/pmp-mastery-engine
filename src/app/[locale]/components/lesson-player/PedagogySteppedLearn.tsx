@@ -60,13 +60,13 @@ function StepCard({
 }) {
   return (
     <section
-      className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5"
+      className="max-w-full overflow-x-hidden rounded-lg border border-slate-200 bg-white p-4 sm:p-5"
       data-testid={testId}
     >
       <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-blue-700">
         {title}
       </h3>
-      <div className="space-y-3 text-sm leading-relaxed text-gray-800 sm:text-base">
+      <div className="space-y-3 break-words text-sm leading-relaxed text-gray-800 sm:text-base">
         {children}
       </div>
     </section>
@@ -120,7 +120,7 @@ function MiniCaseStep({
                       setPhase("feedback");
                       onComplete();
                     }}
-                    className={`min-h-11 w-full rounded-lg border px-3 py-2.5 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:cursor-default ${
+                    className={`min-h-11 w-full touch-manipulation rounded-lg border px-3 py-2.5 text-left text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:cursor-default ${
                       !reveal
                         ? "border-gray-300 bg-white hover:bg-gray-50"
                         : isCorrect
@@ -155,9 +155,10 @@ function MiniCaseStep({
       {phase === "reflect" ? (
         <button
           type="button"
-          className="min-h-11 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="min-h-11 w-full touch-manipulation rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
           onClick={() => setPhase("choose")}
           data-testid="mini-case-show-options"
+          aria-label={labels.continue}
         >
           {labels.continue}
         </button>
@@ -200,25 +201,30 @@ function renderStepContent(
         ),
         canContinue: true,
       };
-    case "decide":
+    case "decide": {
+      const mindsetFrames = step.mindset.filter(
+        (frame) => pick(locale, frame.bodyFr, frame.bodyEn).trim().length > 0
+      );
       return {
         title: labels.decide,
         testId: "pedagogy-step-decide",
         body: (
           <>
-            <div className="space-y-3" data-testid="pedagogy-mindset">
-              {step.mindset.map((frame) => (
-                <div key={frame.phase} data-testid={`mindset-${frame.phase.toLowerCase()}`}>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    {mindsetLabel(frame.phase, labels)}
-                  </p>
-                  <p className="mt-1">{pick(locale, frame.bodyFr, frame.bodyEn)}</p>
-                </div>
-              ))}
-            </div>
+            {mindsetFrames.length > 0 ? (
+              <div className="space-y-3" data-testid="pedagogy-mindset">
+                {mindsetFrames.map((frame) => (
+                  <div key={frame.phase} data-testid={`mindset-${frame.phase.toLowerCase()}`}>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                      {mindsetLabel(frame.phase, labels)}
+                    </p>
+                    <p className="mt-1">{pick(locale, frame.bodyFr, frame.bodyEn)}</p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
             {step.visualLinesFr.length > 0 ? (
               <div
-                className="rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-700"
+                className="break-words rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-700"
                 data-testid="pedagogy-visual"
               >
                 {(locale === "fr" ? step.visualLinesFr : step.visualLinesEn).map(
@@ -232,6 +238,7 @@ function renderStepContent(
         ),
         canContinue: true,
       };
+    }
     case "distinctions":
       return {
         title: labels.distinctions,
@@ -244,7 +251,7 @@ function renderStepContent(
                 className="mb-3 rounded-md border border-amber-200 bg-amber-50/60 p-3 last:mb-0"
                 data-testid={`distinction-${d.id}`}
               >
-                <p className="font-semibold text-amber-950">
+                <p className="break-words font-semibold text-amber-950">
                   {pick(locale, d.leftFr, d.leftEn)}
                   {d.middleFr
                     ? ` · ${pick(locale, d.middleFr, d.middleEn ?? "")}`
@@ -287,7 +294,7 @@ function renderStepContent(
 }
 
 /**
- * One-card-at-a-time LEARN for shared-vision (Phase B.3.2 P1).
+ * One-card-at-a-time LEARN for P0 pedagogy packs (Phase B.3.2).
  */
 export function PedagogySteppedLearn({
   pack,
@@ -313,8 +320,16 @@ export function PedagogySteppedLearn({
       (current.kind === "mini_case" && miniCaseComplete));
 
   return (
-    <div className="space-y-4" data-testid="pedagogy-stepped-learn">
-      <p className="text-xs text-gray-500" data-testid="pedagogy-step-progress">
+    <div
+      className="max-w-full space-y-4 overflow-x-hidden"
+      data-testid="pedagogy-stepped-learn"
+    >
+      <p
+        className="text-xs text-gray-500"
+        data-testid="pedagogy-step-progress"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {labels.stepOf
           .replace("{current}", String(stepIndex + 1))
           .replace("{total}", String(steps.length))}
@@ -325,21 +340,24 @@ export function PedagogySteppedLearn({
       </StepCard>
 
       {showContinue ? (
-        <button
-          type="button"
-          className="min-h-11 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          onClick={() => {
-            setMiniCaseComplete(false);
-            setStepIndex((i) => Math.min(i + 1, steps.length - 1));
-          }}
-          data-testid={
-            current.kind === "mini_case"
-              ? "pedagogy-step-continue-after-mini-case"
-              : "pedagogy-step-continue"
-          }
-        >
-          {labels.continue}
-        </button>
+        <div className="sticky bottom-2 z-10 pt-1">
+          <button
+            type="button"
+            className="min-h-11 w-full touch-manipulation rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+            onClick={() => {
+              setMiniCaseComplete(false);
+              setStepIndex((i) => Math.min(i + 1, steps.length - 1));
+            }}
+            data-testid={
+              current.kind === "mini_case"
+                ? "pedagogy-step-continue-after-mini-case"
+                : "pedagogy-step-continue"
+            }
+            aria-label={labels.continue}
+          >
+            {labels.continue}
+          </button>
+        </div>
       ) : null}
     </div>
   );

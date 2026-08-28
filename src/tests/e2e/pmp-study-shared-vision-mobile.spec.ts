@@ -40,9 +40,7 @@ async function advancePedagogyStep(
   const continueBtn = stepped.getByTestId("pedagogy-step-continue");
   await expect(continueBtn).toHaveCount(1);
   await continueBtn.scrollIntoViewIfNeeded();
-  await continueBtn.evaluate((el) => {
-    (el as HTMLButtonElement).click();
-  });
+  await continueBtn.click();
   if (nextProgressLabel) {
     await expect(stepped.getByTestId("pedagogy-step-progress")).toContainText(
       nextProgressLabel,

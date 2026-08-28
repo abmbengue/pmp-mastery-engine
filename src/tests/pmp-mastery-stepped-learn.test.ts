@@ -40,6 +40,7 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /expectations diverge|diverge/i,
     miniCaseCorrectId: "b",
     hasMiniCase: true,
+    hasDistinctions: true,
   },
   {
     slug: "knowledge-transfer" as const,
@@ -47,6 +48,7 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /tacit|pairing|coaching/i,
     miniCaseCorrectId: "b",
     hasMiniCase: true,
+    hasDistinctions: true,
   },
   {
     slug: "communication" as const,
@@ -57,6 +59,7 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /urgency|dialogue|interactive/i,
     miniCaseCorrectId: "b",
     hasMiniCase: true,
+    hasDistinctions: true,
   },
   {
     slug: "risk-vs-issue" as const,
@@ -69,6 +72,7 @@ const STEPPED_LESSONS = [
     ],
     mindsetAssessEn: /predictive|adaptive|change/i,
     hasMiniCase: false,
+    hasDistinctions: true,
   },
   {
     slug: "cost" as const,
@@ -81,6 +85,7 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /CPI|BAC\/CPI|EAC/i,
     miniCaseCorrectId: "b",
     hasMiniCase: true,
+    hasDistinctions: true,
   },
   {
     slug: "project-lifecycle-basics" as const,
@@ -88,12 +93,14 @@ const STEPPED_LESSONS = [
     mindsetAssessEn: /acceptance|obligations|close/i,
     miniCaseCorrectId: "b",
     hasMiniCase: true,
+    hasDistinctions: false,
   },
   {
     slug: "lessons-learned" as const,
     distinctionIds: ["dist-knowledge-transfer-vs-communication", "dist-opa-vs-eef"],
     mindsetAssessEn: /LESSON LEARNED|ANALYSIS|IMPROVEMENT/i,
     hasMiniCase: false,
+    hasDistinctions: true,
   },
 ];
 
@@ -108,7 +115,7 @@ describe("stepped interactive LEARN", () => {
 
   it.each(STEPPED_LESSONS)(
     "$slug builds canonical stepped sequence (mini-case only when pack provides one)",
-    ({ slug, hasMiniCase }) => {
+    ({ slug, hasMiniCase, hasDistinctions }) => {
       const pack = getLessonPedagogy(slug);
       expect(pack).toBeDefined();
       const distinctions = distinctionsForPedagogyPack(pack!);
@@ -118,7 +125,7 @@ describe("stepped interactive LEARN", () => {
         "why",
         "recognize",
         "decide",
-        "distinctions",
+        ...(hasDistinctions ? (["distinctions"] as const) : []),
         ...(hasMiniCase ? (["mini_case"] as const) : []),
         "takeaway",
       ];
@@ -126,7 +133,7 @@ describe("stepped interactive LEARN", () => {
     }
   );
 
-  it.each(STEPPED_LESSONS)(
+  it.each(STEPPED_LESSONS.filter((l) => l.hasDistinctions))(
     "$slug uses canonical critical distinctions only",
     ({ slug, distinctionIds }) => {
       const pack = getLessonPedagogy(slug)!;
@@ -153,6 +160,14 @@ describe("stepped interactive LEARN", () => {
       expect(choices.find((c) => c.correct)?.id).toBe(miniCaseCorrectId);
     }
   );
+
+  it("project-lifecycle-basics omits distinctions step when no canonical distinctions exist", () => {
+    const pack = getLessonPedagogy("project-lifecycle-basics")!;
+    const distinctions = distinctionsForPedagogyPack(pack);
+    expect(distinctions).toHaveLength(0);
+    const steps = buildSteppedLearnSteps(pack, distinctions);
+    expect(steps.some((s) => s.kind === "distinctions")).toBe(false);
+  });
 
   it.each(STEPPED_LESSONS.filter((l) => !l.hasMiniCase))(
     "$slug omits mini-case when pack has no MINI_CASE screen",
