@@ -3,6 +3,7 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import { recordQuizAttempt, computeQuizScore } from "@/modules/assessment-engine/scoring-service";
 import { parseConfidenceInput } from "@/modules/mastery-engine/confidence";
+import { processQuizMasteryForAttempts } from "@/modules/mastery-engine/mastery-runtime-service";
 import prisma from "@/data/prisma-client";
 
 const confidenceLevelSchema = z.union([
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
     answers.map(async (a) => {
       const confidence = parseConfidenceInput(a.confidenceLevel);
 
-      const { validation } = await recordQuizAttempt(
+      const { attempt, validation } = await recordQuizAttempt(
         session.user.id,
         a.questionId,
         a.selectedOptionIds,
@@ -56,6 +57,7 @@ export async function POST(request: Request) {
         include: { answerOptions: { orderBy: { sortOrder: "asc" } }, skill: true },
       });
       return {
+        attemptId: attempt.id,
         questionId: a.questionId,
         isCorrect: validation.isCorrect,
         score: validation.score,
@@ -65,6 +67,11 @@ export async function POST(request: Request) {
         question,
       };
     })
+  );
+
+  await processQuizMasteryForAttempts(
+    session.user.id,
+    results.map((r) => r.attemptId)
   );
 
   const overallScore = computeQuizScore(

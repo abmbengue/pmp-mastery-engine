@@ -1,6 +1,5 @@
 import prisma from "@/data/prisma-client";
-import { completeLesson, getLessonProgress, getCourseProgress, updateConceptMastery } from "./progress-service";
-import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
+import { completeLesson, getLessonProgress, getCourseProgress } from "./progress-service";
 import type { LessonPhase } from "./lesson-phases";
 import { parseLessonPhase } from "./lesson-phases";
 
@@ -95,6 +94,7 @@ export async function saveLessonPhase(
 
 /**
  * Mark lesson as fully completed.
+ * Phase C: ConceptMastery is written at TEST submit via mastery-runtime-service.
  */
 export async function finishLesson(
   userId: string,
@@ -103,11 +103,9 @@ export async function finishLesson(
   quizScore: number,
   skillId: string | null
 ) {
+  void quizScore;
+  void skillId;
   await completeLesson(userId, lessonId, timeSpentSec);
-  if (skillId) {
-    const level = computeMasteryLevelFromScore(quizScore);
-    await updateConceptMastery(userId, skillId, level);
-  }
 }
 
 export { getCourseProgress };

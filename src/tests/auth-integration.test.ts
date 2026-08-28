@@ -4,6 +4,7 @@ import { createUser, enrollUserInActiveV1Courses, findUserDashboardData, updateU
 import { hashPassword } from "@/modules/auth/password";
 import { finishLesson } from "@/modules/learning-engine/lesson-session-service";
 import { recordQuizAttempt } from "@/modules/assessment-engine/scoring-service";
+import { processQuizMasteryForAttempts } from "@/modules/mastery-engine/mastery-runtime-service";
 
 describe("auth and user isolation integration", () => {
   let userAId: string;
@@ -61,7 +62,8 @@ describe("auth and user isolation integration", () => {
 
   it("creates isolated progress data per user", async () => {
     await finishLesson(userAId, lessonId, 180, 100, skillId);
-    await recordQuizAttempt(userAId, questionId, [correctOptionId]);
+    const { attempt } = await recordQuizAttempt(userAId, questionId, [correctOptionId]);
+    await processQuizMasteryForAttempts(userAId, [attempt.id]);
 
     const userAData = await findUserDashboardData(userAId);
     const userBData = await findUserDashboardData(userBId);

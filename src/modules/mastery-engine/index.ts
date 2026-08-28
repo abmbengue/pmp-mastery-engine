@@ -26,3 +26,5 @@ export * from "./lesson-pedagogy";
 export * from "./pmp-lesson-catalog";
 export * from "./pmp-study";
 export * from "./pmp-study-progress";
+export * from "./attempt-adapter";
+export * from "./mastery-runtime-service";

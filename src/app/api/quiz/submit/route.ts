@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { recordQuizAttempt } from "@/modules/assessment-engine/scoring-service";
+import { processQuizMasteryForAttempts } from "@/modules/mastery-engine/mastery-runtime-service";
 
 const bodySchema = z.object({
   questionId: z.string(),
@@ -21,11 +22,13 @@ export async function POST(request: Request) {
   }
 
   const { questionId, selectedOptionIds } = parsed.data;
-  const { validation } = await recordQuizAttempt(
+  const { attempt, validation } = await recordQuizAttempt(
     session.user.id,
     questionId,
     selectedOptionIds
   );
+
+  await processQuizMasteryForAttempts(session.user.id, [attempt.id]);
 
   return NextResponse.json({
     isCorrect: validation.isCorrect,

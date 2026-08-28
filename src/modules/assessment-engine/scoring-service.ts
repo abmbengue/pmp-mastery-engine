@@ -1,8 +1,6 @@
 import prisma from "@/data/prisma-client";
 import type { QuestionType } from "@/generated/prisma/client";
-import { updateConceptMastery } from "@/modules/learning-engine/progress-service";
 import type { ConfidenceLevel } from "@/modules/mastery-engine/types";
-import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 
 export interface AnswerValidationInput {
   questionId: string;
@@ -96,22 +94,6 @@ export async function recordQuizAttempt(
     },
   });
 
-  const question = await prisma.question.findUnique({
-    where: { id: questionId },
-  });
-
-  if (question?.skillId) {
-    const allAttempts = await prisma.quizAttempt.findMany({
-      where: { userId, question: { skillId: question.skillId } },
-    });
-    const avgScore =
-      allAttempts.reduce((s, a) => s + a.score, 0) / allAttempts.length;
-    await updateConceptMastery(
-      userId,
-      question.skillId,
-      computeMasteryLevelFromScore(avgScore)
-    );
-  }
-
+  // Phase C: ConceptMastery is updated by mastery-runtime-service after quiz batch submit.
   return { attempt, validation };
 }

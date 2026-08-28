@@ -6,6 +6,7 @@ import {
   updateConceptMastery,
 } from "@/modules/learning-engine/progress-service";
 import { recordQuizAttempt } from "@/modules/assessment-engine/scoring-service";
+import { processQuizMasteryForAttempts } from "@/modules/mastery-engine/mastery-runtime-service";
 import {
   answerExamQuestion,
   createExamSession,
@@ -44,12 +45,13 @@ async function completeLessonWithQuiz(
   const correctOption = question.answerOptions.find((option) => option.isCorrect);
   if (!correctOption) return;
 
-  await recordQuizAttempt(
+  const { attempt } = await recordQuizAttempt(
     ctx.userId,
     question.id,
     [correctOption.id],
     quizItem.id
   );
+  await processQuizMasteryForAttempts(ctx.userId, [attempt.id]);
 }
 
 async function startLessonOnly(
