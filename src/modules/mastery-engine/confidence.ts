@@ -1,5 +1,5 @@
 /**
- * Confidence calibration model (Phase B — architecture only).
+ * Confidence calibration model (Phase B foundation + Phase C1 capture).
  */
 
 import type { ConfidenceLevel } from "./types";
@@ -10,8 +10,36 @@ export type ConfidenceCalibration =
   | "CALIBRATED"
   | "UNKNOWN";
 
+/** UI / API numeric confidence scale (1–5). */
+export const CONFIDENCE_NUMERIC_LEVELS = [1, 2, 3, 4, 5] as const;
+export type ConfidenceNumeric = (typeof CONFIDENCE_NUMERIC_LEVELS)[number];
+
+export function isValidConfidenceNumeric(
+  value: unknown
+): value is ConfidenceNumeric {
+  return (
+    typeof value === "number" &&
+    !Number.isNaN(value) &&
+    Number.isInteger(value) &&
+    value >= 1 &&
+    value <= 5
+  );
+}
+
+/**
+ * Client-side TEST gate: every question must have an explicit confidence 1–5.
+ */
+export function isTestPhaseConfidenceComplete(
+  questionIds: readonly string[],
+  confidenceByQuestionId: Readonly<Record<string, number | undefined>>
+): boolean {
+  return questionIds.every((id) =>
+    isValidConfidenceNumeric(confidenceByQuestionId[id])
+  );
+}
+
 export function numericToConfidence(n: 1 | 2 | 3 | 4 | 5): ConfidenceLevel {
-  if (n <= 1) return "VERY_LOW";
+  if (n === 1) return "VERY_LOW";
   if (n === 2) return "LOW";
   if (n === 3) return "MEDIUM";
   if (n === 4) return "HIGH";
@@ -67,14 +95,17 @@ export function isConfidenceLevel(value: string): value is ConfidenceLevel {
   return (CONFIDENCE_LEVELS as readonly string[]).includes(value);
 }
 
-/** Maps API/UI input (1–5 or canonical level) to ConfidenceLevel; null when absent. */
+/**
+ * Maps API/UI input (1–5 or canonical level) to ConfidenceLevel.
+ * Returns null when absent (legacy-compatible) or when invalid.
+ */
 export function parseConfidenceInput(
   value: number | string | null | undefined
 ): ConfidenceLevel | null {
   if (value == null) return null;
   if (typeof value === "number") {
-    if (!Number.isInteger(value) || value < 1 || value > 5) return null;
-    return numericToConfidence(value as 1 | 2 | 3 | 4 | 5);
+    if (!isValidConfidenceNumeric(value)) return null;
+    return numericToConfidence(value);
   }
   if (typeof value === "string" && isConfidenceLevel(value)) return value;
   return null;

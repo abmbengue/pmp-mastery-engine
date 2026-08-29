@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import type { Locale } from "@/shared/types/locale";
+import {
+  CONFIDENCE_NUMERIC_LEVELS,
+  isTestPhaseConfidenceComplete,
+  isValidConfidenceNumeric,
+} from "@/modules/mastery-engine/confidence";
 
 export interface QuizOption {
   id: string;
@@ -48,8 +53,6 @@ interface TestPhaseProps {
   };
 }
 
-const CONFIDENCE_LEVELS = [1, 2, 3, 4, 5] as const;
-
 export function TestPhase({ questions, locale: _locale, onSubmit, labels }: TestPhaseProps) {  // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selections, setSelections] = useState<Record<string, string[]>>({});
   const [confidence, setConfidence] = useState<Record<string, number>>({});
@@ -72,21 +75,27 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
   }
 
   const allAnswered = questions.every((q) => (selections[q.id]?.length ?? 0) > 0);
-  const allConfident = questions.every((q) => {
-    const level = confidence[q.id];
-    return typeof level === "number" && level >= 1 && level <= 5;
-  });
+  const allConfident = isTestPhaseConfidenceComplete(
+    questions.map((q) => q.id),
+    confidence
+  );
   const canSubmit = allAnswered && allConfident;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit || submitting) return;
     setSubmitting(true);
-    const answers: QuizAnswerSubmission[] = questions.map((q) => ({
-      questionId: q.id,
-      selectedOptionIds: selections[q.id] ?? [],
-      confidenceLevel: confidence[q.id] as 1 | 2 | 3 | 4 | 5,
-    }));
+    const answers: QuizAnswerSubmission[] = questions.map((q) => {
+      const level = confidence[q.id];
+      if (!isValidConfidenceNumeric(level)) {
+        throw new Error(`Missing confidence for question ${q.id}`);
+      }
+      return {
+        questionId: q.id,
+        selectedOptionIds: selections[q.id] ?? [],
+        confidenceLevel: level,
+      };
+    });
     await onSubmit(answers);
   }
 
@@ -151,7 +160,7 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
                 {labels.confidencePrompt}
               </p>
               <div className="flex flex-wrap gap-2">
-                {CONFIDENCE_LEVELS.map((level) => {
+                {CONFIDENCE_NUMERIC_LEVELS.map((level) => {
                   const selected = confidence[q.id] === level;
                   return (
                     <label
