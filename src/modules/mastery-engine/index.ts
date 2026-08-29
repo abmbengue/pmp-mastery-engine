@@ -40,3 +40,4 @@ export * from "./question-metadata-contract";
 export * from "./bank-batch-validator";
 export * from "./runtime-bank-compatibility";
 export * from "./legacy-mastery-writers";
+export * from "./bank-batch-integration";
