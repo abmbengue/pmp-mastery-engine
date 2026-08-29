@@ -8,6 +8,13 @@ import type { ExamBankQuestionSeed } from "../../../prisma/seed/pmp-exam-bank-ty
 /** Protected historical bank size — Q001–Q200 immutable reference. */
 export const PROTECTED_BANK_SIZE = 200;
 
+/**
+ * Canonical protected-bank aggregate fingerprint (Q001–Q200).
+ * Owned by Guards foundation — do not drift from integrity checks.
+ */
+export const PROTECTED_BANK_AGGREGATE =
+  "d18c86618e8cba16c623e8982f362f00e930a8ed5ea8b9c53abb8b5b0df0b1e2";
+
 /** Keys pmp-exam-001 … pmp-exam-200 */
 export const PROTECTED_BANK_KEY_PATTERN = /^pmp-exam-(0\d{2}|1\d{2}|200)$/;
 

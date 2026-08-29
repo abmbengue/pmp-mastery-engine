@@ -12,6 +12,7 @@ import {
   type BatchValidationResult,
 } from "./bank-batch-contract";
 import {
+  detectIncompleteProtectedBank,
   detectProtectedBankDeletions,
   validateProtectedBankImmutability,
 } from "./protected-bank-guard";
@@ -75,6 +76,8 @@ export function validateExamBankBatch(
   const { existingProtectedBank, candidateBatch, expectedProtectedAggregate } =
     input;
   const duplicateAsWarning = input.duplicateAsWarning ?? false;
+
+  diagnostics.push(...detectIncompleteProtectedBank(existingProtectedBank));
 
   diagnostics.push(
     ...validateBatchQuestionShape(candidateBatch).map((d) => d)
@@ -161,9 +164,17 @@ export function validateExamBankBatch(
     (d) => d.code === "ECO_TASK_GAP"
   ).length;
 
+  const orderedDiagnostics = [...diagnostics].sort((a, b) => {
+    const byCode = a.code.localeCompare(b.code);
+    if (byCode !== 0) return byCode;
+    const byEntity = (a.entityId ?? "").localeCompare(b.entityId ?? "");
+    if (byEntity !== 0) return byEntity;
+    return a.message.localeCompare(b.message);
+  });
+
   return {
-    status: deriveBatchValidationStatus(diagnostics),
-    diagnostics,
+    status: deriveBatchValidationStatus(orderedDiagnostics),
+    diagnostics: orderedDiagnostics,
     protectedBankIntact,
     candidateCount: candidateBatch.length,
     combinedCount: combinedBank.length,

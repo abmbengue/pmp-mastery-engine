@@ -9,7 +9,10 @@ import {
   fingerprintProtectedQuestion,
 } from "./integrity";
 import type { BatchValidationDiagnostic } from "./bank-batch-contract";
-import { isProtectedBankKey } from "./bank-batch-contract";
+import {
+  PROTECTED_BANK_SIZE,
+  isProtectedBankKey,
+} from "./bank-batch-contract";
 
 export type ProtectedBankMutationKind =
   | "PROTECTED_STEM_CHANGED"
@@ -86,6 +89,38 @@ export function detectProtectedQuestionMutation(
   }
 
   return kinds;
+}
+
+/**
+ * Ensures the reference protected bank contains every Q001–Q200 key (no gaps).
+ */
+export function detectIncompleteProtectedBank(
+  protectedBank: ExamBankQuestionSeed[]
+): BatchValidationDiagnostic[] {
+  const diagnostics: BatchValidationDiagnostic[] = [];
+  const keys = new Set(protectedBank.map((q) => q.externalKey));
+
+  if (protectedBank.length !== PROTECTED_BANK_SIZE) {
+    diagnostics.push({
+      code: "PROTECTED_BANK_COUNT",
+      severity: "ERROR",
+      message: `Expected ${PROTECTED_BANK_SIZE} protected questions, found ${protectedBank.length}`,
+    });
+  }
+
+  for (let i = 1; i <= PROTECTED_BANK_SIZE; i += 1) {
+    const key = `pmp-exam-${String(i).padStart(3, "0")}`;
+    if (!keys.has(key)) {
+      diagnostics.push({
+        code: "PROTECTED_QUESTION_MISSING",
+        severity: "ERROR",
+        message: `Protected question ${key} missing from reference bank`,
+        entityId: key,
+      });
+    }
+  }
+
+  return diagnostics;
 }
 
 /**
