@@ -119,3 +119,64 @@ export const PRIORITY_GAP_TOPICS = [
   "PEOPLE-T04 vs PEOPLE-T08 engagement vs communication",
   "PEOPLE-T02 vs BUSINESS-T04 conflict vs issue",
 ] as const;
+
+export type CoverageComparisonReport = {
+  current: CoverageMatrixReport;
+  candidate: CoverageMatrixReport;
+  combined: CoverageMatrixReport;
+  deltaByEcoTask: Record<string, number>;
+  deltaBySkill: Record<string, number>;
+  improvedEcoTaskIds: EcoTaskStableId[];
+  improvedSkillIds: string[];
+  remainingGapEcoTaskIds: EcoTaskStableId[];
+  remainingGapSkillIds: string[];
+};
+
+/**
+ * Compare coverage across existing bank, candidate batch, and combined bank.
+ * Taxonomy (26 ECO tasks) is unchanged — only counts differ.
+ */
+export function buildCoverageComparison(
+  existingBank: ExamBankQuestionSeed[],
+  candidateBatch: ExamBankQuestionSeed[]
+): CoverageComparisonReport {
+  const current = buildCoverageMatrix(existingBank);
+  const candidate = buildCoverageMatrix(candidateBatch);
+  const combined = buildCoverageMatrix([...existingBank, ...candidateBatch]);
+
+  const deltaByEcoTask: Record<string, number> = {};
+  const improvedEcoTaskIds: EcoTaskStableId[] = [];
+  for (const task of ECO_TASKS) {
+    const before = current.byEcoTask[task.id]?.questions ?? 0;
+    const after = combined.byEcoTask[task.id]?.questions ?? 0;
+    const delta = after - before;
+    deltaByEcoTask[task.id] = delta;
+    if (delta > 0 && before === 0) {
+      improvedEcoTaskIds.push(task.id);
+    }
+  }
+
+  const deltaBySkill: Record<string, number> = {};
+  const improvedSkillIds: string[] = [];
+  for (const skill of MASTERY_SKILLS) {
+    const before = current.bySkill[skill.id]?.questions ?? 0;
+    const after = combined.bySkill[skill.id]?.questions ?? 0;
+    const delta = after - before;
+    deltaBySkill[skill.id] = delta;
+    if (delta > 0 && before === 0) {
+      improvedSkillIds.push(skill.id);
+    }
+  }
+
+  return {
+    current,
+    candidate,
+    combined,
+    deltaByEcoTask,
+    deltaBySkill,
+    improvedEcoTaskIds,
+    improvedSkillIds,
+    remainingGapEcoTaskIds: combined.gaps.ecoTaskIds,
+    remainingGapSkillIds: combined.gaps.skillIds,
+  };
+}
