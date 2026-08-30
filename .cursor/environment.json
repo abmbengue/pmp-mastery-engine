@@ -1,0 +1,16 @@
+{
+  "name": "Professional Learning Academy",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "next-dev",
+      "command": "npm run dev",
+      "description": "Next.js dev server on http://localhost:3000 (open /fr or /en)."
+    }
+  ],
+  "ports": [
+    { "name": "web", "port": 3000 },
+    { "name": "postgres", "port": 5432 }
+  ]
+}
