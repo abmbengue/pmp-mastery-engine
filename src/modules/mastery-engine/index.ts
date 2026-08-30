@@ -23,3 +23,13 @@ export * from "./instructor-lessons";
 export * from "./instructor-lesson-blueprints";
 export * from "./critical-distinctions";
 export * from "./lesson-pedagogy";
+
+// ============================================================================
+// PHASE D: GUARDS / ITERATION 1 — Data Integrity & Constraints
+// ============================================================================
+
+export * from "./exam-bank-guard";
+export * from "./eco-guard";
+export * from "./question-bank-guard";
+export * from "./mastery-guard";
+export * from "./guard-suite";
