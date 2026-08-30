@@ -21,6 +21,7 @@ export function toSkillMasterySnapshotView(
     recentPerformance: snap.recentPerformance,
     historicalPerformance: snap.historicalPerformance,
     confidence: snap.confidence,
+    retention: snap.retention,
   };
 }
 
