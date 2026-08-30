@@ -1,5 +1,5 @@
 /**
- * Phase C — derives ConceptMastery review schedule inputs from quiz attempts.
+ * Phase C4 — derives ConceptMastery review schedule inputs from quiz attempts.
  * Runtime nextReviewAt uses learning-engine/spaced-repetition.ts exclusively.
  */
 
@@ -7,7 +7,8 @@ import type { MasteryLevel } from "@/generated/prisma/client";
 import { getNextReviewDate } from "@/modules/learning-engine/spaced-repetition";
 import type { AttemptMasteryInput } from "./weakness-model";
 
-const RECENT_ATTEMPT_WINDOW = 5;
+/** Canonical recent-error window for skill-scoped scheduling (last N attempts). */
+export const RECENT_ATTEMPT_WINDOW = 5;
 
 export function countRecentSkillErrors(attempts: AttemptMasteryInput[]): number {
   return attempts.slice(-RECENT_ATTEMPT_WINDOW).filter((a) => !a.correct).length;
