@@ -216,6 +216,14 @@ export async function loadAdaptiveTaskHints(
     questionsById
   );
 
+  const attemptsBySkillId: Record<string, typeof weaknessInputs> = {};
+  for (const input of weaknessInputs) {
+    if (!input.skillId) continue;
+    const list = attemptsBySkillId[input.skillId] ?? [];
+    list.push(input);
+    attemptsBySkillId[input.skillId] = list;
+  }
+
   const weaknessSignals = buildWeaknessSignals(weaknessInputs);
   for (const signal of weaknessSignals) {
     if (!signal.skillId || !allSkillIds.includes(signal.skillId)) continue;
@@ -242,10 +250,15 @@ export async function loadAdaptiveTaskHints(
       masteryLevel: m.level,
       lastReviewedAt: m.lastReviewedAt,
       nextReviewAt: m.nextReviewAt,
-      attemptCount: 0,
-      recentErrorCount: 0,
-      lastAttemptAt: m.lastReviewedAt,
-      lastAttemptCorrect: null,
+      attemptCount: attemptsBySkillId[m.skillId]?.length ?? 0,
+      recentErrorCount: (attemptsBySkillId[m.skillId] ?? [])
+        .slice(-5)
+        .filter((attempt) => !attempt.correct).length,
+      lastAttemptAt:
+        attemptsBySkillId[m.skillId]?.slice(-1)[0]?.answeredAt ??
+        m.lastReviewedAt,
+      lastAttemptCorrect:
+        attemptsBySkillId[m.skillId]?.slice(-1)[0]?.correct ?? null,
     })),
     now
   );
