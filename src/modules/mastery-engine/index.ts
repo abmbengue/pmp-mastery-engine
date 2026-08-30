@@ -41,3 +41,14 @@ export * from "./bank-batch-validator";
 export * from "./runtime-bank-compatibility";
 export * from "./legacy-mastery-writers";
 export * from "./bank-batch-integration";
+
+// ============================================================================
+// Mastery level guard (live-DB audit) — 3-state persistence invariant.
+// ConceptMastery.level must only ever be WEAK | LEARNING | MASTERED.
+// The other guard exports from the base branch (exam-bank-guard, eco-guard,
+// question-bank-guard, guard-suite) were dropped: their implementation files
+// were never committed. Their invariants are enforced by the canonical Phase D
+// guards above (bank-batch-contract / protected-bank-guard / integrity /
+// eco-taxonomy) — see __tests__/ which validate them against that canonical API.
+// ============================================================================
+export * from "./mastery-guard";
