@@ -79,6 +79,45 @@ test("LEARNING: Login → Dashboard → Personal Finance → Course → Lesson �
   await expect(page.getByTestId("global-progress")).not.toContainText("0%");
 });
 
+test("C9 PHASE C: TEST requires confidence → REVIEW results → MASTER", async ({ page }) => {
+  test.setTimeout(90_000);
+  const email = uniqueEmail("c9-closure");
+  await register(page, "en", email);
+
+  await page.getByTestId("continue-course-essentials").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible({ timeout: 20_000 });
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("phase-practice")).toBeVisible();
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("test-phase")).toBeVisible();
+
+  const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
+  const n = await fieldsets.count();
+  expect(n).toBeGreaterThan(0);
+
+  // Answer without confidence → submit must stay disabled
+  for (let i = 0; i < n; i++) {
+    const fieldset = fieldsets.nth(i);
+    await fieldset.locator('input[type="radio"], input[type="checkbox"]').first().click();
+  }
+  await expect(page.getByTestId("submit-quiz")).toBeDisabled();
+
+  // Select confidence 1–5 for every question, then submit
+  for (let i = 0; i < n; i++) {
+    const confidence = fieldsets.nth(i).getByTestId(/confidence-.*-3/);
+    await confidence.scrollIntoViewIfNeeded();
+    await confidence.click({ force: true });
+  }
+  await expect(page.getByTestId("submit-quiz")).toBeEnabled();
+  await page.getByTestId("submit-quiz").click();
+
+  await expect(page.getByTestId("review-phase")).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByTestId("review-phase")).toContainText(/%|correct|incorrect|Correct|Incorrect|score|Score/i);
+
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("master-phase")).toBeVisible({ timeout: 15_000 });
+});
+
 test("LANGUAGE: Login → FR Dashboard → EN Dashboard", async ({ page }) => {
   const email = uniqueEmail("locale");
   await register(page, "fr", email);

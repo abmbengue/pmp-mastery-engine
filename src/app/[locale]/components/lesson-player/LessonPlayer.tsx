@@ -23,7 +23,6 @@ import type { SimulatorLabels } from "@/app/[locale]/components/simulators/Simul
 import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
 import { distinctionsForEcoTask } from "@/modules/mastery-engine/critical-distinctions";
 import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
-import type { MasteryState } from "@/modules/mastery-engine/types";
 
 function extractTakeawayFromTextBody(body: string | null | undefined): string | null {
   if (!body) return null;
@@ -79,9 +78,9 @@ export interface LessonPlayerProps {
         pedagogy?: PedagogyLabels;
       };
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
-      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string; confidencePrompt: string; confidenceLevel: (level: number) => string };
+      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string; confidencePrompt: string; confidenceLevelLabels: Record<string, string> };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
-      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string; masteryDepth: string; masteryState: (state: MasteryState) => string };
+      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string; masteryDepth: string; masteryStateLabels: Record<string, string> };
       aiTutor: AiTutorPanelLabels;
       simulators: SimulatorLabels;
     };
@@ -442,7 +441,7 @@ export function LessonPlayer({
               trueOrFalse: pl.test.trueOrFalse,
               submit: pl.test.submit,
               confidencePrompt: pl.test.confidencePrompt,
-              confidenceLevel: pl.test.confidenceLevel,
+              confidenceLevelLabels: pl.test.confidenceLevelLabels,
             }}
           />
         )}

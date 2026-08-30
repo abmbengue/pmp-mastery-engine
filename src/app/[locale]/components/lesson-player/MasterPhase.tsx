@@ -2,7 +2,6 @@
 
 import type { MasteryLevel } from "@/shared/utils/mastery";
 import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
-import type { MasteryState } from "@/modules/mastery-engine/types";
 
 interface MasterPhaseProps {
   score: number;
@@ -27,7 +26,7 @@ interface MasterPhaseProps {
     courseProgress: string;
     lessonsCompleted: string;
     masteryDepth: string;
-    masteryState: (state: MasteryState) => string;
+    masteryStateLabels: Record<string, string>;
   };
 }
 
@@ -86,7 +85,7 @@ export function MasterPhase({
                 data-testid={`mastery-snapshot-${snap.skillId}`}
               >
                 <span className="font-medium" data-testid="mastery-state-7-label">
-                  {labels.masteryState(snap.masteryState)}
+                  {labels.masteryStateLabels[snap.masteryState] ?? snap.masteryState}
                 </span>
                 <span className="text-gray-500" data-testid="mastery-snapshot-performance">
                   {snap.historicalPerformance}%

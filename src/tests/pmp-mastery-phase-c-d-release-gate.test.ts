@@ -345,12 +345,24 @@ describe("Release gate — WARNING behavior", () => {
 });
 
 describe("Release gate — READ-ONLY audit", () => {
+  let readOnlyUserId: string;
+  const readOnlyEmail = `c9-readonly-${Date.now()}@test.local`;
+
+  beforeAll(async () => {
+    const user = await prisma.user.create({
+      data: { email: readOnlyEmail, passwordHash: "test", name: "C9 Readonly" },
+    });
+    readOnlyUserId = user.id;
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany({ where: { email: readOnlyEmail } });
+  });
+
   it("loadLessonReviewRehydrateData does not write DB", async () => {
-    const user = await prisma.user.findUnique({ where: { email: "demo@pla.local" } });
-    if (!user) throw new Error("demo user missing");
     const upsertSpy = vi.spyOn(prisma.conceptMastery, "upsert");
     const updateSpy = vi.spyOn(prisma.lessonProgress, "update");
-    await loadLessonReviewRehydrateData(user.id, "quiz-missing", "en", []);
+    await loadLessonReviewRehydrateData(readOnlyUserId, "quiz-missing", "en", []);
     expect(upsertSpy).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();
     upsertSpy.mockRestore();
@@ -358,12 +370,10 @@ describe("Release gate — READ-ONLY audit", () => {
   });
 
   it("loadAdaptiveTaskHints does not write DB", async () => {
-    const user = await prisma.user.findUnique({ where: { email: "demo@pla.local" } });
-    if (!user) throw new Error("demo user missing");
     const taskView = buildStudyTaskView("PEOPLE-T07");
     const upsertSpy = vi.spyOn(prisma.conceptMastery, "upsert");
     await loadAdaptiveTaskHints(
-      user.id,
+      readOnlyUserId,
       "PEOPLE-T07",
       taskView.lessons.map((l) => l.slug)
     );
@@ -372,10 +382,8 @@ describe("Release gate — READ-ONLY audit", () => {
   });
 
   it("loadWeaknessDashboardView does not write DB", async () => {
-    const user = await prisma.user.findUnique({ where: { email: "demo@pla.local" } });
-    if (!user) throw new Error("demo user missing");
     const upsertSpy = vi.spyOn(prisma.conceptMastery, "upsert");
-    await loadWeaknessDashboardView(user.id, "en", REF_NOW);
+    await loadWeaknessDashboardView(readOnlyUserId, "en", REF_NOW);
     expect(upsertSpy).not.toHaveBeenCalled();
     upsertSpy.mockRestore();
   });
@@ -419,10 +427,16 @@ describe("Release gate — full critical path (DB)", () => {
   let wrongOptionId: string;
   let skillId: string | null;
   const createdAttemptIds: string[] = [];
+  const isolatedEmail = `c9-release-gate-${Date.now()}@test.local`;
 
   beforeAll(async () => {
-    const user = await prisma.user.findUnique({ where: { email: "demo@pla.local" } });
-    if (!user) throw new Error("Demo user not found");
+    const user = await prisma.user.create({
+      data: {
+        email: isolatedEmail,
+        passwordHash: "test",
+        name: "C9 Release Gate User",
+      },
+    });
     userId = user.id;
 
     const lesson = await prisma.lesson.findFirst({
@@ -444,24 +458,13 @@ describe("Release gate — full critical path (DB)", () => {
     questionId = question.id;
     skillId = question.skillId;
     wrongOptionId = question.answerOptions.find((o) => !o.isCorrect)!.id;
-
-    if (skillId) {
-      await prisma.quizAttempt.deleteMany({
-        where: { userId, question: { skillId } },
-      });
-      await prisma.conceptMastery.deleteMany({ where: { userId, skillId } });
-    }
-    await prisma.lessonProgress.deleteMany({ where: { userId, lessonId } });
   });
 
   afterAll(async () => {
-    if (createdAttemptIds.length > 0) {
-      await prisma.quizAttempt.deleteMany({ where: { id: { in: createdAttemptIds } } });
-    }
-    if (skillId) {
-      await prisma.conceptMastery.deleteMany({ where: { userId, skillId } });
-    }
-    await prisma.lessonProgress.deleteMany({ where: { userId, lessonId } });
+    await prisma.quizAttempt.deleteMany({ where: { userId } });
+    await prisma.conceptMastery.deleteMany({ where: { userId } });
+    await prisma.lessonProgress.deleteMany({ where: { userId } });
+    await prisma.user.deleteMany({ where: { email: isolatedEmail } });
   });
 
   it("Phase C: confidence → QuizAttempt → mastery → weakness → spaced-rep", async () => {

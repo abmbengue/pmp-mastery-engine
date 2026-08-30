@@ -255,15 +255,12 @@ export default async function LessonPage({
               correct: tp("test.correct"),
               incorrect: tp("test.incorrect"),
               confidencePrompt: tp("test.confidencePrompt"),
-              confidenceLevel: (level: number) => {
-                const labels: Record<number, string> = {
-                  1: tp("test.confidenceLevel1"),
-                  2: tp("test.confidenceLevel2"),
-                  3: tp("test.confidenceLevel3"),
-                  4: tp("test.confidenceLevel4"),
-                  5: tp("test.confidenceLevel5"),
-                };
-                return labels[level] ?? String(level);
+              confidenceLevelLabels: {
+                "1": tp("test.confidenceLevel1"),
+                "2": tp("test.confidenceLevel2"),
+                "3": tp("test.confidenceLevel3"),
+                "4": tp("test.confidenceLevel4"),
+                "5": tp("test.confidenceLevel5"),
               },
             },
             review: {
@@ -289,17 +286,14 @@ export default async function LessonPage({
               courseProgress: tp("master.courseProgress"),
               lessonsCompleted: tp("master.lessonsCompleted"),
               masteryDepth: tp("master.masteryDepth"),
-              masteryState: (state: import("@/modules/mastery-engine/types").MasteryState) => {
-                const labels: Record<string, string> = {
-                  UNKNOWN: tp("master.stateUnknown"),
-                  EXPOSED: tp("master.stateExposed"),
-                  DEVELOPING: tp("master.stateDeveloping"),
-                  FRAGILE: tp("master.stateFragile"),
-                  FUNCTIONAL: tp("master.stateFunctional"),
-                  STRONG: tp("master.stateStrong"),
-                  MASTERED: tp("master.stateMastered"),
-                };
-                return labels[state] ?? state;
+              masteryStateLabels: {
+                UNKNOWN: tp("master.stateUnknown"),
+                EXPOSED: tp("master.stateExposed"),
+                DEVELOPING: tp("master.stateDeveloping"),
+                FRAGILE: tp("master.stateFragile"),
+                FUNCTIONAL: tp("master.stateFunctional"),
+                STRONG: tp("master.stateStrong"),
+                MASTERED: tp("master.stateMastered"),
               },
             },
             aiTutor: {

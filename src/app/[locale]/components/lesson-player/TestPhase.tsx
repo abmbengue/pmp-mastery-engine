@@ -49,7 +49,7 @@ interface TestPhaseProps {
     trueOrFalse: string;
     submit: string;
     confidencePrompt: string;
-    confidenceLevel: (level: number) => string;
+    confidenceLevelLabels: Record<string, string>;
   };
 }
 
@@ -182,7 +182,7 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
                         }
                         className="sr-only"
                         data-testid={`confidence-${q.id}-${level}`}
-                        aria-label={labels.confidenceLevel(level)}
+                        aria-label={labels.confidenceLevelLabels[String(level)] ?? String(level)}
                       />
                       <span aria-hidden="true">{level}</span>
                     </label>
