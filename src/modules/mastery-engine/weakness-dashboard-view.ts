@@ -265,7 +265,7 @@ export function buildWeaknessDashboardView(input: {
 
   return {
     hasAttempts: input.hasAttempts,
-    weakestSkills,
+    weakestSkills: weakestSkills.slice(0, 8),
     ecoOverview: groupWeaknessByEcoDomain(weakestSkills, input.domainMeta),
     reviewDue: buildWeaknessDashboardReviewItems({
       queue: input.reviewQueue,
