@@ -1,12 +1,13 @@
 /**
- * Phase C — post-quiz mastery runtime.
- * QuizAttempt → adapter → weakness-model → ConceptMastery (single write path).
+ * Phase C3 — post-quiz mastery runtime (canonical ConceptMastery write path).
+ * QuizAttempt → adapter → buildWeaknessSignals → mastery tier → updateConceptMastery.
  *
  * recordQuizAttempt persists attempts only; this service owns mastery upserts
  * after lesson TEST submission. finishLesson no longer writes ConceptMastery.
  */
 
 import prisma from "@/data/prisma-client";
+import type { MasteryLevel } from "@/generated/prisma/client";
 import { updateConceptMastery } from "@/modules/learning-engine/progress-service";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import {
@@ -17,6 +18,7 @@ import {
 import {
   buildWeaknessSignals,
   computeWeightedPerformance,
+  type AttemptMasteryInput,
   type WeaknessSignal,
 } from "./weakness-model";
 import { buildSkillMasterySnapshotViews } from "./mastery-snapshot";
@@ -36,6 +38,13 @@ export type QuizMasteryRuntimeOptions = {
   /** Injectable clock for deterministic tests */
   now?: Date;
 };
+
+/** Pure C3 tier resolution — deterministic, no DB writes. */
+export function resolveMasteryLevelForSkillAttempts(
+  inputs: AttemptMasteryInput[]
+): MasteryLevel {
+  return computeMasteryLevelFromScore(computeWeightedPerformance(inputs));
+}
 
 export async function processQuizMasteryForAttempts(
   userId: string,
@@ -165,8 +174,7 @@ export async function processQuizMasteryForAttempts(
 
     const skillInputs = quizAttemptsToMasteryInputs(observations, questionsById);
     attemptsBySkillId[skillId] = skillInputs;
-    const weightedPerf = computeWeightedPerformance(skillInputs);
-    const level = computeMasteryLevelFromScore(weightedPerf);
+    const level = resolveMasteryLevelForSkillAttempts(skillInputs);
     const schedule = deriveSkillReviewScheduleInput(skillInputs, now);
 
     await updateConceptMastery(userId, skillId, level, {
