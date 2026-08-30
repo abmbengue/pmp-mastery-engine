@@ -16,9 +16,11 @@ export async function answerLessonQuiz(page: Page) {
   const count = await fieldsets.count();
   for (let i = 0; i < count; i++) {
     const fieldset = fieldsets.nth(i);
-    const input = fieldset.locator('input[type="radio"]').first();
-    await input.click();
-    await fieldset.getByTestId(/confidence-.*-3/).click();
+    // Scope to answer options only (exclude the sr-only confidence radios).
+    const option = fieldset.locator('[data-testid^="option-"]').first();
+    await option.click();
+    // The confidence radio is sr-only; a real user clicks its enclosing label.
+    await fieldset.getByTestId(/confidence-.*-3/).locator("..").click();
   }
   await page.getByTestId("submit-quiz").click();
 }

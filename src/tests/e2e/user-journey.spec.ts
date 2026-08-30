@@ -29,12 +29,15 @@ async function answerAllQuizQuestions(page: Page, pick: "first" | "last" = "firs
   const n = await fieldsets.count();
   for (let i = 0; i < n; i++) {
     const fieldset = fieldsets.nth(i);
-    const inputs = fieldset.locator('input[type="radio"], input[type="checkbox"]');
-    const count = await inputs.count();
+    // Scope to answer options only; the sr-only confidence radios also live in
+    // this fieldset and must not be matched here.
+    const options = fieldset.locator('[data-testid^="option-"]');
+    const count = await options.count();
     if (count === 0) continue;
     const idx = pick === "last" ? count - 1 : 0;
-    await inputs.nth(idx).click();
-    await fieldset.getByTestId(/confidence-.*-3/).click();
+    await options.nth(idx).click();
+    // The confidence radio is sr-only; a real user clicks its enclosing label.
+    await fieldset.getByTestId(/confidence-.*-3/).locator("..").click();
   }
 }
 
