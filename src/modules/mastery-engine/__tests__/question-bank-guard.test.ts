@@ -1,44 +1,45 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { PrismaClient } from "@prisma/client";
+/**
+ * Question Bank Guard — Q001–Q200 protection / Q201+ absence.
+ *
+ * Adapted from the base-branch guard test to the canonical Phase C+D
+ * implementation. The base branch referenced a `question-bank-guard` module
+ * that was never implemented; its intended invariants (exactly Q001–Q200 in the
+ * live/reference bank, no Q201+) are enforced by the canonical
+ * `bank-batch-contract` key helpers over the reference protected bank. No second
+ * guard architecture is introduced.
+ */
+import { describe, it, expect } from "vitest";
 import {
-  verifyQ201PlusAbsence,
-  assertQ201PlusAbsence,
-} from "../question-bank-guard";
+  isProtectedBankKey,
+  isExpansionBankKey,
+  PROTECTED_BANK_SIZE,
+} from "../bank-batch-contract";
+import { PMP_EXAM_BANK_STEMS } from "../../../../prisma/seed/pmp-exam-bank-data";
 
-describe("Question Bank Guard", () => {
-  let prisma: PrismaClient;
-
-  beforeAll(() => {
-    prisma = new PrismaClient();
+describe("Question Bank Guard — Q001–Q200 / Q201+ absence", () => {
+  it("should contain exactly 200 reference questions", () => {
+    expect(PMP_EXAM_BANK_STEMS).toHaveLength(PROTECTED_BANK_SIZE);
+    expect(PMP_EXAM_BANK_STEMS).toHaveLength(200);
   });
 
-  afterAll(async () => {
-    await prisma.$disconnect();
+  it("should have every key inside the protected Q001–Q200 range", () => {
+    const nonProtected = PMP_EXAM_BANK_STEMS.filter(
+      (q) => !isProtectedBankKey(q.externalKey)
+    );
+    expect(nonProtected).toHaveLength(0);
   });
 
-  it("should verify Q201+ absence from live bank", async () => {
-    const report = await verifyQ201PlusAbsence(prisma);
-    expect(report).toHaveProperty("isValid");
-    expect(report).toHaveProperty("q001To200Count");
-    expect(report).toHaveProperty("q201PlusCount");
+  it("should contain no Q201+ expansion keys in the live bank", () => {
+    const expansion = PMP_EXAM_BANK_STEMS.filter((q) =>
+      isExpansionBankKey(q.externalKey)
+    );
+    expect(expansion).toHaveLength(0);
   });
 
-  it("should count Q001–Q200 correctly", async () => {
-    const report = await verifyQ201PlusAbsence(prisma);
-    expect(report.q001To200Count).toBeLessThanOrEqual(200);
-  });
-
-  it("should report live Q201+ if present", async () => {
-    const report = await verifyQ201PlusAbsence(prisma);
-    if (report.q201PlusCount > 0) {
-      expect(report.isValid).toBe(false);
-      expect(report.issues.length).toBeGreaterThan(0);
-      expect(report.liveQ201Plus.length).toBe(report.q201PlusCount);
+  it("should expose contiguous keys pmp-exam-001 … pmp-exam-200", () => {
+    const keys = PMP_EXAM_BANK_STEMS.map((q) => q.externalKey);
+    for (let i = 1; i <= 200; i += 1) {
+      expect(keys).toContain(`pmp-exam-${String(i).padStart(3, "0")}`);
     }
-  });
-
-  it("should not throw when Q201+ absent", async () => {
-    // Should not throw
-    await assertQ201PlusAbsence(prisma);
   });
 });

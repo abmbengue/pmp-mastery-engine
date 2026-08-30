@@ -4,6 +4,7 @@ import {
   getNextPhase,
   getPrevPhase,
   isLastPhase,
+  parseLessonPhase,
   phaseIndex,
 } from "@/modules/learning-engine/lesson-phases";
 
@@ -41,5 +42,15 @@ describe("lesson phases", () => {
   it("returns correct phase index", () => {
     expect(phaseIndex("LEARN")).toBe(0);
     expect(phaseIndex("MASTER")).toBe(4);
+  });
+
+  it("parses valid lesson phases and rejects invalid metadata", () => {
+    expect(parseLessonPhase("LEARN")).toBe("LEARN");
+    expect(parseLessonPhase("MASTER")).toBe("MASTER");
+    expect(parseLessonPhase("INVALID")).toBeNull();
+    expect(parseLessonPhase(null)).toBeNull();
+    expect(parseLessonPhase(undefined)).toBeNull();
+    expect(parseLessonPhase(42)).toBeNull();
+    expect(parseLessonPhase({})).toBeNull();
   });
 });

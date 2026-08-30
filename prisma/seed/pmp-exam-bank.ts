@@ -312,3 +312,19 @@ export async function seedPmpExamBank(prisma: PrismaClient) {
 
   return { bankCount, skillIds, metaCount };
 }
+
+/**
+ * Phase D — gate for future expansion batches before DB persistence.
+ * Live Q001–Q200 seed path does not invoke this; synthetic/test batches only.
+ */
+import type { ExamBankQuestionSeed } from "./pmp-exam-bank-types";
+import {
+  assertBatchEligibleForIntegration,
+  type BatchIntegrationResult,
+} from "../../src/modules/mastery-engine/bank-batch-integration";
+
+export function assertExpansionBatchEligible(
+  candidateBatch: ExamBankQuestionSeed[]
+): BatchIntegrationResult {
+  return assertBatchEligibleForIntegration({ candidateBatch });
+}

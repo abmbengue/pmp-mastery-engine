@@ -7,10 +7,12 @@ import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import { LESSON_PHASES, getNextPhase, getPrevPhase } from "@/modules/learning-engine/lesson-phases";
 import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
 import { PhaseProgressBar } from "./PhaseProgressBar";
-import { TextBlock, VideoBlock } from "./LearnPhase";
+import { TextBlock, VideoBlock, PedagogyLearnBlock } from "./LearnPhase";
+import type { PedagogyLabels, SteppedPedagogyLabels } from "./LearnPhase";
 import { ExerciseBlock, FlashcardBlock } from "./PracticePhase";
 import { TestPhase } from "./TestPhase";
-import type { QuizQuestion, QuizResult } from "./TestPhase";
+import type { QuizQuestion, QuizResult, QuizAnswerSubmission } from "./TestPhase";
+import { mapQuizAttemptApiResultsToLessonQuizResults } from "@/modules/learning-engine/quiz-result-mapper";
 import { ReviewPhase } from "./ReviewPhase";
 import { MasterPhase } from "./MasterPhase";
 import { AiTutorPanel } from "@/app/[locale]/components/ai-tutor/AiTutorPanel";
@@ -18,6 +20,23 @@ import type { AiTutorPanelLabels } from "@/app/[locale]/components/ai-tutor/AiTu
 import type { TextPayload, VideoPayload, ExercisePayload, FlashcardPayload, SimulationPayload } from "@/shared/types/content-payloads";
 import { SimulatorWorkbench } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
 import type { SimulatorLabels } from "@/app/[locale]/components/simulators/SimulatorWorkbench";
+import { getLessonPedagogy } from "@/modules/mastery-engine/lesson-pedagogy";
+import { distinctionsForEcoTask } from "@/modules/mastery-engine/critical-distinctions";
+import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
+
+function extractTakeawayFromTextBody(body: string | null | undefined): string | null {
+  if (!body) return null;
+  const markers = ["À retenir", "Key takeaway"];
+  for (const marker of markers) {
+    const idx = body.indexOf(marker);
+    if (idx < 0) continue;
+    const after = body.slice(idx + marker.length).replace(/^\n+/, "");
+    const nextBreak = after.search(/\n\n+/);
+    const chunk = (nextBreak >= 0 ? after.slice(0, nextBreak) : after).trim();
+    if (chunk) return chunk;
+  }
+  return null;
+}
 
 export interface LessonItem {
   id: string;
@@ -38,6 +57,8 @@ export interface LessonPlayerProps {
   items: LessonItem[];
   initialPhase: LessonPhase;
   initialQuizScore: number | null;
+  initialQuizResults?: QuizResult[];
+  initialSkillSnapshots?: SkillMasterySnapshotView[];
   nextLesson: { slug: string; moduleSlug: string } | null;
   labels: {
     player: {
@@ -50,11 +71,16 @@ export interface LessonPlayerProps {
       startLesson: string;
       finishLesson: string;
       phases: Record<LessonPhase, string>;
-      learn: { videoComingSoon: string; videoPlaceholder: string; shortBadge: string };
+      learn: {
+        videoComingSoon: string;
+        videoPlaceholder: string;
+        shortBadge: string;
+        pedagogy?: PedagogyLabels;
+      };
       practice: { exerciseTitle: string; markDone: string; done: string; flashcardReveal: string; flashcardHide: string; front: string; back: string };
-      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string };
+      test: { instruction: string; selectOne: string; selectMultiple: string; trueOrFalse: string; submit: string; correct: string; incorrect: string; confidencePrompt: string; confidenceLevelLabels: Record<string, string> };
       review: { title: string; yourScore: string; mastered: string; toReview: string; explanation: string; askAiTutor: string; aiTutorSoon: string };
-      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string };
+      master: { title: string; levelWeak: string; levelLearning: string; levelMastered: string; weakMessage: string; learningMessage: string; masteredMessage: string; retry: string; nextLesson: string; backToCourse: string; courseProgress: string; lessonsCompleted: string; masteryDepth: string; masteryStateLabels: Record<string, string> };
       aiTutor: AiTutorPanelLabels;
       simulators: SimulatorLabels;
     };
@@ -74,13 +100,18 @@ export function LessonPlayer({
   items,
   initialPhase,
   initialQuizScore,
+  initialQuizResults = [],
+  initialSkillSnapshots = [],
   nextLesson,
   labels,
 }: LessonPlayerProps) {
   const router = useRouter();
   const [currentPhase, setCurrentPhase] = useState<LessonPhase>(initialPhase);
   const [quizScore, setQuizScore] = useState<number | null>(initialQuizScore);
-  const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
+  const [quizResults, setQuizResults] = useState<QuizResult[]>(initialQuizResults);
+  const [skillSnapshots, setSkillSnapshots] = useState<SkillMasterySnapshotView[]>(
+    initialSkillSnapshots
+  );
   const [courseProgress, setCourseProgress] = useState<{ completedLessons: number; totalLessons: number; percentage: number } | null>(null);
   const startedAtRef = useRef<number>(Date.now());
   const timeSpentSecRef = useRef<number>(0);
@@ -145,57 +176,35 @@ export function LessonPlayer({
 
   // Submit quiz answers
   const handleQuizSubmit = useCallback(
-    async (answers: { questionId: string; selectedOptionIds: string[] }[]) => {
+    async (answers: QuizAnswerSubmission[]) => {
       const quizItem = items.find((i) => i.type === "QUIZ");
       if (!quizItem) return;
 
       const res = await fetch("/api/quiz/attempt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ learningItemId: quizItem.id, answers }),
+        body: JSON.stringify({
+          learningItemId: quizItem.id,
+          answers: answers.map((a) => ({
+            questionId: a.questionId,
+            selectedOptionIds: a.selectedOptionIds,
+            confidenceLevel: a.confidenceLevel,
+          })),
+        }),
       });
       const data = await res.json();
       const score: number = data.score;
       const level = computeMasteryLevelFromScore(score);
 
-      // Map server results to QuizResult shape
-      const results: QuizResult[] = (data.results as Array<{
-        questionId: string;
-        isCorrect: boolean;
-        score: number;
-        correctOptionIds: string[];
-        selectedOptionIds: string[];
-        question: {
-          id: string;
-          type: string;
-          promptFr: string;
-          promptEn: string;
-          explanationCorrectFr: string;
-          explanationCorrectEn: string;
-          answerOptions: Array<{ id: string; labelFr: string; labelEn: string; isCorrect: boolean; explanationWrongFr?: string | null; explanationWrongEn?: string | null }>;
-        };
-      }>).map((r) => ({
-        questionId: r.questionId,
-        isCorrect: r.isCorrect,
-        score: r.score,
-        selectedOptionIds: r.selectedOptionIds,
-        correctOptionIds: r.correctOptionIds,
-        question: {
-          id: r.question.id,
-          type: r.question.type as QuizQuestion["type"],
-          prompt: locale === "fr" ? r.question.promptFr : r.question.promptEn,
-          explanationCorrect: locale === "fr" ? r.question.explanationCorrectFr : r.question.explanationCorrectEn,
-          options: r.question.answerOptions.map((o) => ({
-            id: o.id,
-            label: locale === "fr" ? o.labelFr : o.labelEn,
-            isCorrect: o.isCorrect,
-            explanationWrong: locale === "fr" ? (o.explanationWrongFr ?? undefined) : (o.explanationWrongEn ?? undefined),
-          })),
-        },
-      }));
+      const results = mapQuizAttemptApiResultsToLessonQuizResults(data.results, locale);
 
       setQuizScore(score);
       setQuizResults(results);
+      setSkillSnapshots(
+        Array.isArray(data.skillSnapshots)
+          ? (data.skillSnapshots as SkillMasterySnapshotView[])
+          : []
+      );
       await saveProgress("REVIEW", score, level);
       setCurrentPhase("REVIEW");
     },
@@ -226,6 +235,7 @@ export function LessonPlayer({
   function handleRetry() {
     setQuizScore(null);
     setQuizResults([]);
+    setSkillSnapshots([]);
     setCurrentPhase("TEST");
   }
 
@@ -250,6 +260,74 @@ export function LessonPlayer({
   const flashcardItem = items.find((i) => i.type === "FLASHCARD");
   const simulationItem = items.find((i) => i.type === "SIMULATION");
   const quizItem = items.find((i) => i.type === "QUIZ");
+
+  const pedagogyPack = getLessonPedagogy(lessonSlug);
+  const pedagogyDistinctions = pedagogyPack
+    ? Array.from(
+        new Map(
+          pedagogyPack.ecoTaskIds
+            .flatMap((taskId) => distinctionsForEcoTask(taskId))
+            .map((d) => [d.id, d] as const)
+        ).values()
+      )
+    : [];
+  const textPayload = textItem?.payload as TextPayload | undefined;
+  const pedagogyTakeaway = extractTakeawayFromTextBody(
+    textPayload ? (locale === "fr" ? textPayload.bodyFr : textPayload.bodyEn) : null
+  );
+  const defaultPedagogyLabels: PedagogyLabels = {
+    what: locale === "fr" ? "Quoi" : "What",
+    why: locale === "fr" ? "Pourquoi" : "Why",
+    when: locale === "fr" ? "Quand" : "When",
+    how: locale === "fr" ? "Comment" : "How",
+    howToDecide: locale === "fr" ? "Comment décider" : "How to decide",
+    scenario: locale === "fr" ? "Scénario" : "Scenario",
+    distinctions: locale === "fr" ? "Distinctions critiques" : "Critical distinctions",
+    takeaway: locale === "fr" ? "À retenir" : "Key takeaway",
+    showRationale: locale === "fr" ? "Voir le raisonnement" : "Show rationale",
+    hideRationale: locale === "fr" ? "Masquer le raisonnement" : "Hide rationale",
+    continueReading: locale === "fr" ? "Continuer" : "Continue",
+  };
+  const pedagogyFromMessages = pl.learn.pedagogy ?? defaultPedagogyLabels;
+  const steppedPedagogyLabels: SteppedPedagogyLabels = {
+    ...pedagogyFromMessages,
+    what:
+      pedagogyFromMessages.whatStepped ??
+      (locale === "fr"
+        ? "Qu'est-ce que je dois comprendre ?"
+        : "What do I need to understand?"),
+    why:
+      pedagogyFromMessages.whyStepped ??
+      (locale === "fr"
+        ? "Pourquoi cela compte dans un projet ?"
+        : "Why does this matter on a project?"),
+    continue: pedagogyFromMessages.continue ?? pedagogyFromMessages.continueReading,
+    recognize:
+      pedagogyFromMessages.recognize ??
+      (locale === "fr"
+        ? "Comment reconnaître cette situation dans un scénario PMP ?"
+        : "How do you recognize this in a PMP scenario?"),
+    decide:
+      pedagogyFromMessages.decide ??
+      (locale === "fr"
+        ? "Quelle est la bonne logique de décision ?"
+        : "What is the right decision logic?"),
+    reflectPrompt:
+      pedagogyFromMessages.reflectPrompt ??
+      (locale === "fr"
+        ? "Prenez un moment pour réfléchir avant de voir les options."
+        : "Take a moment to think before seeing the options."),
+    miniCasePrompt:
+      pedagogyFromMessages.miniCasePrompt ??
+      (locale === "fr" ? "Que ferais-tu en premier ?" : "What would you do first?"),
+    mindsetAssess: pedagogyFromMessages.mindsetAssess ?? "ASSESS",
+    mindsetAlign: pedagogyFromMessages.mindsetAlign ?? "ALIGN",
+    mindsetDecide: pedagogyFromMessages.mindsetDecide ?? "DECIDE",
+    mindsetAct: pedagogyFromMessages.mindsetAct ?? "ACT",
+    stepOf:
+      pedagogyFromMessages.stepOf ??
+      (locale === "fr" ? "Étape {current} / {total}" : "Step {current} / {total}"),
+  };
 
   return (
     <div className="mx-auto max-w-2xl" data-testid="lesson-player">
@@ -276,8 +354,27 @@ export function LessonPlayer({
       <div className="min-h-48">
         {currentPhase === "LEARN" && (
           <div className="space-y-5" data-testid="phase-learn">
+            {pedagogyPack && (
+              <PedagogyLearnBlock
+                pack={pedagogyPack}
+                locale={locale}
+                takeaway={pedagogyTakeaway}
+                criticalDistinctions={pedagogyDistinctions}
+                labels={pedagogyFromMessages}
+                steppedLabels={steppedPedagogyLabels}
+              />
+            )}
             {textItem && (
-              <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+              pedagogyPack ? (
+                <section className="space-y-3" data-testid="pedagogy-lesson-body">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-700">
+                    {pedagogyFromMessages.continueReading}
+                  </h3>
+                  <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+                </section>
+              ) : (
+                <TextBlock payload={textItem.payload as TextPayload} locale={locale} />
+              )
             )}
             {videoItem && (
               <VideoBlock
@@ -343,6 +440,8 @@ export function LessonPlayer({
               selectMultiple: pl.test.selectMultiple,
               trueOrFalse: pl.test.trueOrFalse,
               submit: pl.test.submit,
+              confidencePrompt: pl.test.confidencePrompt,
+              confidenceLevelLabels: pl.test.confidenceLevelLabels,
             }}
           />
         )}
@@ -375,6 +474,7 @@ export function LessonPlayer({
           <MasterPhase
             score={quizScore ?? 0}
             masteryLevel={masteryLevel}
+            skillSnapshots={skillSnapshots}
             courseProgress={courseProgress}
             hasNextLesson={!!nextLesson}
             onNextLesson={handleNextLesson}

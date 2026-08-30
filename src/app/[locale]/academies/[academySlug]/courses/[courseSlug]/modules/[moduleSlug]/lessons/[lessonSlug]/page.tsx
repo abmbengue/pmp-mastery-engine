@@ -9,7 +9,19 @@ import type { LessonPhase } from "@/modules/learning-engine/lesson-phases";
 import type { LessonItem } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import { LessonPlayer } from "@/app/[locale]/components/lesson-player/LessonPlayer";
 import type { QuizQuestion } from "@/app/[locale]/components/lesson-player/TestPhase";
+import type { QuizResult } from "@/app/[locale]/components/lesson-player/TestPhase";
+import {
+  countLatestQuizAttemptsForLearningItem,
+  loadLessonReviewRehydrateData,
+  resolveReviewRehydrateContract,
+} from "@/modules/learning-engine/review-rehydrate";
+import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
 import { Link } from "@/modules/localization/navigation";
+import {
+  PMP_ACADEMY_SLUG,
+  PMP_COURSE_SLUG,
+} from "@/modules/mastery-engine/pmp-lesson-catalog";
+import { resolvePmpStudyTaskBackLink } from "@/modules/mastery-engine/pmp-study";
 
 export default async function LessonPage({
   params,
@@ -25,10 +37,11 @@ export default async function LessonPage({
   const { locale, academySlug, courseSlug, moduleSlug, lessonSlug } = await params;
   setRequestLocale(locale);
 
-  const [t, tp, ts] = await Promise.all([
+  const [t, tp, ts, tPmpStudy] = await Promise.all([
     getTranslations("app"),
     getTranslations("player"),
     getTranslations("simulators"),
+    getTranslations("pmpStudy"),
   ]);
 
   const lesson = await findLessonBySlug(academySlug, courseSlug, moduleSlug, lessonSlug);
@@ -40,11 +53,59 @@ export default async function LessonPage({
   const session = await requireSession(locale);
   let initialPhase: LessonPhase = "LEARN";
   let initialQuizScore: number | null = null;
+  let initialQuizResults: QuizResult[] = [];
+  let initialSkillSnapshots: SkillMasterySnapshotView[] = [];
 
   const lessonSession = await getLessonSession(session.user.id, lesson.id);
   if (!lessonSession.isCompleted) {
     initialPhase = lessonSession.currentPhase;
     initialQuizScore = lessonSession.quizScore;
+
+    const quizItem = lesson.learningItems.find((item) => item.type === "QUIZ");
+    const questionIds = quizItem?.questions.map((question) => question.id) ?? [];
+    const latestAttemptCount = quizItem
+      ? await countLatestQuizAttemptsForLearningItem(
+          session.user.id,
+          quizItem.id,
+          questionIds
+        )
+      : 0;
+
+    const contract = resolveReviewRehydrateContract({
+      currentPhase: initialPhase,
+      quizScore: initialQuizScore,
+      learningItemId: quizItem?.id ?? null,
+      expectedQuestionCount: questionIds.length,
+      latestAttemptCount,
+    });
+
+    if (contract.canRehydrateReview && quizItem) {
+      const rehydrated = await loadLessonReviewRehydrateData(
+        session.user.id,
+        quizItem.id,
+        loc,
+        questionIds
+      );
+      if (rehydrated) {
+        initialQuizResults = rehydrated.quizResults;
+        initialSkillSnapshots = rehydrated.skillSnapshots;
+        initialQuizScore = rehydrated.quizScore;
+        initialPhase = contract.effectivePhase ?? initialPhase;
+      } else {
+        initialPhase = "TEST";
+        initialQuizScore = null;
+        initialQuizResults = [];
+        initialSkillSnapshots = [];
+      }
+    } else if (
+      initialPhase === "REVIEW" ||
+      initialPhase === "MASTER"
+    ) {
+      initialPhase = "TEST";
+      initialQuizScore = null;
+      initialQuizResults = [];
+      initialSkillSnapshots = [];
+    }
   }
 
   // Next lesson navigation
@@ -83,8 +144,13 @@ export default async function LessonPage({
     MASTER: tp("phases.MASTER"),
   };
 
+  const ecoTaskBackLink =
+    academySlug === PMP_ACADEMY_SLUG && courseSlug === PMP_COURSE_SLUG
+      ? resolvePmpStudyTaskBackLink(lessonSlug)
+      : null;
+
   return (
-    <div data-testid="lesson-page">
+    <div data-testid="lesson-page" className="max-w-full overflow-x-hidden">
       {/* Breadcrumb */}
       <nav className="mb-6 flex flex-wrap gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
         <Link href="/academies" className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
@@ -102,6 +168,18 @@ export default async function LessonPage({
         <span className="font-medium text-gray-800">{title}</span>
       </nav>
 
+      {ecoTaskBackLink ? (
+        <div className="mb-4">
+          <Link
+            href={ecoTaskBackLink.href}
+            className="inline-flex min-h-11 items-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            data-testid="back-to-eco-task-link"
+          >
+            ← {tPmpStudy("backToEcoTask")}
+          </Link>
+        </div>
+      ) : null}
+
       <LessonPlayer
         locale={loc}
         academySlug={academySlug}
@@ -114,6 +192,8 @@ export default async function LessonPage({
         items={items}
         initialPhase={initialPhase}
         initialQuizScore={initialQuizScore}
+        initialQuizResults={initialQuizResults}
+        initialSkillSnapshots={initialSkillSnapshots}
         nextLesson={nextLesson}
         labels={{
           player: {
@@ -130,6 +210,32 @@ export default async function LessonPage({
               videoComingSoon: tp("learn.videoComingSoon"),
               videoPlaceholder: tp("learn.videoPlaceholder"),
               shortBadge: tp("learn.shortBadge"),
+              pedagogy: {
+                what: tp("learn.pedagogy.what"),
+                whatStepped: tp("learn.pedagogy.whatStepped"),
+                why: tp("learn.pedagogy.why"),
+                whyStepped: tp("learn.pedagogy.whyStepped"),
+                when: tp("learn.pedagogy.when"),
+                how: tp("learn.pedagogy.how"),
+                howToDecide: tp("learn.pedagogy.howToDecide"),
+                recognize: tp("learn.pedagogy.recognize"),
+                decide: tp("learn.pedagogy.decide"),
+                scenario: tp("learn.pedagogy.scenario"),
+                distinctions: tp("learn.pedagogy.distinctions"),
+                takeaway: tp("learn.pedagogy.takeaway"),
+                showRationale: tp("learn.pedagogy.showRationale"),
+                hideRationale: tp("learn.pedagogy.hideRationale"),
+                continueReading: tp("learn.pedagogy.continueReading"),
+                continue: tp("learn.pedagogy.continue"),
+                reflectPrompt: tp("learn.pedagogy.reflectPrompt"),
+                miniCasePrompt: tp("learn.pedagogy.miniCasePrompt"),
+                mindsetAssess: tp("learn.pedagogy.mindsetAssess"),
+                mindsetAlign: tp("learn.pedagogy.mindsetAlign"),
+                mindsetDecide: tp("learn.pedagogy.mindsetDecide"),
+                mindsetAct: tp("learn.pedagogy.mindsetAct"),
+                stepOf:
+                  loc === "fr" ? "Étape {current} / {total}" : "Step {current} / {total}",
+              },
             },
             practice: {
               exerciseTitle: tp("practice.exerciseTitle"),
@@ -148,6 +254,14 @@ export default async function LessonPage({
               submit: tp("test.submit"),
               correct: tp("test.correct"),
               incorrect: tp("test.incorrect"),
+              confidencePrompt: tp("test.confidencePrompt"),
+              confidenceLevelLabels: {
+                "1": tp("test.confidenceLevel1"),
+                "2": tp("test.confidenceLevel2"),
+                "3": tp("test.confidenceLevel3"),
+                "4": tp("test.confidenceLevel4"),
+                "5": tp("test.confidenceLevel5"),
+              },
             },
             review: {
               title: tp("review.title"),
@@ -171,6 +285,16 @@ export default async function LessonPage({
               backToCourse: tp("master.backToCourse"),
               courseProgress: tp("master.courseProgress"),
               lessonsCompleted: tp("master.lessonsCompleted"),
+              masteryDepth: tp("master.masteryDepth"),
+              masteryStateLabels: {
+                UNKNOWN: tp("master.stateUnknown"),
+                EXPOSED: tp("master.stateExposed"),
+                DEVELOPING: tp("master.stateDeveloping"),
+                FRAGILE: tp("master.stateFragile"),
+                FUNCTIONAL: tp("master.stateFunctional"),
+                STRONG: tp("master.stateStrong"),
+                MASTERED: tp("master.stateMastered"),
+              },
             },
             aiTutor: {
               title: tp("aiTutor.title"),

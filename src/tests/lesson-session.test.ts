@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import prisma from "@/data/prisma-client";
 import { getLessonSession, saveLessonPhase, finishLesson } from "@/modules/learning-engine/lesson-session-service";
+import { recordQuizAttempt } from "@/modules/assessment-engine/scoring-service";
+import { processQuizMasteryForAttempts } from "@/modules/mastery-engine/mastery-runtime-service";
 import { findNextLesson } from "@/data/repositories/navigation-repository";
 import { getCourseProgress } from "@/modules/learning-engine/progress-service";
 
@@ -24,6 +26,16 @@ describe("lesson session and progression", () => {
 
     // Reset progress for clean test
     await prisma.lessonProgress.deleteMany({ where: { userId, lessonId } });
+
+    const skillId = await prisma.skill
+      .findFirst({ where: { slug: "pf-income" } })
+      .then((s) => s?.id ?? null);
+    if (skillId) {
+      await prisma.quizAttempt.deleteMany({
+        where: { userId, question: { skillId } },
+      });
+      await prisma.conceptMastery.deleteMany({ where: { userId, skillId } });
+    }
   });
 
   it("returns default state for unstarted lesson", async () => {
@@ -48,10 +60,22 @@ describe("lesson session and progression", () => {
     expect(state.masteryLevel).toBe("MASTERED");
   });
 
-  it("marks lesson as completed and updates mastery", async () => {
+  it("marks lesson as completed (mastery via quiz runtime, not finishLesson)", async () => {
     const skillId = await prisma.skill
-      .findFirst({ where: { slug: "pf-foundations" } })
+      .findFirst({ where: { slug: "pf-income" } })
       .then((s) => s?.id ?? null);
+
+    const quizItem = await prisma.learningItem.findFirst({
+      where: { lessonId, type: "QUIZ" },
+      include: { questions: { include: { answerOptions: true } } },
+    });
+    const question = quizItem?.questions[0];
+    const correctOptionId = question?.answerOptions.find((o) => o.isCorrect)?.id;
+
+    if (question && correctOptionId) {
+      const { attempt } = await recordQuizAttempt(userId, question.id, [correctOptionId]);
+      await processQuizMasteryForAttempts(userId, [attempt.id]);
+    }
 
     await finishLesson(userId, lessonId, 180, 80, skillId);
     const state = await getLessonSession(userId, lessonId);

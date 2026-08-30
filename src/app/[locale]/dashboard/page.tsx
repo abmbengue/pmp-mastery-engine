@@ -8,6 +8,7 @@ import { getPmpPracticeDashboard } from "@/modules/assessment-engine/exam-servic
 import { Link } from "@/modules/localization/navigation";
 import { signOut } from "@/auth";
 import type { Locale } from "@/shared/types/locale";
+import { loadWeaknessDashboardView } from "@/modules/mastery-engine/weakness-dashboard-service";
 import { PracticeTargetForm } from "@/app/[locale]/components/exam/PracticeTargetForm";
 
 function formatActivity(date: Date | null, locale: Locale): string {
@@ -31,7 +32,24 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const pmpPractice = await getPmpPracticeDashboard(session.user.id, loc);
   const reviewQueue = await getReviewQueue(session.user.id, loc);
   const dueForReview = reviewQueue.slice(0, 5);
+  const weaknessView = await loadWeaknessDashboardView(session.user.id, loc);
   const learningPaths = await listLearningPathsForUser(session.user.id, loc);
+
+  function skillTitle(item: { skillTitleFr: string; skillTitleEn: string }) {
+    return loc === "fr" ? item.skillTitleFr : item.skillTitleEn;
+  }
+
+  function domainTitle(group: { domainTitleFr: string; domainTitleEn: string }) {
+    return loc === "fr" ? group.domainTitleFr : group.domainTitleEn;
+  }
+
+  function ecoTaskTitle(item: {
+    ecoTaskTitleFr: string | null;
+    ecoTaskTitleEn: string | null;
+  }) {
+    if (loc === "fr") return item.ecoTaskTitleFr;
+    return item.ecoTaskTitleEn;
+  }
 
   async function logoutAction() {
     "use server";
@@ -195,6 +213,133 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         </div>
       </section>
 
+      {/* PMP WEAKNESS / ECO SURFACING */}
+      <section
+        aria-labelledby="weakness-dashboard-heading"
+        className="rounded-xl border border-rose-200 bg-rose-50/30 p-6"
+        data-testid="weakness-dashboard-section"
+      >
+        <h2 id="weakness-dashboard-heading" className="text-xl font-semibold text-gray-900">
+          {t("weaknessDashboardTitle")}
+        </h2>
+        <p className="mt-1 text-sm text-gray-600">{t("weaknessDashboardSubtitle")}</p>
+
+        {!weaknessView.hasAttempts ? (
+          <p className="mt-4 text-sm text-gray-600" data-testid="weakness-dashboard-empty">
+            {t("weaknessDashboardEmpty")}
+          </p>
+        ) : (
+          <div className="mt-6 space-y-8">
+            <div data-testid="weakest-skills-section">
+              <h3 className="text-lg font-semibold text-gray-900">{t("weakestSkills")}</h3>
+              {weaknessView.weakestSkills.length === 0 ? (
+                <p className="mt-2 text-sm text-gray-600" data-testid="weakest-skills-empty">
+                  {t("weaknessNoneDetected")}
+                </p>
+              ) : (
+                <ul className="mt-3 space-y-3">
+                  {weaknessView.weakestSkills.slice(0, 8).map((item) => (
+                    <li
+                      key={item.skillId}
+                      className="rounded-lg border border-rose-100 bg-white p-4"
+                      data-testid={`weakest-skill-${item.skillSlug}`}
+                    >
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-900">{skillTitle(item)}</p>
+                          {ecoTaskTitle(item) ? (
+                            <p className="mt-1 text-sm text-gray-600">
+                              {t("ecoTaskLabel")}: {ecoTaskTitle(item)}
+                            </p>
+                          ) : null}
+                          <p className="mt-1 text-sm text-gray-600">
+                            {loc === "fr" ? item.weaknessLabelFr : item.weaknessLabelEn}
+                          </p>
+                          <p className="mt-1 text-xs text-gray-500">
+                            {t("recentPerformance")}: {item.recentPerformance}% ·{" "}
+                            {t("masteryLevel")}: {item.masteryLevel ?? "—"}
+                            {item.reviewDue ? ` · ${t("reviewDueBadge")}` : ""}
+                          </p>
+                        </div>
+                        {(item.actionTaskHref || item.actionLessonHref) && (
+                          <Link
+                            href={item.actionTaskHref ?? item.actionLessonHref!}
+                            className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-rose-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-rose-800 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            data-testid={`work-on-skill-${item.skillSlug}`}
+                          >
+                            {t("workOnSkill")}
+                          </Link>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div data-testid="eco-overview-section">
+              <h3 className="text-lg font-semibold text-gray-900">{t("ecoOverview")}</h3>
+              <div className="mt-3 grid gap-4 md:grid-cols-3">
+                {weaknessView.ecoOverview.map((group) => (
+                  <article
+                    key={group.domainId}
+                    className="rounded-lg border border-rose-100 bg-white p-4"
+                    data-testid={`eco-domain-${group.domainId}`}
+                  >
+                    <h4 className="font-semibold text-gray-900">{domainTitle(group)}</h4>
+                    <p className="mt-1 text-xs text-gray-500">
+                      {group.taskCount} {t("ecoTasks")}
+                    </p>
+                    {group.items.length === 0 ? (
+                      <p className="mt-2 text-sm text-gray-600">{t("ecoDomainClear")}</p>
+                    ) : (
+                      <ul className="mt-3 space-y-2 text-sm text-gray-700">
+                        {group.items.slice(0, 5).map((item) => (
+                          <li key={item.skillId} data-testid={`eco-skill-${group.domainId}-${item.skillSlug}`}>
+                            • {skillTitle(item)}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div data-testid="weakness-review-due-section">
+              <h3 className="text-lg font-semibold text-gray-900">{t("weaknessReviewDue")}</h3>
+              {weaknessView.reviewDue.length === 0 ? (
+                <p className="mt-2 text-sm text-gray-600" data-testid="weakness-review-due-empty">
+                  {t("weaknessReviewDueEmpty")}
+                </p>
+              ) : (
+                <ul className="mt-3 space-y-3">
+                  {weaknessView.reviewDue.slice(0, 5).map((item) => (
+                    <li
+                      key={`${item.skillId}-${item.reasonCode}`}
+                      className="rounded-lg border border-amber-100 bg-white p-3"
+                      data-testid={`weakness-review-due-${item.skillSlug}`}
+                    >
+                      <p className="font-medium text-gray-900">{skillTitle(item)}</p>
+                      <p className="mt-1 text-sm text-gray-600">{item.reasonCode.replace(/_/g, " ")}</p>
+                      {(item.actionTaskHref || item.actionLessonHref) && (
+                        <Link
+                          href={item.actionTaskHref ?? item.actionLessonHref!}
+                          className="mt-2 inline-flex text-sm font-medium text-amber-900 underline focus:outline-none focus:ring-2 focus:ring-amber-500"
+                          data-testid={`weakness-review-action-${item.skillSlug}`}
+                        >
+                          {t("workOnSkill")}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        )}
+      </section>
+
       {/* LEARNING PATHS + SHORTS shortcuts */}
       <section
         aria-labelledby="learning-paths-heading"
@@ -261,6 +406,15 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         <h2 id="pmp-practice-heading" className="text-xl font-semibold text-gray-900">
           {t("pmpPractice")}
         </h2>
+        <div className="mt-3">
+          <Link
+            href="/pmp-study"
+            className="inline-flex min-h-11 items-center rounded-lg border border-indigo-300 bg-white px-4 py-2 text-sm font-semibold text-indigo-900 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            data-testid="dashboard-pmp-study-link"
+          >
+            {t("openPmpStudy")} →
+          </Link>
+        </div>
         <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <dt className="text-gray-500">{t("lastExam")}</dt>

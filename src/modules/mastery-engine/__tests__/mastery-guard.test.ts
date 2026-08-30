@@ -1,21 +1,19 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { PrismaClient } from "@prisma/client";
+/**
+ * Mastery Level Guard — live-DB 3-state persistence audit.
+ *
+ * Kept from the base branch (the `mastery-guard` module exists and is
+ * architecturally coherent with the C+D ConceptMastery 3-tier invariant).
+ * Adapted only to use the canonical generated Prisma client singleton instead
+ * of instantiating `PrismaClient` from `@prisma/client`.
+ */
+import { describe, it, expect } from "vitest";
+import prisma from "@/data/prisma-client";
 import {
   auditMasteryLevels,
   assertMasteryLevelIntegrity,
 } from "../mastery-guard";
 
 describe("Mastery Level Guard", () => {
-  let prisma: PrismaClient;
-
-  beforeAll(() => {
-    prisma = new PrismaClient();
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
-  });
-
   it("should audit mastery levels", async () => {
     const audit = await auditMasteryLevels(prisma);
     expect(audit).toHaveProperty("isValid");
@@ -41,7 +39,6 @@ describe("Mastery Level Guard", () => {
   });
 
   it("should not throw when all levels valid", async () => {
-    // Should not throw
     await assertMasteryLevelIntegrity(prisma);
   });
 });

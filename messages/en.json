@@ -45,6 +45,7 @@
     "register": "Register",
     "skipToContent": "Skip to content",
     "pmpExam": "PMP Exam",
+    "pmpStudy": "PMP Study",
     "review": "Review",
     "readinessReport": "Readiness report",
     "learningPaths": "Paths"
@@ -155,7 +156,49 @@
     "viewAllPaths": "View all paths",
     "shortsPersonalFinance": "PF Shorts",
     "shortsCorporateFinance": "CF Shorts",
-    "shortsPmp": "PMP Shorts"
+    "shortsPmp": "PMP Shorts",
+    "pmpStudy": "PMP Study (ECO)",
+    "openPmpStudy": "Study by ECO task",
+    "weaknessDashboardTitle": "PMP weakness focus",
+    "weaknessDashboardSubtitle": "Skills needing attention, grouped by ECO domain — from your quiz activity.",
+    "weaknessDashboardEmpty": "Complete a lesson quiz to see personalized weakness insights.",
+    "weakestSkills": "Weakest skills",
+    "weaknessNoneDetected": "No weak skills detected from recent activity. Keep practicing!",
+    "ecoOverview": "ECO overview",
+    "ecoTasks": "ECO tasks",
+    "ecoDomainClear": "No weak skills in this domain right now.",
+    "ecoTaskLabel": "ECO task",
+    "recentPerformance": "Recent performance",
+    "masteryLevel": "Mastery",
+    "reviewDueBadge": "Review due",
+    "weaknessReviewDue": "Review due (weakness dashboard)",
+    "weaknessReviewDueEmpty": "No skills due for review from your mastery schedule.",
+    "workOnSkill": "Work on this skill"
+  },
+  "pmpStudy": {
+    "eyebrow": "PMP Mastery",
+    "title": "PMP Study",
+    "subtitle": "Study by ECO domain and task — {count} official tasks. Mobile-first.",
+    "domainsNav": "ECO domains",
+    "domainMeta": "{tasks} tasks · {weight}% exam weight",
+    "flowHint": "Domain → ECO Task → Lesson → Learn → Practice → Test → Review → Master",
+    "domainTasksTitle": "ECO tasks",
+    "domainTasksSubtitle": "Choose a task to see mapped lessons and critical distinctions.",
+    "mappedLessons": "{count, plural, =0 {No mapped lessons} one {# mapped lesson} other {# mapped lessons}}",
+    "startHint": "Open the primary lesson in the existing player.",
+    "startLesson": "Start lesson",
+    "continueHint": "Pick up where you left off.",
+    "continueHintWithPhase": "Resume at the {phase} step.",
+    "continueLesson": "Continue lesson",
+    "lessonStatusNotStarted": "Not started",
+    "lessonStatusInProgress": "In progress",
+    "lessonStatusCompleted": "Completed",
+    "backToEcoTask": "Back to ECO task",
+    "openLesson": "Open",
+    "noLessons": "No lessons are mapped to this task yet.",
+    "lessonsHeading": "Mapped lessons",
+    "distinctionsHeading": "Critical distinctions",
+    "pedagogyBadge": "Pedagogy pack"
   },
   "review": {
     "title": "Review Now",
@@ -379,7 +422,32 @@
     "learn": {
       "videoComingSoon": "Video coming soon",
       "videoPlaceholder": "This video will be available in a future update.",
-      "shortBadge": "Short"
+      "shortBadge": "Short",
+      "pedagogy": {
+        "what": "What",
+        "whatStepped": "What do I need to understand?",
+        "why": "Why",
+        "whyStepped": "Why does this matter on a project?",
+        "when": "When",
+        "how": "How",
+        "howToDecide": "How to decide",
+        "recognize": "How do you recognize this in a PMP scenario?",
+        "decide": "What is the right decision logic?",
+        "scenario": "Scenario",
+        "distinctions": "Critical distinctions",
+        "takeaway": "Key takeaway",
+        "showRationale": "Show rationale",
+        "hideRationale": "Hide rationale",
+        "continueReading": "Continue",
+        "continue": "Continue",
+        "reflectPrompt": "Take a moment to think before seeing the options.",
+        "miniCasePrompt": "What would you do first?",
+        "mindsetAssess": "ASSESS",
+        "mindsetAlign": "ALIGN",
+        "mindsetDecide": "DECIDE",
+        "mindsetAct": "ACT",
+        "stepOf": "Step {current} / {total}"
+      }
     },
     "practice": {
       "exerciseTitle": "Exercise",
@@ -397,7 +465,13 @@
       "trueOrFalse": "True or False",
       "submit": "Submit answers",
       "correct": "Correct!",
-      "incorrect": "Incorrect"
+      "incorrect": "Incorrect",
+      "confidencePrompt": "How confident are you in this answer?",
+      "confidenceLevel1": "1 — Not at all confident",
+      "confidenceLevel2": "2 — Slightly confident",
+      "confidenceLevel3": "3 — Moderately confident",
+      "confidenceLevel4": "4 — Confident",
+      "confidenceLevel5": "5 — Very confident"
     },
     "review": {
       "title": "Review",
@@ -433,7 +507,15 @@
       "nextLesson": "Next lesson",
       "backToCourse": "Back to course",
       "courseProgress": "Course progress",
-      "lessonsCompleted": "lesson(s) completed out of"
+      "lessonsCompleted": "lesson(s) completed out of",
+      "masteryDepth": "Learning depth (computed)",
+      "stateUnknown": "Not yet assessed",
+      "stateExposed": "First exposure",
+      "stateDeveloping": "Developing",
+      "stateFragile": "Fragile knowledge",
+      "stateFunctional": "Functional",
+      "stateStrong": "Strong",
+      "stateMastered": "Fully mastered"
     }
   }
 }

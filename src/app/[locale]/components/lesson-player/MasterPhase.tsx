@@ -1,10 +1,12 @@
 "use client";
 
 import type { MasteryLevel } from "@/shared/utils/mastery";
+import type { SkillMasterySnapshotView } from "@/modules/mastery-engine/mastery-snapshot-view";
 
 interface MasterPhaseProps {
   score: number;
   masteryLevel: MasteryLevel;
+  skillSnapshots?: SkillMasterySnapshotView[];
   courseProgress: { completedLessons: number; totalLessons: number; percentage: number } | null;
   hasNextLesson: boolean;
   onNextLesson: () => void;
@@ -23,12 +25,17 @@ interface MasterPhaseProps {
     backToCourse: string;
     courseProgress: string;
     lessonsCompleted: string;
+    masteryDepth: string;
+    masteryStateLabels: Record<string, string>;
   };
 }
 
+type MasterTierLabelKey = "levelWeak" | "levelLearning" | "levelMastered";
+type MasterTierMsgKey = "weakMessage" | "learningMessage" | "masteredMessage";
+
 const MASTERY_CONFIG: Record<
   MasteryLevel,
-  { emoji: string; colorClass: string; labelKey: keyof MasterPhaseProps["labels"]; msgKey: keyof MasterPhaseProps["labels"] }
+  { emoji: string; colorClass: string; labelKey: MasterTierLabelKey; msgKey: MasterTierMsgKey }
 > = {
   MASTERED: { emoji: "🏆", colorClass: "text-green-600", labelKey: "levelMastered", msgKey: "masteredMessage" },
   LEARNING: { emoji: "📈", colorClass: "text-amber-600", labelKey: "levelLearning", msgKey: "learningMessage" },
@@ -38,6 +45,7 @@ const MASTERY_CONFIG: Record<
 export function MasterPhase({
   score,
   masteryLevel,
+  skillSnapshots = [],
   courseProgress,
   hasNextLesson,
   onNextLesson,
@@ -49,7 +57,7 @@ export function MasterPhase({
 
   return (
     <div className="space-y-6" data-testid="master-phase">
-      {/* Mastery badge */}
+      {/* Mastery badge — canonical 3-tier */}
       <div className="rounded-xl border bg-white p-6 text-center shadow-sm">
         <div className="mb-2 text-5xl" aria-hidden="true">{config.emoji}</div>
         <p className={`text-2xl font-bold ${config.colorClass}`} data-testid="mastery-level">
@@ -60,6 +68,33 @@ export function MasterPhase({
         </p>
         <p className="mt-3 text-sm text-gray-600">{labels[config.msgKey]}</p>
       </div>
+
+      {skillSnapshots.length > 0 ? (
+        <div
+          className="rounded-lg border border-gray-100 bg-gray-50 p-4"
+          data-testid="mastery-snapshot-detail"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {labels.masteryDepth}
+          </p>
+          <ul className="mt-2 space-y-2">
+            {skillSnapshots.map((snap) => (
+              <li
+                key={snap.skillId}
+                className="flex flex-wrap items-baseline justify-between gap-1 text-sm text-gray-700"
+                data-testid={`mastery-snapshot-${snap.skillId}`}
+              >
+                <span className="font-medium" data-testid="mastery-state-7-label">
+                  {labels.masteryStateLabels[snap.masteryState] ?? snap.masteryState}
+                </span>
+                <span className="text-gray-500" data-testid="mastery-snapshot-performance">
+                  {snap.historicalPerformance}%
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {/* Course progress */}
       {courseProgress && (

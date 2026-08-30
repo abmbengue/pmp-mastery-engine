@@ -1,4 +1,4 @@
-import { PrismaClient, MasteryLevel } from "@prisma/client";
+import type { PrismaClient, MasteryLevel } from "@/generated/prisma/client";
 
 /**
  * MASTERY LEVEL GUARD — 3-STATE PERSISTENCE

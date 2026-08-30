@@ -28,11 +28,16 @@ async function answerAllQuizQuestions(page: Page, pick: "first" | "last" = "firs
   const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
   const n = await fieldsets.count();
   for (let i = 0; i < n; i++) {
-    const inputs = fieldsets.nth(i).locator('input[type="radio"], input[type="checkbox"]');
-    const count = await inputs.count();
+    const fieldset = fieldsets.nth(i);
+    // Scope to answer options only; the sr-only confidence radios also live in
+    // this fieldset and must not be matched here.
+    const options = fieldset.locator('[data-testid^="option-"]');
+    const count = await options.count();
     if (count === 0) continue;
     const idx = pick === "last" ? count - 1 : 0;
-    await inputs.nth(idx).click();
+    await options.nth(idx).click();
+    // The confidence radio is sr-only; a real user clicks its enclosing label.
+    await fieldset.getByTestId(/confidence-.*-3/).locator("..").click();
   }
 }
 
@@ -75,6 +80,45 @@ test("LEARNING: Login → Dashboard → Personal Finance → Course → Lesson �
   await page.goto("/fr/dashboard");
   await expect(page.getByTestId("dashboard-page")).toBeVisible();
   await expect(page.getByTestId("global-progress")).not.toContainText("0%");
+});
+
+test("C9 PHASE C: TEST requires confidence → REVIEW results → MASTER", async ({ page }) => {
+  test.setTimeout(90_000);
+  const email = uniqueEmail("c9-closure");
+  await register(page, "en", email);
+
+  await page.getByTestId("continue-course-essentials").click();
+  await expect(page.getByTestId("lesson-player")).toBeVisible({ timeout: 20_000 });
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("phase-practice")).toBeVisible();
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("test-phase")).toBeVisible();
+
+  const fieldsets = page.locator('[data-testid="test-phase"] fieldset');
+  const n = await fieldsets.count();
+  expect(n).toBeGreaterThan(0);
+
+  // Answer without confidence → submit must stay disabled
+  for (let i = 0; i < n; i++) {
+    const fieldset = fieldsets.nth(i);
+    await fieldset.locator('input[type="radio"], input[type="checkbox"]').first().click();
+  }
+  await expect(page.getByTestId("submit-quiz")).toBeDisabled();
+
+  // Select confidence 1–5 for every question, then submit
+  for (let i = 0; i < n; i++) {
+    const confidence = fieldsets.nth(i).getByTestId(/confidence-.*-3/);
+    await confidence.scrollIntoViewIfNeeded();
+    await confidence.click({ force: true });
+  }
+  await expect(page.getByTestId("submit-quiz")).toBeEnabled();
+  await page.getByTestId("submit-quiz").click();
+
+  await expect(page.getByTestId("review-phase")).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByTestId("review-phase")).toContainText(/%|correct|incorrect|Correct|Incorrect|score|Score/i);
+
+  await page.getByTestId("next-phase-btn").click();
+  await expect(page.getByTestId("master-phase")).toBeVisible({ timeout: 15_000 });
 });
 
 test("LANGUAGE: Login → FR Dashboard → EN Dashboard", async ({ page }) => {

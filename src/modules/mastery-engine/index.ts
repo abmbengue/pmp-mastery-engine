@@ -23,13 +23,32 @@ export * from "./instructor-lessons";
 export * from "./instructor-lesson-blueprints";
 export * from "./critical-distinctions";
 export * from "./lesson-pedagogy";
+export * from "./pmp-lesson-catalog";
+export * from "./pmp-study";
+export * from "./pmp-study-progress";
+export * from "./attempt-adapter";
+export * from "./mastery-runtime-service";
+export * from "./mastery-snapshot-view";
+export * from "./mastery-snapshot";
+export * from "./adaptive-task-resolver";
+export * from "./task-continue-resolver";
+export * from "./weakness-dashboard-view";
+export * from "./weakness-dashboard-service";
+export * from "./bank-batch-contract";
+export * from "./protected-bank-guard";
+export * from "./question-metadata-contract";
+export * from "./bank-batch-validator";
+export * from "./runtime-bank-compatibility";
+export * from "./legacy-mastery-writers";
+export * from "./bank-batch-integration";
 
 // ============================================================================
-// PHASE D: GUARDS / ITERATION 1 — Data Integrity & Constraints
+// Mastery level guard (live-DB audit) — 3-state persistence invariant.
+// ConceptMastery.level must only ever be WEAK | LEARNING | MASTERED.
+// The other guard exports from the base branch (exam-bank-guard, eco-guard,
+// question-bank-guard, guard-suite) were dropped: their implementation files
+// were never committed. Their invariants are enforced by the canonical Phase D
+// guards above (bank-batch-contract / protected-bank-guard / integrity /
+// eco-taxonomy) — see __tests__/ which validate them against that canonical API.
 // ============================================================================
-
-export * from "./exam-bank-guard";
-export * from "./eco-guard";
-export * from "./question-bank-guard";
 export * from "./mastery-guard";
-export * from "./guard-suite";

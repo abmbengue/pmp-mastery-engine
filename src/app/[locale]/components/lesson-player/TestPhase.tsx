@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import type { Locale } from "@/shared/types/locale";
+import {
+  CONFIDENCE_NUMERIC_LEVELS,
+  isTestPhaseConfidenceComplete,
+  isValidConfidenceNumeric,
+} from "@/modules/mastery-engine/confidence";
 
 export interface QuizOption {
   id: string;
@@ -27,21 +32,30 @@ export interface QuizResult {
   question: QuizQuestion;
 }
 
+export type QuizAnswerSubmission = {
+  questionId: string;
+  selectedOptionIds: string[];
+  confidenceLevel: 1 | 2 | 3 | 4 | 5;
+};
+
 interface TestPhaseProps {
   questions: QuizQuestion[];
   locale: Locale; // reserved for future per-locale question rendering
-  onSubmit: (answers: { questionId: string; selectedOptionIds: string[] }[]) => Promise<void>;
+  onSubmit: (answers: QuizAnswerSubmission[]) => Promise<void>;
   labels: {
     instruction: string;
     selectOne: string;
     selectMultiple: string;
     trueOrFalse: string;
     submit: string;
+    confidencePrompt: string;
+    confidenceLevelLabels: Record<string, string>;
   };
 }
 
 export function TestPhase({ questions, locale: _locale, onSubmit, labels }: TestPhaseProps) {  // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selections, setSelections] = useState<Record<string, string[]>>({});
+  const [confidence, setConfidence] = useState<Record<string, number>>({});
   const [submitting, setSubmitting] = useState(false);
 
   function toggleSingle(questionId: string, optionId: string) {
@@ -61,15 +75,27 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
   }
 
   const allAnswered = questions.every((q) => (selections[q.id]?.length ?? 0) > 0);
+  const allConfident = isTestPhaseConfidenceComplete(
+    questions.map((q) => q.id),
+    confidence
+  );
+  const canSubmit = allAnswered && allConfident;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!allAnswered || submitting) return;
+    if (!canSubmit || submitting) return;
     setSubmitting(true);
-    const answers = questions.map((q) => ({
-      questionId: q.id,
-      selectedOptionIds: selections[q.id] ?? [],
-    }));
+    const answers: QuizAnswerSubmission[] = questions.map((q) => {
+      const level = confidence[q.id];
+      if (!isValidConfidenceNumeric(level)) {
+        throw new Error(`Missing confidence for question ${q.id}`);
+      }
+      return {
+        questionId: q.id,
+        selectedOptionIds: selections[q.id] ?? [],
+        confidenceLevel: level,
+      };
+    });
     await onSubmit(answers);
   }
 
@@ -122,12 +148,54 @@ export function TestPhase({ questions, locale: _locale, onSubmit, labels }: Test
                 );
               })}
             </div>
+            <div
+              className="mt-5 border-t border-gray-100 pt-4"
+              role="group"
+              aria-labelledby={`confidence-label-${q.id}`}
+            >
+              <p
+                id={`confidence-label-${q.id}`}
+                className="mb-3 text-sm font-medium text-gray-700"
+              >
+                {labels.confidencePrompt}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {CONFIDENCE_NUMERIC_LEVELS.map((level) => {
+                  const selected = confidence[q.id] === level;
+                  return (
+                    <label
+                      key={level}
+                      className={[
+                        "flex min-h-11 min-w-[2.75rem] flex-1 cursor-pointer items-center justify-center rounded-lg border px-2 py-2 text-center text-sm font-semibold transition-colors focus-within:ring-2 focus-within:ring-blue-500 sm:flex-none sm:px-3",
+                        selected
+                          ? "border-blue-600 bg-blue-600 text-white"
+                          : "border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300",
+                      ].join(" ")}
+                    >
+                      <input
+                        type="radio"
+                        name={`confidence-${q.id}`}
+                        value={level}
+                        checked={selected}
+                        onChange={() =>
+                          setConfidence((prev) => ({ ...prev, [q.id]: level }))
+                        }
+                        className="sr-only"
+                        data-testid={`confidence-${q.id}-${level}`}
+                        aria-label={labels.confidenceLevelLabels[String(level)] ?? String(level)}
+                      />
+                      <span aria-hidden="true">{level}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
           </fieldset>
         );
       })}
       <button
         type="submit"
-        disabled={!allAnswered || submitting}
+        disabled={!canSubmit || submitting}
         className="min-h-11 w-full rounded-lg bg-blue-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 sm:w-auto sm:px-8"
         data-testid="submit-quiz"
       >

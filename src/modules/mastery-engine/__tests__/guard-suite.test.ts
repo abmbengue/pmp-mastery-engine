@@ -1,101 +1,97 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { PrismaClient } from "@prisma/client";
-import { runComprehensiveGuards, assertAllGuards } from "../guard-suite";
+/**
+ * Guard Suite — comprehensive canonical integrity checks.
+ *
+ * Adapted from the base-branch guard test to the canonical Phase C+D
+ * implementation. The base branch referenced a `guard-suite` module that was
+ * never implemented; this suite instead composes the canonical guards
+ * (integrity fingerprint, bank-batch-contract key ranges, eco-taxonomy
+ * distribution, 3-tier mastery) into one aggregate check. No second guard
+ * architecture is introduced.
+ */
+import { describe, it, expect } from "vitest";
+import { buildProtectedBankFingerprint } from "../integrity";
+import {
+  PROTECTED_BANK_AGGREGATE,
+  PROTECTED_BANK_SIZE,
+  isExpansionBankKey,
+} from "../bank-batch-contract";
+import { ECO_TASK_COUNT, listEcoTasksByDomain } from "../eco-taxonomy";
+import { PMP_EXAM_BANK_STEMS } from "../../../../prisma/seed/pmp-exam-bank-data";
+import { computeMasteryLevelFromScore } from "@/shared/utils/mastery";
+
+interface ComprehensiveGuardReport {
+  passed: boolean;
+  examBankFingerprintOk: boolean;
+  examBankCountOk: boolean;
+  q201PlusAbsent: boolean;
+  ecoDistributionOk: boolean;
+  masteryThreeTierOnly: boolean;
+  allIssues: string[];
+}
+
+function runComprehensiveGuards(): ComprehensiveGuardReport {
+  const allIssues: string[] = [];
+
+  const fingerprint = buildProtectedBankFingerprint(PMP_EXAM_BANK_STEMS);
+  const examBankFingerprintOk =
+    fingerprint.aggregate === PROTECTED_BANK_AGGREGATE;
+  if (!examBankFingerprintOk) allIssues.push("exam bank fingerprint mismatch");
+
+  const examBankCountOk = fingerprint.count === PROTECTED_BANK_SIZE;
+  if (!examBankCountOk) allIssues.push("exam bank count != 200");
+
+  const q201PlusAbsent = !PMP_EXAM_BANK_STEMS.some((q) =>
+    isExpansionBankKey(q.externalKey)
+  );
+  if (!q201PlusAbsent) allIssues.push("Q201+ present in live bank");
+
+  const ecoDistributionOk =
+    ECO_TASK_COUNT === 26 &&
+    listEcoTasksByDomain("PEOPLE").length === 8 &&
+    listEcoTasksByDomain("PROCESS").length === 10 &&
+    listEcoTasksByDomain("BUSINESS").length === 8;
+  if (!ecoDistributionOk) allIssues.push("ECO distribution mismatch");
+
+  const allowed = new Set(["WEAK", "LEARNING", "MASTERED"]);
+  const masteryThreeTierOnly = Array.from({ length: 101 }, (_, s) =>
+    computeMasteryLevelFromScore(s)
+  ).every((level) => allowed.has(level));
+  if (!masteryThreeTierOnly) allIssues.push("mastery level outside 3-tier");
+
+  return {
+    passed: allIssues.length === 0,
+    examBankFingerprintOk,
+    examBankCountOk,
+    q201PlusAbsent,
+    ecoDistributionOk,
+    masteryThreeTierOnly,
+    allIssues,
+  };
+}
 
 describe("Guard Suite — Comprehensive Integration", () => {
-  let prisma: PrismaClient;
-
-  beforeAll(() => {
-    prisma = new PrismaClient();
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
-  });
-
-  it("should run all guards and return comprehensive report", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report).toBeDefined();
+  it("should run all canonical guards and return a report", () => {
+    const report = runComprehensiveGuards();
     expect(report).toHaveProperty("passed");
-    expect(report).toHaveProperty("examBank");
-    expect(report).toHaveProperty("ecoDistribution");
-    expect(report).toHaveProperty("taskDistinction");
-    expect(report).toHaveProperty("q201Plus");
-    expect(report).toHaveProperty("masteryLevels");
-    expect(report).toHaveProperty("allIssues");
-    expect(report).toHaveProperty("timestamp");
-  });
-
-  it("should have all sub-guard reports defined", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.examBank).toBeDefined();
-    expect(report.ecoDistribution).toBeDefined();
-    expect(report.taskDistinction).toBeDefined();
-    expect(report.q201Plus).toBeDefined();
-    expect(report.masteryLevels).toBeDefined();
-  });
-
-  it("should collect all issues into array", async () => {
-    const report = await runComprehensiveGuards(prisma);
+    expect(report).toHaveProperty("examBankFingerprintOk");
+    expect(report).toHaveProperty("ecoDistributionOk");
+    expect(report).toHaveProperty("q201PlusAbsent");
+    expect(report).toHaveProperty("masteryThreeTierOnly");
     expect(Array.isArray(report.allIssues)).toBe(true);
   });
 
-  it("should have correct timestamp", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.timestamp).toBeInstanceOf(Date);
+  it("should pass every canonical guard on the release freeze", () => {
+    const report = runComprehensiveGuards();
+    expect(report.examBankFingerprintOk).toBe(true);
+    expect(report.examBankCountOk).toBe(true);
+    expect(report.q201PlusAbsent).toBe(true);
+    expect(report.ecoDistributionOk).toBe(true);
+    expect(report.masteryThreeTierOnly).toBe(true);
   });
 
-  it("should set passed = true when no issues", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    if (report.allIssues.length === 0) {
-      expect(report.passed).toBe(true);
-    }
-  });
-
-  it("should set passed = false when issues exist", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    if (report.allIssues.length > 0) {
-      expect(report.passed).toBe(false);
-    }
-  });
-
-  it("should not throw assertAllGuards when all pass", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    if (report.passed) {
-      await expect(assertAllGuards(prisma)).resolves.not.toThrow();
-    }
-  });
-
-  it("should throw assertAllGuards when violations exist", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    if (!report.passed) {
-      await expect(assertAllGuards(prisma)).rejects.toThrow();
-    }
-  });
-
-  it("should include exam bank in report", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.examBank).toHaveProperty("isValid");
-    expect(report.examBank).toHaveProperty("fingerprint");
-  });
-
-  it("should include ECO distribution in report", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.ecoDistribution).toHaveProperty("distribution");
-    expect(report.ecoDistribution).toHaveProperty("expected");
-  });
-
-  it("should include Q201+ check in report", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.q201Plus).toHaveProperty("q201PlusCount");
-    expect(report.q201Plus).toHaveProperty("q001To200Count");
-  });
-
-  it("should include mastery level audit in report", async () => {
-    const report = await runComprehensiveGuards(prisma);
-    expect(report.masteryLevels).toHaveProperty("byLevel");
-    expect(report.masteryLevels.byLevel).toHaveProperty("WEAK");
-    expect(report.masteryLevels.byLevel).toHaveProperty("LEARNING");
-    expect(report.masteryLevels.byLevel).toHaveProperty("MASTERED");
+  it("should set passed = true when no issues", () => {
+    const report = runComprehensiveGuards();
+    expect(report.allIssues).toEqual([]);
+    expect(report.passed).toBe(true);
   });
 });

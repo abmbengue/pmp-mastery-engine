@@ -4,6 +4,7 @@
 
 import type { ExamBankQuestionSeed } from "../../../prisma/seed/pmp-exam-bank-types";
 import type { QuestionMasteryMetadata } from "./types";
+import { buildExamBankMasteryMetadata } from "./question-metadata";
 
 export type DuplicateKind =
   | "exact"
@@ -65,57 +66,119 @@ export function detectDuplicatesAmongBank(
     for (let j = i + 1; j < bank.length; j += 1) {
       const a = bank[i];
       const b = bank[j];
-      const fa = fingerprintQuestion(a);
-      const fb = fingerprintQuestion(b);
-      const ma = metaByKey.get(a.externalKey);
-      const mb = metaByKey.get(b.externalKey);
+      out.push(
+        ...comparePair(
+          a,
+          b,
+          metaByKey.get(a.externalKey),
+          metaByKey.get(b.externalKey),
+          minNearScore
+        )
+      );
+    }
+  }
 
-      if (a.promptEn === b.promptEn && a.scenarioEn === b.scenarioEn) {
-        out.push({
-          externalKeyA: a.externalKey,
-          externalKeyB: b.externalKey,
-          kind: "exact",
-          score: 1,
-          reason: "Identical EN prompt and scenario",
-        });
-        continue;
-      }
+  return out.sort((x, y) => y.score - x.score);
+}
 
-      const scenSim = jaccard(fa.scenario, fb.scenario);
-      if (scenSim >= minNearScore) {
-        out.push({
-          externalKeyA: a.externalKey,
-          externalKeyB: b.externalKey,
-          kind: scenSim >= 0.9 ? "same-scenario-actors" : "near",
-          score: scenSim,
-          reason: `Scenario token similarity ${scenSim.toFixed(2)}`,
-        });
-      }
+function comparePair(
+  a: ExamBankQuestionSeed,
+  b: ExamBankQuestionSeed,
+  ma: QuestionMasteryMetadata | undefined,
+  mb: QuestionMasteryMetadata | undefined,
+  minNearScore: number
+): DuplicateCandidate[] {
+  const out: DuplicateCandidate[] = [];
+  const fa = fingerprintQuestion(a);
+  const fb = fingerprintQuestion(b);
 
-      if (fa.pattern === fb.pattern && fa.pattern.length > 5) {
-        out.push({
-          externalKeyA: a.externalKey,
-          externalKeyB: b.externalKey,
-          kind: "same-reasoning-pattern",
-          score: 0.6,
-          reason: `Shared pattern ${fa.pattern}`,
-        });
-      }
+  if (a.promptEn === b.promptEn && a.scenarioEn === b.scenarioEn) {
+    out.push({
+      externalKeyA: a.externalKey,
+      externalKeyB: b.externalKey,
+      kind: "exact",
+      score: 1,
+      reason: "Identical EN prompt and scenario",
+    });
+    return out;
+  }
 
-      if (
-        ma &&
-        mb &&
-        ma.primaryConceptId === mb.primaryConceptId &&
-        ma.misconceptionIds.some((id) => mb.misconceptionIds.includes(id))
-      ) {
-        out.push({
-          externalKeyA: a.externalKey,
-          externalKeyB: b.externalKey,
-          kind: "same-misconception",
-          score: 0.5,
-          reason: `Shared misconception on ${ma.primaryConceptId}`,
-        });
-      }
+  const scenSim = jaccard(fa.scenario, fb.scenario);
+  if (scenSim >= minNearScore) {
+    out.push({
+      externalKeyA: a.externalKey,
+      externalKeyB: b.externalKey,
+      kind: scenSim >= 0.9 ? "same-scenario-actors" : "near",
+      score: scenSim,
+      reason: `Scenario token similarity ${scenSim.toFixed(2)}`,
+    });
+  }
+
+  if (fa.pattern === fb.pattern && fa.pattern.length > 5) {
+    out.push({
+      externalKeyA: a.externalKey,
+      externalKeyB: b.externalKey,
+      kind: "same-reasoning-pattern",
+      score: 0.6,
+      reason: `Shared pattern ${fa.pattern}`,
+    });
+  }
+
+  if (
+    ma &&
+    mb &&
+    ma.primaryConceptId === mb.primaryConceptId &&
+    ma.misconceptionIds.some((id) => mb.misconceptionIds.includes(id))
+  ) {
+    out.push({
+      externalKeyA: a.externalKey,
+      externalKeyB: b.externalKey,
+      kind: "same-misconception",
+      score: 0.5,
+      reason: `Shared misconception on ${ma.primaryConceptId}`,
+    });
+  }
+
+  return out;
+}
+
+/** Intra-batch duplicate detection (candidate ↔ candidate). */
+export function detectDuplicatesInBatch(
+  batch: ExamBankQuestionSeed[],
+  metadata: QuestionMasteryMetadata[],
+  minNearScore = 0.72
+): DuplicateCandidate[] {
+  return detectDuplicatesAmongBank(batch, metadata, minNearScore);
+}
+
+/**
+ * Cross-bank duplicate detection (candidate ↔ existing protected bank).
+ * Reuses the same normalization and scoring strategy as detectDuplicatesAmongBank.
+ */
+export function detectDuplicatesBetweenBanks(
+  existingBank: ExamBankQuestionSeed[],
+  candidateBatch: ExamBankQuestionSeed[],
+  existingMetadata?: QuestionMasteryMetadata[],
+  candidateMetadata?: QuestionMasteryMetadata[],
+  minNearScore = 0.72
+): DuplicateCandidate[] {
+  const metaA = existingMetadata ?? buildExamBankMasteryMetadata(existingBank);
+  const metaB = candidateMetadata ?? buildExamBankMasteryMetadata(candidateBatch);
+  const metaByKeyA = new Map(metaA.map((m) => [m.externalKey, m]));
+  const metaByKeyB = new Map(metaB.map((m) => [m.externalKey, m]));
+  const out: DuplicateCandidate[] = [];
+
+  for (const a of existingBank) {
+    for (const b of candidateBatch) {
+      out.push(
+        ...comparePair(
+          a,
+          b,
+          metaByKeyA.get(a.externalKey),
+          metaByKeyB.get(b.externalKey),
+          minNearScore
+        )
+      );
     }
   }
 

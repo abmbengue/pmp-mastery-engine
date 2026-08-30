@@ -45,6 +45,7 @@
     "register": "Inscription",
     "skipToContent": "Aller au contenu",
     "pmpExam": "Examen PMP",
+    "pmpStudy": "Étude PMP",
     "review": "Révision",
     "readinessReport": "Rapport de préparation",
     "learningPaths": "Parcours"
@@ -155,7 +156,49 @@
     "viewAllPaths": "Voir tous les parcours",
     "shortsPersonalFinance": "Shorts Finance Perso",
     "shortsCorporateFinance": "Shorts Finance Entr.",
-    "shortsPmp": "Shorts PMP"
+    "shortsPmp": "Shorts PMP",
+    "pmpStudy": "Étude PMP (ECO)",
+    "openPmpStudy": "Étudier par tâche ECO",
+    "weaknessDashboardTitle": "Focus faiblesses PMP",
+    "weaknessDashboardSubtitle": "Compétences à renforcer, par domaine ECO — à partir de vos quiz.",
+    "weaknessDashboardEmpty": "Terminez un quiz de leçon pour voir vos faiblesses personnalisées.",
+    "weakestSkills": "Compétences les plus fragiles",
+    "weaknessNoneDetected": "Aucune faiblesse détectée sur l'activité récente. Continuez à pratiquer !",
+    "ecoOverview": "Vue ECO",
+    "ecoTasks": "tâches ECO",
+    "ecoDomainClear": "Aucune faiblesse dans ce domaine pour l'instant.",
+    "ecoTaskLabel": "Tâche ECO",
+    "recentPerformance": "Performance récente",
+    "masteryLevel": "Maîtrise",
+    "reviewDueBadge": "Révision due",
+    "weaknessReviewDue": "Révisions dues (tableau de bord)",
+    "weaknessReviewDueEmpty": "Aucune compétence due selon votre planning de révision.",
+    "workOnSkill": "Travailler cette compétence"
+  },
+  "pmpStudy": {
+    "eyebrow": "PMP Mastery",
+    "title": "Étude PMP",
+    "subtitle": "Étudiez par domaine et tâche ECO — {count} tâches officielles. Mobile-first.",
+    "domainsNav": "Domaines ECO",
+    "domainMeta": "{tasks} tâches · {weight}% du poids examen",
+    "flowHint": "Domaine → Tâche ECO → Leçon → Apprendre → Pratiquer → Tester → Réviser → Maîtriser",
+    "domainTasksTitle": "Tâches ECO",
+    "domainTasksSubtitle": "Choisissez une tâche pour voir les leçons liées et les distinctions critiques.",
+    "mappedLessons": "{count, plural, =0 {Aucune leçon liée} one {# leçon liée} other {# leçons liées}}",
+    "startHint": "Ouvrir la leçon primaire dans le lecteur existant.",
+    "startLesson": "Démarrer la leçon",
+    "continueHint": "Reprenez là où vous vous êtes arrêté.",
+    "continueHintWithPhase": "Reprenez à l'étape {phase}.",
+    "continueLesson": "Continuer la leçon",
+    "lessonStatusNotStarted": "Non commencée",
+    "lessonStatusInProgress": "En cours",
+    "lessonStatusCompleted": "Terminée",
+    "backToEcoTask": "Retour à la tâche ECO",
+    "openLesson": "Ouvrir",
+    "noLessons": "Aucune leçon n'est encore liée à cette tâche.",
+    "lessonsHeading": "Leçons liées",
+    "distinctionsHeading": "Distinctions critiques",
+    "pedagogyBadge": "Pack pédagogique"
   },
   "review": {
     "title": "Réviser maintenant",
@@ -379,7 +422,32 @@
     "learn": {
       "videoComingSoon": "Vidéo disponible prochainement",
       "videoPlaceholder": "Cette vidéo sera disponible dans une prochaine mise à jour.",
-      "shortBadge": "Short"
+      "shortBadge": "Short",
+      "pedagogy": {
+        "what": "Quoi",
+        "whatStepped": "Qu'est-ce que je dois comprendre ?",
+        "why": "Pourquoi",
+        "whyStepped": "Pourquoi cela compte dans un projet ?",
+        "when": "Quand",
+        "how": "Comment",
+        "howToDecide": "Comment décider",
+        "recognize": "Comment reconnaître cette situation dans un scénario PMP ?",
+        "decide": "Quelle est la bonne logique de décision ?",
+        "scenario": "Scénario",
+        "distinctions": "Distinctions critiques",
+        "takeaway": "À retenir",
+        "showRationale": "Voir le raisonnement",
+        "hideRationale": "Masquer le raisonnement",
+        "continueReading": "Continuer",
+        "continue": "Continuer",
+        "reflectPrompt": "Prenez un moment pour réfléchir avant de voir les options.",
+        "miniCasePrompt": "Que ferais-tu en premier ?",
+        "mindsetAssess": "ASSESS",
+        "mindsetAlign": "ALIGN",
+        "mindsetDecide": "DECIDE",
+        "mindsetAct": "ACT",
+        "stepOf": "Étape {current} / {total}"
+      }
     },
     "practice": {
       "exerciseTitle": "Exercice",
@@ -397,7 +465,13 @@
       "trueOrFalse": "Vrai ou Faux",
       "submit": "Valider mes réponses",
       "correct": "Bonne réponse !",
-      "incorrect": "Réponse incorrecte"
+      "incorrect": "Réponse incorrecte",
+      "confidencePrompt": "À quel point êtes-vous confiant dans cette réponse ?",
+      "confidenceLevel1": "1 — Pas du tout confiant",
+      "confidenceLevel2": "2 — Peu confiant",
+      "confidenceLevel3": "3 — Moyennement confiant",
+      "confidenceLevel4": "4 — Confiant",
+      "confidenceLevel5": "5 — Très confiant"
     },
     "review": {
       "title": "Révision",
@@ -433,7 +507,15 @@
       "nextLesson": "Leçon suivante",
       "backToCourse": "Retour au cours",
       "courseProgress": "Progression du cours",
-      "lessonsCompleted": "leçon(s) complétée(s) sur"
+      "lessonsCompleted": "leçon(s) complétée(s) sur",
+      "masteryDepth": "Profondeur d'apprentissage (calculée)",
+      "stateUnknown": "Pas encore évalué",
+      "stateExposed": "Première exposition",
+      "stateDeveloping": "En développement",
+      "stateFragile": "Connaissance fragile",
+      "stateFunctional": "Fonctionnel",
+      "stateStrong": "Solide",
+      "stateMastered": "Pleinement maîtrisé"
     }
   }
 }
