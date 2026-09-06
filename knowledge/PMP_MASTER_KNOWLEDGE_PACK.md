@@ -1,7 +1,7 @@
 # PMP Master Knowledge Pack (Phase B / B.1)
 
 **Version:** 1.1.0-phase-b1
-**Generated:** 2026-08-27T17:33:27.884Z
+**Generated:** 2026-08-31T00:10:10.382Z
 
 > PLA proprietary mastery layer. **Not** official PMI certification content.
 

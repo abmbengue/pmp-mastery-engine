@@ -1,0 +1,150 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.hero-card {
+  margin-top: 20px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+h2 {
+  margin: 8px 0;
+  font-size: 1.2rem;
+}
+
+p {
+  line-height: 1.5;
+}
+
+.muted {
+  color: #475569;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #334155;
+}
+
+button,
+.secondary {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  margin-top: 10px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.primary {
+  background: #0f172a;
+  color: #fff;
+}
+
+.secondary {
+  background: #dbeafe;
+  color: #0f172a;
+}
+
+.text-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.chip {
+  display: inline-block;
+  background: #eff6ff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 12px;
+}
+
+.options {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.option {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.option.selected {
+  border-color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.feedback {
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.feedback.ok {
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+}
+
+.feedback.ko {
+  background: #fff7ed;
+  border: 1px solid #f97316;
+}
+
+@media (max-width: 390px) {
+  .container {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+  }
+}
